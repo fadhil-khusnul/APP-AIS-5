@@ -29,7 +29,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="shipping" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -44,34 +44,7 @@
                 <!-- END Datatable -->
             </div>
         </div>
-        <div class="portlet">
-            <div class="portlet-header portlet-header-bordered">
-                <h3 class="portlet-title">SHIPPING COMPANY</h3>
-            </div>
-            <div class="portlet-body">
-                <div class="text-end">
 
-                    <a href="/tambah-shipping" class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></a>
-                </div>
-                {{-- <p><strong>Fixed header</strong> can be initialised on a Datatable by using the <code>fixedheader</code> option in the Datatable options object.</p> --}}
-                <hr>
-
-                <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Company (PT)</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-                <!-- END Datatable -->
-            </div>
-        </div>
         <!-- END Portlet -->
         <!-- BEGIN Portlet -->
 
@@ -91,7 +64,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="depo" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -122,7 +95,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="pol" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -153,7 +126,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="pengirim" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -184,7 +157,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="penerima" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -216,7 +189,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="biaya" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -247,7 +220,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="trucking" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -277,7 +250,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="table-container" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -310,7 +283,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="datatable-1" class="table table-bordered table-striped table-hover autosize">
+                <table id="kegiatan" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>

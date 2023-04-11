@@ -1,1 +1,107 @@
-"use strict";$(function(){var offset=$(window).width()>=1025?$("#sticky-header-desktop").height():$("#sticky-header-mobile").height();$("#datatable-1").DataTable({responsive:true,fixedHeader:{header:true,headerOffset:offset}});$("#datatable-2").DataTable({responsive:true,fixedHeader:{header:true,footer:true,headerOffset:offset}})});
+"use strict";$(function(){var offset=$(window).width()>=1025?$("#sticky-header-desktop").height():$("#sticky-header-mobile").height();
+
+$("#shipping").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+
+
+$("#depo").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+
+$("#pol").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#pengirim").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#penerima").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#biaya").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#trucking").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#table-container").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#kegiatan").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+
+$("#planload").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+
+$("#datatable-2").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        footer:true,
+        headerOffset:offset
+    }
+})
+});

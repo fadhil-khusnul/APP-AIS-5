@@ -11,7 +11,9 @@ class MainController extends Controller
      */
     public function index()
     {
-        return view('layouts.main');
+        return view('pages.data',[
+            'title' => 'Data'
+        ]);
     }
 
     /**

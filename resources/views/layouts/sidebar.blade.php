@@ -31,78 +31,18 @@
                 </div>
                 <!-- END Menu Section -->
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle {{ Request::is('shipping-company*') ? 'active' : '' }}">
+                    <a href="/data" data-menu-path="/data" class="menu-item-link {{ Request::is('data*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
-                            <i class="fa fa-palette"></i>
+                            <i class="fa fa-folder"></i>
                         </div>
                         <span class="menu-item-text">DATA</span>
-                        <div class="menu-item-addon">
-                            <i class="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    <!-- BEGIN Menu Submenu -->
-                    <div class="menu-submenu">
-                        <div class="menu-item">
-                            <a href="/shipping-company" data-menu-path="/shipping-company" class="menu-item-link {{ Request::is('shipping-company*') ? 'active' : '' }}">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">SHIPPING COMPANY</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/alert.html" data-menu-path="/elements/base/alert.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">DEPO</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/badge.html" data-menu-path="/elements/base/badge.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">POL/POD</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/breadcrumb.html" data-menu-path="/elements/base/breadcrumb.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">PENGIRIM</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/button.html" data-menu-path="/elements/base/button.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">PENERIMA</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/button-group.html" data-menu-path="/elements/base/button-group.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">BIAYA</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/card.html" data-menu-path="/elements/base/card.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">TRUCKING</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/color.html" data-menu-path="/elements/base/color.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">CONTAINER</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/base/dropdown.html" data-menu-path="/elements/base/dropdown.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JENIS KEGIATAN</span>
-                            </a>
-                        </div>
-                    <!-- END Menu Submenu -->
+                    </a>
                 </div>
 
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
-                            <i class="fa fa-table"></i>
+                            <i class="far fa-clone"></i>
                         </div>
                         <span class="menu-item-text">ACTIVITY</span>
                         <div class="menu-item-addon">
@@ -112,7 +52,7 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle">
+                            <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">JOB ORDER PLAN</span>
                                 <div class="menu-item-addon">
@@ -122,7 +62,7 @@
                             <!-- BEGIN Menu Submenu -->
                             <div class="menu-submenu">
                                 <div class="menu-item">
-                                    <a href="datatable/basic/base.html" data-menu-path="/datatable/basic/base.html" class="menu-item-link">
+                                    <a href="/planload" data-menu-path="/planload" class="menu-item-link {{ Request::is('/planload/*') || Request::is('planload/create') ? 'active' : '' }}">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">LOAD</span>
                                     </a>
@@ -314,33 +254,7 @@
                     </div>
                     <!-- END Menu Submenu -->
                 </div>
-                <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
-                        <div class="menu-item-icon">
-                            <i class="fa fa-unlink"></i>
-                        </div>
-                        <span class="menu-item-text">Error</span>
-                        <div class="menu-item-addon">
-                            <i class="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    <!-- BEGIN Menu Submenu -->
-                    <div class="menu-submenu">
-                        <div class="menu-item">
-                            <a href="pages/error/error-1.html" data-menu-path="/pages/error/error-1.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">Error 1</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="pages/error/error-2.html" data-menu-path="/pages/error/error-2.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">Error 2</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- END Menu Submenu -->
-                </div>
+
             </div>
             <!-- END Menu -->
             </div>

@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\PlanLoadController;
 
 
 /*
@@ -16,6 +18,12 @@ use App\Http\Controllers\ShippingController;
 |
 */
 
+//DATA
 Route::get('/', [MainController::class, 'index']);
-Route::get('/shipping-company', [ShippingController::class, 'index']);
+Route::get('/data', [DataController::class, 'index']);
+Route::get('/tambah-shipping-company', [ShippingController::class, 'index']);
+
+//ACTIVITY
+Route::get('/planload', [PlanLoadController::class, 'index']);
+Route::get('/planload/create', [PlanLoadController::class, 'create']);
 
