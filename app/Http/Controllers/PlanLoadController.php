@@ -14,10 +14,11 @@ class PlanLoadController extends Controller
      */
     public function index()
     {
-        return view('planload.planload',[
-        'title' => 'Job Order Plan Load'
+        return view('plan.planload',[
+        'title' => 'Plan Load'
 
     ]);
+
     }
 
     /**
@@ -26,7 +27,7 @@ class PlanLoadController extends Controller
     public function create(Request $request)
     {
         // dd($request);
-        return view('planload.planload-create',[
+        return view('plan.planload-create',[
         'title' => 'Buat Job Order Plan Load'
         ]);
     }

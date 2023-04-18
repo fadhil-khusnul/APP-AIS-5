@@ -33,7 +33,7 @@
                 <div class="menu-item">
                     <a href="/data" data-menu-path="/data" class="menu-item-link {{ Request::is('data*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                         </div>
                         <span class="menu-item-text">DATA</span>
                     </a>
@@ -68,7 +68,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a href="datatable/basic/footer.html" data-menu-path="/datatable/basic/footer.html" class="menu-item-link">
+                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">DISCHARGE</span>
                                     </a>
@@ -137,7 +137,7 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
-                            <i class="fa fa-adjust"></i>
+                            <i class="fa fa-desktop"></i>
                         </div>
                         <span class="menu-item-text">MONITORING</span>
                         <div class="menu-item-addon">
@@ -171,7 +171,7 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
-                            <i class="fa fa-adjust"></i>
+                            <i class="fa fa-ban"></i>
                         </div>
                         <span class="menu-item-text">SEAL</span>
                         <div class="menu-item-addon">
@@ -206,7 +206,7 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
-                            <i class="fa fa-adjust"></i>
+                            <i class="fa fa-credit-card"></i>
                         </div>
                         <span class="menu-item-text">FINANCE</span>
                         <div class="menu-item-addon">
@@ -218,7 +218,7 @@
                         <div class="menu-item">
                             <a href="elements/advanced/avatar.html" data-menu-path="/elements/advanced/avatar.html" class="menu-item-link">
                                 <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">CRETAE INV</span>
+                                <span class="menu-item-text">CREATE INV</span>
                             </a>
                         </div>
                         <div class="menu-item">
@@ -235,7 +235,7 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
-                            <i class="fa fa-adjust"></i>
+                            <i class="fa fa-book"></i>
                         </div>
                         <span class="menu-item-text">REPORT</span>
                         <div class="menu-item-addon">

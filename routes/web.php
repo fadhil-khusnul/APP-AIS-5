@@ -5,6 +5,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\PlanLoadController;
+use App\Http\Controllers\PlanDischargeController;
 
 
 /*
@@ -26,4 +27,6 @@ Route::get('/tambah-shipping-company', [ShippingController::class, 'index']);
 //ACTIVITY
 Route::get('/planload', [PlanLoadController::class, 'index']);
 Route::get('/planload/create', [PlanLoadController::class, 'create']);
+Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
+Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
 

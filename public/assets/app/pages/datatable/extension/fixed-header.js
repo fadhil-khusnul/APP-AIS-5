@@ -75,7 +75,16 @@ $("#table-container").DataTable({
         offset
     }
 });
-$("#kegiatan").DataTable({
+$("#kegiatan-stuffing").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+$("#kegiatan-stripping").DataTable({
     responsive:true,
     fixedHeader:
     {
