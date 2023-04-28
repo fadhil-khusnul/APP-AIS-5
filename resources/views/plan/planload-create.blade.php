@@ -10,6 +10,7 @@
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="breadcrumb breadcrumb-transparent mb-0">
                             <a href="/planload" class="breadcrumb-item">
                                 <div class="breadcrumb-icon">
@@ -45,19 +46,19 @@
                             <label for="" class="form-label">Activity</label>
                             <select id="activity" class="form-select">
                                 <option selected disabled>Pilih Activity</option>
-                                <option>...</option>
+                                @foreach ($activity as $activity)
+                                    <option value="{{ $activity->id }}">{{ $activity->kegiatan_stuffing }}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="col-12">
                             <label for="company" class="form-label">Shipping Company</label>
                             <select id="select2-1">
-                                <option value="AK" selected disabled>Pilih Company</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih Company</option>
+                                @foreach ($shippingcompany as $shippingcompany)
+                                    <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -67,56 +68,49 @@
                         <div class="col-md-6">
                             <label for="POL" class="form-label">POL</label>
                             <select id="POL-1">
-                                <option value="AK" selected disabled>Pilih POL</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih POL</option>
+                                @foreach ($pol as $pol)
+                                    <option value="{{ $pol->id }}">{{ $pol->area_code }} - {{ $pol->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="POL" class="form-label">POT</label>
                             <select id="POT-1">
-                                <option value="AK" selected disabled>Pilih POT</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih POT</option>
+                                @foreach ($pot as $pot)
+                                    <option value="{{ $pot->id }}">{{ $pot->area_code }} - {{ $pot->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="POL" class="form-label">POD</label>
                             <select id="POD-1">
-                                <option value="AK" selected disabled>Pilih POD</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih POD</option>
+                                @foreach ($pod as $pod)
+                                    <option value="{{ $pod->id }}">{{ $pod->area_code }} -
+                                        {{ $pod->nama_pelabuhan }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="POL" class="form-label">Pengirim</label>
                             <select id="Pengirim-1">
-                                <option value="AK" selected disabled>Pilih Pengirim</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih Pengirim</option>
+                                @foreach ($pengirim as $pengirim)
+                                    <option value="{{ $pengirim->id }}">{{ $pengirim->nama_costumer }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="POL" class="form-label">Penerima</label>
                             <select id="Penerima-1">
-                                <option value="AK" selected disabled>Pilih Penerima</option>
-                                <option value="HI">Hawaii</option>
-                                <option value="CA">California</option>
-                                <option value="NV">Nevada</option>
-                                <option value="OR">Oregon</option>
-                                <option value="WA">Washington</option>
+                                <option selected disabled>Pilih Penerima</option>
+                                @foreach ($penerima as $penerima)
+                                    <option value="{{ $penerima->id }}">{{ $penerima->nama_penerima }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </form>
@@ -143,6 +137,7 @@
                             <thead class="table-success" id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
+                                    <th class="text-center">Jenis Kontainer</th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
                                     <th class="text-center">Aksi</th>
@@ -151,15 +146,20 @@
                             <tbody class="text-center" id="tbody_container">
                                 <tr>
                                     <td>1.</td>
-                                    <td><select id="size1" class="form-select">
-                                            <option selected disabled>Pilih Size</option>
-                                            <option>...</option>
+                                    <td><select id="kontainer1" class="form-select" onchange="change_container(this)">
+                                            <option selected disabled>Pilih Kontainer</option>
+                                            @foreach ($kontainer as $kontainer)
+                                                <option value="{{ $kontainer->id }}">{{ $kontainer->jenis_container }}</option>
+                                            @endforeach
                                         </select></td>
-                                    <td><select id="type1" class="form-select">
-                                            <option selected disabled>Pilih Type</option>
-                                            <option>...</option>
-                                        </select></td>
-                                    <td><button id="deleterow1" onclick="delete_container(this)" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                    <td>
+                                        <label id="size1">Size</label>
+                                    </td>
+                                    <td>
+                                        <label id="type1">Type</label>
+                                    </td>
+                                    <td><button id="deleterow1" onclick="delete_container(this)" type="button"
+                                            class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-trash"></i></button></td>
 
                                 </tr>
@@ -189,38 +189,59 @@
         var tambah = 1;
 
         function tambah_kontener() {
+            let token = $('#csrf').val();
+
             var table = document.getElementById("tbody_container");
             tambah++;
 
-            var select1 = document.createElement("select");
-            select1.innerHTML = '<option selected disabled>Pilih Size</option><option>...</option>';
-            select1.setAttribute("id", "size" + tambah);
-            select1.setAttribute("class", "form-select");
-            var select2 = document.createElement("select");
-            select2.innerHTML = '<option selected disabled>Pilih Type</option><option>...</option>';
-            select2.setAttribute("id", "type" + tambah);
-            select2.setAttribute("class", "form-select");
-            var button = document.createElement("button");
-            button.setAttribute("id", "deleterow" + tambah);
-            button.setAttribute("class", "btn btn-label-danger btn-icon btn-circle btn-sm");
-            button.setAttribute("type", "button");
-            button.setAttribute("onclick", "delete_container(this)");
-            var icon = document.createElement("i");
-            icon.setAttribute("class", "fa fa-trash");
-            button.append(icon);
+            $.ajax({
+                url: '/getJenisKontainer',
+                type: 'post',
+                data: {
+                    '_token': token
+                },
+                success: function (response) {
+                    var jenis_kontainer = [""];
+                    for (i = 0; i < response.length; i++) {
+                        jenis_kontainer += ("<option value='" + response[i].id + "'>" + response[i].jenis_container + "</option>");
+                    }
+                    var select1 = document.createElement("select");
+                    select1.innerHTML = '<option selected disabled>Pilih Kontainer</option>' + jenis_kontainer;
+                    select1.setAttribute("id", "kontainer" + tambah);
+                    select1.setAttribute("class", "form-select");
+                    select1.setAttribute("onchange", "change_container(this)");
+                    var label1 = document.createElement("label");
+                    label1.innerHTML = 'Size';
+                    label1.setAttribute("id", "size" + tambah);
+                    var label2 = document.createElement("label");
+                    label2.innerHTML = 'Type';
+                    label2.setAttribute("id", "type" + tambah);
+                    var button = document.createElement("button");
+                    button.setAttribute("id", "deleterow" + tambah);
+                    button.setAttribute("class", "btn btn-label-danger btn-icon btn-circle btn-sm");
+                    button.setAttribute("type", "button");
+                    button.setAttribute("onclick", "delete_container(this)");
+                    var icon = document.createElement("i");
+                    icon.setAttribute("class", "fa fa-trash");
+                    button.append(icon);
+        
+                    var row = table.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+        
+                    cell1.innerHTML = "1.";
+                    cell2.appendChild(select1);
+                    cell3.appendChild(label1);
+                    cell4.appendChild(label2);
+                    cell5.appendChild(button);
+        
+                    reindex_container();
+                }
+            })
 
-            var row = table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-
-            cell1.innerHTML = "1.";
-            cell2.appendChild(select1);
-            cell3.appendChild(select2);
-            cell4.appendChild(button);
-
-            reindex_container();
         }
 
         function reindex_container() {
@@ -238,15 +259,20 @@
 
             var select1 = document.querySelectorAll("#table_container tr td:nth-child(2) select");
             for (var i = 0; i < select1.length; i++) {
-                select1[i].id = "size" + (i + 1);
+                select1[i].id = "kontainer" + (i + 1);
             }
 
-            var select2 = document.querySelectorAll("#table_container tr td:nth-child(3) select");
-            for (var i = 0; i < select2.length; i++) {
-                select2[i].id = "type" + (i + 1);
+            var label1 = document.querySelectorAll("#table_container tr td:nth-child(3) label");
+            for (var i = 0; i < label1.length; i++) {
+                label1[i].id = "size" + (i + 1);
             }
 
-            var button = document.querySelectorAll("#table_container tr td:nth-child(4) button");
+            var label2 = document.querySelectorAll("#table_container tr td:nth-child(4) label");
+            for (var i = 0; i < label2.length; i++) {
+                label2[i].id = "type" + (i + 1);
+            }
+
+            var button = document.querySelectorAll("#table_container tr td:nth-child(5) button");
             for (var i = 0; i < button.length; i++) {
                 button[i].id = "deleterow" + (i + 1);
             }
@@ -256,6 +282,25 @@
             if (tambah == 0) {
                 tambah_kontener();
             }
+        }
+
+        function change_container(ini) {
+            let token = $('#csrf').val();
+            var urutan = ini.parentNode.parentNode.rowIndex;
+            var id_container = ini.value;
+
+            $.ajax({
+                url: '/getSizeTypeContainer',
+                type: 'post',
+                data: {
+                    'id_container': id_container,
+                    '_token': token
+                },
+                success: function (response) {
+                    document.getElementById('size' + urutan).innerHTML = response[0].size_container
+                    document.getElementById('type' + urutan).innerHTML = response[0].type_container
+                }
+            })
         }
     </script>
 @endsection
