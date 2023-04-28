@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ShippingCompany;
+
 
 class ShippingController extends Controller
 {
@@ -11,7 +13,7 @@ class ShippingController extends Controller
      */
     public function index()
     {
-        
+
     }
 
     /**
@@ -27,7 +29,15 @@ class ShippingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $validatedData = $request->validate([
+
+            'nama_company' => 'required',
+
+        ]);
+        ShippingCompany::create($validatedData);
+        return redirect('/data');
+
     }
 
     /**
@@ -41,24 +51,46 @@ class ShippingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        // dd($id);
+        $ShippingCompany = ShippingCompany::find($id);
+
+        return response()->json([
+            'result' => $ShippingCompany,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+
+            'nama_company' => 'required',
+
+        ]);
+
+        $companies = ShippingCompany::findOrFail($id);
+
+        $data = [
+            "nama_company" =>$request->nama_company,
+        ];
+        $companies->update($data);
+        return response()->json(['success' => true]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $companies = ShippingCompany::find($id);
+        $companies->delete();
+        return response()->json([
+            'success'   => true
+        ]);
+
     }
 }

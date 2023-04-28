@@ -11,10 +11,10 @@
                 <h3 class="portlet-title">{{$title}}</h3>
             </div>
             <div class="portlet-body">
-                <div class="text-end">
+                {{-- <div class="text-end">
 
                     <a href="planload/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Job (Load)</a>
-                </div>
+                </div> --}}
                 {{-- <p><strong>Fixed header</strong> can be initialised on a Datatable by using the <code>fixedheader</code> option in the Datatable options object.</p> --}}
                 <hr>
 

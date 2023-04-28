@@ -103,6 +103,15 @@ $("#planload").DataTable({
         offset
     }
 });
+$("#input-seal").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
 
 $("#datatable-2").DataTable({
     responsive:true,

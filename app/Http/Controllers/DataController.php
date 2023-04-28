@@ -3,6 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ShippingCompany;
+use App\Models\Depo;
+use App\Models\Pelabuhan;
+use App\Models\Pengirim;
+use App\Models\Penerima;
+use App\Models\Biaya;
+use App\Models\Trucking;
+use App\Models\Container;
+use App\Models\Stuffing;
+use App\Models\Stripping;
 
 class DataController extends Controller
 {
@@ -11,8 +21,31 @@ class DataController extends Controller
      */
     public function index()
     {
+
+        $companies = ShippingCompany::all();
+        $depos = Depo::all();
+        $pelabuhans = Pelabuhan::all();
+        $pengirims = Pengirim::all();
+        $penerimas = Penerima::all();
+        $biayas = Biaya::all();
+        $truckings = Trucking::all();
+        $containers = Container::all();
+
+        $stuffings = Stuffing::all();
+        $strippings = Stripping::all();
+
         return view('pages.data',[
-            'title' => 'Data'
+            'title' => 'Data',
+            'companies' => $companies,
+            'depos' => $depos,
+            'pelabuhans' => $pelabuhans,
+            'pengirims' => $pengirims,
+            'penerimas' => $penerimas,
+            'biayas' => $biayas,
+            'truckings' => $truckings,
+            'containers' => $containers,
+            'stuffings' => $stuffings,
+            'strippings' => $strippings,
         ]);
     }
 

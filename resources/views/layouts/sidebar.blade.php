@@ -88,7 +88,7 @@
                             <!-- BEGIN Menu Submenu -->
                             <div class="menu-submenu">
                                 <div class="menu-item">
-                                    <a href="datatable/advanced/column-rendering.html" data-menu-path="/datatable/advanced/column-rendering.html" class="menu-item-link">
+                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">LOAD</span>
                                     </a>
@@ -181,7 +181,7 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="elements/advanced/avatar.html" data-menu-path="/elements/advanced/avatar.html" class="menu-item-link">
+                            <a href="/seal" data-menu-path="/seal" class="menu-item-link">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">INPUT SEAL</span>
                             </a>
