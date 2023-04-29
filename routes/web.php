@@ -92,6 +92,8 @@ Route::delete('/stripping/{id}', [StrippingController::class, 'destroy']);
 //plan
 Route::get('/planload', [PlanLoadController::class, 'index']);
 Route::get('/planload/create', [PlanLoadController::class, 'create']);
+Route::post('/create-job-planload', [PlanLoadController::class, 'create_job_planload']);
+
 Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
 Route::post('/getJenisKontainer', [PlanLoadController::class, 'getJenisKontainer']);
 Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeContainer']);

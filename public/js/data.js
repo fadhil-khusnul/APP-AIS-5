@@ -7,9 +7,17 @@ $(function () {
             cancelButton: "btn btn-label-danger btn-wide mx-1" },
             buttonsStyling: false
         });
-        var toast = Swal.mixin({
-            toast: true,
-             position: "top-end", showConfirmButton: false, timer: 3e3, timerProgressBar: true, didOpen: function didOpen(toast) { toast.addEventListener("mouseenter", Swal.stopTimer); toast.addEventListener("mouseleave", Swal.resumeTimer) } });
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer)
+        }
+    });
 
     $.validator.addMethod("notEqual", function (value, element, arg) { return arg !== value }, "Value must not equal arg.");
 
@@ -57,6 +65,7 @@ $(function () {
             });
         }
     });
+    
     $('#valid_depo').validate({
         rules: {
 

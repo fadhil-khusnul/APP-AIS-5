@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penerimas', function (Blueprint $table) {
+        Schema::create('container_planloads', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_penerima');
-            $table->string('alamat_penerima');
-            $table->string('email_penerima');
-            $table->string('no_telp_penerima');
-            $table->string('rekening_penerima');
+            $table->foreignId('job_id');
+            $table->string('kontainer');
+            $table->string('size');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -25,9 +24,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    
     public function down(): void
     {
-        Schema::dropIfExists('penerimas');
+        Schema::dropIfExists('container_planloads');
     }
 };

@@ -1133,7 +1133,7 @@ progress {
     flex: 1 0 0%;
   }
   .row-cols-lg-auto > * {
-    flex: 0 0 auto;
+    flex: 2 0 auto;
     width: auto;
   }
   .row-cols-lg-1 > * {
