@@ -92,7 +92,9 @@ Route::delete('/stripping/{id}', [StrippingController::class, 'destroy']);
 //plan
 Route::get('/planload', [PlanLoadController::class, 'index']);
 Route::get('/planload/create', [PlanLoadController::class, 'create']);
+Route::get('/planload-edit/{slug}', [PlanLoadController::class, 'edit']);
 Route::post('/create-job-planload', [PlanLoadController::class, 'create_job_planload']);
+Route::post('/update-job-planload', [PlanLoadController::class, 'update']);
 
 Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
 Route::post('/getJenisKontainer', [PlanLoadController::class, 'getJenisKontainer']);
@@ -101,8 +103,11 @@ Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
 
 //process
 Route::get('/processload', [ProcessLoadController::class, 'index']);
-Route::get('/processload/create', [ProcessLoadController::class, 'create']);
+Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
+Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
+
 
 
 //seal
 Route::get('/seal', [SealController::class, 'index']);
+Route::post('/getSeal', [SealController::class, 'getSeal']);

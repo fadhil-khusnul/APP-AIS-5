@@ -25,9 +25,11 @@ class PlanLoadController extends Controller
     public function index()
     {
         $planloads = OrderJobPlanload::all();
+        $containers = ContainerPlanload::all();
         return view('plan.planload', [
             'title' => 'Plan Load',
             'planloads' => $planloads,
+            'containers' => $containers,
 
         ]);
     }
@@ -100,6 +102,7 @@ class PlanLoadController extends Controller
         $job_id = [];
 
         $tambah = $request->tambah;
+
         for ($i = 0; $i < $tambah; $i++) {
             $job_id[$i] = $id;
         }
@@ -110,7 +113,6 @@ class PlanLoadController extends Controller
                 'kontainer' => $request->kontainer[$j],
                 'size' => $request->size[$j],
                 'type' => $request->type[$j],
-                // 'sub_deskripsi_id' => $sub_deskripsi_id[$j],
             ];
             ContainerPlanload::create($container);
         }
@@ -132,17 +134,100 @@ class PlanLoadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PlanLoad $planLoad)
+    public function edit(Request $request)
     {
-        //
+        $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
+        $activity = Stuffing::all();
+        $shipping_company = ShippingCompany::all();
+        $pol = Pelabuhan::all();
+        $pot = Pelabuhan::all();
+        $pod = Pelabuhan::all();
+        $pengirim = Pengirim::all();
+        $penerima = Penerima::all();
+        $kontainer = Container::all();
+        // dd($activity);
+        return view('plan.planload-edit', [
+            'title' => 'Edit Job Order Plan Load',
+            'activity' => $activity,
+            'shippingcompany' => $shipping_company,
+            'pol' => $pol,
+            'pot' => $pot,
+            'pod' => $pod,
+            'pengirim' => $pengirim,
+            'penerima' => $penerima,
+            'kontainers' => $kontainer,
+            'planload' => OrderJobPlanload::find($id),
+            'containers' => ContainerPlanload::where('job_id', $id)->get()
+        ]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePlanLoadRequest $request, PlanLoad $planLoad)
+    public function update(Request $request)
     {
-        //
+        $old_slug = $request->old_slug;
+
+        $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
+
+        $random = Str::random(15);
+
+        $company = $request->select_company;
+        $company = str_replace('.', '_', $company);
+        $company = str_replace('/','-', $company);
+        $company = str_replace(' ','-', $company);
+
+        $vessel = $request->vessel;
+        $vessel = str_replace('.', '_', $vessel);
+        $vessel = str_replace('/','-', $vessel);
+        $vessel = str_replace(' ','-', $vessel);
+
+        $slug = $company.'-'.$vessel.'-'.$request->tanggal_planload.'-'.$random;
+
+        $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
+
+        $orderJob = [
+            'tanggal_planload' => $request->tanggal_planload,
+            'activity' => $request->activity,
+            'select_company' => $request->select_company,
+            'vessel' => $request->vessel,
+            'pol' => $request->pol,
+            'pot' => $request->pot,
+            'pod' => $request->pod,
+            'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
+            'nama_barang' => $request->nama_barang,
+            'slug' => $slug,
+        ];
+
+        $OrderJobPlanload->update($orderJob);
+
+        $job_id = [];
+
+        $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
+
+        $urutan = (int)$request->urutan;
+
+        ContainerPlanload::where('job_id', $old_id)->delete();
+
+        for ($i = 0; $i < $urutan; $i++) {
+            $job_id[$i] = $old_id;
+        }
+
+        for ($k = 0; $k < $urutan; $k++) {
+            $container = [
+                'job_id' => $job_id[$k],
+                'kontainer' => $request->kontainer[$k],
+                'size' => $request->size[$k],
+                'type' => $request->type[$k],
+            ];
+            ContainerPlanload::create($container);
+
+        }
+
+        return response()->json(['success' => true]);
+
     }
 
     /**

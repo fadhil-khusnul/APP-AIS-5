@@ -14,9 +14,10 @@
 
             </div>
             <div class="portlet-body">
-                <div class="row row-cols-lg-auto g-3 align-items-center">
-                    <div class="col-md-4">
 
+
+                <div class="row row-cols-lg-auto px-5 g-5">
+                    <div class="col-6">
                         <select class="form-select" id="Pengirim-1">
                             <option selected disabled>Filter Shipping Company</option>
                             @foreach ($planloads as $planload)
@@ -25,37 +26,32 @@
                             @endforeach
 
                         </select>
+
                     </div>
-                    <div class="col-md-4">
-                        <select class="form-select" id="Penerima-1">
-                            <option selected disabled>Filter Vessel</option>
+                    <div class="col-6">
+                        <select class="form-select" id="Pengirim-1">
+                            <option selected disabled>Filter Shipping Company</option>
                             @foreach ($planloads as $planload)
-                                <option value="{{$planload->vessel}}">{{$planload->vessel}}</option>
+                                <option value="{{$planload->select_company}}">{{$planload->select_company}}</option>
 
                             @endforeach
 
                         </select>
+
                     </div>
-
-                    <div class="col-12 text-end">
-
+                    <div style="margin-left: auto; margin-right:0px;" class="margin-atas text-end">
                         <a href="planload/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Job (Load)</a>
                     </div>
 
+
                 </div>
-
-
-
-
-
-
 
 
                 {{-- <p><strong>Fixed header</strong> can be initialised on a Datatable by using the <code>fixedheader</code> option in the Datatable options object.</p> --}}
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="planload" class="table table-bordered table-striped table-hover autosize">
+                <table id="planload" class="table table-responsive table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -111,16 +107,44 @@
                             <td>
                                 {{$planload->nama_barang}}
                             </td>
-                            <td>
-                                {{$planload->nama_barang}}
-                            </td>
-                            <td>
-                                {{$planload->nama_barang}}
-                            </td>
-                            <td>
-                                {{$planload->nama_barang}}
-                            </td>
-                            <td class="text-center"><button onclick="editPlanload(this)" value="{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
+
+                                <td align="top" valign="top">
+                                    <ol type="1">
+                                        @foreach ($containers as $container)
+                                            @if ($planload->id == $container->job_id)
+                                            <li>
+                                                {{$container->kontainers->jenis_container}}
+                                            </li>
+                                            @endif
+                                        @endforeach
+                                    </ol>
+
+                                </td>
+                                <td align="top" valign="top">
+                                    <ol start="1">
+                                    @foreach ($containers as $container)
+                                        @if ($planload->id == $container->job_id)
+                                                <li>
+                                                    {{$container->size}}
+                                                </li>
+                                        @endif
+                                    @endforeach
+                                    </ol>
+
+                                </td>
+                                <td align="top" valign="top">
+                                    <ol start="1">
+                                    @foreach ($containers as $container)
+                                        @if ($planload->id == $container->job_id)
+                                            <li>
+                                                {{$container->type}}
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                    </ol>
+
+                                </td>
+                            <td class="text-center"><a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
 
                                 <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                 class="fa fa-trash"></i></button></td>

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('penerima');
             $table->text('nama_barang');
             $table->text('slug');
+           
             $table->timestamps();
         });
     }

@@ -17,6 +17,17 @@ return new class extends Migration
             $table->string('kontainer');
             $table->string('size');
             $table->string('type');
+            $table->string('seal')->nullable();
+            $table->date('date_activity')->nullable();
+            $table->string('cargo')->nullable();
+            $table->string('lokasi_depo')->nullable();
+            $table->string('driver')->nullable();
+            $table->string('nomor_polisi')->nullable();
+            $table->string('remark')->nullable();
+            $table->string('biaya_stuffing')->nullable();
+            $table->string('biaya_trucking')->nullable();
+            $table->string('ongkos_supir')->nullable();
+            $table->string('biaya_thc')->nullable();
             $table->timestamps();
         });
     }

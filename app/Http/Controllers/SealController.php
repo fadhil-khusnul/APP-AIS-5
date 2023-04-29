@@ -66,4 +66,10 @@ class SealController extends Controller
     {
         //
     }
+
+    public function getSeal()
+    {
+        $seal = Seal::all();
+        return response()->json($seal);
+    }
 }

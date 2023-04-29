@@ -11,4 +11,8 @@ class ContainerPlanload extends Model
 
     protected $guarded = [''];
 
+    public function kontainers(){
+        return $this->belongsTo(Container::class, 'kontainer', 'id');
+    }
+
 }
