@@ -3024,12 +3024,12 @@ body.preload-hide .preload {
 }
 
 .table-success {
-  --bs-table-bg: rgba(76, 175, 80, 0.1);
-  --bs-table-striped-bg: rgba(76, 175, 80, 0.3);
-  --bs-table-active-bg: rgba(76, 175, 80, 0.7);
-  --bs-table-hover-bg: rgba(76, 175, 80, 0.5);
+  --bs-table-bg: rgb(175, 219, 176);
+  --bs-table-striped-bg: rgb(76, 175, 79);
+  --bs-table-active-bg: rgb(76, 175, 79);
+  --bs-table-hover-bg: rgb(76, 175, 79);
   --bs-table-border-color: #4caf50;
-  --bs-table-seperator-border-color: #4caf50;
+  --bs-table-seperator-border-color: #93ca95;
   --bs-table-accent-bg: var(--bs-table-bg);
 }
 

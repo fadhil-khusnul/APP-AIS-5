@@ -95,17 +95,27 @@ $("#kegiatan-stripping").DataTable({
     }
 });
 
-$("#planload").DataTable({
+var planload = $("#planload").DataTable({
     responsive:true,
     fixedHeader:
     {
         header:true,
         headerOffset:
         offset
-    }
+    },
 });
+
+$('#filter_company').on("change", function(event) {
+    var status = $('#filter_company').val();
+    planload.columns(3).search(status).draw();
+});
+$('#filter_vessel').on("change", function(event) {
+    var status = $('#filter_vessel').val();
+    planload.columns(4).search(status).draw();
+});
+
+
 $("#processload-create").DataTable({
-    responsive:true,
     "paging": false,
     "info": false,
     "searching": false,
@@ -113,7 +123,11 @@ $("#processload-create").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+    scrollY:300,
+    scrollX:true,
+    scrollCollapse:true,
+    fixedColumns:{leftColumns:4}
 });
 // $("#planload").DataTable({
 //     responsive:true,

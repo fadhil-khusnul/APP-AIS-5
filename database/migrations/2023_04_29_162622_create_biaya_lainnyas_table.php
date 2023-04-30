@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('job_id');
             $table->string('pilih_kontainer');
-            $table->string('harga_biaya');
+            $table->double('harga_biaya');
             $table->text('keterangan');
             $table->timestamps();
         });

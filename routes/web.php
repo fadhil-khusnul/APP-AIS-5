@@ -105,9 +105,12 @@ Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
 Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
+Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
+Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 
 
 
 //seal
 Route::get('/seal', [SealController::class, 'index']);
+Route::post('/tambah-seal', [SealController::class, 'store']);
 Route::post('/getSeal', [SealController::class, 'getSeal']);

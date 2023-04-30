@@ -5,6 +5,8 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&amp;family=Roboto+Mono&amp;display=swap"
         rel="stylesheet">
@@ -78,9 +80,7 @@
 
 
     <script type="text/javascript" src="{{ asset('/') }}./js/data.js"></script>
-
-
-
+    <script type="text/javascript" src="{{ asset('/') }}./js/seal.js"></script>
 
 
 

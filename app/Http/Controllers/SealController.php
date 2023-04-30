@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seal;
+use Illuminate\Http\Request;
+
 use App\Http\Requests\StoreSealRequest;
 use App\Http\Requests\UpdateSealRequest;
 
@@ -13,8 +15,10 @@ class SealController extends Controller
      */
     public function index()
     {
+        $seals = Seal::all();
         return view('seal.seal',[
-            'title' => 'Data Seal'
+            'title' => 'Data Seal',
+            'seals' => $seals,
 
         ]);
     }
@@ -30,9 +34,22 @@ class SealController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSealRequest $request)
+    public function store(Request $request)
     {
         //
+
+        $validatedData = $request->validate([
+
+            'tahun_seal' => 'required',
+            'kode_seal' => 'required',
+            'touch_seal' => 'required',
+
+        ]);
+
+
+        Seal::create($validatedData);
+        return redirect('/seal');
+
     }
 
     /**

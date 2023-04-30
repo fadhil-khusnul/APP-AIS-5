@@ -21,7 +21,7 @@ class SealFactory extends Factory
         return [
             //
             'kode_seal' => Str::random(10),
-            'tahun' => fake()->date(),
+            'tahun_seal' => fake()->date(),
         ];
     }
 }

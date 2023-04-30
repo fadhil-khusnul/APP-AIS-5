@@ -18,10 +18,10 @@
 
                 <div class="row row-cols-lg-auto px-5 g-5">
                     <div class="col-6">
-                        <select class="form-select" id="Pengirim-1">
+                        <select class="form-select" id="filter_company">
                             <option selected disabled>Filter Shipping Company</option>
-                            @foreach ($planloads as $planload)
-                                <option value="{{$planload->select_company}}">{{$planload->select_company}}</option>
+                            @foreach ($select_company as $select_company)
+                                <option value="{{$select_company->select_company}}">{{$select_company->select_company}}</option>
 
                             @endforeach
 
@@ -29,10 +29,10 @@
 
                     </div>
                     <div class="col-6">
-                        <select class="form-select" id="Pengirim-1">
-                            <option selected disabled>Filter Shipping Company</option>
-                            @foreach ($planloads as $planload)
-                                <option value="{{$planload->select_company}}">{{$planload->select_company}}</option>
+                        <select class="form-select" id="filter_vessel">
+                            <option selected disabled>Filter Vessel</option>
+                            @foreach ($vessel as $vessel)
+                                <option value="{{$vessel->vessel}}">{{$vessel->vessel}}</option>
 
                             @endforeach
 
@@ -64,10 +64,10 @@
                             <th>POD</th>
                             <th>Pengirim</th>
                             <th>Penerima</th>
-                            <th>Jumlah Container</th>
+                            <th>Nama Barang</th>
+                            <th>Jenis Kontainer</th>
                             <th>Size Container</th>
-                            <th>Jenis Container</th>
-                            <th>Remark</th>
+                            <th>Type Container</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -146,8 +146,9 @@
                                 </td>
                             <td class="text-center"><a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
 
-                                <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                class="fa fa-trash"></i></button></td>
+                                {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                class="fa fa-trash"></i></button> --}}
+                            </td>
 
                         </tr>
 

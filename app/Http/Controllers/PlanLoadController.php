@@ -26,9 +26,15 @@ class PlanLoadController extends Controller
     {
         $planloads = OrderJobPlanload::all();
         $containers = ContainerPlanload::all();
+        $select_company =  OrderJobPlanload::all()->unique('select_company');
+        $vessel =  OrderJobPlanload::all()->unique('vessel');
+        // dd($vessel);
+
         return view('plan.planload', [
             'title' => 'Plan Load',
             'planloads' => $planloads,
+            'vessel' => $vessel,
+            'select_company' => $select_company,
             'containers' => $containers,
 
         ]);

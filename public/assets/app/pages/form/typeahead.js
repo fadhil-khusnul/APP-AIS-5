@@ -99,7 +99,6 @@ $(function () {
         { name: "states", source: matcher(data) }
     );
 
-    console.log(seal);
     $(".seal_typehead").typeahead(
         { hint: true, highlight: true, minLength: 1 },
         { name: "seal", source: matcher(seal) }

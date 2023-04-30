@@ -17,6 +17,7 @@ use App\Models\Pengirim;
 use App\Models\Penerima;
 use App\Models\Container;
 use App\Models\Depo;
+use App\Models\BiayaLainnya;
 use Illuminate\Support\Str;
 
 class ProcessLoadController extends Controller
@@ -75,66 +76,61 @@ class ProcessLoadController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        dd($request);
+
+        // dd($request);
+
+
 
         $old_slug = $request->old_slug;
 
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
 
-        $random = Str::random(15);
-
-        $company = $request->select_company;
-        $company = str_replace('.', '_', $company);
-        $company = str_replace('/','-', $company);
-        $company = str_replace(' ','-', $company);
-
-        $vessel = $request->vessel;
-        $vessel = str_replace('.', '_', $vessel);
-        $vessel = str_replace('/','-', $vessel);
-        $vessel = str_replace(' ','-', $vessel);
-
-        $slug = $company.'-'.$vessel.'-'.$request->tanggal_planload.'-'.$random;
-
-        $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
-
-        $orderJob = [
-            'tanggal_planload' => $request->tanggal_planload,
-            'activity' => $request->activity,
-            'select_company' => $request->select_company,
-            'vessel' => $request->vessel,
-            'pol' => $request->pol,
-            'pot' => $request->pot,
-            'pod' => $request->pod,
-            'pengirim' => $request->pengirim,
-            'penerima' => $request->penerima,
-            'nama_barang' => $request->nama_barang,
-            'slug' => $slug,
-        ];
-
-        $OrderJobPlanload->update($orderJob);
-
-        $job_id = [];
-
         $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
+
+        $processload_update = [];
+        for($i = 0; $i < count($all_id); $i++) {
+            $processload_update[$i] =   $all_id[$i]->id;
+        }
 
         $urutan = (int)$request->urutan;
 
-        ContainerPlanload::where('job_id', $old_id)->delete();
+        for ($k = 0; $k < $urutan; $k++) {
+            $container = [
+                'seal' => $request->seals[$k],
+                'date_activity' => $request->date_activity[$k],
+                'cargo' => $request->cargo[$k],
+                'lokasi_depo' => $request->lokasi[$k],
+                'driver' => $request->driver[$k],
+                'nomor_polisi' => $request->nomor_polisi[$k],
+                'remark' => $request->remark[$k],
+                'biaya_stuffing' => str_replace(".", "", $request->biaya_stuffing[$k]),
+                'biaya_trucking' => str_replace(".", "", $request->biaya_trucking[$k]),
+                'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
+                'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
+                'nomor_surat' => $request->no_surat[$k],
+                'bulan' => (int)$request->bulan[$k],
+            ];
+            ContainerPlanload::where('id',$processload_update[$k])->update($container);
+        }
+        // $update_id->update($container);
 
-        for ($i = 0; $i < $urutan; $i++) {
+        $job_id = [];
+
+
+        for ($i = 0; $i < $request->tambah; $i++) {
             $job_id[$i] = $old_id;
         }
 
-        for ($k = 0; $k < $urutan; $k++) {
-            $container = [
-                'job_id' => $job_id[$k],
-                'kontainer' => $request->kontainer[$k],
-                'size' => $request->size[$k],
-                'type' => $request->type[$k],
-            ];
-            ContainerPlanload::create($container);
 
+        for ($i=0; $i <$request->tambah ; $i++) {
+            $biayas =[
+                'job_id' => $job_id[$i],
+                'pilih_kontainer' => $request->kontaienr_biaya[$i],
+                'harga_biaya' => str_replace(".", "", $request->harga_biaya[$i]),
+                'keterangan' => $request->keterangan[$i],
+            ];
+
+            BiayaLainnya::create($biayas);
         }
 
         return response()->json(['success' => true]);
@@ -170,5 +166,31 @@ class ProcessLoadController extends Controller
     public function destroy(ProcessLoad $processLoad)
     {
         //
+    }
+
+    public function getBiayaLain(Request $request)
+    {
+        $slug = $request->slug;
+        $get_id = OrderJobPlanload::where('slug', $slug)->value('id');
+        $get_container = ContainerPlanload::select('kontainer')->where('job_id', $get_id)->get();
+        $count_container = count($get_container);
+        $get_job_container = [];
+        for($i = 0; $i < $count_container; $i++) {
+            $int_container = (int)$get_container[$i]->kontainer;
+            $get_job_container[$i] = [
+                'id' => (int)$get_container[$i]->kontainer,
+                'kontainer' => Container::where('id', $int_container)->value('jenis_container')
+            ];
+        }
+
+        return response()->json($get_job_container);
+    }
+
+    public function getNoSurat(Request $request) {
+        $bulan = $request->bulan;
+        $no_surat = ContainerPlanload::where('bulan', $bulan)->get();
+        $count_no_surat = count($no_surat);
+
+        return response()->json($count_no_surat);
     }
 }

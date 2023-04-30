@@ -39,102 +39,9 @@
                     </a>
                 </div>
 
-                <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
-                        <div class="menu-item-icon">
-                            <i class="far fa-clone"></i>
-                        </div>
-                        <span class="menu-item-text">ACTIVITY</span>
-                        <div class="menu-item-addon">
-                            <i class="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    <!-- BEGIN Menu Submenu -->
-                    <div class="menu-submenu">
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') ? 'active' : '' }}">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER PLAN</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="/planload" data-menu-path="/planload" class="menu-item-link {{ Request::is('/planload/*') || Request::is('planload/create') ? 'active' : '' }}">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
 
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER PROCESS</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
 
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER REALISASI</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="datatable/advanced/column-rendering.html" data-menu-path="/datatable/advanced/column-rendering.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
-
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-
-                    </div>
-                    <!-- END Menu Submenu -->
-                </div>
-
-                <div class="menu-item">
+                {{-- <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
                             <i class="fa fa-desktop"></i>
@@ -167,7 +74,7 @@
 
                     </div>
                     <!-- END Menu Submenu -->
-                </div>
+                </div> --}}
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
@@ -206,9 +113,134 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle">
                         <div class="menu-item-icon">
+                            <i class="far fa-clone"></i>
+                        </div>
+                        <span class="menu-item-text">ACTIVITY</span>
+                        <div class="menu-item-addon">
+                            <i class="menu-item-caret caret"></i>
+                        </div>
+                    </button>
+                    <!-- BEGIN Menu Submenu -->
+                    <div class="menu-submenu">
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') ? 'active' : '' }}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">JOB ORDER PLAN</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/planload" data-menu-path="/planload" class="menu-item-link {{ Request::is('/planload/*') || Request::is('planload/create') ? 'active' : '' }}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!-- END Menu Submenu -->
+                        </div>
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">JOB ORDER PROCESS</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">ALIH KAPAL</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">BATAL MUAT</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUKCING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!-- END Menu Submenu -->
+                        </div>
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">JOB ORDER REALISASI</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="datatable/advanced/column-rendering.html" data-menu-path="/datatable/advanced/column-rendering.html" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <!-- END Menu Submenu -->
+                        </div>
+
+                    </div>
+                    <!-- END Menu Submenu -->
+                </div>
+
+                <div class="menu-item">
+                    <button class="menu-item-link menu-item-toggle">
+                        <div class="menu-item-icon">
                             <i class="fa fa-credit-card"></i>
                         </div>
-                        <span class="menu-item-text">FINANCE</span>
+                        <span class="menu-item-text">INVOICE</span>
                         <div class="menu-item-addon">
                             <i class="menu-item-caret caret"></i>
                         </div>

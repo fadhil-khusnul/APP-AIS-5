@@ -24,10 +24,12 @@ return new class extends Migration
             $table->string('driver')->nullable();
             $table->string('nomor_polisi')->nullable();
             $table->string('remark')->nullable();
-            $table->string('biaya_stuffing')->nullable();
-            $table->string('biaya_trucking')->nullable();
-            $table->string('ongkos_supir')->nullable();
-            $table->string('biaya_thc')->nullable();
+            $table->double('biaya_stuffing')->nullable();
+            $table->double('biaya_trucking')->nullable();
+            $table->double('ongkos_supir')->nullable();
+            $table->double('biaya_thc')->nullable();
+            $table->string('nomor_surat')->nullable();
+            $table->integer('bulan')->nullable();
             $table->timestamps();
         });
     }

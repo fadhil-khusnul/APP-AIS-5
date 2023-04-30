@@ -89,11 +89,17 @@ function CreateJobPlanload() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            let tanggal_planload = document.getElementById("tanggal_planload").value;
+            let tanggal_planload =
+                document.getElementById("tanggal_planload").value;
             let tempDate = new Date(tanggal_planload);
-            let formattedDate = [tempDate.getFullYear(), tempDate.getMonth() + 1, tempDate.getDate()].join('-');
+            let formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
             let activity = document.getElementById("activity").value;
-            let select_company = document.getElementById("select_company").value;
+            let select_company =
+                document.getElementById("select_company").value;
             let vessel = document.getElementById("vessel").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
@@ -112,9 +118,13 @@ function CreateJobPlanload() {
                     "kontainer[" + (i + 1) + "]"
                 ).value;
                 fd.append("kontainer[]", kontainer[i]);
-                size[i] = document.getElementById("size[" + (i + 1) + "]").innerHTML;
+                size[i] = document.getElementById(
+                    "size[" + (i + 1) + "]"
+                ).innerHTML;
                 fd.append("size[]", size[i]);
-                type[i] = document.getElementById("type[" + (i + 1) + "]").innerHTML;
+                type[i] = document.getElementById(
+                    "type[" + (i + 1) + "]"
+                ).innerHTML;
                 fd.append("type[]", type[i]);
             }
 
@@ -153,8 +163,7 @@ function CreateJobPlanload() {
                                 text: "JOB Planload Telah Berhasil Dibuat",
                                 icon: "success",
                                 timer: 2e3,
-                                showConfirmButton: false
-
+                                showConfirmButton: false,
                             });
                             window.location.href = "../planload";
                         },
@@ -163,13 +172,13 @@ function CreateJobPlanload() {
                     swal.fire({
                         title: "Data Belum Dibuat",
                         text: "Silakan Cek Kembali Data Anda",
-                        icon: "warning",
+                        icon: "error",
                         timer: 10e3,
-                        showConfirmButton: false
+                        showConfirmButton: false,
                     });
                 }
             });
-        }
+        },
     });
 }
 
@@ -262,11 +271,17 @@ function UpdateteJobPlanload() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            let tanggal_planload = document.getElementById("tanggal_planload").value;
+            let tanggal_planload =
+                document.getElementById("tanggal_planload").value;
             let tempDate = new Date(tanggal_planload);
-            let formattedDate = [tempDate.getFullYear(), tempDate.getMonth() + 1, tempDate.getDate()].join('-');
+            let formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
             let activity = document.getElementById("activity").value;
-            let select_company = document.getElementById("select_company").value;
+            let select_company =
+                document.getElementById("select_company").value;
             let vessel = document.getElementById("vessel").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
@@ -288,9 +303,13 @@ function UpdateteJobPlanload() {
                     "kontainer[" + (i + 1) + "]"
                 ).value;
                 fd.append("kontainer[]", kontainer[i]);
-                size[i] = document.getElementById("size[" + (i + 1) + "]").innerHTML;
+                size[i] = document.getElementById(
+                    "size[" + (i + 1) + "]"
+                ).innerHTML;
                 fd.append("size[]", size[i]);
-                type[i] = document.getElementById("type[" + (i + 1) + "]").innerHTML;
+                type[i] = document.getElementById(
+                    "type[" + (i + 1) + "]"
+                ).innerHTML;
                 fd.append("type[]", type[i]);
             }
 
@@ -330,7 +349,7 @@ function UpdateteJobPlanload() {
                                 text: "JOB Planload Telah Berhasil DIUPDATE",
                                 icon: "success",
                                 timer: 9e3,
-                                showConfirmButton: false
+                                showConfirmButton: false,
                             });
                             window.location.href = "../planload";
                         },
@@ -339,16 +358,14 @@ function UpdateteJobPlanload() {
                     swal.fire({
                         title: "Data Tidak Diupdate",
                         text: "Silakan Cek Kembali Data Anda",
-                        icon: "warning",
+                        icon: "error",
                         timer: 10e3,
-                        showConfirmButton: false
+                        showConfirmButton: false,
                     });
                 }
             });
-        }
+        },
     });
-
-
 }
 
 function tambah_kontener() {
