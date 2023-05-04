@@ -517,8 +517,6 @@ function delete_batal(r) {
     reindex_batal();
 }
 
-
-
 //ALIH-KAPAL
 var clickalih = 0;
 function tambah_alih() {
@@ -543,10 +541,18 @@ function tambah_alih() {
     var ifkontainer = [];
 
     for (let i = 0; i < urutan; i++) {
-        ifkontainer = document.getElementById("nomor_kontainer["+ (i+1) +"]").value;
+        ifkontainer[i] = document.getElementById("nomor_kontainer["+ (i+1) +"]").value;
     }
     console.log(ifkontainer);
-    if ( ifkontainer != "") {
+    if (ifkontainer.includes("")) {
+        swal.fire({
+            title: "Silahkan Masukkan Nomor Kontainer Terlebih Dahulu",
+            icon: "error",
+            timer: 10e3,
+            showConfirmButton: false,
+        });
+    }
+    else{
         $.ajax({
             // url: "/getBiayaLain",
             // type: "post",
@@ -631,17 +637,6 @@ function tambah_alih() {
                 reindex_alih();
             },
         });
-
-    }
-    else{
-        swal.fire({
-            title: "Silahkan Masukkan Nomor Kontainer Terlebih Dahulu",
-            icon: "error",
-            timer: 10e3,
-            showConfirmButton: false,
-        });
-
-
     }
 
 
@@ -693,11 +688,14 @@ function delete_alih(r) {
 
     reindex_alih();
 }
-
-
-
-
-
+function blur_no_container(ini) {
+    if(document.getElementById("tbody_alih").innerHTML != "") {
+        if(ini.value == "") {
+            document.getElementById("tbody_alih").innerHTML = "";
+            clickalih = 0;
+        }
+    }
+}
 
 function change_container(ini) {
     let token = $("#csrf").val();
