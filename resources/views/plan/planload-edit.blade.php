@@ -14,17 +14,17 @@
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                         <div class="breadcrumb breadcrumb-transparent mb-0">
-                            <a href="/planload" class="breadcrumb-item">
+                            <a href="/planload" class="breadcrumb-item text-primary">
                                 <div class="breadcrumb-icon">
                                     <i class="fa fa-clone"></i>
                                 </div>
                                 <span class="breadcrumb-text">Activity</span>
                             </a>
-                            <a href="/planload" class="breadcrumb-item">
-                                <span class="breadcrumb-text">Job Order Plan</span>
-                            </a>
-                            <a href="/planload" class="breadcrumb-item">
+                            <a href="/planload" class="breadcrumb-item text-primary">
                                 <span class="breadcrumb-text">Load</span>
+                            </a>
+                            <a href="/planload" class="breadcrumb-item text-warning">
+                                <span class="breadcrumb-text">Plan</span>
                             </a>
 
                         </div>
@@ -41,10 +41,32 @@
                         <!-- BEGIN Form -->
 
                             <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Date</label>
-                                <input type="text" class="form-control" placeholder="Select date" id="tanggal_planload"
-                                    name="tanggal_planload" value="{{ old('tanggal_planload', $planload->tanggal_planload) }}">
+                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
+                                <input name="vessel" id="vessel" class="form-control" value="{{ old('vessel', $planload->vessel) }}" >
                             </div>
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">Vessel Code</label>
+                                <input name="vessel_code" id="vessel_code" class="form-control" value="{{ old('vessel_code', $planload->vessel_code) }}" >
+                            </div>
+                            <div class="col-md-6 validation-container">
+                                <label for="company" class="form-label">Shipping Company</label>
+                                <select id="select_company" name="select_company" class="form-select">
+                                    <option selected disabled>Pilih Company</option>
+                                    @foreach ($shippingcompany as $shippingcompany)
+                                        <option value="{{ $shippingcompany->nama_company }}" @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>{{ $shippingcompany->nama_company }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Pengirim</label>
+                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled>Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}" @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="col-md-6 validation-container">
                                 <label for="" class="form-label">Activity</label>
                                 <select id="activity" name="activity" class="form-select">
@@ -55,19 +77,6 @@
                                 </select>
                             </div>
 
-                            <div class="col-12 validation-container">
-                                <label for="company" class="form-label">Shipping Company</label>
-                                <select id="select_company" name="select_company" class="form-select">
-                                    <option selected disabled>Pilih Company</option>
-                                    @foreach ($shippingcompany as $shippingcompany)
-                                        <option value="{{ $shippingcompany->nama_company }}" @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>{{ $shippingcompany->nama_company }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
-                                <textarea name="vessel" id="vessel" class="form-control" >{{ old('vessel', $planload->vessel) }}</textarea>
-                            </div>
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">POL</label>
                                 <select id="POL_1" name="POL_1" class="form-select">
@@ -98,16 +107,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pengirim</label>
-                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
-                                    <option selected disabled>Pilih Pengirim</option>
-                                    @foreach ($pengirim as $pengirim)
-                                        <option value="{{ $pengirim->nama_costumer }}" @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 validation-container">
+
+                            {{-- <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">Penerima</label>
                                 <select id="Penerima_1" name="Penerima_1" class="form-select">
                                     <option selected disabled>Pilih Penerima</option>
@@ -115,7 +116,7 @@
                                         <option value="{{ $penerima->nama_penerima }}" @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                         <!-- END Form -->
 
                     </div>
@@ -138,12 +139,13 @@
                         </div>
 
                         <table class="table mb-0" id="table_container">
-                            <thead class="table-success" id="thead_container">
+                            <thead class="table-warning" id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Jenis Kontainer</th>
+                                    <th class="text-center">Jumlah Kontainer</th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
+                                    <th class="text-center">Nama Barang (CARGO)</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -154,21 +156,35 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>
                                         <div class="validation-container">
-                                            <select id="kontainer[{{$loop->iteration}}]" name="kontainer" class="form-select"
+                                            <input type="text" id="jumlah-container[{{$loop->iteration}}]" name="jumlah-container[{{$loop->iteration}}]" class="form-control jumlah-container" required value="{{ $container->jumlah_kontainer }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="validation-container">
+                                            <select id="size[{{$loop->iteration}}]" name="size[{{$loop->iteration}}]" class="form-select"
                                                 onchange="change_container(this)" required>
-                                                <option selected disabled>Pilih Kontainer</option>
-                                                @foreach ($kontainers as $kontainer)
-                                                    <option value="{{$kontainer->id}}" @if ($kontainer->id == $container->kontainer) selected @endif>
-                                                        {{ $kontainer->jenis_container }}</option>
+                                                <option selected disabled>Pilih Size</option>
+                                                @foreach ($sizes as $size)
+                                                    <option value="{{$size->size_container}}" @if ($size->size_container == $container->size) selected @endif>
+                                                        {{ $size->size_container }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
-                                        <label id="size[{{$loop->iteration}}]">{{ old('size', $container->size) }}</label>
+                                    <td> <div class="validation-container">
+                                        <select id="type[{{$loop->iteration}}]" name="type[{{$loop->iteration}}]" class="form-select"
+                                            onchange="change_container(this)" required>
+                                            <option selected disabled>Pilih Kontainer</option>
+                                            @foreach ($types as $type)
+                                                <option value="{{$type->type_container}}" @if ($type->type_container == $container->type) selected @endif>
+                                                    {{ $type->type_container }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     </td>
-                                    <td>
-                                        <label id="type[{{$loop->iteration}}]">{{ old('type', $container->type) }}</label>
+                                    <td> <div class="validation-container">
+                                        <textarea name="" id="cargo[{{$loop->iteration}}]" name="cargo[{{$loop->iteration}}]" class="form-control" required >{{$container->cargo}}</textarea>
+                                    </div>
                                     </td>
                                     <td><button id="deleterow{{$loop->iteration}}" onclick="delete_container(this)" type="button"
                                             class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
@@ -181,12 +197,7 @@
                         </table>
                         <div class="mt-5 mb-5">
                             <button id="add_container" onclick="edit_kontener()" type="button"
-                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div>
-
-                        <div class="col-12 mb-5 validation-container">
-                            <label for="inputAddress2" class="form-label">Nama Barang :</label>
-                            <textarea name="nama_barang" id="nama_barang" class="form-control">{{ old('nama_barang', $planload->nama_barang) }}</textarea>
+                                class="btn btn-label-primary btn-icon"> <i class="fa fa-plus"></i></button>
                         </div>
 
                         <div class="col-12 text-end">

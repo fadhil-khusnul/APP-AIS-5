@@ -1,3 +1,7 @@
+"use strict";
+
+
+
 var tambah = 0;
 
 function CreateJobPlanload() {
@@ -11,10 +15,12 @@ function CreateJobPlanload() {
     });
 
     $("#valid_planload").validate({
+        // ignore: [],
+        ignore: 'input[type=hidden]',
         rules: {
-            tanggal_planload: {
-                required: true,
-            },
+            // tanggal_planload: {
+            //     required: true,
+            // },
             activity: {
                 required: true,
             },
@@ -22,6 +28,9 @@ function CreateJobPlanload() {
                 required: true,
             },
             vessel: {
+                required: true,
+            },
+            vessel_code: {
                 required: true,
             },
             POL_1: {
@@ -39,14 +48,12 @@ function CreateJobPlanload() {
             Pengirim_1: {
                 required: true,
             },
-            nama_barang: {
-                required: true,
-            },
+
         },
         messages: {
-            tanggal_planload: {
-                required: "Silakan Isi Tanggal",
-            },
+            // tanggal_planload: {
+            //     required: "Silakan Isi Tanggal",
+            // },
             activity: {
                 required: "Silakan Pilih Activity",
             },
@@ -55,6 +62,9 @@ function CreateJobPlanload() {
             },
             vessel: {
                 required: "Silakan Isi Vessel/Voyage",
+            },
+            vessel_code: {
+                required: "Silakan Isi Vessel Code",
             },
             POL_1: {
                 required: "Silakan Pilih POL",
@@ -71,9 +81,7 @@ function CreateJobPlanload() {
             Pengirim_1: {
                 required: "Silakan Pilih Pengirim",
             },
-            nama_barang: {
-                required: "Silakan Isi Nama Barang",
-            },
+
         },
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
@@ -89,57 +97,52 @@ function CreateJobPlanload() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            let tanggal_planload =
-                document.getElementById("tanggal_planload").value;
-            let tempDate = new Date(tanggal_planload);
-            let formattedDate = [
-                tempDate.getFullYear(),
-                tempDate.getMonth() + 1,
-                tempDate.getDate(),
-            ].join("-");
             let activity = document.getElementById("activity").value;
-            let select_company =
-                document.getElementById("select_company").value;
+            let select_company = document.getElementById("select_company").value;
             let vessel = document.getElementById("vessel").value;
+            let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
             let pengirim = document.getElementById("Pengirim_1").value;
-            let penerima = document.getElementById("Penerima_1").value;
-            let nama_barang = document.getElementById("nama_barang").value;
+            // let penerima = document.getElementById("Penerima_1").value;
 
-            var kontainer = [];
-            var size = [];
-            var type = [];
             var fd = new FormData();
-
-            for (let i = 0; i < tambah; i++) {
-                kontainer[i] = document.getElementById(
-                    "kontainer[" + (i + 1) + "]"
-                ).value;
-                fd.append("kontainer[]", kontainer[i]);
-                size[i] = document.getElementById(
-                    "size[" + (i + 1) + "]"
-                ).innerHTML;
-                fd.append("size[]", size[i]);
-                type[i] = document.getElementById(
-                    "type[" + (i + 1) + "]"
-                ).innerHTML;
-                fd.append("type[]", type[i]);
-            }
-
-            fd.append("tanggal_planload", formattedDate);
+            fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);
+            fd.append("vessel_code", vessel_code);
             fd.append("vessel", vessel);
             fd.append("pol", pol);
             fd.append("pot", pot);
             fd.append("pod", pod);
             fd.append("pengirim", pengirim);
-            fd.append("penerima", penerima);
-            fd.append("nama_barang", nama_barang);
-            fd.append("_token", token);
+            // fd.append("penerima", penerima);
             fd.append("tambah", tambah);
+
+            var jumlah_kontainer = [];
+            var size = [];
+            var type = [];
+            var cargo = [];
+
+            for(var i = 0; i < tambah; i++) {
+                size[i] = [];
+                type[i] = [];
+                cargo[i] = [];
+                jumlah_kontainer[i] = document.getElementById("jumlah-container[" + (i + 1) + "]").value;
+                jumlah_kontainer[i] = parseInt(jumlah_kontainer[i]);
+                fd.append("jumlah_kontainer[]", jumlah_kontainer[i]);
+
+                for(var j = 0; j < jumlah_kontainer[i]; j++) {
+                    size[i][j] = document.getElementById("size[" + (i + 1) + "]").value;
+                    type[i][j] = document.getElementById("type[" + (i + 1) + "]").value;
+                    cargo[i][j] = document.getElementById("cargo[" + (i + 1) + "]").value;
+
+                    fd.append("size["+i+"][]", size[i][j]);
+                    fd.append("type["+i+"][]", type[i][j]);
+                    fd.append("cargo["+i+"][]", cargo[i][j]);
+                }
+            }
 
             swal.fire({
                 title: "Apakah anda yakin?",
@@ -194,9 +197,7 @@ function UpdateteJobPlanload() {
 
     $("#valid_planload").validate({
         rules: {
-            tanggal_planload: {
-                required: true,
-            },
+
             activity: {
                 required: true,
             },
@@ -204,6 +205,9 @@ function UpdateteJobPlanload() {
                 required: true,
             },
             vessel: {
+                required: true,
+            },
+            vessel_code: {
                 required: true,
             },
             POL_1: {
@@ -221,9 +225,7 @@ function UpdateteJobPlanload() {
             Pengirim_1: {
                 required: true,
             },
-            nama_barang: {
-                required: true,
-            },
+
         },
         messages: {
             tanggal_planload: {
@@ -237,6 +239,9 @@ function UpdateteJobPlanload() {
             },
             vessel: {
                 required: "Silakan Isi Vessel/Voyage",
+            },
+            vessel_code: {
+                required: "Silakan Masukkan Vessel Code",
             },
             POL_1: {
                 required: "Silakan Pilih POL",
@@ -271,61 +276,58 @@ function UpdateteJobPlanload() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            let tanggal_planload =
-                document.getElementById("tanggal_planload").value;
-            let tempDate = new Date(tanggal_planload);
-            let formattedDate = [
-                tempDate.getFullYear(),
-                tempDate.getMonth() + 1,
-                tempDate.getDate(),
-            ].join("-");
             let activity = document.getElementById("activity").value;
-            let select_company =
-                document.getElementById("select_company").value;
+            let select_company = document.getElementById("select_company").value;
             let vessel = document.getElementById("vessel").value;
+            let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
             let pengirim = document.getElementById("Pengirim_1").value;
-            let penerima = document.getElementById("Penerima_1").value;
-            let nama_barang = document.getElementById("nama_barang").value;
+            // let penerima = document.getElementById("Penerima_1").value;
             let old_slug = document.getElementById("old_slug").value;
-            var table_container = document.getElementById("table_container");
-            var urutan = table_container.tBodies[0].rows.length;
 
-            var kontainer = [];
-            var size = [];
-            var type = [];
+
             var fd = new FormData();
-
-            for (let i = 0; i < urutan; i++) {
-                kontainer[i] = document.getElementById(
-                    "kontainer[" + (i + 1) + "]"
-                ).value;
-                fd.append("kontainer[]", kontainer[i]);
-                size[i] = document.getElementById(
-                    "size[" + (i + 1) + "]"
-                ).innerHTML;
-                fd.append("size[]", size[i]);
-                type[i] = document.getElementById(
-                    "type[" + (i + 1) + "]"
-                ).innerHTML;
-                fd.append("type[]", type[i]);
-            }
-
-            fd.append("tanggal_planload", formattedDate);
+            fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);
             fd.append("vessel", vessel);
+            fd.append("vessel_code", vessel_code);
             fd.append("pol", pol);
             fd.append("pot", pot);
             fd.append("pod", pod);
             fd.append("pengirim", pengirim);
-            fd.append("penerima", penerima);
-            fd.append("nama_barang", nama_barang);
-            fd.append("_token", token);
-            fd.append("urutan", urutan);
+            // fd.append("penerima", penerima);
             fd.append("old_slug", old_slug);
+            var table_container = document.getElementById("table_container");
+            var urutan = table_container.tBodies[0].rows.length;
+
+            fd.append("urutan", urutan);
+
+            var jumlah_kontainer = [];
+            var size = [];
+            var type = [];
+            var cargo = [];
+
+            for(var i = 0; i < urutan; i++) {
+                size[i] = [];
+                type[i] = [];
+                cargo[i] = [];
+                jumlah_kontainer[i] = document.getElementById("jumlah-container[" + (i + 1) + "]").value;
+                jumlah_kontainer[i] = parseInt(jumlah_kontainer[i]);
+                fd.append("jumlah_kontainer[]", jumlah_kontainer[i]);
+
+                for(var j = 0; j < jumlah_kontainer[i]; j++) {
+                    size[i][j] = document.getElementById("size[" + (i + 1) + "]").value;
+                    type[i][j] = document.getElementById("type[" + (i + 1) + "]").value;
+                    cargo[i][j] = document.getElementById("cargo[" + (i + 1) + "]").value;
+
+                    fd.append("size["+i+"][]", size[i][j]);
+                    fd.append("type["+i+"][]", type[i][j]);
+                    fd.append("cargo["+i+"][]", cargo[i][j]);
+                }
+            }
 
             swal.fire({
                 title: "Apakah anda yakin?",
@@ -381,33 +383,64 @@ function tambah_kontener() {
             _token: token,
         },
         success: function (response) {
-            var jenis_kontainer = [""];
-            for (i = 0; i < response.length; i++) {
-                jenis_kontainer +=
+            var size = [""];
+            var type = [""];
+            for (var i = 0; i < response.size.length; i++) {
+                size +=
                     "<option value='" +
-                    response[i].id +
+                    response.size[i].size_container +
                     "'>" +
-                    response[i].jenis_container +
+                    response.size[i].size_container +
                     "</option>";
             }
-            var div = document.createElement("div");
-            div.setAttribute("class", "validation-container");
+            for (var i = 0; i < response.type.length; i++) {
+                type +=
+                    "<option value='" +
+                    response.type[i].type_container +
+                    "'>" +
+                    response.type[i].type_container +
+                    "</option>";
+            }
+            var div1 = document.createElement("div");
+            div1.setAttribute("class", "validation-container");
+            var input1 = document.createElement("input");
+            input1.setAttribute("class", "form-control jumlah-container");
+            input1.setAttribute("id", "jumlah-container[" + tambah + "]");
+            input1.setAttribute("name", "jumlah-container[" + tambah + "]");
+            input1.setAttribute("required", true);
+            input1.setAttribute("type", "text");
+            input1.setAttribute("min", 0);
+            input1.setAttribute("max", 100);
+            input1.setAttribute("value", 0);
+            div1.append(input1);
+            var div2 = document.createElement("div");
+            div2.setAttribute("class", "validation-container");
             var select1 = document.createElement("select");
             select1.innerHTML =
-                "<option selected disabled>Pilih Kontainer</option>" +
-                jenis_kontainer;
-            select1.setAttribute("id", "kontainer[" + tambah + "]");
+            "<option selected disabled>Pilih Kontainer</option>" + size;
+            select1.setAttribute("id", "size[" + tambah + "]");
             select1.setAttribute("class", "form-select");
-            select1.setAttribute("name", "kontainer[" + tambah + "]");
+            select1.setAttribute("name", "size[" + tambah + "]");
             select1.setAttribute("required", true);
-            select1.setAttribute("onchange", "change_container(this)");
-            div.append(select1);
-            var label1 = document.createElement("label");
-            label1.innerHTML = "Size";
-            label1.setAttribute("id", "size[" + tambah + "]");
-            var label2 = document.createElement("label");
-            label2.innerHTML = "Type";
-            label2.setAttribute("id", "type[" + tambah + "]");
+            div2.append(select1);
+            var div3 = document.createElement("div");
+            div3.setAttribute("class", "validation-container");
+            var select2 = document.createElement("select");
+            select2.innerHTML =
+                "<option selected disabled>Pilih Kontainer</option>" + type;
+            select2.setAttribute("id", "type[" + tambah + "]");
+            select2.setAttribute("class", "form-select");
+            select2.setAttribute("name", "type[" + tambah + "]");
+            select2.setAttribute("required", true);
+            div3.append(select2);
+            var div4 = document.createElement("div");
+            div4.setAttribute("class", "validation-container");
+            var textarea1 = document.createElement("textarea");
+            textarea1.setAttribute("id", "cargo[" + tambah + "]");
+            textarea1.setAttribute("name", "cargo[" + tambah + "]");
+            textarea1.setAttribute("class", "form-control");
+            textarea1.setAttribute("required", true);
+            div4.append(textarea1);
             var button = document.createElement("button");
             button.setAttribute("id", "deleterow" + tambah);
             button.setAttribute(
@@ -426,12 +459,14 @@ function tambah_kontener() {
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
 
             cell1.innerHTML = "1.";
-            cell2.appendChild(div);
-            cell3.appendChild(label1);
-            cell4.appendChild(label2);
-            cell5.appendChild(button);
+            cell2.appendChild(div1);
+            cell3.appendChild(div2);
+            cell4.appendChild(div3);
+            cell5.appendChild(div4);
+            cell6.appendChild(button);
 
             reindex_container();
         },
@@ -439,12 +474,22 @@ function tambah_kontener() {
 }
 
 function reindex_container() {
+    var nomor_tabel_lokasi;
+
     const ids = document.querySelectorAll(
         "#table_container tr > td:nth-child(1)"
     );
     ids.forEach((e, i) => {
         e.innerHTML = i + 1 + ".";
         nomor_tabel_lokasi = i + 1;
+    });
+
+    $("#table_container tr > td:nth-child(2) input").TouchSpin({
+        buttondown_class: "btn btn-label-primary",
+        buttonup_class: "btn btn-label-primary",
+        max: 100,
+        min: 1,
+        step: 1,
     });
 }
 
@@ -453,26 +498,30 @@ function delete_container(r) {
     document.getElementById("table_container").deleteRow(table);
     tambah--;
 
-    var select1 = document.querySelectorAll(
-        "#table_container tr td:nth-child(2) select"
+    var input1 = document.querySelectorAll(
+        "#table_container tr td:nth-child(2) input"
     );
+    for (var i = 0; i < input1.length; i++) {
+        input1[i].id = "jumlah-container[" + (i + 1) + "]";
+        input1[i].name = "jumlah-container[" + (i + 1) + "]";
+    }
+
+    var select1 = document.querySelectorAll("#table_container tr td:nth-child(3) select");
     for (var i = 0; i < select1.length; i++) {
-        select1[i].id = "kontainer[" + (i + 1) + "]";
-        select1[i].name = "kontainer[" + (i + 1) + "]";
+        select1[i].id = "size[" + (i + 1) + "]";
+        select1[i].name = "size[" + (i + 1) + "]";
     }
 
-    var label1 = document.querySelectorAll(
-        "#table_container tr td:nth-child(3) label"
-    );
-    for (var i = 0; i < label1.length; i++) {
-        label1[i].id = "size[" + (i + 1) + "]";
+    var select2 = document.querySelectorAll("#table_container tr td:nth-child(4) select");
+    for (var i = 0; i < select2.length; i++) {
+        select2[i].id = "type[" + (i + 1) + "]";
+        select2[i].name = "type[" + (i + 1) + "]";
     }
 
-    var label2 = document.querySelectorAll(
-        "#table_container tr td:nth-child(4) label"
-    );
-    for (var i = 0; i < label2.length; i++) {
-        label2[i].id = "type[" + (i + 1) + "]";
+    var textarea1 = document.querySelectorAll("#table_container tr td:nth-child(5) textarea");
+    for (var i = 0; i < textarea1.length; i++) {
+        textarea1[i].id = "cargo[" + (i + 1) + "]";
+        textarea1[i].name = "cargo[" + (i + 1) + "]";
     }
 
     var button = document.querySelectorAll(
@@ -501,33 +550,62 @@ function edit_kontener() {
             _token: token,
         },
         success: function (response) {
-            var jenis_kontainer = [""];
-            for (i = 0; i < response.length; i++) {
-                jenis_kontainer +=
+            var size = [""];
+            var type = [""];
+            for (var i = 0; i < response.size.length; i++) {
+                size +=
                     "<option value='" +
-                    response[i].id +
+                    response.size[i].size_container +
                     "'>" +
-                    response[i].jenis_container +
+                    response.size[i].size_container +
                     "</option>";
             }
-            var div = document.createElement("div");
-            div.setAttribute("class", "validation-container");
+            for (var i = 0; i < response.type.length; i++) {
+                type +=
+                    "<option value='" +
+                    response.type[i].type_container +
+                    "'>" +
+                    response.type[i].type_container +
+                    "</option>";
+            }
+            var div1 = document.createElement("div");
+            div1.setAttribute("class", "validation-container");
+            var input1 = document.createElement("input");
+            input1.setAttribute("class", "form-control jumlah-container");
+            input1.setAttribute("id", "jumlah-container[" + urutan + "]");
+            input1.setAttribute("name", "jumlah-container[" + urutan + "]");
+            input1.setAttribute("required", true);
+            input1.setAttribute("type", "text");
+            input1.setAttribute("value", 0);
+            div1.append(input1);
+            var div2 = document.createElement("div");
+            div2.setAttribute("class", "validation-container");
             var select1 = document.createElement("select");
             select1.innerHTML =
-                "<option selected disabled>Pilih Kontainer</option>" +
-                jenis_kontainer;
-            select1.setAttribute("id", "kontainer[" + urutan + "]");
+                "<option selected disabled>Pilih Size Kontainer</option>" + size;
+            select1.setAttribute("id", "size[" + urutan + "]");
             select1.setAttribute("class", "form-select");
-            select1.setAttribute("name", "kontainer[" + urutan + "]");
+            select1.setAttribute("name", "size[" + urutan + "]");
             select1.setAttribute("required", true);
-            select1.setAttribute("onchange", "change_container(this)");
-            div.append(select1);
-            var label1 = document.createElement("label");
-            label1.innerHTML = "Size";
-            label1.setAttribute("id", "size[" + urutan + "]");
-            var label2 = document.createElement("label");
-            label2.innerHTML = "Type";
-            label2.setAttribute("id", "type[" + urutan + "]");
+            div2.append(select1);
+            var div3 = document.createElement("div");
+            div3.setAttribute("class", "validation-container");
+            var select2 = document.createElement("select");
+            select2.innerHTML =
+                "<option selected disabled>Pilih Type Kontainer</option>" + type;
+            select2.setAttribute("id", "type[" + urutan + "]");
+            select2.setAttribute("class", "form-select");
+            select2.setAttribute("name", "type[" + urutan + "]");
+            select2.setAttribute("required", true);
+            div3.append(select2);
+            var div4 = document.createElement("div");
+            div4.setAttribute("class", "validation-container");
+            var textarea1 = document.createElement("textarea");
+            textarea1.setAttribute("id", "cargo[" + urutan + "]");
+            textarea1.setAttribute("name", "cargo[" + urutan + "]");
+            textarea1.setAttribute("class", "form-control");
+            textarea1.setAttribute("required", true);
+            div4.append(textarea1);
             var button = document.createElement("button");
             button.setAttribute("id", "deleterow" + urutan);
             button.setAttribute(
@@ -546,12 +624,14 @@ function edit_kontener() {
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
 
             cell1.innerHTML = "1.";
-            cell2.appendChild(div);
-            cell3.appendChild(label1);
-            cell4.appendChild(label2);
-            cell5.appendChild(button);
+            cell2.appendChild(div1);
+            cell3.appendChild(div2);
+            cell4.appendChild(div3);
+            cell5.appendChild(div4);
+            cell6.appendChild(button);
 
             reindex_container();
         },

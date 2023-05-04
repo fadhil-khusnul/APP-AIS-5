@@ -12,17 +12,17 @@
                         <!-- BEGIN Breadcrumb -->
                         {{-- <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}"> --}}
                         <div class="breadcrumb breadcrumb-transparent mb-0">
-                            <a href="/planload" class="breadcrumb-item">
+                            <a href="/planload" class="breadcrumb-item text-primary">
                                 <div class="breadcrumb-icon">
                                     <i class="fa fa-clone"></i>
                                 </div>
                                 <span class="breadcrumb-text">Activity</span>
                             </a>
-                            <a href="/planload" class="breadcrumb-item">
-                                <span class="breadcrumb-text">Job Order Plan</span>
-                            </a>
-                            <a href="/planload" class="breadcrumb-item">
+                            <a href="/planload" class="breadcrumb-item text-primary">
                                 <span class="breadcrumb-text">Load</span>
+                            </a>
+                            <a href="/planload" class="breadcrumb-item text-warning">
+                                <span class="breadcrumb-text">Plan</span>
                             </a>
 
                         </div>
@@ -38,22 +38,23 @@
                     <div class="portlet-body row">
                         <!-- BEGIN Form -->
 
-                            <div class="col-md-6 validation-container">
+                            {{-- <div class="col-md-6 validation-container">
                                 <label for="" class="form-label">Date</label>
-                                <input type="text" class="form-control" placeholder="Select Date" id="tanggal_planload"
+                                <input type="text" class="form-control data-date-end-date="0d"" placeholder="Select Date" id="tanggal_planload"
                                     name="tanggal_planload">
+                            </div> --}}
+
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
+                                <input name="vessel" id="vessel" class="form-control">
                             </div>
                             <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity</label>
-                                <select id="activity" name="activity" class="form-select">
-                                    <option selected disabled>Pilih Activity</option>
-                                    @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan_stuffing }}">{{ $activity->kegiatan_stuffing }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="inputAddress2" class="form-label">Vessel Code</label>
+                                <input name="vessel_code" id="vessel_code" class="form-control">
                             </div>
 
-                            <div class="col-12 validation-container">
+
+                            <div class="col-md-6 validation-container">
                                 <label for="company" class="form-label">Shipping Company</label>
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Company</option>
@@ -62,9 +63,25 @@
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
-                                <textarea name="vessel" id="vessel" class="form-control"></textarea>
+                                <label for="POL" class="form-label">Pengirim</label>
+                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled>Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Activity</label>
+                                <select id="activity" name="activity" class="form-select">
+                                    <option selected disabled>Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan_stuffing }}">{{ $activity->kegiatan_stuffing }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">POL</label>
@@ -96,16 +113,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pengirim</label>
-                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
-                                    <option selected disabled>Pilih Pengirim</option>
-                                    @foreach ($pengirim as $pengirim)
-                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 validation-container">
+
+                            {{-- <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">Penerima</label>
                                 <select id="Penerima_1" name="Penerima_1" class="form-select">
                                     <option selected disabled>Pilih Penerima</option>
@@ -113,7 +122,9 @@
                                         <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
+
+
                         <!-- END Form -->
 
                     </div>
@@ -137,52 +148,26 @@
                         </div>
 
                         <table class="table mb-0" id="table_container">
-                            <thead class="table-success" id="thead_container">
+                            <thead class="table-warning" id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Jenis Kontainer</th>
+                                    <th class="text-center">Jumlah Kontainer</th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
+                                    <th class="text-center">Nama Barang (CARGO)</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" id="tbody_container">
-                                {{-- <tr>
-                                    <td>1.</td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <select id="kontainer[1]" name="kontainer" class="form-select"
-                                                onchange="change_container(this)" required>
-                                                <option selected disabled>Pilih Kontainer</option>
-                                                @foreach ($kontainer as $kontainer)
-                                                    <option value="{{ $kontainer->jenis_container }}">
-                                                        {{ $kontainer->jenis_container }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <label id="size[1]">Size</label>
-                                    </td>
-                                    <td>
-                                        <label id="type[1]">Type</label>
-                                    </td>
-                                    <td><button id="deleterow1" onclick="delete_container(this)" type="button"
-                                            class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                                class="fa fa-trash"></i></button></td>
 
-                                </tr> --}}
                             </tbody>
                         </table>
                         <div class="mt-5 mb-5">
                             <button id="add_container" onclick="tambah_kontener()" type="button"
-                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
+                                class="btn btn-label-primary btn-icon"> <i class="fa fa-plus"></i></button>
                         </div>
 
-                        <div class="col-12 mb-5 validation-container">
-                            <label for="inputAddress2" class="form-label">Nama Barang :</label>
-                            <textarea name="nama_barang" id="nama_barang" class="form-control"></textarea>
-                        </div>
+
 
                         <div class="col-12 text-end">
                             {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}

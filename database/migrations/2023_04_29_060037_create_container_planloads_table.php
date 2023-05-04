@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('container_planloads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_id');
-            $table->string('kontainer');
             $table->string('size');
             $table->string('type');
+            $table->string('cargo');
+            $table->integer('jumlah_kontainer')->nullable();
+            $table->string('nomor_kontainer')->nullable();
             $table->string('seal')->nullable();
             $table->date('date_activity')->nullable();
-            $table->string('cargo')->nullable();
             $table->string('lokasi_depo')->nullable();
             $table->string('driver')->nullable();
             $table->string('nomor_polisi')->nullable();
@@ -30,6 +31,8 @@ return new class extends Migration
             $table->double('biaya_thc')->nullable();
             $table->string('nomor_surat')->nullable();
             $table->integer('bulan')->nullable();
+            $table->integer('tahun')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

@@ -72,7 +72,6 @@
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/datepicker.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/select2.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/touchspin.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/touchspin.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/elements/sweet-alert.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/validation.js"></script>
     {{-- <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/search-panes.js"></script> --}}
@@ -80,7 +79,6 @@
 
 
     <script type="text/javascript" src="{{ asset('/') }}./js/data.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/seal.js"></script>
 
 
 

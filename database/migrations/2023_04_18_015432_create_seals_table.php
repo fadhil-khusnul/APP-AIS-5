@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('seals', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->nullable();
+            $table->string('bulan_seal');
+            $table->double('touch_seal')->nullable();
             $table->string('kode_seal');
-            $table->string('tahun_seal');
-            $table->string('touch_seal')->nullable();
+
             $table->timestamps();
         });
     }

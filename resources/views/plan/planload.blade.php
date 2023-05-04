@@ -52,22 +52,20 @@
 
                 <!-- BEGIN Datatable -->
                 <table id="planload" class="table table-responsive table-bordered table-striped table-hover autosize">
-                    <thead>
+                    <thead class="align-top text-nowrap">
                         <tr>
                             <th>No</th>
-                            <th>Date</th>
-                            <th>Activity</th>
-                            <th>Shipping Company</th>
                             <th>Vessel</th>
+                            <th>Vessel-Code</th>
+                            <th>Shipping Company</th>
+                            <th>Pengirim</th>
+                            <th>Activity</th>
                             <th>POL</th>
                             <th>POT</th>
                             <th>POD</th>
-                            <th>Pengirim</th>
-                            <th>Penerima</th>
-                            <th>Nama Barang</th>
-                            <th>Jenis Kontainer</th>
-                            <th>Size Container</th>
-                            <th>Type Container</th>
+                            <th class="align-top">Kontainer (SIZE - TYPE - CARGO)</th>
+
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -78,16 +76,19 @@
                                 {{$loop->iteration}}
                             </td>
                             <td>
-                                {{$planload->tanggal_planload}}
+                                {{$planload->vessel}}
                             </td>
                             <td>
-                                {{$planload->activity}}
+                                {{$planload->vessel_code}}
                             </td>
                             <td>
                                 {{$planload->select_company}}
                             </td>
                             <td>
-                                {{$planload->vessel}}
+                                {{$planload->pengirim}}
+                            </td>
+                            <td>
+                                {{$planload->activity}}
                             </td>
                             <td>
                                 {{$planload->pol}}
@@ -98,29 +99,19 @@
                             <td>
                                 {{$planload->pod}}
                             </td>
-                            <td>
-                                {{$planload->pengirim}}
-                            </td>
-                            <td>
-                                {{$planload->penerima}}
-                            </td>
-                            <td>
-                                {{$planload->nama_barang}}
-                            </td>
+                            <td align="top" valign="top">
+                                <ol type="1">
+                                    @foreach ($containers as $container)
+                                        @if ($planload->id == $container->job_id)
+                                        <li>
+                                            {{$container->size}} - {{$container->type}} - {{$container->cargo}}
+                                        </li>
+                                        @endif
+                                    @endforeach
+                                </ol>
 
-                                <td align="top" valign="top">
-                                    <ol type="1">
-                                        @foreach ($containers as $container)
-                                            @if ($planload->id == $container->job_id)
-                                            <li>
-                                                {{$container->kontainers->jenis_container}}
-                                            </li>
-                                            @endif
-                                        @endforeach
-                                    </ol>
-
-                                </td>
-                                <td align="top" valign="top">
+                            </td>
+                                {{-- <td align="top" valign="top">
                                     <ol start="1">
                                     @foreach ($containers as $container)
                                         @if ($planload->id == $container->job_id)
@@ -143,12 +134,30 @@
                                     @endforeach
                                     </ol>
 
+                                </td> --}}
+                                <td class="align-middle text-nowrap">
+                                    @if ($planload->status == 'Process-Load')
+                                    <i class="marker marker-dot text-success"></i>
+                                        {{ $planload->status }}
+                                    @endif
+                                    @if ($planload->status == 'Plan-Load')
+                                    <i class="marker marker-dot text-warning"></i>
+                                        {{ $planload->status }}
+                                    @endif
                                 </td>
-                            <td class="text-center"><a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
 
-                                {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                class="fa fa-trash"></i></button> --}}
-                            </td>
+                                <td class="text-center">
+                                    @if ($planload->status == 'Plan-Load')
+                                    <a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
+
+                                    @else
+                                    <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
+
+                                    @endif
+
+                                    {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                    class="fa fa-trash"></i></button> --}}
+                                </td>
 
                         </tr>
 

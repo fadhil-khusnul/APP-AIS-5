@@ -65,7 +65,7 @@ $(function () {
             });
         }
     });
-    
+
     $('#valid_depo').validate({
         rules: {
 
@@ -366,46 +366,40 @@ $(function () {
         }
     });
 
-    $('#valid_trucking').validate({
+    $('#valid_type').validate({
         rules: {
 
-            nomor_polisi: {
+            type_container: {
                 required: true
             },
-            nama_driver: {
-                required: true
-            }
+
         },
         messages: {
 
-            nomor_polisi: {
-                required: "Silakan Isi Nomor Polisi"
+            type_container: {
+                required: "Silakan Masukkan Type Container"
             },
-            nama_driver: {
-                required: "Silakan Isi Nama Driver"
-            }
+
         },
         submitHandler: function (form) {
 
-            var nomor_polisi = $("#nomor_polisi").val();
-            var nama_driver = $("#nama_driver").val();
+            var type_container = $("#type_container").val();
             var token = $('#csrf').val();
 
 
             var data = {
                 "_token": token,
-                "nomor_polisi": nomor_polisi,
-                "nama_driver": nama_driver,
+                "type_container": type_container,
             }
 
             $.ajax({
                 type: 'POST',
-                url: 'add-trucking',
+                url: 'add-type',
                 data: data,
                 success: function (response) {
                     swal.fire({
                         icon: "success",
-                        title: "Data Trucking Berhasil Ditambah",
+                        title: "Data Type Berhasil Ditambah",
                         showConfirmButton: false,
                         timer: 2e3,
 
@@ -421,41 +415,33 @@ $(function () {
     $('#valid_container').validate({
         rules: {
 
-            jenis_container: {
-                required: true
-            },
+
             size_container: {
                 required: true
             },
-            type_container: {
-                required: true
-            },
+
         },
         messages: {
 
-            jenis_container: {
-                required: "Silakan Isi Container"
-            },
+
             size_container: {
                 required: "Silakan Isi Size"
             },
-            type_container: {
-                required: "Silakan Isi Type"
-            }
+
         },
         submitHandler: function (form) {
 
-            var jenis_container = $("#jenis_container").val();
+            // var jenis_container = $("#jenis_container").val();
             var size_container = $("#size_container").val();
-            var type_container = $("#type_container").val();
+            // var type_container = $("#type_container").val();
             var token = $('#csrf').val();
 
 
             var data = {
                 "_token": token,
-                "jenis_container": jenis_container,
+                // "jenis_container": jenis_container,
                 "size_container": size_container,
-                "type_container": type_container,
+                // "type_container": type_container,
             }
 
             $.ajax({
@@ -1016,39 +1002,34 @@ function editbiaya(e) {
     });
 }
 
-function edittruck(e) {
+function edittype(e) {
     var id = e.value;
     console.log(id);
 
 
     $.ajax({
-        url: 'trucking/' + id + '/edit',
+        url: 'type/' + id + '/edit',
         type: 'GET',
         success: function (response) {
-            $('#modal-trucking-edit').modal('show');
+            $('#modal-type-edit').modal('show');
 
-            $('#nomor_polisi_edit').val(response.result.nomor_polisi);
-            $('#nama_driver_edit').val(response.result.nama_driver);
+            $('#type_container_edit').val(response.result.type_container);
 
-            $('#valid_trucking_edit').validate({
+            $('#valid_type_edit').validate({
                 rules: {
 
-                    nomor_polisi_edit: {
+                    type_container_edit: {
                         required: true
                     },
-                    nama_driver_edit: {
-                        required: true
-                    },
+
 
                 },
                 messages: {
 
-                    nomor_polisi_edit: {
-                        required: "Silakan Isi No. Polisi"
+                    type_container_edit: {
+                        required: "Silakan Isi Type Container"
                     },
-                    nama_driver_edit: {
-                        required: "Silakan Isi Nama Driver"
-                    },
+
 
                 },
 
@@ -1057,17 +1038,16 @@ function edittruck(e) {
                     var token = $('#csrf').val();
 
                     $.ajax({
-                        url: 'trucking/' + id,
+                        url: 'type/' + id,
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            nomor_polisi: $('#nomor_polisi_edit').val(),
-                            nama_driver: $('#nama_driver_edit').val(),
+                            type_container: $('#type_container_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data Trucking Berhasil Diedit",
+                                title: "Data Type Container Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -1215,35 +1195,35 @@ function editcontainer(e) {
         success: function (response) {
             $('#modal-container-edit').modal('show');
 
-            $('#jenis_container_edit').val(response.result.jenis_container);
+            // $('#jenis_container_edit').val(response.result.jenis_container);
             $('#size_container_edit').val(response.result.size_container);
-            $('#type_container_edit').val(response.result.type_container);
+            // $('#type_container_edit').val(response.result.type_container);
 
             $('#valid_container_edit').validate({
                 rules: {
 
-                    jenis_container_edit: {
-                        required: true
-                    },
+                    // jenis_container_edit: {
+                    //     required: true
+                    // },
                     size_container_edit: {
                         required: true
                     },
-                    type_container_edit: {
-                        required: true
-                    },
+                    // type_container_edit: {
+                    //     required: true
+                    // },
 
                 },
                 messages: {
 
-                    jenis_container_edit: {
-                        required: "Silakan Isi Container"
-                    },
+                    // jenis_container_edit: {
+                    //     required: "Silakan Isi Container"
+                    // },
                     size_container_edit: {
-                        required: "Silakan Isi Size"
+                        required: "Silakan Isi Size Container"
                     },
-                    type_container_edit: {
-                        required: "Silakan Isi Type"
-                    },
+                    // type_container_edit: {
+                    //     required: "Silakan Isi Type"
+                    // },
 
                 },
 
@@ -1256,14 +1236,14 @@ function editcontainer(e) {
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            jenis_container: $('#jenis_container_edit').val(),
+                            // jenis_container: $('#jenis_container_edit').val(),
                             size_container: $('#size_container_edit').val(),
-                            type_container: $('#type_container_edit').val(),
+                            // type_container: $('#type_container_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data Container Berhasil Diedit",
+                                title: "Data Size Container Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -1615,7 +1595,7 @@ function deletebiaya(id) {
         });
 
 }
-function deletetruck(id) {
+function deletetype(id) {
     var deleteid = id.value;
 
     var swal = Swal.mixin({
@@ -1643,11 +1623,11 @@ function deletetruck(id) {
                 };
                 $.ajax({
                     type: "DELETE",
-                    url: 'trucking/' + deleteid,
+                    url: 'type/' + deleteid,
                     data: data,
                     success: function (response) {
                         swal.fire({
-                            title: "Data Trucking Dihapus",
+                            title: "Data Type Container Dihapus",
                             text: "Data Berhasil Dihapus",
                             icon: "success",
                             timer: 2e3,

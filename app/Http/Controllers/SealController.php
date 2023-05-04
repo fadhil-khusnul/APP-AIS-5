@@ -18,6 +18,7 @@ class SealController extends Controller
         $seals = Seal::all();
         return view('seal.seal',[
             'title' => 'Data Seal',
+            'active' => 'Seal',
             'seals' => $seals,
 
         ]);
@@ -36,19 +37,35 @@ class SealController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
 
-        $validatedData = $request->validate([
+        // $validatedData = $request->validate([
 
-            'tahun_seal' => 'required',
-            'kode_seal' => 'required',
-            'touch_seal' => 'required',
+        //     'bulan_seal' => 'required',
+        //     'kode_seal' => 'required',
+        //     'touch_seal' => 'required',
 
-        ]);
+        // ]);
 
 
-        Seal::create($validatedData);
-        return redirect('/seal');
+
+        $seals = [];
+
+        for ($i=0; $i <count($request->touch_seal) ; $i++) {
+            # code...
+
+            $seals= [
+                'code' => $request->code[$i],
+                'bulan_seal' => $request->bulan_seal[$i],
+                'touch_seal' => $request->touch_seal[$i],
+                'kode_seal' => $request->kode_seal[$i],
+            ];
+
+            Seal::create($seals);
+        }
+
+
+        return response()->json(['success' => true]);
 
     }
 
@@ -88,5 +105,14 @@ class SealController extends Controller
     {
         $seal = Seal::all();
         return response()->json($seal);
+    }
+
+    public function getCodeSeal(Request $request) {
+        $code = $request->code;
+        $bulan = $request->bulan;
+        $seal = Seal::where('code', $code)->where('bulan_seal', $bulan)->get();
+        $count_seal = count($seal);
+
+        return response()->json($count_seal);
     }
 }

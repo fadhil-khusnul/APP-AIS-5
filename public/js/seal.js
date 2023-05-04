@@ -1,12 +1,12 @@
-"use strict";
-$(function () {
+function Tambah_Seal() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
-        });
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
     var toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -15,139 +15,190 @@ $(function () {
         timerProgressBar: true,
         didOpen: function didOpen(toast) {
             toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer)
-        }
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
     });
 
-    $.validator.addMethod("notEqual", function (value, element, arg) { return arg !== value }, "Value must not equal arg.");
+    $.validator.addMethod(
+        "notEqual",
+        function (value, element, arg) {
+            return arg !== value;
+        },
+        "Value must not equal arg."
+    );
 
-
-    $('#valid_seal').validate({
+    $("#valid_seal").validate({
         rules: {
-
-            tahun_seal: {
-                required: true
+            bulan_seal: {
+                required: true,
             },
             kode_seal: {
-                required: true
+                required: true,
             },
             touch_seal: {
-                required: true
+                required: true,
+                min: 1,
+                max: 500
             },
         },
         messages: {
-
-            tahun_seal: {
-                required: "Silakan Isi Nama Kompany"
+            bulan_seal: {
+                required: "Silahkan Masukkan Bulan Dan Tanggal",
             },
             kode_seal: {
-                required: "Silakan Isi Nama Kompany"
+                required: "Silakan Masukkan Kode Seal",
             },
             touch_seal: {
-                required: "Silakan Isi Nama Kompany"
-            }
+                required: "Silakan Isi Nama Kompany",
+                min: "Harus Lebih Besar dari 0",
+                max: "Harus Lebih Kecil dari 500"
+            },
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
+            var code = document.getElementById("kode_seal").value;
+            var date_seal = document.getElementById("bulan_seal").value;
+            date_seal = date_seal.replace(/\-/g, "");
+            var touch_seal = document.getElementById("touch_seal").value;
+            touch_seal = touch_seal.replace(/\./g, "");
+            touch_seal = parseInt(touch_seal);
+            var token = $("#csrf").val();
 
-            var kode_seal = $("#kode_seal").val();
-            var tahun_seal = $("#tahun_seal").val();
-            var touch_seal = $("#touch_seal").val();
-            var token = $('#csrf').val();
+            var data_kode_seal = [];
+            var data_code = [];
+            var data_date_seal = [];
+            var data_touch_seal = [];
+            let fd = new FormData();
 
+            $.ajax({
+                url: '/getCodeSeal',
+                type: 'post',
+                data: {
+                    code: code,
+                    bulan: date_seal,
+                    _token: token
+                },
+                success: function(response) {
+                    if(response == 0) {
+                        for (let i = 0; i < touch_seal; i++) {
+                            data_kode_seal[i] =
+                                code + date_seal + String(i + 1).padStart(3, "0");
+                            fd.append("kode_seal[]", data_kode_seal[i]);
+                            data_code[i] = code;
+                            fd.append("code[]", data_code[i]);
+                            data_date_seal[i] = date_seal;
+                            fd.append("bulan_seal[]", data_date_seal[i]);
+                            data_touch_seal[i] = touch_seal;
+                            fd.append("touch_seal[]", data_touch_seal[i]);
+                        }
+                    } else {
+                        for (let i = 0; i < touch_seal; i++) {
+                            data_kode_seal[i] =
+                                code + date_seal + String(i + response + 1).padStart(3, "0");
+                            fd.append("kode_seal[]", data_kode_seal[i]);
+                            data_code[i] = code;
+                            fd.append("code[]", data_code[i]);
+                            data_date_seal[i] = date_seal;
+                            fd.append("bulan_seal[]", data_date_seal[i]);
+                            data_touch_seal[i] = touch_seal;
+                            fd.append("touch_seal[]", data_touch_seal[i]);
+                        }
+                    }
+                }
+            })
 
-            var data = {
-                "_token": token,
-                "tahun_seal": tahun_seal,
-                "kode_seal": kode_seal,
-                "touch_seal": touch_seal,
-            }
+            fd.append("_token", token);
+
 
             swal.fire({
-                title: "Apakah anda yakin ? Ingin Menambah Sebanyak "+touch_seal+" Seal" ,
+                title:
+                    "Apakah anda yakin? Ingin Menambah Sebanyak " +
+                    touch_seal +
+                    " Seal?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Iya",
                 cancelButtonText: "Tidak",
-            })
-            .then((willCreate) => {
+            }).then((willCreate) => {
                 if (willCreate.isConfirmed) {
-
                     $.ajax({
-                        type: 'POST',
-                        url: 'tambah-seal',
-                        data: data,
-                        success: function (response) {
+                        type: "POST",
+                        url: "/tambah-seal",
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function () {
                             swal.fire({
                                 icon: "success",
-                                title: "Seal sebanyak"+charAt+" Berhasil Ditambah",
+                                title:
+                                    "Seal Sebanyak " +
+                                    touch_seal +
+                                    " Berhasil Ditambah",
                                 showConfirmButton: false,
                                 timer: 2e3,
-
-                            })
-                                .then((result) => {
-                                    location.reload();
-                                });
+                            }).then((result) => {
+                                location.reload();
+                            });
                         },
                     });
                 } else {
                     swal.fire({
                         title: "Seal Tidak Dibuat",
                         text: "Seal Batal Dibuat",
-                        icon: "warning",
+                        icon: "error",
                         timer: 2e3,
-                        showConfirmButton: false
+                        showConfirmButton: false,
                     });
                 }
             });
-
-
-        }
+        },
     });
-
-
-
-
-});
+}
 
 function editCompany(e) {
     var id = e.value;
-    console.log(id);
-
-
     $.ajax({
-        url: 'company/' + id + '/edit',
-        type: 'GET',
+        url: "company/" + id + "/edit",
+        type: "GET",
         success: function (response) {
-            $('#modal-company-edit').modal('show');
+            $("#modal-company-edit").modal("show");
 
-            $('#nama_company_edit').val(response.result.nama_company);
+            $("#nama_company_edit").val(response.result.nama_company);
 
-            $('#valid_company_edit').validate({
+            $("#valid_company_edit").validate({
                 rules: {
-
                     nama_company_edit: {
-                        required: true
+                        required: true,
                     },
-
                 },
                 messages: {
-
                     nama_company_edit: {
-                        required: "Silakan Isi Nama Company"
+                        required: "Silakan Isi Nama Company",
                     },
-
                 },
 
                 // console.log();
                 submitHandler: function (form) {
-                    var token = $('#csrf').val();
+                    var token = $("#csrf").val();
 
                     $.ajax({
-                        url: 'company/' + id,
-                        type: 'PUT',
+                        url: "company/" + id,
+                        type: "PUT",
                         data: {
-                            "_token": token,
-                            nama_company: $('#nama_company_edit').val(),
+                            _token: token,
+                            nama_company: $("#nama_company_edit").val(),
                         },
                         success: function (response) {
                             swal.fire({
@@ -155,22 +206,16 @@ function editCompany(e) {
                                 title: "Data Company Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
-
-                            })
-                                .then((result) => {
-                                    location.reload();
-                                });
-                        }
-                    })
-                }
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+                },
             });
-
-        }
+        },
     });
 }
-
-
-
 
 function deleteCompany(id) {
     var deleteid = id.value;
@@ -179,8 +224,9 @@ function deleteCompany(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
     });
 
     swal.fire({
@@ -190,41 +236,36 @@ function deleteCompany(id) {
         showCancelButton: true,
         confirmButtonText: "Iya",
         cancelButtonText: "Tidak",
-    })
-        .then((willDelete) => {
-            if (willDelete.isConfirmed) {
-
-                var data = {
-                    "_token": $('input[name=_token]').val(),
-                    'id': deleteid,
-                };
-                $.ajax({
-                    type: "DELETE",
-                    url: 'company/' + deleteid,
-                    data: data,
-                    success: function (response) {
-                        swal.fire({
-                            title: "Data Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
-                            .then((result) => {
-                                location.reload();
-                            });
-                    }
-                });
-            } else {
-                swal.fire({
-                    title: "Data Tidak Dihapus",
-                    text: "Data Batal Dihapus",
-                    icon: "error",
-                    timer: 2e3,
-                    showConfirmButton: false
-                });
-            }
-        });
+    }).then((willDelete) => {
+        if (willDelete.isConfirmed) {
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "company/" + deleteid,
+                data: data,
+                success: function (response) {
+                    swal.fire({
+                        title: "Data Dihapus",
+                        text: "Data Berhasil Dihapus",
+                        icon: "success",
+                        timer: 2e3,
+                        showConfirmButton: false,
+                    }).then((result) => {
+                        location.reload();
+                    });
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Data Tidak Dihapus",
+                text: "Data Batal Dihapus",
+                icon: "error",
+                timer: 2e3,
+                showConfirmButton: false,
+            });
+        }
+    });
 }
-
-

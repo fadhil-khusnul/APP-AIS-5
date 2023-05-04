@@ -17,6 +17,8 @@ use App\Http\Controllers\TruckingController;
 use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\StuffingController;
 use App\Http\Controllers\StrippingController;
+use App\Http\Controllers\AlihKapalController;
+use App\Http\Controllers\TypeContainerController;
 
 
 /*
@@ -67,10 +69,10 @@ Route::get('/biaya/{id}/edit', [BiayaController::class, 'edit']);
 Route::put('/biaya/{id}', [BiayaController::class, 'update']);
 Route::delete('/biaya/{id}', [BiayaController::class, 'destroy']);
 
-Route::post('/add-trucking', [TruckingController::class, 'store']);
-Route::get('/trucking/{id}/edit', [TruckingController::class, 'edit']);
-Route::put('/trucking/{id}', [TruckingController::class, 'update']);
-Route::delete('/trucking/{id}', [TruckingController::class, 'destroy']);
+Route::post('/add-type', [TypeContainerController::class, 'store']);
+Route::get('/type/{id}/edit', [TypeContainerController::class, 'edit']);
+Route::put('/type/{id}', [TypeContainerController::class, 'update']);
+Route::delete('/type/{id}', [TypeContainerController::class, 'destroy']);
 
 Route::post('/add-container', [ContainerController::class, 'store']);
 Route::get('/container/{id}/edit', [ContainerController::class, 'edit']);
@@ -107,10 +109,16 @@ Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create'
 Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
+Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
 
+
+//ALih Kapal
+Route::get('/alih-kapal', [AlihKapalController::class, 'index']);
+Route::get('/batal-muat', [AlihKapalController::class, 'index']);
 
 
 //seal
 Route::get('/seal', [SealController::class, 'index']);
 Route::post('/tambah-seal', [SealController::class, 'store']);
 Route::post('/getSeal', [SealController::class, 'getSeal']);
+Route::post('/getCodeSeal', [SealController::class, 'getCodeSeal']);

@@ -12,6 +12,7 @@ use App\Models\Penerima;
 use App\Models\OrderJobPlanload;
 use App\Models\Container;
 use App\Models\ContainerPlanload;
+use App\Models\TypeContainer;
 use App\Http\Requests\StorePlanLoadRequest;
 use App\Http\Requests\UpdatePlanLoadRequest;
 use Illuminate\Support\Str;
@@ -24,14 +25,15 @@ class PlanLoadController extends Controller
      */
     public function index()
     {
-        $planloads = OrderJobPlanload::all();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
         $containers = ContainerPlanload::all();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
         // dd($vessel);
 
         return view('plan.planload', [
-            'title' => 'Plan Load',
+            'title' => 'Load-Plan',
+            'active' => 'Load',
             'planloads' => $planloads,
             'vessel' => $vessel,
             'select_company' => $select_company,
@@ -55,8 +57,9 @@ class PlanLoadController extends Controller
         $kontainer = Container::all();
         // dd($activity);
         return view('plan.planload-create', [
-            'title' => 'Buat Job Order Plan Load',
+            'title' => 'Buat Load',
             'activity' => $activity,
+            'active' => 'Plan',
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
@@ -72,7 +75,7 @@ class PlanLoadController extends Controller
      */
     public function create_job_planload(Request $request)
     {
-        //
+        // dd($request);
         $random = Str::random(15);
 
         $company = $request->select_company;
@@ -88,17 +91,16 @@ class PlanLoadController extends Controller
         $slug = $company.'-'.$vessel.'-'.$request->tanggal_planload.'-'.$random;
 
         $orderJob = [
-            'tanggal_planload' => $request->tanggal_planload,
             'activity' => $request->activity,
             'select_company' => $request->select_company,
             'vessel' => $request->vessel,
+            'vessel_code' => $request->vessel_code,
             'pol' => $request->pol,
             'pot' => $request->pot,
             'pod' => $request->pod,
             'pengirim' => $request->pengirim,
-            'penerima' => $request->penerima,
-            'nama_barang' => $request->nama_barang,
             'slug' => $slug,
+            'status' => "Plan-Load",
         ];
 
         OrderJobPlanload::create($orderJob);
@@ -109,24 +111,32 @@ class PlanLoadController extends Controller
 
         $tambah = $request->tambah;
 
-        for ($i = 0; $i < $tambah; $i++) {
-            $job_id[$i] = $id;
-        }
+        $jumlah_kontainer = [];
+        $size = [];
+        $type = [];
+        $cargo = [];
 
         for ($j = 0; $j < $tambah; $j++) {
-            $container = [
-                'job_id' => $job_id[$j],
-                'kontainer' => $request->kontainer[$j],
-                'size' => $request->size[$j],
-                'type' => $request->type[$j],
-            ];
-            ContainerPlanload::create($container);
+            $job_id[$j] = $id;
+            $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
+            $size[$j] = [];
+            $type[$j] = [];
+            $cargo[$j] = [];
+            // $tambah2[$j] = [];
+            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
+
+                $container = [
+                    'job_id' => $job_id[$j],
+                    'jumlah_kontainer' => $jumlah_kontainer[$j],
+                    'size' => $request->size[$j][$i],
+                    'type' => $request->type[$j][$i],
+                    'cargo' => $request->cargo[$j][$i],
+                ];
+                ContainerPlanload::create($container);
+            }
         }
 
         return response()->json(['success' => true]);
-
-
-
     }
 
     /**
@@ -150,10 +160,12 @@ class PlanLoadController extends Controller
         $pod = Pelabuhan::all();
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
-        $kontainer = Container::all();
+        $size = Container::all();
+        $type = TypeContainer::all();
         // dd($activity);
         return view('plan.planload-edit', [
-            'title' => 'Edit Job Order Plan Load',
+            'title' => 'Edit Load',
+            'active' => 'Plan',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
@@ -161,9 +173,10 @@ class PlanLoadController extends Controller
             'pod' => $pod,
             'pengirim' => $pengirim,
             'penerima' => $penerima,
-            'kontainers' => $kontainer,
+            'sizes' => $size,
+            'types' => $type,
             'planload' => OrderJobPlanload::find($id),
-            'containers' => ContainerPlanload::where('job_id', $id)->get()
+            'containers' => ContainerPlanload::select('type', 'jumlah_kontainer', 'size', 'cargo')->where('job_id', $id)->groupBy('jumlah_kontainer', 'type', 'size', 'cargo')->get()
         ]);
 
     }
@@ -173,6 +186,8 @@ class PlanLoadController extends Controller
      */
     public function update(Request $request)
     {
+        // dd($request);
+
         $old_slug = $request->old_slug;
 
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
@@ -194,42 +209,47 @@ class PlanLoadController extends Controller
         $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
 
         $orderJob = [
-            'tanggal_planload' => $request->tanggal_planload,
             'activity' => $request->activity,
             'select_company' => $request->select_company,
             'vessel' => $request->vessel,
+            'vessel_code' => $request->vessel_code,
             'pol' => $request->pol,
             'pot' => $request->pot,
             'pod' => $request->pod,
             'pengirim' => $request->pengirim,
             'penerima' => $request->penerima,
-            'nama_barang' => $request->nama_barang,
             'slug' => $slug,
         ];
 
         $OrderJobPlanload->update($orderJob);
 
+        ContainerPlanload::where('job_id', $old_id)->delete();
         $job_id = [];
 
-        $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
+        $tambah = $request->urutan;
 
-        $urutan = (int)$request->urutan;
+        $jumlah_kontainer = [];
+        $size = [];
+        $type = [];
+        $cargo = [];
 
-        ContainerPlanload::where('job_id', $old_id)->delete();
+        for ($j = 0; $j < $tambah; $j++) {
+            $job_id[$j] = $old_id;
+            $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
+            $size[$j] = [];
+            $type[$j] = [];
+            $cargo[$j] = [];
+            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
 
-        for ($i = 0; $i < $urutan; $i++) {
-            $job_id[$i] = $old_id;
-        }
-
-        for ($k = 0; $k < $urutan; $k++) {
-            $container = [
-                'job_id' => $job_id[$k],
-                'kontainer' => $request->kontainer[$k],
-                'size' => $request->size[$k],
-                'type' => $request->type[$k],
-            ];
-            ContainerPlanload::create($container);
-
+                $container = [
+                    'job_id' => $job_id[$j],
+                    'jumlah_kontainer' => $jumlah_kontainer[$j],
+                    'size' => $request->size[$j][$i],
+                    'type' => $request->type[$j][$i],
+                    'cargo' => $request->cargo[$j][$i],
+                ];
+                ContainerPlanload::create($container);
+            }
         }
 
         return response()->json(['success' => true]);
@@ -246,7 +266,12 @@ class PlanLoadController extends Controller
 
     public function getJenisKontainer()
     {
-        $kontainer = Container::all();
+        $size = Container::all();
+        $type = TypeContainer::all();
+        $kontainer = [
+            'size' => $size,
+            'type' => $type
+        ];
         return response()->json($kontainer);
     }
 

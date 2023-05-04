@@ -31,9 +31,9 @@ class ContainerController extends Controller
         //
         $validatedData = $request->validate([
 
-            'jenis_container' => 'required',
+            // 'jenis_container' => 'required',
             'size_container' => 'required',
-            'type_container' => 'required',
+            // 'type_container' => 'required',
 
         ]);
         Container::create($validatedData);
@@ -69,18 +69,18 @@ class ContainerController extends Controller
         //
         $request->validate([
 
-            'jenis_container' => 'required',
+            // 'jenis_container' => 'required',
             'size_container' => 'required',
-            'type_container' => 'required',
+            // 'type_container' => 'required',
 
         ]);
 
         $container = Container::findOrFail($id);
 
         $data = [
-            "jenis_container" =>$request->jenis_container,
+            // "jenis_container" =>$request->jenis_container,
             "size_container" =>$request->size_container,
-            "type_container" =>$request->type_container,
+            // "type_container" =>$request->type_container,
         ];
         $container->update($data);
         return response()->json(['success' => true]);

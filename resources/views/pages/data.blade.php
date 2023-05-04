@@ -410,12 +410,11 @@
 
         <div class="portlet">
             <div class="portlet-header portlet-header-bordered">
-                <h3 class="portlet-title">TRUCKING</h3>
+                <h3 class="portlet-title">TYPE CONTAINER</h3>
             </div>
             <div class="portlet-body">
                 <div class="text-end">
-
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-trucking" class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-type" class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></a>
                 </div>
                 <hr>
 
@@ -424,26 +423,23 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>No. Polisi</th>
-                            <th>Nama Driver</th>
+                            <th>Type Container</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($truckings as $truck)
+                        @foreach ($types as $type)
                         <tr>
                             <td>
                                 {{$loop->iteration}}
                             </td>
                             <td>
-                                {{$truck->nomor_polisi}}
+                                {{$type->type_container}}
                             </td>
-                            <td>
-                                {{$truck->nama_driver}}
-                            </td>
-                            <td class="text-center"><button onclick="edittruck(this)" value="{{$truck->id}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
 
-                                <button onclick="deletetruck(this)" value="{{$truck->id}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                            <td class="text-center"><button onclick="edittype(this)" value="{{$type->id}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
+
+                                <button onclick="deletetype(this)" value="{{$type->id}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                 class="fa fa-trash"></i></button></td>
 
                         </tr>
@@ -461,7 +457,7 @@
 
         <div class="portlet">
             <div class="portlet-header portlet-header-bordered">
-                <h3 class="portlet-title">CONTAINER</h3>
+                <h3 class="portlet-title">SIZE CONTAINER</h3>
             </div>
             <div class="portlet-body">
                 <div class="text-end">
@@ -474,9 +470,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>CONTAINER</th>
-                            <th>Size</th>
-                            <th>Type</th>
+                            <th>Size Container</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -486,15 +480,11 @@
                             <td>
                                 {{$loop->iteration}}
                             </td>
-                            <td>
-                                {{$container->jenis_container}}
-                            </td>
+
                             <td>
                                 {{$container->size_container}}
                             </td>
-                            <td>
-                                {{$container->type_container}}
-                            </td>
+
                             <td class="text-center"><button onclick="editcontainer(this)" value="{{$container->id}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
 
                                 <button onclick="deletecontainer(this)" value="{{$container->id}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
@@ -1033,25 +1023,22 @@
 
     </div>
 </div>
-<div class="modal fade" id="modal-trucking">
+<div class="modal fade" id="modal-type">
     <div class="modal-dialog">
-        <form action="#" id="valid_trucking" name="valid_trucking">
+        <form action="#" id="valid_type" name="valid_type">
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data Trucking</h5>
+                    <h5 class="modal-title">Tambah Data Type Container</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <div>
-                        <label class="form-label" for="text">No. Polisi</label>
-                        <input class="form-control" id="nomor_polisi" name="nomor_polisi" type="text">
-                    </div>
-                    <div>
-                        <label class="form-label" for="text">Nama Driver</label>
-                        <input class="form-control" id="nama_driver" name="nama_driver" type="text">
+                        <label class="form-label" for="text">Type COntainer</label>
+                        <input class="form-control" id="type_container" name="type_container" type="text">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1063,26 +1050,23 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-trucking-edit">
+<div class="modal fade" id="modal-type-edit">
     <div class="modal-dialog">
-        <form action="#" id="valid_trucking_edit" name="valid_trucking_edit">
+        <form action="#" id="valid_type_edit" name="valid_type_edit">
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Trucking</h5>
+                    <h5 class="modal-title">Edit Data Type Container</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label" for="text">No. Polisi</label>
-                        <input class="form-control" id="nomor_polisi_edit" name="nomor_polisi_edit" type="text">
+                        <label class="form-label" for="text">Type Container</label>
+                        <input class="form-control" id="type_container_edit" name="type_container_edit" type="text">
                     </div>
-                    <div>
-                        <label class="form-label" for="text">Nama Driver</label>
-                        <input class="form-control" id="nama_driver_edit" name="nama_driver_edit" type="text">
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Edit</button>
@@ -1105,18 +1089,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label class="form-label" for="text">Container</label>
-                        <input class="form-control" id="jenis_container" name="jenis_container" type="text">
-                    </div>
+
                     <div>
                         <label class="form-label" for="text">Size</label>
                         <input class="form-control" id="size_container" name="size_container" type="text">
                     </div>
-                    <div>
-                        <label class="form-label" for="text">Type</label>
-                        <input class="form-control" id="type_container" name="type_container" type="text">
-                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Tambah</button>
@@ -1132,24 +1110,24 @@
         <form action="#" id="valid_container_edit" name="valid_container_edit">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Container</h5>
+                    <h5 class="modal-title">Edit Data Size Container</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
+                    {{-- <div>
                         <label class="form-label" for="text">Container</label>
                         <input class="form-control" id="jenis_container_edit" name="jenis_container_edit" type="text">
-                    </div>
+                    </div> --}}
                     <div>
                         <label class="form-label" for="text">Size</label>
                         <input class="form-control" id="size_container_edit" name="size_container_edit" type="text">
                     </div>
-                    <div>
+                    {{-- <div>
                         <label class="form-label" for="text">Type</label>
                         <input class="form-control" id="type_container_edit" name="type_container_edit" type="text">
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Edit</button>

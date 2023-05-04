@@ -127,7 +127,9 @@ $("#processload-create").DataTable({
     scrollY:300,
     scrollX:true,
     scrollCollapse:true,
-    fixedColumns:{leftColumns:4}
+    fixedColumns:{
+        leftColumns:3
+    }
 });
 // $("#planload").DataTable({
 //     responsive:true,

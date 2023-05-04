@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
-            $table->string('jenis_container');
             $table->string('size_container');
-            $table->string('type_container');
             $table->timestamps();
         });
     }

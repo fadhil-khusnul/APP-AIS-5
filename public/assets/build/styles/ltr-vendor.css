@@ -2272,6 +2272,7 @@
   color: var(--bs-text-level-3);
   font-size: 1rem;
   font-weight: 500;
+  vertical-align: top !important;
 }
 .dataTable > tbody > .child .dtr-data {
   display: inline-block;

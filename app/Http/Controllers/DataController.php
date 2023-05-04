@@ -13,6 +13,7 @@ use App\Models\Trucking;
 use App\Models\Container;
 use App\Models\Stuffing;
 use App\Models\Stripping;
+use App\Models\TypeContainer;
 
 class DataController extends Controller
 {
@@ -28,21 +29,21 @@ class DataController extends Controller
         $pengirims = Pengirim::all();
         $penerimas = Penerima::all();
         $biayas = Biaya::all();
-        $truckings = Trucking::all();
+        $types = TypeContainer::all();
         $containers = Container::all();
-
         $stuffings = Stuffing::all();
         $strippings = Stripping::all();
 
         return view('pages.data',[
             'title' => 'Data',
+            'active' => 'Data',
             'companies' => $companies,
             'depos' => $depos,
             'pelabuhans' => $pelabuhans,
             'pengirims' => $pengirims,
             'penerimas' => $penerimas,
             'biayas' => $biayas,
-            'truckings' => $truckings,
+            'types' => $types,
             'containers' => $containers,
             'stuffings' => $stuffings,
             'strippings' => $strippings,

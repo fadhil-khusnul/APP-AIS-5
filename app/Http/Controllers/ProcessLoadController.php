@@ -17,6 +17,7 @@ use App\Models\Pengirim;
 use App\Models\Penerima;
 use App\Models\Container;
 use App\Models\Depo;
+use App\Models\Seal;
 use App\Models\BiayaLainnya;
 use Illuminate\Support\Str;
 
@@ -27,11 +28,12 @@ class ProcessLoadController extends Controller
      */
     public function index()
     {
-        $planloads = OrderJobPlanload::all();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
         $containers = ContainerPlanload::all();
 
         return view('process.processload',[
-            'title' => 'Process Load',
+            'title' => 'Load-Process',
+            'active' => 'Load',
             'planloads' => $planloads,
             'containers' => $containers,
 
@@ -54,9 +56,11 @@ class ProcessLoadController extends Controller
         $penerima = Penerima::all();
         $kontainer = Container::all();
         $lokasis = Depo::all();
+        $seals = Seal::all();
         //
         return view('process.processload-create',[
-            'title' => 'Buat Job Order Process Load',
+            'title' => 'Buat Load',
+            'active' => 'Process',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
@@ -66,6 +70,7 @@ class ProcessLoadController extends Controller
             'penerima' => $penerima,
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
+            'seals' => $seals,
             'planload' => OrderJobPlanload::find($id),
             'containers' => ContainerPlanload::where('job_id', $id)->get(),
         ]);
@@ -80,19 +85,32 @@ class ProcessLoadController extends Controller
         // dd($request);
 
 
-
         $old_slug = $request->old_slug;
 
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
 
+        $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
+
+        $orderjob = [
+            'status' => 'Process-Load',
+
+        ];
+
+        $OrderJobPlanload->update($orderjob);
+
+
+
         $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
 
         $processload_update = [];
+
         for($i = 0; $i < count($all_id); $i++) {
             $processload_update[$i] =   $all_id[$i]->id;
         }
 
         $urutan = (int)$request->urutan;
+
+        $status = "Process-Load";
 
         for ($k = 0; $k < $urutan; $k++) {
             $container = [
@@ -109,6 +127,8 @@ class ProcessLoadController extends Controller
                 'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
                 'nomor_surat' => $request->no_surat[$k],
                 'bulan' => (int)$request->bulan[$k],
+                'tahun' => (int)$request->tahun[$k],
+                'status' => $status,
             ];
             ContainerPlanload::where('id',$processload_update[$k])->update($container);
         }
@@ -187,10 +207,21 @@ class ProcessLoadController extends Controller
     }
 
     public function getNoSurat(Request $request) {
+        $tahun = $request->tahun;
         $bulan = $request->bulan;
-        $no_surat = ContainerPlanload::where('bulan', $bulan)->get();
+        $no_surat = ContainerPlanload::where('bulan', $bulan)->where('tahun', $tahun)->get();
         $count_no_surat = count($no_surat);
 
         return response()->json($count_no_surat);
+    }
+
+    public function getSealProcessLoad(Request $request) {
+        $seal = ContainerPlanload::all();
+        $seal_process_load = [];
+        for($i = 0; $i < count($seal); $i++) {
+            $seal_process_load[$i] = $seal[$i]->seal;
+        }
+        $seal_process_load_without_null = array_filter($seal_process_load, fn ($value) => !is_null($value));
+        return response()->json($seal_process_load_without_null);
     }
 }

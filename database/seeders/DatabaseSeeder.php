@@ -31,10 +31,11 @@ class DatabaseSeeder extends Seeder
             StuffingSeeder::class,
             StrippingSeeder::class,
             TruckingSeeder::class,
+            TypeContainerSeeder::class,
 
         ]);
 
-        Seal::factory(10)->create();
+        // Seal::factory(10)->create();
 
 
     }

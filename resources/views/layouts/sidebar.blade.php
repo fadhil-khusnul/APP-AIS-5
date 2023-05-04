@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
+                    <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') || Request::is('planload-edit/*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
                             <i class="far fa-clone"></i>
                         </div>
@@ -171,13 +171,13 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                    <a href="/alih-kapal" data-menu-path="/alih-kapal" class="menu-item-link">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">ALIH KAPAL</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                    <a href="/batal-muat" data-menu-path="/batal-muat" class="menu-item-link">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">BATAL MUAT</span>
                                     </a>

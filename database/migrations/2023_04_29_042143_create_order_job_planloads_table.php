@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('order_job_planloads', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_planload');
             $table->string('activity');
             $table->string('select_company');
             $table->text('vessel');
+            $table->text('vessel_code');
             $table->string('pol');
             $table->string('pot');
             $table->string('pod');
             $table->string('pengirim');
-            $table->string('penerima');
-            $table->text('nama_barang');
+            $table->string('penerima')->nullable();
             $table->text('slug');
-           
+            $table->string('status');
+
             $table->timestamps();
         });
     }
