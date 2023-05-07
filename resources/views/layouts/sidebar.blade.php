@@ -1,10 +1,14 @@
 <div class="aside">
         <div class="aside-header">
-            <h3 class="aside-title">APP AIS-5</h3>
+            <h3 class="aside-title"><img src="{{ asset('/') }}./assets/images/icon.png" width="50" alt=""> AIS-ONLINE</h3>
+
             <div class="aside-addon">
                 <button class="btn btn-label-primary btn-icon btn-lg" data-toggle="aside">
                     <i class="fa fa-times aside-icon-minimize"></i>
+
                     <i class="fa fa-thumbtack aside-icon-maximize"></i>
+
+
                 </button>
             </div>
         </div>
@@ -111,7 +115,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') || Request::is('planload-edit/*') ? 'active' : '' }}">
+                    <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') || Request::is('planload-edit/*') || Request::is('processload-create/*') || Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
                             <i class="far fa-clone"></i>
                         </div>
@@ -155,7 +159,7 @@
                             <!-- END Menu Submenu -->
                         </div>
                         <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle">
+                            <button class="menu-item-link menu-item-toggle {{ Request::is('processload/*') || Request::is('processload-create/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">JOB ORDER PROCESS</span>
                                 <div class="menu-item-addon">
@@ -165,23 +169,12 @@
                             <!-- BEGIN Menu Submenu -->
                             <div class="menu-submenu">
                                 <div class="menu-item">
-                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link">
+                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link {{ Request::is('/processload/*') || Request::is('processload-create/*') ? 'active' : '' }} ">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">LOAD</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
-                                    <a href="/alih-kapal" data-menu-path="/alih-kapal" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">ALIH KAPAL</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="/batal-muat" data-menu-path="/batal-muat" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">BATAL MUAT</span>
-                                    </a>
-                                </div>
+
                                 <div class="menu-item">
                                     <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
                                         <i class="menu-item-bullet"></i>
@@ -199,7 +192,7 @@
                             <!-- END Menu Submenu -->
                         </div>
                         <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle">
+                            <button class="menu-item-link menu-item-toggle {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">JOB ORDER REALISASI</span>
                                 <div class="menu-item-addon">
@@ -209,7 +202,7 @@
                             <!-- BEGIN Menu Submenu -->
                             <div class="menu-submenu">
                                 <div class="menu-item">
-                                    <a href="datatable/advanced/column-rendering.html" data-menu-path="/datatable/advanced/column-rendering.html" class="menu-item-link">
+                                    <a href="/realisasi-load" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : '' }} ">
                                         <i class="menu-item-bullet"></i>
                                         <span class="menu-item-text">LOAD</span>
                                     </a>
@@ -290,5 +283,13 @@
             </div>
             <!-- END Menu -->
             </div>
+            <div class="aside-addon">
+
+                <img class="aside-icon-maximize" src="{{ asset('/') }}./assets/images/icon.png" width="50" alt="">
+            </div>
+
+
         </div>
+
+
 </div>

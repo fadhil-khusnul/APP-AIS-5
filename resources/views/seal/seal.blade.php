@@ -19,11 +19,13 @@
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="validation-container">
-                                <div class="input-group">
-                                    <input id="bulan_seal" name="bulan_seal" type="text" class="form-control" required><span
-                                        class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                        <div class="col-md-6">
+                            <div class="text-center">
+
+                                <div class="validation-container">
+                                        <label for="" class="form-label">Nilai Awal Seal :</label>
+                                        <input id="start_seal" name="start_seal" type="text" value="0" class="form-control" required><span
+                                            class="col-md-6 form-control">
                                 </div>
                             </div>
                             {{-- <label for="" class="form-label">Tanggal & Bulan</label>
@@ -32,7 +34,7 @@
                         <div class="col-md-6" style="margin-left: auto; margin-right:auto;">
                             <div class="text-center">
                                 <div class="validation-container">
-                                    <label for="" class="form-label">Stock Seal :</label>
+                                    <label for="" class="form-label">Stock (Jumlah) Seal :</label>
                                     <input class="col-md-6 form-control"
                                         id="touch_seal" name="touch_seal" value="0" type="text" required>
                                 </div>
@@ -118,6 +120,4 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/seal.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
-
-
 @endsection

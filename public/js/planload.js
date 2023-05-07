@@ -413,6 +413,13 @@ function tambah_kontener() {
             input1.setAttribute("max", 100);
             input1.setAttribute("value", 0);
             div1.append(input1);
+
+            var label1 = document.createElement("div");
+            var labelx = document.createElement("label");
+            labelx.innerHTML = "X";
+            label1.append(labelx);
+
+
             var div2 = document.createElement("div");
             div2.setAttribute("class", "validation-container");
             var select1 = document.createElement("select");
@@ -460,13 +467,15 @@ function tambah_kontener() {
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
 
             cell1.innerHTML = "1.";
             cell2.appendChild(div1);
-            cell3.appendChild(div2);
-            cell4.appendChild(div3);
-            cell5.appendChild(div4);
-            cell6.appendChild(button);
+            cell3.appendChild(label1);
+            cell4.appendChild(div2);
+            cell5.appendChild(div3);
+            cell6.appendChild(div4);
+            cell7.appendChild(button);
 
             reindex_container();
         },
@@ -505,27 +514,32 @@ function delete_container(r) {
         input1[i].id = "jumlah-container[" + (i + 1) + "]";
         input1[i].name = "jumlah-container[" + (i + 1) + "]";
     }
+    var label1 = document.querySelectorAll(
+        "#table_container tr td:nth-child(3) input"
+    );
 
-    var select1 = document.querySelectorAll("#table_container tr td:nth-child(3) select");
+
+
+    var select1 = document.querySelectorAll("#table_container tr td:nth-child(4) select");
     for (var i = 0; i < select1.length; i++) {
         select1[i].id = "size[" + (i + 1) + "]";
         select1[i].name = "size[" + (i + 1) + "]";
     }
 
-    var select2 = document.querySelectorAll("#table_container tr td:nth-child(4) select");
+    var select2 = document.querySelectorAll("#table_container tr td:nth-child(5) select");
     for (var i = 0; i < select2.length; i++) {
         select2[i].id = "type[" + (i + 1) + "]";
         select2[i].name = "type[" + (i + 1) + "]";
     }
 
-    var textarea1 = document.querySelectorAll("#table_container tr td:nth-child(5) textarea");
+    var textarea1 = document.querySelectorAll("#table_container tr td:nth-child(6) textarea");
     for (var i = 0; i < textarea1.length; i++) {
         textarea1[i].id = "cargo[" + (i + 1) + "]";
         textarea1[i].name = "cargo[" + (i + 1) + "]";
     }
 
     var button = document.querySelectorAll(
-        "#table_container tr td:nth-child(5) button"
+        "#table_container tr td:nth-child(7) button"
     );
     for (var i = 0; i < button.length; i++) {
         button[i].id = "deleterow" + (i + 1);
@@ -578,6 +592,12 @@ function edit_kontener() {
             input1.setAttribute("type", "text");
             input1.setAttribute("value", 0);
             div1.append(input1);
+
+            var label1 = document.createElement("div");
+            var labelx = document.createElement("label");
+            labelx.innerHTML = "X";
+            label1.append(labelx);
+
             var div2 = document.createElement("div");
             div2.setAttribute("class", "validation-container");
             var select1 = document.createElement("select");
@@ -618,6 +638,7 @@ function edit_kontener() {
             icon.setAttribute("class", "fa fa-trash");
             button.append(icon);
 
+
             var row = table.insertRow(-1);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
@@ -625,13 +646,15 @@ function edit_kontener() {
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
 
             cell1.innerHTML = "1.";
             cell2.appendChild(div1);
-            cell3.appendChild(div2);
-            cell4.appendChild(div3);
-            cell5.appendChild(div4);
-            cell6.appendChild(button);
+            cell3.appendChild(label1);
+            cell4.appendChild(div2);
+            cell5.appendChild(div3);
+            cell6.appendChild(div4);
+            cell7.appendChild(button);
 
             reindex_container();
         },

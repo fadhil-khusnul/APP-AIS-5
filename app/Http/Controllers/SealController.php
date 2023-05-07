@@ -15,7 +15,7 @@ class SealController extends Controller
      */
     public function index()
     {
-        $seals = Seal::all();
+        $seals = Seal::orderBy('id', 'DESC')->get();
         return view('seal.seal',[
             'title' => 'Data Seal',
             'active' => 'Seal',
@@ -56,7 +56,7 @@ class SealController extends Controller
 
             $seals= [
                 'code' => $request->code[$i],
-                'bulan_seal' => $request->bulan_seal[$i],
+                'start_seal' => $request->start_seal[$i],
                 'touch_seal' => $request->touch_seal[$i],
                 'kode_seal' => $request->kode_seal[$i],
             ];
@@ -109,10 +109,17 @@ class SealController extends Controller
 
     public function getCodeSeal(Request $request) {
         $code = $request->code;
-        $bulan = $request->bulan;
-        $seal = Seal::where('code', $code)->where('bulan_seal', $bulan)->get();
-        $count_seal = count($seal);
+        $seal = Seal::where('code', $code)->get();
+        // $count_seal = count($seal);
 
-        return response()->json($count_seal);
+        return response()->json($seal);
+    }
+
+    public function getKodeSeal(Request $request) {
+        $code = $request->code;
+        $jumlah_seal = Seal::where('code', $code)->get();
+
+        return response()->json($jumlah_seal);
+        // $total_seal = $request->total_seal;
     }
 }

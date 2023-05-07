@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('biaya_lainnyas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('job_id');
-            $table->string('pilih_kontainer');
+            $table->string('kontainer_biaya');
             $table->double('harga_biaya');
             $table->text('keterangan');
             $table->timestamps();
         });
+
     }
 
     /**

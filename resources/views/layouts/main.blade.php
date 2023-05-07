@@ -12,8 +12,10 @@
         rel="stylesheet">
     <link href="{{ asset('/') }}./assets/build/styles/ltr-core.css" rel="stylesheet">
     <link href="{{ asset('/') }}./assets/build/styles/ltr-vendor.css" rel="stylesheet">
-    {{-- <link href="{{ asset('/') }}./assets/images/favicon.ico" rel="shortcut icon" type="image/x-icon"> --}}
+    <link href="{{ asset('/') }}./assets/images/icon.png" rel="shortcut icon" type="image/x-icon">
+
     <title>{{$title}} | APP AIS-5</title>
+
 </head>
 
 <body class="preload-active aside-active aside-mobile-minimized aside-desktop-maximized">

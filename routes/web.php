@@ -19,6 +19,7 @@ use App\Http\Controllers\StuffingController;
 use App\Http\Controllers\StrippingController;
 use App\Http\Controllers\AlihKapalController;
 use App\Http\Controllers\TypeContainerController;
+use App\Http\Controllers\RealisasiLoadController;
 
 
 /*
@@ -110,6 +111,12 @@ Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
+Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
+
+
+//realisasi
+Route::get('/realisasi-load', [RealisasiLoadController::class, 'index']);
+Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
 
 
 //ALih Kapal
@@ -122,3 +129,4 @@ Route::get('/seal', [SealController::class, 'index']);
 Route::post('/tambah-seal', [SealController::class, 'store']);
 Route::post('/getSeal', [SealController::class, 'getSeal']);
 Route::post('/getCodeSeal', [SealController::class, 'getCodeSeal']);
+Route::post('/getKodeSeal', [SealController::class, 'getKodeSeal']);

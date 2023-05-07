@@ -143,6 +143,7 @@
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Jumlah Kontainer</th>
+                                    <th></th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
                                     <th class="text-center">Nama Barang (CARGO)</th>
@@ -159,6 +160,7 @@
                                             <input type="text" id="jumlah-container[{{$loop->iteration}}]" name="jumlah-container[{{$loop->iteration}}]" class="form-control jumlah-container" required value="{{ $container->jumlah_kontainer }}">
                                         </div>
                                     </td>
+                                    <td>X</td>
                                     <td>
                                         <div class="validation-container">
                                             <select id="size[{{$loop->iteration}}]" name="size[{{$loop->iteration}}]" class="form-select"

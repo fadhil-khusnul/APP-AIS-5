@@ -63,7 +63,7 @@
                             <th>POL</th>
                             <th>POT</th>
                             <th>POD</th>
-                            <th class="align-top">Kontainer (SIZE - TYPE - CARGO)</th>
+                            <th class="align-top">JUMLAH X (SIZE - TYPE - CARGO CONTAINER)</th>
 
                             <th>Status</th>
                             <th>Aksi</th>
@@ -104,7 +104,7 @@
                                     @foreach ($containers as $container)
                                         @if ($planload->id == $container->job_id)
                                         <li>
-                                            {{$container->size}} - {{$container->type}} - {{$container->cargo}}
+                                            {{$container->jumlah_kontainer}} X ({{$container->size}} - {{$container->type}} - {{$container->cargo}})
                                         </li>
                                         @endif
                                     @endforeach

@@ -21,22 +21,31 @@ $(function () {
         maxDate: new Date()
     });
 
-    $(".date_activity").datepicker({
-        // orientation: direction,
-        format: "DD-MM-yyyy",
-        todayBtn: "linked",
-        clearBtn: true,
-        todayHighlight: true,
-        endDate : new Date(),
-        weekStart: 1,
-        language: "id",
+    var today = new Date();
+    var tahun = today.getFullYear();
+
+    var options = {
+         format: "DD, dd-MM-yyyy",
+         todayBtn: "linked",
+         clearBtn: true,
+         todayHighlight: true,
+         changeYear : true,
+
+         endDate : today,
+        //  startDate : tahun,
+         weekStart: 1,
+         "language" : "indonesian",
+         locale : "id",
+    };
+    $(".date_activity").datepicker(options);
+
         // language: "id",
         // locale: "id",
         // days: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"],
         // daysShort: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Ming"],
         // daysMin: ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Ming"],
         // months : ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
-    });
+    // });
     $("#bulan_seal").datepicker({
         format: "mm-dd",
         changeMonth: true,

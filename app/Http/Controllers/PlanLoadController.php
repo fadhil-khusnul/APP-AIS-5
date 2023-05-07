@@ -29,15 +29,15 @@ class PlanLoadController extends Controller
         $containers = ContainerPlanload::all();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
-        // dd($vessel);
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
 
-        return view('plan.planload', [
+        return view('plan.load.planload', [
             'title' => 'Load-Plan',
             'active' => 'Load',
             'planloads' => $planloads,
             'vessel' => $vessel,
             'select_company' => $select_company,
-            'containers' => $containers,
+            'containers' => $containers_group,
 
         ]);
     }
@@ -56,8 +56,8 @@ class PlanLoadController extends Controller
         $penerima = Penerima::all();
         $kontainer = Container::all();
         // dd($activity);
-        return view('plan.planload-create', [
-            'title' => 'Buat Load',
+        return view('plan.load.planload-create', [
+            'title' => 'Buat Load-Plan',
             'activity' => $activity,
             'active' => 'Plan',
             'shippingcompany' => $shipping_company,
@@ -163,8 +163,8 @@ class PlanLoadController extends Controller
         $size = Container::all();
         $type = TypeContainer::all();
         // dd($activity);
-        return view('plan.planload-edit', [
-            'title' => 'Edit Load',
+        return view('plan.load.planload-edit', [
+            'title' => 'Edit Load-Plan',
             'active' => 'Plan',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,

@@ -93,8 +93,15 @@
                     </button>
                 </div>
                 <div class="header-wrap header-wrap-block justify-content-start px-3">
-                    <h4 class="header-brand">{{$title}} @if ($active == "Process")
+                    <h4 class="header-brand">{{$title}}
+                        @if ($active == "Plan")
+                        <span class="badge badge-label-warning">{{$active}}</span>
+                        @endif
+                        @if ($active == "Process")
                         <span class="badge badge-label-success">{{$active}}</span>
+                        @endif
+                        @if ($active == "Realisasi")
+                        <span class="badge badge-label-danger">{{$active}}</span>
                         @endif
                     </h4>
                 </div>

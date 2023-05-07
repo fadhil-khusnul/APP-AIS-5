@@ -116,6 +116,7 @@ $('#filter_vessel').on("change", function(event) {
 
 
 $("#processload-create").DataTable({
+    // responsive : true,
     "paging": false,
     "info": false,
     "searching": false,
@@ -128,8 +129,20 @@ $("#processload-create").DataTable({
     scrollX:true,
     scrollCollapse:true,
     fixedColumns:{
-        leftColumns:3
+        leftColumns:2
     }
+});
+$("#realisasiload-create").DataTable({
+    responsive:true,
+    "paging": false,
+    "info": false,
+    "searching": false,
+    fixedHeader: {
+        header:true,
+        headerOffset:
+        offset
+    },
+
 });
 // $("#planload").DataTable({
 //     responsive:true,

@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seals', function (Blueprint $table) {
+        Schema::create('realisasi_loads', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->nullable();
-            $table->double('start_seal');
-            $table->double('touch_seal')->nullable();
-            $table->text('kode_seal');
-
             $table->timestamps();
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seals');
+        Schema::dropIfExists('realisasi_loads');
     }
 };

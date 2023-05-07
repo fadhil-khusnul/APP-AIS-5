@@ -3054,7 +3054,7 @@ body.preload-hide .preload {
 }
 
 .table-danger {
-  --bs-table-bg: rgba(244, 67, 54, 0.1);
+  --bs-table-bg: rgb(255, 183, 178);
   --bs-table-striped-bg: rgba(244, 67, 54, 0.3);
   --bs-table-active-bg: rgba(244, 67, 54, 0.7);
   --bs-table-hover-bg: rgba(244, 67, 54, 0.5);

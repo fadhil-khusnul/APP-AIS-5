@@ -152,8 +152,8 @@
                                                 <div class="validation-container">
                                                     <select data-bs-toggle="tooltip" id="seal[{{ $loop->iteration }}]"
                                                         name="seal[{{ $loop->iteration }}]" class="form-select seals"
-                                                        onchange="change_container(this)" required>
-                                                        <option selected disabled>Pilih seal</option>
+                                                        onchange="change_container(this)">
+                                                        <option selected disabled>Pilih Seal</option>
                                                         @foreach ($seals as $seal)
                                                             <option value="{{ $seal->kode_seal }}">
                                                                 {{ $seal->kode_seal }}</option>
@@ -291,7 +291,7 @@
                             <thead id="thead_biaya" class="table-success">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Jenis Kontainer</th>
+                                    <th class="text-center">Pilih Nomor Kontainer</th>
                                     <th class="text-center">Biaya</th>
                                     <th class="text-center">Keterangan</th>
                                     <th class="text-center">Aksi</th>
@@ -348,7 +348,7 @@
                             <thead id="thead_alih" class="table-success">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Pilih Kontainer</th>
+                                    <th class="text-center">Pilih Nomor Kontainer</th>
                                     <th class="text-center">Biaya Alih Kapal</th>
                                     <th class="text-center">Keterangan</th>
                                     <th class="text-center">Aksi</th>
@@ -384,7 +384,7 @@
                             <thead id="thead_batal_muat" class="table-success">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Pilih Container</th>
+                                    <th class="text-center">Pilih Nomor Container</th>
                                     <th class="text-center">Biaya Batal Muat</th>
                                     <th class="text-center">Keterangan</th>
                                     <th class="text-center">Aksi</th>

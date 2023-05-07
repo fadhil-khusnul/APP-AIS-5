@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seals', function (Blueprint $table) {
+        Schema::create('batal_muats', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->nullable();
-            $table->double('start_seal');
-            $table->double('touch_seal')->nullable();
-            $table->text('kode_seal');
-
+            $table->foreignId('job_id');
+            $table->string('kontainer_batal');
+            $table->double('harga_batal_muat');
+            $table->string('keterangan_batal_muat');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seals');
+        Schema::dropIfExists('batal_muats');
     }
 };

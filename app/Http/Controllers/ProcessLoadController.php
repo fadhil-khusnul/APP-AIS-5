@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProcessLoad;
-use App\Models\Pela;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Requests\StoreProcessLoadRequest;
 use App\Http\Requests\UpdateProcessLoadRequest;
 use App\Models\PlanLoad;
+use App\Models\AlihKapal;
+use App\Models\BatalMuat;
 use Illuminate\Http\Request;
 use App\Models\Stuffing;
 use App\Models\ShippingCompany;
@@ -30,12 +31,24 @@ class ProcessLoadController extends Controller
     {
         $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
         $containers = ContainerPlanload::all();
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
+        $select_company =  OrderJobPlanload::all()->unique('select_company');
+        $vessel =  OrderJobPlanload::all()->unique('vessel');
 
-        return view('process.processload',[
+        $biayas= BiayaLainnya::all();
+        $alihkapal= AlihKapal::all();
+        $batalmuat= BatalMuat::all();
+        return view('process.load.processload',[
             'title' => 'Load-Process',
             'active' => 'Load',
             'planloads' => $planloads,
             'containers' => $containers,
+            'containers_group' => $containers_group,
+            'select_company' => $select_company,
+            'vessel' => $vessel,
+            'biayas' => $biayas,
+            'alihkapal' => $alihkapal,
+            'batalmuat' => $batalmuat,
 
         ]);
     }
@@ -58,8 +71,8 @@ class ProcessLoadController extends Controller
         $lokasis = Depo::all();
         $seals = Seal::all();
         //
-        return view('process.processload-create',[
-            'title' => 'Buat Load',
+        return view('process.load.processload-create',[
+            'title' => 'Buat Load-Process',
             'active' => 'Process',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
@@ -82,7 +95,7 @@ class ProcessLoadController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request);
+        dd($request);
 
 
         $old_slug = $request->old_slug;
@@ -114,9 +127,10 @@ class ProcessLoadController extends Controller
 
         for ($k = 0; $k < $urutan; $k++) {
             $container = [
-                'seal' => $request->seals[$k],
-                'date_activity' => $request->date_activity[$k],
+                'nomor_kontainer' => $request->nomor_kontainer[$k],
+                'seal' => $request->seal[$k],
                 'cargo' => $request->cargo[$k],
+                'date_activity' => $request->date_activity[$k],
                 'lokasi_depo' => $request->lokasi[$k],
                 'driver' => $request->driver[$k],
                 'nomor_polisi' => $request->nomor_polisi[$k],
@@ -126,7 +140,6 @@ class ProcessLoadController extends Controller
                 'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
                 'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
                 'nomor_surat' => $request->no_surat[$k],
-                'bulan' => (int)$request->bulan[$k],
                 'tahun' => (int)$request->tahun[$k],
                 'status' => $status,
             ];
@@ -137,20 +150,40 @@ class ProcessLoadController extends Controller
         $job_id = [];
 
 
-        for ($i = 0; $i < $request->tambah; $i++) {
-            $job_id[$i] = $old_id;
-        }
-
-
         for ($i=0; $i <$request->tambah ; $i++) {
+            $job_id[$i] = $old_id;
             $biayas =[
                 'job_id' => $job_id[$i],
-                'pilih_kontainer' => $request->kontaienr_biaya[$i],
+                'kontainer_biaya' => $request->kontainer_biaya[$i],
                 'harga_biaya' => str_replace(".", "", $request->harga_biaya[$i]),
                 'keterangan' => $request->keterangan[$i],
             ];
 
             BiayaLainnya::create($biayas);
+        }
+
+        for ($i=0; $i <$request->clickalih ; $i++) {
+            $job_id[$i] = $old_id;
+            $alihs =[
+                'job_id' => $job_id[$i],
+                'kontainer_alih' => $request->kontainer_alih[$i],
+                'harga_alih_kapal' => str_replace(".", "", $request->harga_alih_kapal[$i]),
+                'keterangan_alih_kapal' => $request->keterangan_alih_kapal[$i],
+            ];
+
+            AlihKapal::create($alihs);
+        }
+
+        for ($i=0; $i <$request->clickbatal ; $i++) {
+            $job_id[$i] = $old_id;
+            $batals =[
+                'job_id' => $job_id[$i],
+                'kontainer_batal' => $request->kontainer_batal[$i],
+                'harga_batal_muat' => str_replace(".", "", $request->harga_batal_muat[$i]),
+                'keterangan_batal_muat' => $request->keterangan_batal_muat[$i],
+            ];
+
+            BatalMuat::create($batals);
         }
 
         return response()->json(['success' => true]);
@@ -209,7 +242,7 @@ class ProcessLoadController extends Controller
     public function getNoSurat(Request $request) {
         $tahun = $request->tahun;
         $bulan = $request->bulan;
-        $no_surat = ContainerPlanload::where('bulan', $bulan)->where('tahun', $tahun)->get();
+        $no_surat = ContainerPlanload::where('tahun', $tahun)->get();
         $count_no_surat = count($no_surat);
 
         return response()->json($count_no_surat);
@@ -221,7 +254,17 @@ class ProcessLoadController extends Controller
         for($i = 0; $i < count($seal); $i++) {
             $seal_process_load[$i] = $seal[$i]->seal;
         }
-        $seal_process_load_without_null = array_filter($seal_process_load, fn ($value) => !is_null($value));
+        $seal_process_load_without_null = array_merge(array_diff($seal_process_load, array(null)));
         return response()->json($seal_process_load_without_null);
+    }
+
+    public function getNoContainer() {
+        $no_container = ContainerPlanload::all();
+        $no_container_process_load = [];
+        for($i = 0; $i < count($no_container); $i++) {
+            $no_container_process_load[$i] = $no_container[$i]->nomor_kontainer;
+        }
+        $no_container_process_load_without_null = array_merge(array_diff($no_container_process_load, array(null)));
+        return response()->json($no_container_process_load_without_null);
     }
 }

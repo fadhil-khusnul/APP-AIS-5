@@ -152,6 +152,7 @@
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Jumlah Kontainer</th>
+                                    <th></th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
                                     <th class="text-center">Nama Barang (CARGO)</th>
