@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PlanLoad;
 use Illuminate\Http\Request;
 use App\Models\Stuffing;
+use App\Models\Stripping;
 use App\Models\ShippingCompany;
 use App\Models\Pelabuhan;
 use App\Models\Pengirim;
@@ -25,7 +26,7 @@ class PlanLoadController extends Controller
      */
     public function index()
     {
-        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Plan-Load')->get();
         $containers = ContainerPlanload::all();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
@@ -47,7 +48,7 @@ class PlanLoadController extends Controller
      */
     public function create(Request $request)
     {
-        $activity = Stuffing::all();
+        $activity = Stripping::where('jenis_kegiatan', 'Stuffing')->get();
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
@@ -88,7 +89,7 @@ class PlanLoadController extends Controller
         $vessel = str_replace('/','-', $vessel);
         $vessel = str_replace(' ','-', $vessel);
 
-        $slug = $company.'-'.$vessel.'-'.$request->tanggal_planload.'-'.$random;
+        $slug = $company.'-'.$vessel.'-'.$request->vessel_code.'-'.$random;
 
         $orderJob = [
             'activity' => $request->activity,
@@ -153,7 +154,7 @@ class PlanLoadController extends Controller
     public function edit(Request $request)
     {
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
-        $activity = Stuffing::all();
+        $activity = Stripping::where('jenis_kegiatan', 'Stuffing')->get();
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
@@ -204,7 +205,7 @@ class PlanLoadController extends Controller
         $vessel = str_replace('/','-', $vessel);
         $vessel = str_replace(' ','-', $vessel);
 
-        $slug = $company.'-'.$vessel.'-'.$request->tanggal_planload.'-'.$random;
+        $slug = $company.'-'.$vessel.'-'.$request->vessel_code.'-'.$random;
 
         $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
 

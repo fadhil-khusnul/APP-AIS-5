@@ -36,9 +36,7 @@ function CreateJobPlanload() {
             POL_1: {
                 required: true,
             },
-            POT_1: {
-                required: true,
-            },
+
             POD_1: {
                 required: true,
             },
@@ -69,9 +67,7 @@ function CreateJobPlanload() {
             POL_1: {
                 required: "Silakan Pilih POL",
             },
-            POT_1: {
-                required: "Silakan Pilih POT",
-            },
+
             POD_1: {
                 required: "Silakan Pilih POD",
             },
@@ -213,9 +209,7 @@ function UpdateteJobPlanload() {
             POL_1: {
                 required: true,
             },
-            POT_1: {
-                required: true,
-            },
+
             POD_1: {
                 required: true,
             },
@@ -246,9 +240,7 @@ function UpdateteJobPlanload() {
             POL_1: {
                 required: "Silakan Pilih POL",
             },
-            POT_1: {
-                required: "Silakan Pilih POT",
-            },
+         
             POD_1: {
                 required: "Silakan Pilih POD",
             },

@@ -1,114 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$vessel}}</title>
+    <title>{{ $vessel }}</title>
+    <link href="{{ public_path('/') }}./assetS/css-surat/pdf.css" rel="stylesheet" />
+
 </head>
+
 <body>
-    <header class="mt-1">
-        <img class="mt-1" src="{{ public_path('/') }}./asset/images/header.png" alt="">
+    <header class="">
+        <img class="header" src="{{ public_path('/') }}./assets/images/icon.png" alt="">
+        <table border="0" class="left">
+
+            <tr class="title1">
+                <td>PT.AIS LOGISTIK MAKASSAR</td>
+            </tr>
+            <tr class="title2">
+                <td>Jl.PERUMAHAN GREEN RIVER VIEW VINCA RESIDENCE</td>
+            </tr>
+            <tr class="title2">
+                <td>BAROMBONG,TAMALATE-KOTA MAKASSAR SULAWESI SELATAN</td>
+            </tr>
+            <tr><td>
+                0813 5570 7777 EMAIL <a href="">aislogisticmakassar@gmail.com</a>
+                </td>
+            </tr>
+
+        </table>
+        <hr />
     </header>
 
-    {{-- <footer>
-        <div class="footer-2">
-            Paraf________________
-        </div>
-        <div class="footer-1">
-            Jl. Jend. Hertasning No.99 Tamalate, Kec.Rappocini, Kota Makassar Telp 0411 886245 - 882707W
-            <link style="color: blue"><u style="color: blue">www.pln.co.id</u>
-            <link>
-        </div>
-    </footer> --}}
 
     <main>
-        @foreach ($loads as $load)
-        <div>
-            <table border="0">
-                <tr>
-                    <td colspan="3">
-                        SHIPPING INSTRUCTION
-                    </td>
-                </tr>
-                <tr>
-                    <td>SHIPPER</td>
-                    <td>:</td>
-                    <td>{{$load->select_company}}</td>
-                </tr>
-                <tr>
-                    <td>CONSIGNE</td>
-                    <td>:</td>
-                    <td>{{$load->select_company}}</td>
-                </tr>
-                <tr>
-                    <td>FEEDER</td>
-                    <td>:</td>
-                    <td>{{$load->select_company}}</td>
-                </tr>
-                <tr>
-                    <td>VESSEL</td>
-                    <td>:</td>
-                    <td>{{$load->vessel}}</td>
-                </tr>
-                <tr>
-                    <td>VESSEL CODE</td>
-                    <td>:</td>
-                    <td>{{$load->vessel_code}}</td>
-                </tr>
 
-            </table>
-        </div>
-            @foreach ($container as $container)
+        @foreach ($loads as $key => $load)
             <div>
-                <table border="0">
+                <table class="sub-judul" border="0" width="100%">
+                    <tr class="judul">
+                        <td colspan="5" class="judul">
+                            SHIPPING INSTRUCTION
+                        </td>
+                    </tr>
                     <tr>
-                        <td>QTY (SIZE TYPE X JUMLAH)</td>
+                        <td colspan="" width="30%">SHIPPER</td>
+                        <td width="4%">:</td>
+                        <td colspan="3">{{ $shipper }}</td>
+                    </tr>
+                    <tr>
+                        <td>CONSIGNE</td>
                         <td>:</td>
-                        <td>{{$container->size}} {{$container->type}} X {{$container->jumlah_container}}</td>
+                        <td colspan="3">{{ $consigne }}</td>
                     </tr>
                     <tr>
-                        <td>NOMOR KONTAINER</td>
-                        <td>SEAL</td>
-                        <td>COMMIDITY</td>
+                        <td>FEEDER</td>
+                        <td>:</td>
+                        <td colspan="3">PT. AIS LOGISTIK MAKASSAR</td>
                     </tr>
                     <tr>
-                        <td>{{$container->nomor_kontainer}}</td>
-                        <td>{{$container->seal}}</td>
-                        <td>{{$container->lokasi_depo}}</td>
+                        <td>VESSEL</td>
+                        <td>:</td>
+                        <td colspan="3">{{ $load->vessel }}</td>
                     </tr>
-                </table>
-            </div>
-            @endforeach
+                    <tr>
+                        <td>VESSEL CODE</td>
+                        <td>:</td>
+                        <td colspan="3">{{ $load->vessel_code }}</td>
+                    </tr>
+                    <tr>
+                        <td>QTY</td>
+                        <td>:</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    @foreach ($containers as $container)
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="3">{{$container["size"]}} X {{$container["size"]}} - {{$container["type"]}}</td>
+                    </tr>
 
-            <div>
-                <table>
+                    @endforeach
+                    <tr>
+                        <td>CONTAINER</td>
+                        <td>:</td>
+                        <td colspan="3"></td>
+                    </tr>
+
+                    <tr>
+                        <td  align="center" valign="top">NO. CONTAINER</td>
+                        <td colspan="2" align="center" valign="top">SEAL</td>
+                        <td align="center" valign="top">COMMODITY</td>
+                    </tr>
+                    @foreach ($containers as $container)
+                    <tr>
+                        <td align="center" valign="top">{{$container['nomor_kontainer']}}</td>
+                        <td colspan="2" align="center" valign="top">{{$container['seal']}}</td>
+                        <td align="center" valign="top">{{$container['cargo']}}</td>
+                    </tr>
+
+                    @endforeach
                     <tr>
                         <td>PORT OF LANDING</td>
                         <td>:</td>
                         <td>
-                            {{$load->pol}}
+                            {{ $load->pol }}
                         </td>
                     </tr>
                     <tr>
                         <td>PORT OF DISCHARGE</td>
                         <td>:</td>
                         <td>
-                            {{$load->pod}}
+                            {{ $load->pod }}
                         </td>
                     </tr>
+                    <tr>
+                        <td>YOURS FAITHFULLY</td>
+                    </tr>
+                    <tr>
+                        <td><img class="ttd" src="{{ public_path('/') }}./assets/images/ttd.png" alt="">
+                        </td>
+                    </tr>
+
+
                 </table>
             </div>
 
 
         @endforeach
 
-        <div>
-            <img src="{{ asset('/') }}./assets/images/ttd.png" width="50" alt="">
-        </div>
+
 
     </main>
 
 
 </body>
+
 </html>

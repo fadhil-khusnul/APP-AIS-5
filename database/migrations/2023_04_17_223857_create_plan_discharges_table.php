@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('plan_discharges', function (Blueprint $table) {
             $table->id();
+            $table->string('nomor_do');
+            $table->string('activity');
+            $table->string('select_company');
+            $table->text('vessel');
+            $table->text('vessel_code');
+            $table->string('pol');
+            $table->string('pod');
+            $table->string('pengirim');
+            $table->string('penerima')->nullable();
+            $table->text('slug');
+            $table->string('status');
             $table->timestamps();
         });
     }

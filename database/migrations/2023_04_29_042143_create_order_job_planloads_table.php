@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('vessel');
             $table->text('vessel_code');
             $table->string('pol');
-            $table->string('pot');
+            $table->string('pot')->nullable();
             $table->string('pod');
             $table->string('pengirim');
             $table->string('penerima')->nullable();

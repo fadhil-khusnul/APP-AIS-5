@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PlanDischarge extends Model
 {
     use HasFactory;
+    protected $guarded = [""];
+
 }

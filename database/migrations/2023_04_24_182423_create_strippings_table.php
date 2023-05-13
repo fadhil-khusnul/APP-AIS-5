@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('strippings', function (Blueprint $table) {
             $table->id();
-            $table->string('kegiatan_stripping');
+            $table->string('kegiatan');
+            $table->string('jenis_kegiatan');
             $table->timestamps();
         });
     }

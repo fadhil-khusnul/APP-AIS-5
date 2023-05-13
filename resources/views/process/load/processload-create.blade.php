@@ -67,7 +67,7 @@
                                     <td>{{ $planload->select_company }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Pengirim</td>
+                                    <td>Pemilik Barang</td>
                                     <td>:</td>
                                     <td>{{ $planload->pengirim }}</td>
                                 </tr>
@@ -99,16 +99,17 @@
                             <label for="inputState" class="form-label"><b>Jumlah Kontainer :</b></label>
                         </div>
                         <div class="table-responsive">
-
-                            <table id="processload-create" name="processload-create" class="table table-bordered mb-0">
+                            <table id="processload_create" name="processload_create" class="table autosize table-responsive table-bordered mb-0 tabel-fiks">
                                 <thead class="table-success text-nowrap">
                                     <tr>
+                                        <th class="text-center"></th>
                                         <th class="text-center">No</th>
                                         <th class="text-center">Size - Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Cargo (Nama Barang)</th>
+                                        <th class="text-center">Detail Nama Barang</th>
                                         <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Date Activity</th>
+                                        <th class="text-center">Tanggal Kegiatan</th>
                                         <th class="text-center">Lokasi Pickup</th>
                                         <th class="text-center">Nama Driver</th>
                                         <th class="text-center">Nomor Polisi</th>
@@ -117,19 +118,19 @@
                                         <th class="text-center">Biaya Trucking</th>
                                         <th class="text-center">Ongkos Supir</th>
                                         <th class="text-center">Biaya THC</th>
+                                        <th class="text-center">Jenis Mobil (Sewa/Sendiri)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
                                     @foreach ($containers as $container)
                                         <tr>
+                                            <td><button id="button_kontainer[{{$loop->iteration}}]" name="button_kontainer[{{$loop->iteration}}]" class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button" onclick="delete_kontainer(this)"><i class="fa fa-trash"></i></button></td>
                                             <td>{{ $loop->iteration }}</td>
 
                                             <td>
                                                 <label disabled @readonly(true)
-                                                    id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }}</label>
-                                                -
-                                                <label disabled @readonly(true)
-                                                    id="type[{{ $loop->iteration }}]">{{ old('type', $container->type) }}</label>
+                                                    id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }} - {{ old('type', $container->type) }}</label>
+
                                             </td>
                                             <td>
                                                 <div class="validation-container">
@@ -141,10 +142,20 @@
                                             </td>
                                             <td>
                                                 <div class="validation-container">
+                                                    {{-- <label disabled @readonly(true)
+                                                    id="cargo[{{ $loop->iteration }}]">{{ old('cargo', $container->cargo) }} </label> --}}
                                                     <input data-bs-toggle="tooltip" type="text" class="form-control"
                                                         id="cargo[{{ $loop->iteration }}]"
                                                         name="cargo[{{ $loop->iteration }}]"
                                                         value="{{ old('cargo', $container->cargo) }}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="validation-container">
+                                                    <textarea data-bs-toggle="tooltip" class="form-control"
+                                                        id="detail_barang[{{ $loop->iteration }}]"
+                                                        name="detail_barang[{{ $loop->iteration }}]"
+                                                        ></textarea>
                                                 </div>
                                             </td>
 
@@ -180,7 +191,7 @@
                                                         class="form-select lokasi-pickup" required>
                                                         <option selected disabled>Pilih Lokasi</option>
                                                         @foreach ($lokasis as $lokasi)
-                                                            <option value="{{ $lokasi->id }}">
+                                                            <option value="{{ $lokasi->nama_depo }}">
                                                                 {{ $lokasi->nama_depo }}</option>
                                                         @endforeach
                                                     </select>
@@ -255,6 +266,18 @@
                                                         placeholder="Biaya THC..." required>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="validation-container">
+                                                    <select data-bs-toggle="tooltip" id="jenis_mobil[{{ $loop->iteration }}]"
+                                                        name="jenis_mobil[{{ $loop->iteration }}]"
+                                                        class="form-select" required>
+                                                        <option selected disabled>Pilih Jenis Mobil</option>
+                                                        <option value="Mobil Sewa">Mobil Sewa</option>
+                                                        <option value="Mobil Sendiri">Mobil Sendiri</option>
+
+                                                    </select>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -288,7 +311,7 @@
                         </div>
 
                         <table id="table_biaya" class="table mb-0">
-                            <thead id="thead_biaya" class="table-success">
+                            <thead id="" class="table-success">
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Pilih Nomor Kontainer</th>
@@ -343,21 +366,29 @@
                         <div class="col-md-12 text-center">
                             <label for="inputState" class="form-label"><b>ALIH KAPAL (JIKA ADA)</b></label>
                         </div>
+                        <div class="table-responsive">
 
-                        <table id="table_alih_kapal" class="table mb-0">
-                            <thead id="thead_alih" class="table-success">
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th class="text-center">Pilih Nomor Kontainer</th>
-                                    <th class="text-center">Biaya Alih Kapal</th>
-                                    <th class="text-center">Keterangan</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_alih" class="text-center">
+                            <table id="table_alih_kapal" class="table table-responsive mb-0 tabel-fiks">
+                                <thead id="thead_alih" class="table-success text-nowrap">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Pilih Nomor Kontainer</th>
+                                        <th class="text-center">Piih Pelayaran</th>
+                                        <th class="text-center">Piih POT (Jika Ada)</th>
+                                        <th class="text-center">Piih POD</th>
+                                        <th class="text-center">vessel/Voyage</th>
+                                        <th class="text-center">Kode vessel</th>
+                                        <th class="text-center">Biaya Alih Kapal</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_alih" class="text-center">
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="tambah_alih()"
                                 class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>

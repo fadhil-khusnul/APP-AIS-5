@@ -16,10 +16,21 @@ class StrippingSeeder extends Seeder
     {
         //
         Stripping::create([
-            'kegiatan_stripping' => 'Stripping Dalam',
+            'kegiatan' => 'Stripping Dalam',
+            'jenis_kegiatan' => 'Stripping',
         ]);
         Stripping::create([
-            'kegiatan_stripping' => 'Stripping Luar',
+            'kegiatan' => 'Stripping Luar',
+            'jenis_kegiatan' => 'Stripping',
+        ]);
+        Stripping::create([
+            'kegiatan' => 'Stuffing Luar',
+            'jenis_kegiatan' => 'Stuffing',
+        ]);
+
+        Stripping::create([
+            'kegiatan' => 'Stuffing Dalam',
+            'jenis_kegiatan' => 'Stuffing',
         ]);
     }
 }

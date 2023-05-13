@@ -502,7 +502,7 @@
 
     </div>
 
-    <div class="col-6">
+    {{-- <div class="col-6">
 
         <div class="portlet">
             <div class="portlet-header portlet-header-bordered">
@@ -548,12 +548,12 @@
             </div>
         </div>
 
-    </div>
+    </div> --}}
     <div class="col-6">
 
         <div class="portlet">
             <div class="portlet-header portlet-header-bordered">
-                <h3 class="portlet-title">KEGIATAN DISCHARGE (Stripping)</h3>
+                <h3 class="portlet-title">KEGIATAN ACTIVITY (Stuffing/Stripping)</h3>
             </div>
             <div class="portlet-body">
                 <div class="text-end">
@@ -567,6 +567,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Kegiatan</th>
+                            <th>Jenis Kegiatan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -578,7 +579,10 @@
                                 {{$loop->iteration}}
                             </td>
                             <td>
-                                {{$stripp->kegiatan_stripping}}
+                                {{$stripp->kegiatan}}
+                            </td>
+                            <td>
+                                {{$stripp->jenis_kegiatan}}
                             </td>
                             <td class="text-center"><button onclick="editstripp(this)" value="{{$stripp->id}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
 
@@ -1232,7 +1236,7 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Kegiatan Discharge (Stripping)</h5>
+                    <h5 class="modal-title">Edit Data Kegiatan</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
@@ -1241,6 +1245,14 @@
                     <div>
                         <label class="form-label" for="text">Nama Kegiatan</label>
                         <input class="form-control" id="kegiatan_stripping_edit" name="kegiatan_stripping_edit" type="text">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stripping">
+                        <label class="form-check-label" for="flexRadioDefault1">Stripping </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stufffing">
+                        <label class="form-check-label" for="flexRadioDefault1">Stufffing </label>
                     </div>
 
                 </div>

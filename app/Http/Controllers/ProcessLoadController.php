@@ -12,6 +12,7 @@ use App\Models\AlihKapal;
 use App\Models\BatalMuat;
 use Illuminate\Http\Request;
 use App\Models\Stuffing;
+use App\Models\Stripping;
 use App\Models\ShippingCompany;
 use App\Models\Pelabuhan;
 use App\Models\Pengirim;
@@ -29,7 +30,7 @@ class ProcessLoadController extends Controller
      */
     public function index()
     {
-        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->get();
         $containers = ContainerPlanload::all();
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
@@ -60,7 +61,7 @@ class ProcessLoadController extends Controller
     {
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
 
-        $activity = Stuffing::all();
+        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
@@ -95,7 +96,7 @@ class ProcessLoadController extends Controller
     public function store(Request $request)
     {
 
-        dd($request);
+        // dd($request);
 
 
         $old_slug = $request->old_slug;
@@ -140,6 +141,8 @@ class ProcessLoadController extends Controller
                 'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
                 'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
                 'nomor_surat' => $request->no_surat[$k],
+                'jenis_mobil' => $request->jenis_mobil[$k],
+                'detail_barang' => $request->detail_barang[$k],
                 'tahun' => (int)$request->tahun[$k],
                 'status' => $status,
             ];
@@ -169,6 +172,11 @@ class ProcessLoadController extends Controller
                 'kontainer_alih' => $request->kontainer_alih[$i],
                 'harga_alih_kapal' => str_replace(".", "", $request->harga_alih_kapal[$i]),
                 'keterangan_alih_kapal' => $request->keterangan_alih_kapal[$i],
+                'pelayaran_alih' => $request->pelayaran_alih[$i],
+                'pot_alih' => $request->pot_alih[$i],
+                'pod_alih' => $request->pod_alih[$i],
+                'vesseL_alih' => $request->vesseL_alih[$i],
+                'code_vesseL_alih' => $request->code_vesseL_alih[$i],
             ];
 
             AlihKapal::create($alihs);
@@ -241,12 +249,13 @@ class ProcessLoadController extends Controller
 
     public function getNoSurat(Request $request) {
         $tahun = $request->tahun;
-        $bulan = $request->bulan;
         $no_surat = ContainerPlanload::where('tahun', $tahun)->get();
         $count_no_surat = count($no_surat);
 
         return response()->json($count_no_surat);
     }
+
+
 
     public function getSealProcessLoad(Request $request) {
         $seal = ContainerPlanload::all();
@@ -266,5 +275,16 @@ class ProcessLoadController extends Controller
         }
         $no_container_process_load_without_null = array_merge(array_diff($no_container_process_load, array(null)));
         return response()->json($no_container_process_load_without_null);
+    }
+
+    public function getpelayaran()
+    {
+        $pelayaran = ShippingCompany::all();
+        $pelabuhan = Pelabuhan::all();
+        $alih = [
+            'pelayaran' => $pelayaran,
+            'pelabuhan' => $pelabuhan
+        ];
+        return response()->json($alih);
     }
 }

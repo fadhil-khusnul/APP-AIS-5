@@ -32,7 +32,7 @@ class RealisasiLoadController extends Controller
     {
         //
 
-        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where("status", "Process-Load")->get();
+        $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
         $containers = ContainerPlanload::all();
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  OrderJobPlanload::all()->unique('select_company');

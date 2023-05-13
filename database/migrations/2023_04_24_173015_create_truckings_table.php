@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('truckings', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_polisi');
-            $table->string('nama_driver');
+            $table->string('pelayaran');
+            $table->text('vessel');
+            $table->text('vessel_code');
+            $table->string('activity');
+            $table->string('emkl');
+            $table->text('slug');
+            $table->string('status');
             $table->timestamps();
         });
     }

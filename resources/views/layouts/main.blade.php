@@ -13,6 +13,7 @@
     <link href="{{ asset('/') }}./assets/build/styles/ltr-core.css" rel="stylesheet">
     <link href="{{ asset('/') }}./assets/build/styles/ltr-vendor.css" rel="stylesheet">
     <link href="{{ asset('/') }}./assets/images/icon.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <title>{{$title}} | APP AIS-5</title>
 
@@ -70,6 +71,7 @@
 
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/fixed-header.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/search-panes.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/typeahead.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/datepicker.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/select2.js"></script>

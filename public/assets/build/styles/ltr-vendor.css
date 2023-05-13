@@ -2467,7 +2467,7 @@ body.dt-rowReorder-noOverflow {
 }
 
 .dtsp-searchPane {
-  flex: 1;
+  flex: auto;
   margin: 0.5rem;
 }
 .dtsp-searchPane .dataTables_scrollBody {

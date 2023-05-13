@@ -29,8 +29,8 @@ $(function () {
          todayBtn: "linked",
          clearBtn: true,
          todayHighlight: true,
-         changeYear : true,
-
+         changeYear : false,
+        //  startDate: tahun,
          endDate : today,
         //  startDate : tahun,
          weekStart: 1,

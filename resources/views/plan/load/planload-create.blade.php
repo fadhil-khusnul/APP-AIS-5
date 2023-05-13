@@ -55,7 +55,7 @@
 
 
                             <div class="col-md-6 validation-container">
-                                <label for="company" class="form-label">Shipping Company</label>
+                                <label for="company" class="form-label">Shipping Company (Pelayaran)</label>
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Company</option>
                                     @foreach ($shippingcompany as $shippingcompany)
@@ -65,9 +65,9 @@
                             </div>
 
                             <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pengirim</label>
+                                <label for="POL" class="form-label">Pemilik Barang</label>
                                 <select id="Pengirim_1" name="Pengirim_1" class="form-select">
-                                    <option selected disabled>Pilih Pengirim</option>
+                                    <option selected disabled>Pilih Pemilik Barang</option>
                                     @foreach ($pengirim as $pengirim)
                                         <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
                                     @endforeach
@@ -79,7 +79,7 @@
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled>Pilih Activity</option>
                                     @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan_stuffing }}">{{ $activity->kegiatan_stuffing }}</option>
+                                        <option value="{{ $activity->kegiatan }}">{{ $activity->kegiatan }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -96,7 +96,7 @@
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">POT</label>
                                 <select id="POT_1" name="POT_1" class="form-select">
-                                    <option selected disabled>Pilih POT</option>
+                                    <option selected disabled value="">Pilih POT</option>
                                     @foreach ($pot as $pot)
                                         <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} - {{ $pot->nama_pelabuhan }}
                                         </option>

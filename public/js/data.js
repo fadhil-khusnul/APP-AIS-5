@@ -1135,7 +1135,8 @@ function editstripp(e) {
         success: function (response) {
             $('#modal-discharge-edit').modal('show');
 
-            $('#kegiatan_stripping_edit').val(response.result.kegiatan_stripping);
+            $('#kegiatan_stripping_edit').val(response.result.kegiatan);
+            $('#jenis_kegiatan_edit').val(response.result.jenis_kegiatan);
 
             $('#valid_stripping_edit').validate({
                 rules: {
@@ -1162,7 +1163,8 @@ function editstripp(e) {
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            kegiatan_stripping: $('#kegiatan_stripping_edit').val(),
+                            kegiatan: $('#kegiatan_stripping_edit').val(),
+                            jenis_kegiatan: $('#jenis_kegiatan_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({

@@ -1,0 +1,229 @@
+
+:root {
+    font-family: 'Calibri';
+}
+
+/* @page {
+    margin: 180px 20px 100px 20px;
+} */
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Regular'), local('Calibri-Regular'),
+        url('Calibri.woff2') format('woff2'),
+        url('Calibri.woff') format('woff'),
+        url('Calibri.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Bold'), local('Calibri-Bold'),
+        url('Calibri-Bold.woff2') format('woff2'),
+        url('Calibri-Bold.woff') format('woff'),
+        url('Calibri-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Bold Italic'), local('Calibri-Bold-Italic'),
+        url('Calibri-BoldItalic.woff2') format('woff2'),
+        url('Calibri-BoldItalic.woff') format('woff'),
+        url('Calibri-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Italic'), local('Calibri-Italic'),
+        url('Calibri-Italic.woff2') format('woff2'),
+        url('Calibri-Italic.woff') format('woff'),
+        url('Calibri-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+.header-invoice {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: -1.2cm;
+    left: -50px;
+    /* right: -20px; */
+    width: 115%;
+
+
+}
+.footer-invoice {
+    position: fixed;
+    bottom: -1.2cm;
+    /* margin-top: 20px; */
+    /* top: -40px; */
+    left: -50px;
+    /* right: -20px; */
+    width: 115%;
+
+
+}
+.header-invoice2 {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: 30px;
+    right: 130px;
+    /* right: -20px; */
+    width: 12%;
+
+
+}
+.header-invoice3 {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: -17px;
+    right: -17px;
+    /* right: -20px; */
+    width: 22%;
+
+
+}
+.ttd{
+    width: 95%;
+}
+
+.judul {
+    /* font-family: Calibri; */
+    font-weight: bold;
+    font-style: normal;
+    font-size: 14px;
+    text-decoration: underline;
+    text-align: center;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+.sub-judul {
+    /* font-family: Calibri; */
+    /* font-weight: bold;
+    text-transform: uppercase; */
+    margin-top: 30px;
+    /* tab-size: 4; */
+    /* padding-bottom: 20px; */
+}
+.left {
+    font-family: Calibri;
+    /* font-weight: bold;
+    text-transform: uppercase; */
+    /* margin-left: 200px;
+    margin-bottom: 20px; */
+    /* tab-size: 4; */
+    /* padding-bottom: 20px; */
+}
+
+
+.title1 {
+    font-family: Calibri;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 28px;
+    color:#00ad4c;
+    color:#102b5d;
+
+    /* text-align: center; */
+}
+h3 {
+    font-family: Calibri;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 18px;
+    text-decoration: underline;
+    color:#102b5d;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 15px;
+
+}
+.title2 {
+    font-family: Calibri;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 14px;
+    color:#102b5d;
+
+    /* text-align: center; */
+
+
+}
+.title3 {
+    font-family: Calibri;
+    font-style: normal;
+    font-size: 14px;
+    color:#102b5d;
+
+    /* text-align: center; */
+
+
+}
+.header2{
+    margin-bottom: 10px;
+    color:#102b5d;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+
+}
+
+.striped th {
+    background-color: #4371c7;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+
+
+}
+.striped tr:nth-child(even){
+    background-color: #b4c6e6;
+    font-size: 14px;
+
+
+}
+.striped tr {
+    color: #102b5d;
+    font-size: 14px;
+
+
+}
+.striped tbody tr td:first-child {
+    text-align: center;
+
+}
+.striped tfoot tr:first-child {
+    background-color: #ffffff;
+    color: #102b5d;
+    font-weight: bold;
+    text-align: right;
+    font-size: 14px;
+
+
+}
+.striped tfoot tr:nth-child(2){
+    background-color: #b4c6e6;
+    color: #102b5d;
+    font-style: italic;
+    text-align: center;
+    font-size: 14px;
+
+
+}
+.bank tr td:nth-child(odd){
+    border: 2px solid #102b5d;
+    text-align: center;
+
+}
+.bank{
+    margin-top: 60px;
+    font-size: 12px;
+
+}

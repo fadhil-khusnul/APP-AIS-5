@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('kontainer_alih');
             $table->double('harga_alih_kapal');
             $table->string('keterangan_alih_kapal');
+            $table->string('pelayaran_alih');
+            $table->string('pot_alih');
+            $table->string('pod_alih');
+            $table->string('vesseL_alih');
+            $table->string('code_vesseL_alih');
             $table->timestamps();
         });
     }

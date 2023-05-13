@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             PengirimSeeder::class,
             StuffingSeeder::class,
             StrippingSeeder::class,
-            TruckingSeeder::class,
+            // TruckingSeeder::class,
             TypeContainerSeeder::class,
 
         ]);

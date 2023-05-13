@@ -55,20 +55,7 @@ $(function () {
     let token = $("#csrf").val();
     var seal = [];
 
-    $.ajax({
-        url: "/getSeal",
-        type: "post",
-        async: false,
-        data: {
-            _token: token,
-        },
-        success: function (response) {
-            for (var i = 0; i < response.length; i++) {
-                seal[i] = response[i].kode_seal;
-            }
-        },
-    });
-
+   
 
     function matcher(dataset) {
         return function findMatches(query, callback) {

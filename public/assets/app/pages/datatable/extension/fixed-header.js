@@ -95,15 +95,7 @@ $("#kegiatan-stripping").DataTable({
     }
 });
 
-var planload = $("#planload").DataTable({
-    responsive:true,
-    fixedHeader:
-    {
-        header:true,
-        headerOffset:
-        offset
-    },
-});
+
 
 $('#filter_company').on("change", function(event) {
     var status = $('#filter_company').val();
@@ -115,7 +107,7 @@ $('#filter_vessel').on("change", function(event) {
 });
 
 
-$("#processload-create").DataTable({
+$("#processload_create").DataTable({
     // responsive : true,
     "paging": false,
     "info": false,
@@ -129,10 +121,11 @@ $("#processload-create").DataTable({
     scrollX:true,
     scrollCollapse:true,
     fixedColumns:{
-        leftColumns:2
+        leftColumns:3
     }
 });
-$("#realisasiload-create").DataTable({
+
+$("#realisasiload_create").DataTable({
     responsive:true,
     "paging": false,
     "info": false,

@@ -9,10 +9,16 @@ class ContainerPlanload extends Model
 {
     use HasFactory;
 
-    protected $guarded = [''];
+    protected $guarded = [""];
 
     public function kontainers(){
         return $this->belongsTo(Container::class, 'kontainer', 'id');
+    }
+
+
+    public function order_job_planloads()
+    {
+        return $this->belongsTo(OrderJobPlanload::class, 'id');
     }
 
 }

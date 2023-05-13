@@ -24,8 +24,13 @@ class AppServiceProvider extends ServiceProvider
         //
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
+
+
         Blade::directive('rupiah', function ($expression) {
             return "Rp. <?php echo number_format((float)$expression,0,',','.'); ?>";
+        });
+        Blade::directive('rupiah2', function ($expression) {
+            return "<?php echo number_format((float)$expression,0,',','.'); ?>";
         });
     }
 }

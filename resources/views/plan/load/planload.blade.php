@@ -17,7 +17,7 @@
 
 
                 <div class="row row-cols-lg-auto px-5 g-5">
-                    <div class="col-6">
+                    {{-- <div class="col-6">
                         <select class="form-select" id="filter_company">
                             <option selected disabled>Filter Shipping Company</option>
                             @foreach ($select_company as $select_company)
@@ -38,9 +38,9 @@
 
                         </select>
 
-                    </div>
+                    </div> --}}
                     <div style="margin-left: auto; margin-right:0px;" class="margin-atas text-end">
-                        <a href="planload/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Job (Load)</a>
+                        <a href="planload/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Plan (Load)</a>
                     </div>
 
 
@@ -52,13 +52,13 @@
 
                 <!-- BEGIN Datatable -->
                 <table id="planload" class="table table-responsive table-bordered table-striped table-hover autosize">
-                    <thead class="align-top text-nowrap">
+                    <thead class="align-top">
                         <tr>
                             <th>No</th>
                             <th>Vessel</th>
                             <th>Vessel-Code</th>
                             <th>Shipping Company</th>
-                            <th>Pengirim</th>
+                            <th>Pemilik Barang</th>
                             <th>Activity</th>
                             <th>POL</th>
                             <th>POT</th>
@@ -177,5 +177,6 @@
     </div>
 
 </div>
+
 
 @endsection

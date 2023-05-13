@@ -30,6 +30,8 @@ return new class extends Migration
             $table->double('ongkos_supir')->nullable();
             $table->double('biaya_thc')->nullable();
             $table->string('nomor_surat')->nullable();
+            $table->string('jenis_mobil')->nullable();
+            $table->text('detail_barang')->nullable();
             $table->integer('bulan')->nullable();
             $table->integer('tahun')->nullable();
             $table->string('status')->nullable();

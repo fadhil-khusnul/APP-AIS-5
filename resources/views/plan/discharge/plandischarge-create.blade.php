@@ -1,211 +1,191 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="row">
-    <div class="col-12">
-        <!-- BEGIN Portlet -->
-        <div class="portlet">
-            <div class="portlet-header portlet-header-bordered">
-                <h3 class="header-title">Activity</h3>
-                <i class="header-divider"></i>
-                <div class="header-wrap header-wrap-block justify-content-start">
-                    <!-- BEGIN Breadcrumb -->
-                    <div class="breadcrumb breadcrumb-transparent mb-0">
-                        <a href="/plandischarge" class="breadcrumb-item">
-                            <div class="breadcrumb-icon">
-                                <i class="fa fa-clone"></i>
-                            </div>
-                            <span class="breadcrumb-text">Activity</span>
-                        </a>
-                        <a href="/plandischarge" class="breadcrumb-item">
-                            <span class="breadcrumb-text">Job Order Discharge</span>
-                        </a>
-                        <a href="/plandischarge" class="breadcrumb-item">
-                            <span class="breadcrumb-text">Discharge</span>
-                        </a>
+    <div class="row">
+        <div class="col-12">
+            <!-- BEGIN Portlet -->
+            <div class="portlet">
+                <div class="portlet-header portlet-header-bordered">
+                    <h3 class="header-title">Activity</h3>
+                    <i class="header-divider"></i>
+                    <div class="header-wrap header-wrap-block justify-content-start">
+                        <!-- BEGIN Breadcrumb -->
+                        {{-- <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}"> --}}
+                        <div class="breadcrumb breadcrumb-transparent mb-0">
+                            <a href="/plandischarge" class="breadcrumb-item text-primary">
+                                <div class="breadcrumb-icon">
+                                    <i class="fa fa-clone"></i>
+                                </div>
+                                <span class="breadcrumb-text">Activity</span>
+                            </a>
+                            <a href="/plandischarge" class="breadcrumb-item text-primary">
+                                <span class="breadcrumb-text">Load</span>
+                            </a>
+                            <a href="/plandischarge" class="breadcrumb-item text-warning">
+                                <span class="breadcrumb-text">Plan</span>
+                            </a>
 
+                        </div>
+                        <!-- END Breadcrumb -->
                     </div>
-                    <!-- END Breadcrumb -->
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-12">
-        <div class="portlet">
+        <form class="row row-cols-lg-12 g-3" id="valid_planload" name="valid_planload">
+            <div class=" col-md-6">
+                <div class="portlet">
 
-            <div class="portlet-body">
+                    <div class="portlet-body row">
+                        <!-- BEGIN Form -->
 
-                <!-- BEGIN Form -->
-                <form class="row g-3">
-                    <div class="col-md-6">
-                        <label for="" class="form-label">Date</label>
-                        <input type="text" class="form-control" placeholder="Select date" id="datepicker-3">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="" class="form-label">Activity</label>
-                        <select id="activity" class="form-select">
-                            <option selected disabled>Pilih Activity</option>
-                            <option>...</option>
-                        </select>
-                    </div>
+                            {{-- <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Date</label>
+                                <input type="text" class="form-control data-date-end-date="0d"" placeholder="Select Date" id="tanggal_planload"
+                                    name="tanggal_planload">
+                            </div> --}}
 
-                    <div class="col-md-6">
-                        <label for="company" class="form-label">Shipping Company</label>
-                        <select id="select2-1">
-                            <option value="AK" selected disabled>Pilih Company</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
+                            <div class="col-md-12 validation-container">
+                                <label for="inputAddress2" class="form-label">Nomor DO</label>
+                                <input name="nomor_do" id="nomor_do" class="form-control">
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
+                                <input name="vessel" id="vessel" class="form-control">
+                            </div>
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">Vessel Code</label>
+                                <input name="vessel_code" id="vessel_code" class="form-control">
+                            </div>
+
+
+                            <div class="col-md-6 validation-container">
+                                <label for="company" class="form-label">Shipping Company</label>
+                                <select id="select_company" name="select_company" class="form-select">
+                                    <option selected disabled>Pilih Company</option>
+                                    @foreach ($shippingcompany as $shippingcompany)
+                                        <option value="{{ $shippingcompany->nama_company }}">{{ $shippingcompany->nama_company }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Pengirim</label>
+                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled value="0">Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Penerima</label>
+                                <select id="penerima_1" name="penerima_1" class="form-select">
+                                    <option selected disabled value="0">Pilih Penerima</option>
+                                    @foreach ($penerima as $penerima)
+                                        <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Activity</label>
+                                <select id="activity" name="activity" class="form-select">
+                                    <option selected disabled value="0">Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan}}">{{ $activity->kegiatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">POL</label>
+                                <select id="POL_1" name="POL_1" class="form-select">
+                                    <option selected disabled value="0">Pilih POL</option>
+                                    @foreach ($pol as $pol)
+                                        <option value="{{ $pol->nama_pelabuhan }}">{{ $pol->area_code }} - {{ $pol->nama_pelabuhan }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">POD</label>
+                                <select id="POD_1" name="POD_1" class="form-select">
+                                    <option selected disabled value="0">Pilih POD</option>
+                                    @foreach ($pod as $pod)
+                                        <option value="{{ $pod->nama_pelabuhan }}">{{ $pod->area_code }} -
+                                            {{ $pod->nama_pelabuhan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+
                     </div>
-                    <div class="col-md-6">
-                        <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
-                        <textarea name="" id="" class="form-control"></textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="POL" class="form-label">POL</label>
-                        <select id="POL-1">
-                            <option value="AK" selected disabled>Pilih POL</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
-                    </div>
-                    {{-- <div class="col-md-6">
-                        <label for="POL" class="form-label">POT</label>
-                        <select id="POT-1">
-                            <option value="AK" selected disabled>Pilih POT</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
-                    </div> --}}
-                    <div class="col-md-6">
-                        <label for="POL" class="form-label">POD</label>
-                        <select id="POD-1">
-                            <option value="AK" selected disabled>Pilih POD</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="POL" class="form-label">Pengirim</label>
-                        <select id="Pengirim-1">
-                            <option value="AK" selected disabled>Pilih Pengirim</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="POL" class="form-label">Penerima</label>
-                        <select id="Penerima-1">
-                            <option value="AK" selected disabled>Pilih Penerima</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="CA">California</option>
-                            <option value="NV">Nevada</option>
-                            <option value="OR">Oregon</option>
-                            <option value="WA">Washington</option>
-                        </select>
-                    </div>
-                </form>
-                <!-- END Form -->
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
             </div>
-        </div>
-        <!-- BEGIN Portlet -->
+            <div class="col-md-6 ">
+                <div class="portlet">
 
-        <!-- END Portlet -->
-    </div>
-    <div class="col-md-12">
-        <div class="portlet">
+                    <div class="portlet-body">
+                        {{-- <form action="#" class="row g-3" id="valid_planload" name="valid_planload"></form> --}}
 
-            <div class="portlet-body">
+                        <!-- BEGIN Form -->
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
-                <!-- BEGIN Form -->
-                <form class="row g-3">
 
-                    <div class="col-md-12 text-center">
-                        <label for="inputState" class="form-label"><b>Kontainer :</b></label>
-                    </div>
-                    <div class="table-responsive">
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><b>Detail Kontainer :</b></label>
+                        </div>
 
-                        <table class="table">
-                            <thead class="table-success">
+                        <table class="table mb-0" id="table_container">
+                            <thead class="table-warning" id="thead_container">
                                 <tr>
-                                    <th class="text-center" >No</th>
-                                    <th class="text-center" >Nomor(Kontainer)</th>
-                                    <th class="text-center" >Size(Kontainer)</th>
-                                    <th class="text-center" >Type(Kontainer)</th>
-                                    <th class="text-center" >Seal(Kontainer)</th>
-                                    <th class="text-center" >No. BL(Kontainer)</th>
-                                    <th class="text-center" >Cargo(Kontainer)</th>
-                                    <th class="text-center" >Aksi</th>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Jumlah Kontainer</th>
+                                    <th></th>
+                                    <th class="text-center">Size</th>
+                                    <th class="text-center">Type</th>
+                                    <th class="text-center">Nama Barang (CARGO)</th>
+                                    <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td><input type="text" class="form-control" value=""></td>
-                                    <td><select id="size" class="form-select">
-                                        <option selected disabled>Pilih Size</option>
-                                        <option>...</option>
-                                    </select></td>
-                                    <td><select id="type" class="form-select">
-                                        <option selected disabled>Pilih Type</option>
-                                        <option>...</option>
-                                    </select></td>
-                                    <td><select id="seal" class="form-select">
-                                        <option selected disabled>Pilih Seal</option>
-                                        <option>...</option>
-                                    </select></td>
-                                    <td><input type="text" class="form-control" value="" placeholder=""></td>
-                                    <td><input type="text" class="form-control" value=""></td>
-                                    <td><button class="btn btn-label-danger btn-icon btn-circle btn-sm"><i class="fa fa-trash"></i></button></td>
-                                </tr>
-
+                            <tbody class="text-center" id="tbody_container">
 
                             </tbody>
-
                         </table>
+                        <div class="mt-5 mb-5">
+                            <button id="add_container" onclick="tambah_kontener()" type="button"
+                                class="btn btn-label-primary btn-icon"> <i class="fa fa-plus"></i></button>
+                        </div>
+
+
+
+                        <div class="col-12 text-end">
+                            {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
+                            <button type="submit" onclick="CreateJobPlanDischarge()"
+                                class="btn btn-primary">Proccess</button>
+                        </div>
+                        <!-- END Form -->
                     </div>
+                </div>
+                <!-- BEGIN Portlet -->
 
-                    <div class="">
-                        <button class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
-                    </div>
-
-
-
-                    <div class="col-md-12">
-                        <label for="POL" class="form-label">Remark :</label>
-                        <textarea class="form-control" name=""></textarea>
-
-
-
-                    </div>
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-primary">Proccess</button>
-                    </div>
-                </form>
-                <!-- END Form -->
+                <!-- END Portlet -->
             </div>
-        </div>
-        <!-- BEGIN Portlet -->
+        </form>
 
-        <!-- END Portlet -->
+
     </div>
-</div>
 
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/discharge-plan.js"></script>
 @endsection
-
-

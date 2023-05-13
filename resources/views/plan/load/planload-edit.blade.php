@@ -72,7 +72,7 @@
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled>Pilih Activity</option>
                                     @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan_stuffing }}" @if ($activity->kegiatan_stuffing == $planload->activity) selected @endif>{{ $activity->kegiatan_stuffing }}</option>
+                                        <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan_stuffing }}</option>
                                     @endforeach
                                 </select>
                             </div>

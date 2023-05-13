@@ -10,4 +10,10 @@ class Stripping extends Model
     use HasFactory;
     protected $guarded = [''];
 
+    public function stuffings(){
+        return $this->belongsTo(Stuffing::class, 'id', 'id');
+
+
+    }
+
 }

@@ -13929,4 +13929,26 @@ body.preload-hide .preload {
     display: none !important;
   }
 }
+.tabel-fiks td:first-child{
+    position:sticky;
+    left:0;
+    z-index:1;
+}
+.tabel-fiks th:first-child{
+    position:sticky;
+    left:0;
+    z-index:1;
+}
+.tabel-fiks td:nth-child(2) {
+    position:sticky;
+    left:33px;
+    z-index:1;
+}
+.tabel-fiks th:nth-child(2) {
+    position:sticky;
+    left:33px;
+    z-index:1;
+}
+
+
 /*# sourceMappingURL=ltr-core.css.map */
