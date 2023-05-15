@@ -1,13 +1,32 @@
 "use strict";$(function(){
     var isRtl=$("html").attr("dir")==="rtl";
     var direction=isRtl?"rtl":"ltr";
-$("#penerima_1, #select2-1, .seals, .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
+$("#seal").select2
 ({
     dir:direction,
     dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih Seal",
     allowClear:true
 
 
+
+});
+$("#penerima_1").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih Penerima",
+    allowClear:true
+
+
+
+});
+$("#select2-1, .seals, .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih",
+    allowClear:true
 
 });
 

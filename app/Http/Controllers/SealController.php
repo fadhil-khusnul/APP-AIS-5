@@ -15,10 +15,55 @@ class SealController extends Controller
      */
     public function index()
     {
-        $seals = Seal::orderBy('id', 'DESC')->get();
+        $seals = Seal::where('status', 'input')->orderBy('id', 'DESC')->get();
         return view('seal.seal',[
             'title' => 'Data Seal',
             'active' => 'Seal',
+            'seals' => $seals,
+
+        ]);
+    }
+
+    public function index_damage()
+    {
+        $seal = Seal::where('status', 'input')->orderBy('id', 'DESC')->get();
+        $seals = Seal::where('status', 'damage')->orderBy('id', 'DESC')->get();
+        return view('seal.damage-seal',[
+            'title' => 'Damage Seal',
+            'active' => 'Seal',
+            'seal' => $seal,
+            'seals' => $seals,
+
+        ]);
+    }
+
+    public function update_damage(Request $request) {
+        $id = Seal::where('kode_seal', $request->seal)->value('id');
+
+        $id_seal = Seal::findOrFail($id);
+        $seal = [
+            "keterangan_damage" => $request->keterangan_damage,
+            "status" => "damage",
+
+        ];
+
+        $id_seal->update($seal);
+        return response()->json(['success' => true]);
+
+    }
+
+    public function index_report()
+    {
+        $tersedia = Seal::where('status', 'input')->orderBy('id', 'DESC')->get();
+        $rusak = Seal::where('status', 'damage')->orderBy('id', 'DESC')->get();
+        $container = Seal::where('status', 'Container')->orderBy('id', 'DESC')->get();
+        $seals = Seal::all();
+        return view('seal.report-seal',[
+            'title' => 'Report Seal',
+            'active' => 'Seal',
+            'tersedia' => $tersedia,
+            'rusak' => $rusak,
+            'container' => $container,
             'seals' => $seals,
 
         ]);
@@ -59,6 +104,7 @@ class SealController extends Controller
                 'start_seal' => $request->start_seal[$i],
                 'touch_seal' => $request->touch_seal[$i],
                 'kode_seal' => $request->kode_seal[$i],
+                'status' => 'input',
             ];
 
             Seal::create($seals);

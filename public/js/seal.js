@@ -173,59 +173,8 @@ function Tambah_Seal() {
     });
 }
 
-function editCompany(e) {
-    var id = e.value;
-    $.ajax({
-        url: "company/" + id + "/edit",
-        type: "GET",
-        success: function (response) {
-            $("#modal-company-edit").modal("show");
 
-            $("#nama_company_edit").val(response.result.nama_company);
-
-            $("#valid_company_edit").validate({
-                rules: {
-                    nama_company_edit: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    nama_company_edit: {
-                        required: "Silakan Isi Nama Company",
-                    },
-                },
-
-                // console.log();
-                submitHandler: function (form) {
-                    var token = $("#csrf").val();
-
-                    $.ajax({
-                        url: "company/" + id,
-                        type: "PUT",
-                        data: {
-                            _token: token,
-                            nama_company: $("#nama_company_edit").val(),
-                        },
-                        success: function (response) {
-                            swal.fire({
-                                icon: "success",
-                                title: "Data Company Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
-                            }).then((result) => {
-                                location.reload();
-                            });
-                        },
-                    });
-                },
-            });
-        },
-    });
-}
-
-function deleteCompany(id) {
-    var deleteid = id.value;
-
+function damage_seal() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -234,82 +183,115 @@ function deleteCompany(id) {
         },
         buttonsStyling: false,
     });
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
 
-    swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    }).then((willDelete) => {
-        if (willDelete.isConfirmed) {
-            var data = {
-                _token: $("input[name=_token]").val(),
-                id: deleteid,
-            };
-            $.ajax({
-                type: "DELETE",
-                url: "company/" + deleteid,
-                data: data,
-                success: function (response) {
-                    swal.fire({
-                        title: "Data Dihapus",
-                        text: "Data Berhasil Dihapus",
-                        icon: "success",
-                        timer: 2e3,
-                        showConfirmButton: false,
-                    }).then((result) => {
-                        location.reload();
-                    });
-                },
-            });
-        } else {
-            swal.fire({
-                title: "Data Tidak Dihapus",
-                text: "Data Batal Dihapus",
-                icon: "error",
-                timer: 2e3,
-                showConfirmButton: false,
-            });
-        }
+    $.validator.addMethod(
+        "notEqual",
+        function (value, element, arg) {
+            return arg !== value;
+        },
+        "Value must not equal arg."
+    );
+
+    $("#valid_seal").validate({
+        ignore: "select[type=hidden]",
+        rules: {
+            seal: {
+                required: true,
+            },
+            keterangan_damage: {
+                required: true,
+            },
+
+        },
+        messages: {
+            seal: {
+                required: "Silahkan Pilih Seal",
+            },
+            keterangan_damage: {
+                required: "Silakan Masukkan Keterangan Seal",
+            },
+
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+        submitHandler: function (form) {
+            var seal = document.getElementById("seal").value;
+            var keterangan_damage = document.getElementById("keterangan_damage").value;
+            var token = $("#csrf").val();
+
+            let fd = new FormData();
+
+            fd.append("seal", seal);
+            fd.append("keterangan_damage", keterangan_damage);
+            fd.append("_token", token);
+
+
+
+
+                swal.fire({
+                    title:
+                        "Apakah anda yakin? Ingin Mengkategorikan Seal ini : " +
+                        seal +
+                        " Kedalam Damage Seal (Rusak)",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Iya",
+                    cancelButtonText: "Tidak",
+                }).then((willCreate) => {
+                    if (willCreate.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/tambah-damage-seal",
+                            data: fd,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function () {
+                                swal.fire({
+                                    icon: "success",
+                                    title:
+                                        "Seal " +
+                                        seal +
+                                        " Ini Berhasil Dikategorikan Rusak",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
+                                }).then((result) => {
+                                    location.reload();
+                                });
+                            },
+                        });
+                    } else {
+                        swal.fire({
+                            title: "Seal Batal dikategorikan",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        });
+                    }
+                });
+
+        },
     });
 }
 
-// function jumlah_seal() {
-//     var token = $("#csrf").val();
-//     var code = document.getElementById("kode_seal").value;
-//     var start_seal = document.getElementById("start_seal").value;
-//     start_seal = parseInt(start_seal);
-//     var touch_seal = document.getElementById("touch_seal").value;
-//     touch_seal = parseInt(touch_seal);
-//     var total_seal = [];
-
-//     for(var i = 0; i < touch_seal; i++) {
-//         total_seal[i] = start_seal + i;
-//     }
-
-//     if(code != "" && start_seal != 0) {
-//         $.ajax({
-//             url: "/getKodeSeal",
-//             type: "post",
-//             data: {
-//                 code: code,
-//                 _token: token,
-//             },
-//             success: function(response) {
-//                 console.log(response);
-//             }
-//         })
-//     }
-//     // else {
-//     //     swal.fire({
-//     //         title: "Kode dan Nilai Awal Belum Dimasukkan",
-//     //         text: "Silakan Masukkan Kode dan Nilai Awal",
-//     //         icon: "error",
-//     //         timer: 2e3,
-//     //         showConfirmButton: false,
-//     //     });
-//     // }
-
-// }

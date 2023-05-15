@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->double('start_seal');
             $table->double('touch_seal')->nullable();
+            $table->string('status')->nullable();
+            $table->string('keterangan_damage')->nullable();
             $table->text('kode_seal');
 
             $table->timestamps();

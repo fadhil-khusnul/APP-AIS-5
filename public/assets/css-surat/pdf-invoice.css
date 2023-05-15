@@ -195,10 +195,12 @@ h3 {
 
 
 }
+
 .striped tbody tr td:first-child {
     text-align: center;
 
 }
+
 .striped tfoot tr:first-child {
     background-color: #ffffff;
     color: #102b5d;

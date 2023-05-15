@@ -119,6 +119,7 @@ Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNo
 
 //process
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
+Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
@@ -126,6 +127,7 @@ Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
+Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);
 
 
 
@@ -144,10 +146,18 @@ Route::get('/batal-muat', [AlihKapalController::class, 'index']);
 
 //seal
 Route::get('/seal', [SealController::class, 'index']);
+Route::get('/report-seal', [SealController::class, 'index_report']);
+
+
 Route::post('/tambah-seal', [SealController::class, 'store']);
 Route::post('/getSeal', [SealController::class, 'getSeal']);
 Route::post('/getCodeSeal', [SealController::class, 'getCodeSeal']);
 Route::post('/getKodeSeal', [SealController::class, 'getKodeSeal']);
+
+
+Route::get('/damage-seal', [SealController::class, 'index_damage']);
+Route::post('/tambah-damage-seal', [SealController::class, 'update_damage']);
+
 
 //TRUCKING
 Route::get('/truckingplan', [TruckingController::class, 'index']);

@@ -10,34 +10,6 @@
                     <h3 class="portlet-title">{{ $title }}</h3>
                 </div>
                 <div class="portlet-body">
-                    <div class="row row-cols-lg-auto px-5 g-5">
-                        <div class="col-6">
-                            <select class="form-select" id="filter_company">
-                                <option selected disabled>Filter Shipping Company</option>
-                                @foreach ($select_company as $select_company)
-                                    <option value="{{$select_company->select_company}}">{{$select_company->select_company}}</option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-                        <div class="col-6">
-                            <select class="form-select" id="filter_vessel">
-                                <option selected disabled>Filter Vessel</option>
-                                @foreach ($vessel as $vessel)
-                                    <option value="{{$vessel->vessel}}">{{$vessel->vessel}}</option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-
-                    </div>
-                    <hr>
-
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
@@ -234,10 +206,10 @@
 
                                             </a>
                                             @else
-                                            <a href="/realisasi-tambah-kontainer/{{ $planload->slug }}"
-                                                class="btn btn-label-primary rounded-pill">Tambah Kontainer <i
+                                            {{-- <a href="/realisasi-load-create/{{ $planload->slug }}"
+                                                class="btn btn-label-danger rounded-pill">Realisasi Load <i
                                                     class="fa fa-plus"></i>
-                                            </a>
+                                            </a> --}}
 
                                             <a href="/invoice-load/{{ $planload->slug }}"
                                                 class="btn btn-label-success rounded-pill">Buat Invoice <i

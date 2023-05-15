@@ -45,7 +45,22 @@ class PdfController extends Controller
         // for($i = 0; $i < count($all_id); $i++) {
         //     $update_si[$i] =   $all_id[$i]->id;
         // }
+        $unique_size = array_values(array_unique($request->size));
+        $jumlah = [];
+        $quantity = [];
+        for($i = 0; $i < count($unique_size); $i++) {
+            $jumlah[$i] = 0;
+            for($j = 0; $j < count($request->size); $j++) {
+                if($unique_size[$i] == $request->size[$j]) {
+                    $jumlah[$i] += 1;
+                }
+            }
+            $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i];
+        }
 
+        // for($i = 0; $i)
+        // dd($quantity);
+        // $sup_unique_size =
         // $urutan = (int)$request->urutan;
         $old_slug = $request->old_slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
@@ -72,53 +87,55 @@ class PdfController extends Controller
         }
         // dd($checked);
 
+         for($j = 0; $j < count($checked); $j++) {
+            $containers[$j] = [];
+            $get_container[$j] = ContainerPlanload::where('id', $checked[$j])->get();
+            // dd($get_container);
+            for ($k=0; $k < count($get_container[$j]) ; $k++) {
+                $containers[$j][$k] = ContainerPlanload::where('id',$get_container[$j][$k]->id)->get();
+            }
+        }
 
 
-
-        // for($j = 0; $j < count($checked); $j++) {
-        //     $containers[$j] = [];
-        //     $get_container[$j] = ContainerPlanload::where('id', $checked[$j])->get();
-        //     // dd($get_container);
-        //     for ($k=0; $k < count($get_container[$j]) ; $k++) {
-        //         $containers[$j][$k] = ContainerPlanload::where('id',$get_container[$j][$k]->id)->get();
-        //     }
-        // }
 
         $new_container = [];
-        for($i = 0; $i < count($request->chek_container); $i++) {
+
+        for($i = 0; $i < count($containers); $i++) {
             $new_container[$i] = [
-                'size' => $request->size[$i],
-                'type' => $request->type[$i],
-                'nomor_kontainer' => $request->nomor_kontainer[$i],
-                'seal' => $request->seal[$i],
-                'cargo' => $request->cargo[$i],
+                'id' => $containers[$i][0][0]->id,
+                'job_id' => $containers[$i][0][0]->job_id,
+                'size' => $containers[$i][0][0]->size,
+                'type' => $containers[$i][0][0]->type,
+                'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
+                'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
+                'seal' => $containers[$i][0][0]->seal,
+                'lokasi_depo' => $containers[$i][0][0]->lokasi_depo,
+                'cargo' => $containers[$i][0][0]->cargo,
 
             ];
 
 
         }
-        // $new_container = json_encode($new_container);
-        // dd($new_container);
 
 
 
-        // for($i = 0; $i < count($containers); $i++) {
-        //     $new_container[$i] = [
-        //         'id' => $containers[$i][0][0]->id,
-        //         'job_id' => $containers[$i][0][0]->job_id,
-        //         'size' => $containers[$i][0][0]->size,
-        //         'type' => $containers[$i][0][0]->type,
-        //         'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
-        //         'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
-        //         'seal' => $containers[$i][0][0]->seal,
-        //         'lokasi_depo' => $containers[$i][0][0]->lokasi_depo,
-        //         'cargo' => $containers[$i][0][0]->cargo,
+        // for ($i=0; $i <count($groupby) ; $i++) {
+        //     $new_groupby [$i] =[
 
         //     ];
-
-
         // }
-        // dd($new_container);
+
+
+        // $new_container = [];
+        // for($i = 0; $i < count($request->chek_container); $i++) {
+        //     $new_container[$i] = [
+        //         'size' => $request->size[$i],
+        //         'type' => $request->type[$i],
+        //         'nomor_kontainer' => $request->nomor_kontainer[$i],
+        //         'seal' => $request->seal[$i],
+        //         'cargo' => $request->cargo[$i],
+
+        //     ];
 
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
@@ -128,25 +145,18 @@ class PdfController extends Controller
 
 
         $pdf = Pdf::loadview('pdf.create_si',[
-
             "loads" => $loads,
             "containers" => $new_container,
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
+            "quantity" => $quantity
 
         ]);
 
         $pdf->save($path1);
 
         return response()->download($path1);
-
-
-
-
-
-
-
     }
 
     public function invoice_load(Request $request)

@@ -32,7 +32,8 @@ class StrippingController extends Controller
         //
         $validatedData = $request->validate([
 
-            'kegiatan_stripping' => 'required',
+            'kegiatan' => 'required',
+            'jenis_kegiatan' => 'required',
 
         ]);
         Stripping::create($validatedData);
@@ -66,16 +67,13 @@ class StrippingController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $request->validate([
 
-            'kegiatan_stripping' => 'required',
-
-        ]);
 
         $stripping = Stripping::findOrFail($id);
 
         $data = [
-            "kegiatan_stripping" =>$request->kegiatan_stripping,
+            "kegiatan" =>$request->kegiatan,
+            "jenis_kegiatan" =>$request->jenis_kegiatan,
         ];
         $stripping->update($data);
         return response()->json(['success' => true]);

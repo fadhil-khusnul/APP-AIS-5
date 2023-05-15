@@ -25,8 +25,6 @@ function pdf_si() {
             letter: {
                 required: true
             },
-
-
         },
         messages: {
 
@@ -58,9 +56,7 @@ function pdf_si() {
                 return this.value;
             }).get();
 
-//
             var old_slug = $('#old_slug').val();
-
 
             var d = new Date(),
             dformat = [
@@ -147,6 +143,7 @@ function pdf_si() {
                                 'cargo': cargo,
                                 'seal': seal,
                             };
+                            // console.log(data);
 
                             $.ajax({
                                 type: "POST",
@@ -156,7 +153,7 @@ function pdf_si() {
                                     responseType: 'blob'
                                 },
                                 success: function (response) {
-                                    console.log(response);
+                                    // console.log(response);
                                     toast.fire({
                                         icon: "success",
                                         title: "SI Berhasil Dibuat"
@@ -281,7 +278,7 @@ function si_discharge() {
                 d.getSeconds(),
             ].join('-');
 
-            console.log(chek_container);
+            // console.log(chek_container);
 
             // var table_container = document.getElementById("realisasiload-create");
             // var urutan = table_container.tBodies[0].rows.length;
@@ -313,7 +310,7 @@ function si_discharge() {
                             responseType: 'blob'
                         },
                         success: function (response) {
-                            console.log(response);
+                            // console.log(response);
                             toast.fire({
                                 icon: "success",
                                 title: "SI Berhasil Dibuat",
@@ -353,3 +350,4 @@ function si_discharge() {
 
 
 }
+

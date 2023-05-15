@@ -80,7 +80,14 @@
                     <!-- END Menu Submenu -->
                 </div> --}}
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
+                    <button class="menu-item-link menu-item-toggle
+                    {{
+                        Request::is('seal') || Request::is('damage-seal') || Request::is('report-seal')
+                        ? 'active' : ''
+
+                        }}
+
+                    ">
                         <div class="menu-item-icon">
                             <i class="fa fa-ban"></i>
                         </div>
@@ -92,19 +99,20 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="/seal" data-menu-path="/seal" class="menu-item-link">
+                            <a href="/seal" data-menu-path="/seal" class="menu-item-link
+                            {{ Request::is('seal') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">INPUT SEAL</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="elements/advanced/block-ui.html" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link">
+                            <a href="/damage-seal" data-menu-path="" class="menu-item-link {{ Request::is('damage-seal') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">DAMAGE SEAL</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="elements/advanced/carousel.html" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link">
+                            <a href="/report-seal" data-menu-path="" class="menu-item-link {{ Request::is('report-seal') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">REPORT & STOCK SEAL</span>
                             </a>

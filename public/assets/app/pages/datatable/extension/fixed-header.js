@@ -107,8 +107,26 @@ $('#filter_vessel').on("change", function(event) {
 });
 
 
-$("#processload_create").DataTable({
-    // responsive : true,
+// $("#processload_create").DataTable({
+//     // responsive : true,
+//     "paging": false,
+//     "info": false,
+//     "searching": false,
+//     fixedHeader: {
+//         header:true,
+//         headerOffset:
+//         offset
+//     },
+//     scrollY:300,
+//     scrollX:true,
+//     scrollCollapse:true,
+//     fixedColumns:{
+//         leftColumns:3
+//     }
+// });
+
+$("#realisasiload_create").DataTable({
+    responsive:true,
     "paging": false,
     "info": false,
     "searching": false,
@@ -117,15 +135,9 @@ $("#processload_create").DataTable({
         headerOffset:
         offset
     },
-    scrollY:300,
-    scrollX:true,
-    scrollCollapse:true,
-    fixedColumns:{
-        leftColumns:3
-    }
-});
 
-$("#realisasiload_create").DataTable({
+});
+$("#table_alih_kapal_realisasi").DataTable({
     responsive:true,
     "paging": false,
     "info": false,

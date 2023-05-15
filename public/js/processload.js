@@ -131,10 +131,10 @@ function UpdateteJobProcessload() {
 
             var no_surat = [];
             var date_activity2 = [];
-            var tempDate2 = []
+            var tempDate2 = [];
             var tahun2 = [];
 
-            for(var i = 0; i < urutan; i++) {
+            for (var i = 0; i < urutan; i++) {
                 $.ajax({
                     url: "/getNoSurat",
                     type: "post",
@@ -142,45 +142,105 @@ function UpdateteJobProcessload() {
                     async: false,
                     data: {
                         tahun: tempDate[i].getFullYear(),
-                        _token: token
+                        _token: token,
                     },
                     success: function (response) {
                         var sjc = "SJC";
                         var ais = "AIS";
                         var m = "M";
-                        date_activity2[i] = document.getElementById("date_activity[" + (i + 1) + "]").value;
+                        date_activity2[i] = document.getElementById(
+                            "date_activity[" + (i + 1) + "]"
+                        ).value;
                         tempDate2[i] = new Date(date_activity2[i]);
                         tahun2[i] = tempDate2[i].getFullYear();
 
-                        if(response == 0) {
-                            if(i == 0){
+                        if (response == 0) {
+                            if (i == 0) {
                                 var first = 1;
-                                no_surat[i] = sjc + tempDate[i].getFullYear() + ais + String((tempDate[i].getMonth() + 1)).padStart(2, "0") + String(tempDate[i].getDate()).padStart(2, "0") + String(first).padStart(6, "0") + m;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(first).padStart(6, "0") +
+                                    m;
                                 fd.append("no_surat[]", no_surat[i]);
                                 fd.append("tahun[]", tempDate[i].getFullYear());
                             } else {
-                                var mid_last = tahun2.filter(j => j === tahun2[i]).length;
-                                no_surat[i] = sjc + tempDate[i].getFullYear() + ais + String((tempDate[i].getMonth() + 1)).padStart(2, "0") + String(tempDate[i].getDate()).padStart(2, "0") + String(mid_last).padStart(6, "0") + m;
+                                var mid_last = tahun2.filter(
+                                    (j) => j === tahun2[i]
+                                ).length;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(mid_last).padStart(6, "0") +
+                                    m;
                                 fd.append("no_surat[]", no_surat[i]);
                                 fd.append("tahun[]", tempDate[i].getFullYear());
                             }
                         } else {
-                            if(i == 0){
+                            if (i == 0) {
                                 var first = 1;
-                                no_surat[i] = sjc + tempDate[i].getFullYear() + ais + String((tempDate[i].getMonth() + 1)).padStart(2, "0") + String(tempDate[i].getDate()).padStart(2, "0") + String(first + response).padStart(6, "0") + m;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(first + response).padStart(6, "0") +
+                                    m;
                                 fd.append("no_surat[]", no_surat[i]);
                                 fd.append("tahun[]", tempDate[i].getFullYear());
                             } else {
-                                var mid_last = tahun2.filter(j => j === tahun2[i]).length;
-                                no_surat[i] = sjc + tempDate[i].getFullYear() + ais + String((tempDate[i].getMonth() + 1)).padStart(2, "0") + String(tempDate[i].getDate()).padStart(2, "0") + String(mid_last + response).padStart(6, "0") + m;
+                                var mid_last = tahun2.filter(
+                                    (j) => j === tahun2[i]
+                                ).length;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(mid_last + response).padStart(
+                                        6,
+                                        "0"
+                                    ) +
+                                    m;
                                 fd.append("no_surat[]", no_surat[i]);
                                 fd.append("tahun[]", tempDate[i].getFullYear());
                             }
                         }
-                    }
-                })
+                    },
+                });
             }
-
 
             // var today = new Date();
             // var tahun = today.getFullYear();
@@ -346,50 +406,570 @@ function UpdateteJobProcessload() {
                 showCancelButton: true,
                 confirmButtonText: "Iya",
                 cancelButtonText: "Tidak",
-            }).then(
-                (
-                    willCreate,
-                    
-                ) => {
-                    if (willCreate.isConfirmed) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/create-job-processload",
-                            data: fd,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function (response) {
-                                swal.fire({
-                                    title: "JOB processload Dibuat",
-                                    text: "JOB processload Telah Berhasil Dibuat",
-                                    icon: "success",
-                                    timer: 9e3,
-                                    showConfirmButton: false,
-                                });
-                                window.location.href = "../processload";
-                            },
-                        });
-                    } else {
-                        swal.fire({
-                            title: "Load Job Tidak Diproess",
-                            text: "Silakan Cek Kembali Data Anda",
-                            icon: "error",
-                            timer: 10e3,
-                            showConfirmButton: false,
-                        });
-                    }
+            }).then((willCreate) => {
+                if (willCreate.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/create-job-processload",
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function (response) {
+                            swal.fire({
+                                title: "JOB processload Dibuat",
+                                text: "JOB processload Telah Berhasil Dibuat",
+                                icon: "success",
+                                timer: 9e3,
+                                showConfirmButton: false,
+                            });
+                            window.location.href = "../processload";
+                        },
+                    });
+                } else {
+                    swal.fire({
+                        title: "Process Load Tidak Diproses",
+                        text: "Silakan Cek Kembali Data Anda",
+                        icon: "error",
+                        timer: 10e3,
+                        showConfirmButton: false,
+                    });
                 }
-            );
+            });
         },
     });
 }
-
 
 var table_container1 = document.getElementById("processload_create");
 var urutan1 = table_container1.tBodies[0].rows.length;
 urutan1 = parseInt(urutan1);
 console.log(urutan1);
+
+function tambah_kontainer() {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    let token = $("#csrf").val();
+    let slug = $("#old_slug").val();
+
+    var table = document.getElementById("tbody_container");
+    urutan1++;
+
+
+        var size = [""];
+        var type = [""];
+        var lokasi = [""];
+        var seal = [""];
+        $.ajax({
+            url: "/get-detail-container",
+            type: "post",
+            datatype: "json",
+            async: false,
+            data: {
+                _token: token,
+            },
+            success: function (response) {
+                for (var i = 0; i < response.seal.length; i++) {
+                    seal +=
+                        "<option value='" +
+                        response.seal[i].kode_seal +
+                        "'>" +
+                        response.seal[i].kode_seal +
+                        "</option>";
+                }
+                for (var i = 0; i < response.lokasi.length; i++) {
+                    lokasi +=
+                        "<option value='" +
+                        response.lokasi[i].nama_depo +
+                        "'>" +
+                        response.lokasi[i].nama_depo +
+                        "</option>";
+                }
+                for (var i = 0; i < response.type.length; i++) {
+                    type +=
+                        "<option value='" +
+                        response.type[i].type_container +
+                        "'>" +
+                        response.type[i].type_container +
+                        "</option>";
+                }
+                for (var i = 0; i < response.size.length; i++) {
+                    size +=
+                        "<option value='" +
+                        response.size[i].size_container +
+                        "'>" +
+                        response.size[i].size_container +
+                        "</option>";
+                }
+            },
+        });
+
+        var button = document.createElement("button");
+        button.setAttribute("id", "button_kontainer[" + urutan1 +"]");
+        button.setAttribute("name", "button_kontainer[" + urutan1 +"]");
+        button.setAttribute(
+            "class",
+            "btn btn-label-danger btn-icon btn-circle btn-sm"
+        );
+        button.setAttribute("type", "button");
+        button.setAttribute("onclick", "delete_kontainer1(this)");
+        var icon = document.createElement("i");
+        icon.setAttribute("class", "fa fa-trash");
+        button.append(icon);
+
+
+        var div1 = document.createElement("div");
+        div1.setAttribute("class", "validation-container");
+        var select = document.createElement("select");
+        select.innerHTML =
+            "<option selected disabled>Pilih Size Kontainer</option>" +
+            size;
+        select.setAttribute("id", "size[" + urutan1 + "]");
+        select.setAttribute("name", "size[" + urutan1 + "]");
+        select.setAttribute("class", "form-select");
+        select.setAttribute("required", true);
+        div1.append(select);
+
+        var div2 = document.createElement("div");
+        div2.setAttribute("class", "validation-container");
+        var select2 = document.createElement("select");
+        select2.innerHTML =
+            "<option selected disabled>Pilih Type Kontainer</option>" +
+            type;
+        select2.setAttribute("id", "type[" + urutan1 + "]");
+        select2.setAttribute("name", "type[" + urutan1 + "]");
+        select2.setAttribute("class", "form-select");
+        select2.setAttribute("required", true);
+        div2.append(select2);
+
+
+
+        var div3 = document.createElement("div");
+        div3.setAttribute("class", "validation-container");
+        var input1 = document.createElement("input");
+        input1.setAttribute("class", "form-control");
+        input1.setAttribute("type", "text");
+        input1.setAttribute("required", true);
+        input1.setAttribute("placeholder", "XXXX0000000");
+        input1.setAttribute("minlength", "11");
+        input1.setAttribute("onkeypress", "char(this, event);");
+        input1.setAttribute("onkeydown", "no_paste(this);");
+        input1.setAttribute("onkeyup", "uppercase(this);");
+        input1.setAttribute("id", "nomor_kontainer[" + urutan1 + "]");
+        input1.setAttribute("name", "nomor_kontainer[" + urutan1 + "]");
+        div3.append(input1);
+
+        var div4 = document.createElement("div");
+        div4.setAttribute("class", "validation-container");
+        var input2 = document.createElement("input");
+        input2.setAttribute("class", "form-control");
+        input2.setAttribute("type", "text");
+        input2.setAttribute("required", true);
+        input2.setAttribute("placeholder", "Cargo");
+        input2.setAttribute("id", "cargo[" + urutan1 + "]");
+        input2.setAttribute("name", "cargo[" + urutan1 + "]");
+        div4.append(input2);
+
+        var div5 = document.createElement("div");
+        div5.setAttribute("class", "validation-container");
+        var input3 = document.createElement("textarea");
+        input3.setAttribute("class", "form-control");
+        input3.setAttribute("type", "text");
+        input3.setAttribute("required", true);
+        input3.setAttribute("placeholder", "Detail Barang");
+        input3.setAttribute("id", "detail_barang[" + urutan1 + "]");
+        input3.setAttribute("name", "detail_barang[" + urutan1 + "]");
+        div5.append(input3);
+
+
+        var div6 = document.createElement("div");
+        div6.setAttribute("class", "validation-container");
+        var select3 = document.createElement("select");
+        select3.innerHTML =
+            "<option selected disabled>Pilih Seal Kontainer</option>" +
+            seal;
+        select3.setAttribute("id", "type[" + urutan1 + "]");
+        select3.setAttribute("name", "type[" + urutan1 + "]");
+        select3.setAttribute("class", "form-select");
+        select3.setAttribute("required", true);
+        div6.append(select3);
+
+        var div7 = document.createElement("div");
+        div7.setAttribute("class", "validation-container");
+        var input4 = document.createElement("input");
+        input4.setAttribute("class", "form-control");
+        input4.setAttribute("type", "text");
+        input4.setAttribute("required", true);
+        input4.setAttribute("placeholder", "Tanggal Kegiatan");
+        input4.setAttribute("id", "date_activity[" + urutan1 + "]");
+        input4.setAttribute("name", "date_activity[" + urutan1 + "]");
+        div7.append(input4);
+
+        var div8 = document.createElement("div");
+        div8.setAttribute("class", "validation-container");
+        var select4 = document.createElement("select");
+        select4.innerHTML =
+            "<option selected disabled>Pilih Lokasi Kontainer</option>" +
+            lokasi;
+        select4.setAttribute("id", "lokasi[" + urutan1 + "]");
+        select4.setAttribute("name", "lokasi[" + urutan1 + "]");
+        select4.setAttribute("class", "form-select");
+        select4.setAttribute("required", true);
+        div8.append(select4);
+
+        var div9 = document.createElement("div");
+        div9.setAttribute("class", "validation-container");
+        var input5 = document.createElement("input");
+        input5.setAttribute("class", "form-control");
+        input5.setAttribute("type", "text");
+        input5.setAttribute("required", true);
+        input5.setAttribute("placeholder", "Driver");
+        input5.setAttribute("id", "driver[" + urutan1 + "]");
+        input5.setAttribute("name", "driver[" + urutan1 + "]");
+        div9.append(input5);
+
+        var div10 = document.createElement("div");
+        div10.setAttribute("class", "validation-container");
+        var input6 = document.createElement("input");
+        input6.setAttribute("class", "form-control");
+        input6.setAttribute("type", "text");
+        input6.setAttribute("required", true);
+        input6.setAttribute("placeholder", "Nomor Polisi");
+        input6.setAttribute("id", "nomor_polisi[" + urutan1 + "]");
+        input6.setAttribute("name", "nomor_polisi[" + urutan1 + "]");
+        div10.append(input6);
+
+        var div11 = document.createElement("div");
+        div11.setAttribute("class", "validation-container");
+        var input7 = document.createElement("input");
+        input7.setAttribute("class", "form-control");
+        input7.setAttribute("type", "text");
+        input7.setAttribute("required", true);
+        input7.setAttribute("placeholder", "Remark");
+        input7.setAttribute("id", "remark[" + urutan1 + "]");
+        input7.setAttribute("name", "remark[" + urutan1 + "]");
+        div11.append(input7);
+
+        var div12 = document.createElement("div");
+        div12.setAttribute("class", "validation-container");
+        var input8 = document.createElement("input");
+        input8.setAttribute("class", "form-control");
+        input8.setAttribute("type", "text");
+        input8.setAttribute("required", true);
+        input8.setAttribute("placeholder", "Biaya Stuffing");
+        input8.setAttribute("onkeydown", "return numbersonly(this, event);");
+        input8.setAttribute("onkeyup", "javascript:tandaPemisahTitik(this);");
+        input8.setAttribute("id", "biaya_stuffing[" + urutan1 + "]");
+        input8.setAttribute("name", "biaya_stuffing[" + urutan1 + "]");
+        div12.append(input8);
+
+        var div13 = document.createElement("div");
+        div13.setAttribute("class", "validation-container");
+        var input9 = document.createElement("input");
+        input9.setAttribute("class", "form-control");
+        input9.setAttribute("type", "text");
+        input9.setAttribute("required", true);
+        input9.setAttribute("placeholder", "Biaya Trucking");
+        input9.setAttribute("onkeydown", "return numbersonly(this, event);");
+        input9.setAttribute("onkeyup", "javascript:tandaPemisahTitik(this);");
+        input9.setAttribute("id", "biaya_trucking[" + urutan1 + "]");
+        input9.setAttribute("name", "biaya_trucking[" + urutan1 + "]");
+        div13.append(input9);
+
+        var div14 = document.createElement("div");
+        div14.setAttribute("class", "validation-container");
+        var input10 = document.createElement("input");
+        input10.setAttribute("class", "form-control");
+        input10.setAttribute("type", "text");
+        input10.setAttribute("required", true);
+        input10.setAttribute("placeholder", "Ongkos Supir");
+        input10.setAttribute("onkeydown", "return numbersonly(this, event);");
+        input10.setAttribute("onkeyup", "javascript:tandaPemisahTitik(this);");
+        input10.setAttribute("id", "ongkos_supir[" + urutan1 + "]");
+        input10.setAttribute("name", "ongkos_supir[" + urutan1 + "]");
+        div14.append(input10);
+
+        var div15 = document.createElement("div");
+        div15.setAttribute("class", "validation-container");
+        var input11 = document.createElement("input");
+        input11.setAttribute("class", "form-control");
+        input11.setAttribute("type", "text");
+        input11.setAttribute("required", true);
+        input11.setAttribute("placeholder", "Biaya THC");
+        input11.setAttribute("onkeydown", "return numbersonly(this, event);");
+        input11.setAttribute("onkeyup", "javascript:tandaPemisahTitik(this);");
+        input11.setAttribute("id", "biaya_thc[" + urutan1 + "]");
+        input11.setAttribute("name", "biaya_thc[" + urutan1 + "]");
+        div15.append(input11);
+
+        var div16 = document.createElement("div");
+        div16.setAttribute("class", "validation-container");
+        var select5 = document.createElement("select");
+        select5.innerHTML =
+            "<option selected disabled>Pilih Jenis Mobil</option>" +
+            "<option value='Mobil Sewa'>Mobil Sewa</option>"+
+            "<option value='Mobil Sendiri'>Mobil Sendiri</option>" ;
+        select5.setAttribute("id", "jenis_mobil[" + urutan1 + "]");
+        select5.setAttribute("name", "jenis_mobil[" + urutan1 + "]");
+        select5.setAttribute("class", "form-select");
+        select5.setAttribute("required", true);
+        div16.append(select5);
+
+
+
+
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
+        var cell9 = row.insertCell(8);
+        var cell10 = row.insertCell(9);
+        var cell11 = row.insertCell(10);
+        var cell12 = row.insertCell(11);
+        var cell13 = row.insertCell(12);
+        var cell14 = row.insertCell(13);
+        var cell15 = row.insertCell(14);
+        var cell16 = row.insertCell(15);
+        var cell17 = row.insertCell(16);
+        var cell18 = row.insertCell(17);
+
+        cell1.appendChild(button);
+        cell2.innerHTML = "1.";
+        cell3.appendChild(div1);
+        cell4.appendChild(div2);
+        cell5.appendChild(div3);
+        cell6.appendChild(div4);
+        cell7.appendChild(div5);
+        cell8.appendChild(div6);
+        cell9.appendChild(div7);
+        cell10.appendChild(div8);
+        cell11.appendChild(div9);
+        cell12.appendChild(div10);
+        cell13.appendChild(div11);
+        cell14.appendChild(div12);
+        cell15.appendChild(div13);
+        cell16.appendChild(div14);
+        cell17.appendChild(div15);
+        cell18.appendChild(div16);
+
+        reindex_container1();
+
+}
+function reindex_container1() {
+    const ids = document.querySelectorAll(
+        "#processload_create tr > td:nth-child(2)"
+    );
+    ids.forEach((e, i) => {
+        e.innerHTML = i + 1 + ".";
+        nomor_tabel_lokasi = i + 1;
+    });
+    $("#processload_create tr > td:nth-child(8) select").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Pilih Seal",
+        allowClear: true,
+    });
+
+    $("#processload_create tr > td:nth-child(10) select").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Pilih Lokasi Pickup",
+        allowClear: true,
+    });
+
+    $("#processload_create tr > td:nth-child(9) input").datepicker({
+        format: "DD, dd-MM-yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        todayHighlight: true,
+        changeYear : false,
+        endDate : new Date(),
+        weekStart: 1,
+        "language" : "indonesian",
+        locale : "id",
+    });
+}
+
+function delete_kontainer1(r) {
+    var table = r.parentNode.parentNode.rowIndex;
+    document.getElementById("processload_create").deleteRow(table);
+    urutan1--;
+
+    var button = document.querySelectorAll(
+        "#processload_create tr td:nth-child(1) button"
+    );
+
+    for (var i = 0; i < button.length; i++) {
+        button[i].id = "button_kontainer[" + (i + 1) + "]";
+        button[i].name = "button_kontainer[" + (i + 1) + "]";
+    }
+
+    var label = document.querySelectorAll(
+        "#processload_create tr td:nth-child(3) select"
+    );
+
+    for (var i = 0; i < label.length; i++) {
+        label[i].id = "size[" + (i + 1) + "]";
+        label[i].name = "size[" + (i + 1) + "]";
+    }
+
+    var label1 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(4) select"
+    );
+
+    for (var i = 0; i < label1.length; i++) {
+        label1[i].id = "type[" + (i + 1) + "]";
+        label1[i].name = "type[" + (i + 1) + "]";
+    }
+
+    var input = document.querySelectorAll(
+        "#processload_create tr td:nth-child(5) input"
+    );
+
+    for (var i = 0; i < input.length; i++) {
+        input[i].id = "nomor_kontainer[" + (i + 1) + "]";
+        input[i].name = "nomor_kontainer[" + (i + 1) + "]";
+    }
+
+    var input2 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(6) input"
+    );
+
+    for (var i = 0; i < input2.length; i++) {
+        input2[i].id = "cargo[" + (i + 1) + "]";
+        input2[i].name = "cargo[" + (i + 1) + "]";
+    }
+
+    var textarea = document.querySelectorAll(
+        "#processload_create tr td:nth-child(7) textarea"
+    );
+
+    for (var i = 0; i < textarea.length; i++) {
+        textarea[i].id = "detail_barang[" + (i + 1) + "]";
+        textarea[i].name = "detail_barang[" + (i + 1) + "]";
+    }
+
+    var select1 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(8) select"
+    );
+
+    for (var i = 0; i < select1.length; i++) {
+        select1[i].id = "seal[" + (i + 1) + "]";
+        select1[i].name = "seal[" + (i + 1) + "]";
+    }
+
+    var input3 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(9) input"
+    );
+
+    for (var i = 0; i < input3.length; i++) {
+        input3[i].id = "date_activity[" + (i + 1) + "]";
+        input3[i].name = "date_activity[" + (i + 1) + "]";
+    }
+
+    var select2 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(10) select"
+    );
+
+    for (var i = 0; i < select2.length; i++) {
+        select2[i].id = "lokasi[" + (i + 1) + "]";
+        select2[i].name = "lokasi[" + (i + 1) + "]";
+    }
+
+    var input4 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(11) input"
+    );
+
+    for (var i = 0; i < input4.length; i++) {
+        input4[i].id = "driver[" + (i + 1) + "]";
+        input4[i].name = "driver[" + (i + 1) + "]";
+    }
+
+    var input5 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(12) input"
+    );
+
+    for (var i = 0; i < input5.length; i++) {
+        input5[i].id = "nomor_polisi[" + (i + 1) + "]";
+        input5[i].name = "nomor_polisi[" + (i + 1) + "]";
+    }
+
+    var input6 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(13) input"
+    );
+
+    for (var i = 0; i < input6.length; i++) {
+        input6[i].id = "remark[" + (i + 1) + "]";
+        input6[i].name = "remark[" + (i + 1) + "]";
+    }
+
+    var input7 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(14) input"
+    );
+
+    for (var i = 0; i < input7.length; i++) {
+        input7[i].id = "biaya_stuffing[" + (i + 1) + "]";
+        input7[i].name = "biaya_stuffing[" + (i + 1) + "]";
+    }
+
+    var input8 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(15) input"
+    );
+
+    for (var i = 0; i < input8.length; i++) {
+        input8[i].id = "biaya_trucking[" + (i + 1) + "]";
+        input8[i].name = "biaya_trucking[" + (i + 1) + "]";
+    }
+
+    var input9 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(16) input"
+    );
+
+    for (var i = 0; i < input9.length; i++) {
+        input9[i].id = "ongkos_supir[" + (i + 1) + "]";
+        input9[i].name = "ongkos_supir[" + (i + 1) + "]";
+    }
+
+    var input10 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(17) input"
+    );
+
+    for (var i = 0; i < input10.length; i++) {
+        input10[i].id = "biaya_thc[" + (i + 1) + "]";
+        input10[i].name = "biaya_thc[" + (i + 1) + "]";
+    }
+
+    var select3 = document.querySelectorAll(
+        "#processload_create tr td:nth-child(18) select"
+    );
+
+    for (var i = 0; i < select3.length; i++) {
+        select3[i].id = "jenis_mobil[" + (i + 1) + "]";
+        select3[i].name = "jenis_mobil[" + (i + 1) + "]";
+    }
+
+    if (urutan1 == 1) {
+        document
+            .getElementById("button_kontainer[1]")
+            .setAttribute("disabled", true);
+        document
+            .getElementById("button_kontainer[1]")
+            .setAttribute("readonly", true);
+    }
+
+    reindex_container1();
+}
+
+
 
 function reindex_container() {
     const ids = document.querySelectorAll(
@@ -399,8 +979,6 @@ function reindex_container() {
         e.innerHTML = i + 1 + ".";
         nomor_tabel_lokasi = i + 1;
     });
-
-
 }
 
 function delete_kontainer(r) {
@@ -413,8 +991,8 @@ function delete_kontainer(r) {
     );
 
     for (var i = 0; i < button.length; i++) {
-        button[i].id = "button_kontainer[" + (i+1) + "]";
-        button[i].name = "button_kontainer[" + (i+1) + "]";
+        button[i].id = "button_kontainer[" + (i + 1) + "]";
+        button[i].name = "button_kontainer[" + (i + 1) + "]";
     }
 
     var label = document.querySelectorAll(
@@ -425,7 +1003,6 @@ function delete_kontainer(r) {
         label[i].id = "size[" + (i + 1) + "]";
         label[i].name = "size[" + (i + 1) + "]";
     }
-
 
     var input = document.querySelectorAll(
         "#processload_create tr td:nth-child(4) input"
@@ -445,14 +1022,22 @@ function delete_kontainer(r) {
         input2[i].name = "cargo[" + (i + 1) + "]";
     }
 
+    var textarea = document.querySelectorAll(
+        "#processload_create tr td:nth-child(6) textarea"
+    );
+
+    for (var i = 0; i < textarea.length; i++) {
+        textarea[i].id = "detail_barang[" + (i + 1) + "]";
+        textarea[i].name = "detail_barang[" + (i + 1) + "]";
+    }
+
     var select1 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(6) select"
+        "#processload_create tr td:nth-child(7) select"
     );
 
     for (var i = 0; i < select1.length; i++) {
         select1[i].id = "seal[" + (i + 1) + "]";
         select1[i].name = "seal[" + (i + 1) + "]";
-        // select1[i].data-select2-id = "seal[" + (i + 1) + "]";
     }
 
     var input3 = document.querySelectorAll(
@@ -545,7 +1130,14 @@ function delete_kontainer(r) {
         select3[i].name = "jenis_mobil[" + (i + 1) + "]";
     }
 
-
+    if (urutan1 == 1) {
+        document
+            .getElementById("button_kontainer[1]")
+            .setAttribute("disabled", true);
+        document
+            .getElementById("button_kontainer[1]")
+            .setAttribute("readonly", true);
+    }
 
     reindex_container();
 }
@@ -889,7 +1481,6 @@ function tambah_alih() {
                 _token: token,
             },
             success: function (response) {
-
                 for (var i = 0; i < response.pelayaran.length; i++) {
                     pelayaran +=
                         "<option value='" +
@@ -906,7 +1497,7 @@ function tambah_alih() {
                         response.pelabuhan[i].nama_pelabuhan +
                         "</option>";
                 }
-            }
+            },
         });
 
         var div1 = document.createElement("div");
@@ -925,8 +1516,7 @@ function tambah_alih() {
         div4.setAttribute("class", "validation-container");
         var select1 = document.createElement("select");
         select1.innerHTML =
-            "<option selected disabled>Pilih Pelayaran</option>" +
-            pelayaran;
+            "<option selected disabled>Pilih Pelayaran</option>" + pelayaran;
         select1.setAttribute("id", "pelayaran_alih[" + clickalih + "]");
         select1.setAttribute("name", "pelayaran_alih[" + clickalih + "]");
         select1.setAttribute("class", "form-select");
@@ -957,8 +1547,6 @@ function tambah_alih() {
         input2.setAttribute("name", "vesseL_alih[" + clickalih + "]");
         div5.append(input2);
 
-
-
         var div6 = document.createElement("div");
         div6.setAttribute("class", "validation-container");
         var input3 = document.createElement("input");
@@ -985,8 +1573,7 @@ function tambah_alih() {
         div8.setAttribute("class", "validation-container");
         var select3 = document.createElement("select");
         select3.innerHTML =
-            "<option selected disabled >Pilih POD</option>" +
-            pelabuhan;
+            "<option selected disabled >Pilih POD</option>" + pelabuhan;
         select3.setAttribute("id", "pod_alih[" + clickalih + "]");
         select3.setAttribute("name", "pod_alih[" + clickalih + "]");
         select3.setAttribute("class", "form-select");
@@ -1054,26 +1641,26 @@ function reindex_alih() {
         nomor_tabel_lokasi = i + 1;
     });
     $("#table_alih_kapal tr > td:nth-child(2) select").select2({
-        dropdownAutoWidth:true,
-        placeholder:"Pilih Nomor Kontainer",
-        allowClear:true
+        dropdownAutoWidth: true,
+        placeholder: "Pilih Nomor Kontainer",
+        allowClear: true,
     });
     $("#table_alih_kapal tr > td:nth-child(3) select").select2({
-        dropdownAutoWidth:true,
-        placeholder:"Pilih Pelayaran",
+        dropdownAutoWidth: true,
+        placeholder: "Pilih Pelayaran",
 
-        allowClear:true
+        allowClear: true,
     });
     $("#table_alih_kapal tr > td:nth-child(4) select").select2({
-        dropdownAutoWidth:true,
-        placeholder:"Pilih POT",
-        allowClear:true
+        dropdownAutoWidth: true,
+        placeholder: "Pilih POT",
+        allowClear: true,
     });
     $("#table_alih_kapal tr > td:nth-child(5) select").select2({
-        dropdownAutoWidth:true,
-        placeholder:"Pilih POD",
+        dropdownAutoWidth: true,
+        placeholder: "Pilih POD",
 
-        allowClear:true
+        allowClear: true,
     });
 }
 function delete_alih(r) {
@@ -1136,8 +1723,6 @@ function delete_alih(r) {
         input8[i].id = "harga_alih_kapal[" + (i + 1) + "]";
         input8[i].name = "harga_alih_kapal[" + (i + 1) + "]";
     }
-
-
 
     var textarea = document.querySelectorAll(
         "#table_alih_kapal tr td:nth-child(9) textarea"
@@ -1381,4 +1966,28 @@ function seal(ini) {
             }
         },
     });
+}
+
+function char(ini, evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+
+    var regex = /[A-Z]/;
+    var regex2 = /[a-z]/;
+    var regex3 = /[0-9]/;
+
+    if(!regex.test(key) && !regex2.test(key) && ini.value.length <= 3 || !regex3.test(key) && ini.value.length >= 4  || ini.value.length == 11) {
+        theEvent.returnValue = false;
+    }
+}
+
+function no_paste(event) {
+    if (event.ctrlKey==true && (event.which == '118' || event.which == '86')) {
+        event.preventDefault();
+    }
+}
+
+function uppercase(ini) {
+    ini.value = ini.value.toUpperCase();
 }

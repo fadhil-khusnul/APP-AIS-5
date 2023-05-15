@@ -1094,7 +1094,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Size</label>
                         <input class="form-control" id="size_container" name="size_container" type="text">
                     </div>
@@ -1208,15 +1208,23 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data Kegiatan Discharge (Stripping)</h5>
+                    <h5 class="modal-title">Tambah Data Kegiatan (Stripping/Stuffing)</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Nama Kegiatan</label>
-                        <input class="form-control" id="kegiatan_stripping" name="kegiatan_stripping" type="text">
+                        <input class="form-control" id="kegiatan" name="kegiatan" type="text">
+                    </div>
+                    <div class="form-check validation-container mt-3">
+                        <input class="form-check-input" type="radio" name="jenis_kegiatan" id="jenis_kegiatan" value="Stripping" checked>
+                        <label class="form-check-label" for="flexRadioDefault1">Stripping </label>
+                    </div>
+                    <div class="form-check validation-container mt-3">
+                        <input class="form-check-input" type="radio" name="jenis_kegiatan" id="jenis_kegiatan" value="Stufffing">
+                        <label class="form-check-label" for="flexRadioDefault1">Stufffing </label>
                     </div>
 
                 </div>
@@ -1242,16 +1250,16 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Nama Kegiatan</label>
-                        <input class="form-control" id="kegiatan_stripping_edit" name="kegiatan_stripping_edit" type="text">
+                        <input class="form-control" id="kegiatan_edit" name="kegiatan_edit" type="text">
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stripping">
+                    <div class="form-check validation-container">
+                        <input class="form-check-input jenis_kegiatan_edit_stripping" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stripping">
                         <label class="form-check-label" for="flexRadioDefault1">Stripping </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stufffing">
+                    <div class="form-check validation-container">
+                        <input class="form-check-input jenis_kegiatan_edit_stuffing" type="radio" name="jenis_kegiatan_edit" id="jenis_kegiatan_edit" value="Stuffing">
                         <label class="form-check-label" for="flexRadioDefault1">Stufffing </label>
                     </div>
 

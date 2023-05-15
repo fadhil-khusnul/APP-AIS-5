@@ -11,6 +11,12 @@ class Seal extends Model
 
     protected $guarded = [''];
 
+    public function container_planloads(){
+        return $this->belongsTo(ContainerPlanload::class, 'kode_seal', 'seal');
+    }
+
+
+
 
 
 }

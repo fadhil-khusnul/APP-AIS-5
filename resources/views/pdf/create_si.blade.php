@@ -74,13 +74,12 @@
                         <td>:</td>
                         <td colspan="3"></td>
                     </tr>
-                    @foreach ($containers as $container)
+                    @foreach ($quantity as $quantities)
                     <tr>
                         <td></td>
                         <td></td>
-                        <td colspan="3">{{$container["size"]}} X {{$container["size"]}} - {{$container["type"]}}</td>
+                        <td colspan="3">{{$quantities}}</td>
                     </tr>
-
                     @endforeach
                     <tr>
                         <td>CONTAINER</td>

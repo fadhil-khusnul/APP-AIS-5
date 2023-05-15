@@ -12,10 +12,6 @@
                 <div class="portlet-body">
 
 
-
-                    </div>
-                    <hr>
-
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
@@ -214,12 +210,13 @@
                                                     class="fa fa-pencil"></i>
 
                                             </a>
+
                                             @else
-                                            <button disabled @readonly(true)
-                                                class="btn btn-label-secondary rounded-pill">Process Load <i
+                                            <a href="/processload-edit/{{ $planload->slug }}"
+                                                class="btn btn-label-primary rounded-pill">Edit (Kontainer) <i
                                                     class="fa fa-pencil"></i>
 
-                                            </button>
+                                            </a>
 
 
                                             @endif

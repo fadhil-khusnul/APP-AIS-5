@@ -18,6 +18,7 @@ use App\Models\Pelabuhan;
 use App\Models\Pengirim;
 use App\Models\Penerima;
 use App\Models\Container;
+use App\Models\TypeContainer;
 use App\Models\Depo;
 use App\Models\Seal;
 use App\Models\BiayaLainnya;
@@ -70,7 +71,7 @@ class ProcessLoadController extends Controller
         $penerima = Penerima::all();
         $kontainer = Container::all();
         $lokasis = Depo::all();
-        $seals = Seal::all();
+        $seals = Seal::where('status', 'input')->get();
         //
         return view('process.load.processload-create',[
             'title' => 'Buat Load-Process',
@@ -85,6 +86,43 @@ class ProcessLoadController extends Controller
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
             'seals' => $seals,
+            'planload' => OrderJobPlanload::find($id),
+            'containers' => ContainerPlanload::where('job_id', $id)->get(),
+        ]);
+    }
+
+    public function edit(Request $request)
+    {
+        $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
+
+        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
+        $shipping_company = ShippingCompany::all();
+        $pol = Pelabuhan::all();
+        $pot = Pelabuhan::all();
+        $pod = Pelabuhan::all();
+        $pengirim = Pengirim::all();
+        $penerima = Penerima::all();
+        $kontainer = Container::all();
+        $lokasis = Depo::all();
+        $seals = Seal::all();
+        $sizes = Container::all();
+        $types = TypeContainer::all();
+        //
+        return view('process.load.processload-edit',[
+            'title' => 'EDIT Load-Process',
+            'active' => 'Process',
+            'activity' => $activity,
+            'shippingcompany' => $shipping_company,
+            'pol' => $pol,
+            'pot' => $pot,
+            'pod' => $pod,
+            'pengirim' => $pengirim,
+            'penerima' => $penerima,
+            'kontainers' => $kontainer,
+            'lokasis' => $lokasis,
+            'seals' => $seals,
+            'sizes' => $sizes,
+            'types' => $types,
             'planload' => OrderJobPlanload::find($id),
             'containers' => ContainerPlanload::where('job_id', $id)->get(),
         ]);
@@ -126,6 +164,8 @@ class ProcessLoadController extends Controller
 
         $status = "Process-Load";
 
+
+
         for ($k = 0; $k < $urutan; $k++) {
             $container = [
                 'nomor_kontainer' => $request->nomor_kontainer[$k],
@@ -149,6 +189,37 @@ class ProcessLoadController extends Controller
             ContainerPlanload::where('id',$processload_update[$k])->update($container);
         }
         // $update_id->update($container);
+
+        $all_seal =[];
+
+        for ($i=0; $i <$urutan ; $i++) {
+            $all_seal[$i] =
+            [
+                "id" => $request->seal[$i],
+            ];
+
+        }
+
+
+        $seal_update = [];
+
+        for($i = 0; $i < count($all_seal); $i++) {
+            $seal_update[$i] = Seal::where('kode_seal', $all_seal[$i]["id"])->value('id');
+        }
+
+
+
+        for ($i=0; $i < $urutan ; $i++) {
+
+            $seal = [
+                "status" => "Container",
+
+            ];
+            Seal::where('id', $seal_update[$i])->update($seal);
+        }
+
+        // dd($seal_update);
+
 
         $job_id = [];
 
@@ -208,10 +279,7 @@ class ProcessLoadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProcessLoad $processLoad)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -284,6 +352,20 @@ class ProcessLoadController extends Controller
         $alih = [
             'pelayaran' => $pelayaran,
             'pelabuhan' => $pelabuhan
+        ];
+        return response()->json($alih);
+    }
+    public function get_detail_container()
+    {
+        $seal = Seal::all();
+        $lokasi = Depo::all();
+        $size = Container::all();
+        $type = TypeContainer::all();
+        $alih = [
+            'seal' => $seal,
+            'lokasi' => $lokasi,
+            'size' => $size,
+            'type' => $type,
         ];
         return response()->json($alih);
     }

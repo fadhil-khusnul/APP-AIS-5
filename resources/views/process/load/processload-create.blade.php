@@ -99,7 +99,8 @@
                             <label for="inputState" class="form-label"><b>Jumlah Kontainer :</b></label>
                         </div>
                         <div class="table-responsive">
-                            <table id="processload_create" name="processload_create" class="table autosize table-responsive table-bordered mb-0 tabel-fiks">
+                            <table id="processload_create" name="processload_create"
+                                class="table autosize table-responsive table-bordered mb-0 tabel-fiks">
                                 <thead class="table-success text-nowrap">
                                     <tr>
                                         <th class="text-center"></th>
@@ -123,162 +124,336 @@
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
                                     @foreach ($containers as $container)
-                                        <tr>
-                                            <td><button id="button_kontainer[{{$loop->iteration}}]" name="button_kontainer[{{$loop->iteration}}]" class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button" onclick="delete_kontainer(this)"><i class="fa fa-trash"></i></button></td>
-                                            <td>{{ $loop->iteration }}</td>
+                                        @if (count($containers) == 1)
+                                            <tr>
+                                                <td><button id="button_kontainer[{{ $loop->iteration }}]"
+                                                        name="button_kontainer[{{ $loop->iteration }}]"
+                                                        class="btn btn-label-danger btn-icon btn-circle btn-sm"
+                                                        type="button" onclick="delete_kontainer(this)" disabled @readonly(true)><i
+                                                            class="fa fa-trash"></i></button></td>
+                                                <td>{{ $loop->iteration }}</td>
 
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }} - {{ old('type', $container->type) }}</label>
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }}
+                                                        - {{ old('type', $container->type) }}</label>
 
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text"
-                                                        class="form-control nomor_kontainer"
-                                                        id="nomor_kontainer[{{ $loop->iteration }}]"
-                                                        name="nomor_kontainer[{{ $loop->iteration }}]" onblur="blur_no_container(this)" required>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    {{-- <label disabled @readonly(true)
-                                                    id="cargo[{{ $loop->iteration }}]">{{ old('cargo', $container->cargo) }} </label> --}}
-                                                    <input data-bs-toggle="tooltip" type="text" class="form-control"
-                                                        id="cargo[{{ $loop->iteration }}]"
-                                                        name="cargo[{{ $loop->iteration }}]"
-                                                        value="{{ old('cargo', $container->cargo) }}">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <textarea data-bs-toggle="tooltip" class="form-control"
-                                                        id="detail_barang[{{ $loop->iteration }}]"
-                                                        name="detail_barang[{{ $loop->iteration }}]"
-                                                        ></textarea>
-                                                </div>
-                                            </td>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control nomor_kontainer"
+                                                            id="nomor_kontainer[{{ $loop->iteration }}]" minlength="11"
+                                                            name="nomor_kontainer[{{ $loop->iteration }}]"
+                                                            onblur="blur_no_container(this)" required placeholder="XXXX0000000" onkeypress="char(this, event)" onkeydown="no_paste(event)" onkeyup="uppercase(this)">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        {{-- <label disabled @readonly(true)
+                                                id="cargo[{{ $loop->iteration }}]">{{ old('cargo', $container->cargo) }} </label> --}}
+                                                        <input data-bs-toggle="tooltip" type="text" class="form-control"
+                                                            id="cargo[{{ $loop->iteration }}]"
+                                                            name="cargo[{{ $loop->iteration }}]"
+                                                            value="{{ old('cargo', $container->cargo) }}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang[{{ $loop->iteration }}]"
+                                                            name="detail_barang[{{ $loop->iteration }}]"></textarea>
+                                                    </div>
+                                                </td>
 
-                                            <td>
-                                                <div class="validation-container">
-                                                    <select data-bs-toggle="tooltip" id="seal[{{ $loop->iteration }}]"
-                                                        name="seal[{{ $loop->iteration }}]" class="form-select seals"
-                                                        onchange="change_container(this)">
-                                                        <option selected disabled>Pilih Seal</option>
-                                                        @foreach ($seals as $seal)
-                                                            <option value="{{ $seal->kode_seal }}">
-                                                                {{ $seal->kode_seal }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    {{-- <input onblur="seal(this)" type="text" class="form-control typeahead seal_typehead" id="seals[{{$loop->iteration}}]" name="seals[{{$loop->iteration}}]" placeholder="Seal..." required> --}}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text"
-                                                        class="form-control date_activity"
-                                                        id="date_activity[{{ $loop->iteration }}]"
-                                                        name="date_activity[{{ $loop->iteration }}]" placeholder="Date..."
-                                                        required>
-                                                </div>
-                                            </td>
-
-
-                                            <td>
-                                                <div class="validation-container">
-                                                    <select data-bs-toggle="tooltip" id="lokasi[{{ $loop->iteration }}]"
-                                                        name="lokasi[{{ $loop->iteration }}]"
-                                                        class="form-select lokasi-pickup" required>
-                                                        <option selected disabled>Pilih Lokasi</option>
-                                                        @foreach ($lokasis as $lokasi)
-                                                            <option value="{{ $lokasi->nama_depo }}">
-                                                                {{ $lokasi->nama_depo }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip" id="seal[{{ $loop->iteration }}]"
+                                                            name="seal[{{ $loop->iteration }}]" class="form-select seals"
+                                                            onchange="change_container(this)">
+                                                            <option selected disabled>Pilih Seal</option>
+                                                            @foreach ($seals as $seal)
+                                                                <option value="{{ $seal->kode_seal }}">
+                                                                    {{ $seal->kode_seal }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        {{-- <input onblur="seal(this)" type="text" class="form-control typeahead seal_typehead" id="seals[{{$loop->iteration}}]" name="seals[{{$loop->iteration}}]" placeholder="Seal..." required> --}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control date_activity"
+                                                            id="date_activity[{{ $loop->iteration }}]"
+                                                            name="date_activity[{{ $loop->iteration }}]"
+                                                            placeholder="Date..." required>
+                                                    </div>
+                                                </td>
 
 
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text" class="form-control"
-                                                        id="driver[{{ $loop->iteration }}]"
-                                                        name="driver[{{ $loop->iteration }}]" placeholder="Driver..."
-                                                        required>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="lokasi[{{ $loop->iteration }}]"
+                                                            name="lokasi[{{ $loop->iteration }}]"
+                                                            class="form-select lokasi-pickup" required>
+                                                            <option selected disabled>Pilih Lokasi</option>
+                                                            @foreach ($lokasis as $lokasi)
+                                                                <option value="{{ $lokasi->nama_depo }}">
+                                                                    {{ $lokasi->nama_depo }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control" id="driver[{{ $loop->iteration }}]"
+                                                            name="driver[{{ $loop->iteration }}]" placeholder="Driver..."
+                                                            required>
 
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text" class="form-control"
-                                                        id="nomor_polisi[{{ $loop->iteration }}]"
-                                                        name="nomor_polisi[{{ $loop->iteration }}]"
-                                                        placeholder="No Polisi..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control"
+                                                            id="nomor_polisi[{{ $loop->iteration }}]"
+                                                            name="nomor_polisi[{{ $loop->iteration }}]"
+                                                            placeholder="No Polisi..." required>
 
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text" class="form-control"
-                                                        id="remark[{{ $loop->iteration }}]"
-                                                        name="remark[{{ $loop->iteration }}]" placeholder="Remark..."
-                                                        required>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
-                                                        onkeydown="return numbersonly(this, event);"
-                                                        onkeyup="javascript:tandaPemisahTitik(this);" type="text"
-                                                        class="form-control" id="biaya_stuffing[{{ $loop->iteration }}]"
-                                                        name="biaya_stuffing[{{ $loop->iteration }}]"
-                                                        placeholder="Biaya Stuffing..." required>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
-                                                        onkeydown="return numbersonly(this, event);"
-                                                        onkeyup="javascript:tandaPemisahTitik(this);" type="text"
-                                                        class="form-control" id="biaya_trucking[{{ $loop->iteration }}]"
-                                                        name="biaya_trucking[{{ $loop->iteration }}]"
-                                                        placeholder="Biaya Trucking..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control" id="remark[{{ $loop->iteration }}]"
+                                                            name="remark[{{ $loop->iteration }}]" placeholder="Remark..."
+                                                            required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="biaya_stuffing[{{ $loop->iteration }}]"
+                                                            name="biaya_stuffing[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya Stuffing..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="biaya_trucking[{{ $loop->iteration }}]"
+                                                            name="biaya_trucking[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya Trucking..." required>
 
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
-                                                        onkeydown="return numbersonly(this, event);"
-                                                        onkeyup="javascript:tandaPemisahTitik(this);" type="text"
-                                                        class="form-control" id="ongkos_supir[{{ $loop->iteration }}]"
-                                                        name="ongkos_supir[{{ $loop->iteration }}]"
-                                                        placeholder="Ongkos Supir..." required>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
-                                                        onkeydown="return numbersonly(this, event);"
-                                                        onkeyup="javascript:tandaPemisahTitik(this);" type="text"
-                                                        class="form-control" id="biaya_thc[{{ $loop->iteration }}]"
-                                                        name="biaya_thc[{{ $loop->iteration }}]"
-                                                        placeholder="Biaya THC..." required>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="validation-container">
-                                                    <select data-bs-toggle="tooltip" id="jenis_mobil[{{ $loop->iteration }}]"
-                                                        name="jenis_mobil[{{ $loop->iteration }}]"
-                                                        class="form-select" required>
-                                                        <option selected disabled>Pilih Jenis Mobil</option>
-                                                        <option value="Mobil Sewa">Mobil Sewa</option>
-                                                        <option value="Mobil Sendiri">Mobil Sendiri</option>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="ongkos_supir[{{ $loop->iteration }}]"
+                                                            name="ongkos_supir[{{ $loop->iteration }}]"
+                                                            placeholder="Ongkos Supir..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control" id="biaya_thc[{{ $loop->iteration }}]"
+                                                            name="biaya_thc[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya THC..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="jenis_mobil[{{ $loop->iteration }}]"
+                                                            name="jenis_mobil[{{ $loop->iteration }}]"
+                                                            class="form-select" required>
+                                                            <option selected disabled>Pilih Jenis Mobil</option>
+                                                            <option value="Mobil Sewa">Mobil Sewa</option>
+                                                            <option value="Mobil Sendiri">Mobil Sendiri</option>
 
-                                                    </select>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td><button id="button_kontainer[{{ $loop->iteration }}]"
+                                                        name="button_kontainer[{{ $loop->iteration }}]"
+                                                        class="btn btn-label-danger btn-icon btn-circle btn-sm"
+                                                        type="button" onclick="delete_kontainer(this)"><i
+                                                            class="fa fa-trash"></i></button></td>
+                                                <td>{{ $loop->iteration }}</td>
+
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }}
+                                                        - {{ old('type', $container->type) }}</label>
+
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control nomor_kontainer"
+                                                            id="nomor_kontainer[{{ $loop->iteration }}]" minlength="11"
+                                                            name="nomor_kontainer[{{ $loop->iteration }}]"
+                                                            onblur="blur_no_container(this)" required placeholder="XXXX0000000" onkeypress="char(this, event)" onkeydown="no_paste(event)" onkeyup="uppercase(this)">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        {{-- <label disabled @readonly(true)
+                                                id="cargo[{{ $loop->iteration }}]">{{ old('cargo', $container->cargo) }} </label> --}}
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control" id="cargo[{{ $loop->iteration }}]"
+                                                            name="cargo[{{ $loop->iteration }}]"
+                                                            value="{{ old('cargo', $container->cargo) }}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang[{{ $loop->iteration }}]"
+                                                            name="detail_barang[{{ $loop->iteration }}]" required></textarea>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="seal[{{ $loop->iteration }}]"
+                                                            name="seal[{{ $loop->iteration }}]" class="form-select seals"
+                                                            onchange="change_container(this)" required>
+                                                            <option selected disabled>Pilih Seal</option>
+                                                            @foreach ($seals as $seal)
+                                                                <option value="{{ $seal->kode_seal }}">
+                                                                    {{ $seal->kode_seal }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        {{-- <input onblur="seal(this)" type="text" class="form-control typeahead seal_typehead" id="seals[{{$loop->iteration}}]" name="seals[{{$loop->iteration}}]" placeholder="Seal..." required> --}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control date_activity"
+                                                            id="date_activity[{{ $loop->iteration }}]"
+                                                            name="date_activity[{{ $loop->iteration }}]"
+                                                            placeholder="Date..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="lokasi[{{ $loop->iteration }}]"
+                                                            name="lokasi[{{ $loop->iteration }}]"
+                                                            class="form-select lokasi-pickup" required>
+                                                            <option selected disabled>Pilih Lokasi</option>
+                                                            @foreach ($lokasis as $lokasi)
+                                                                <option value="{{ $lokasi->nama_depo }}">
+                                                                    {{ $lokasi->nama_depo }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control" id="driver[{{ $loop->iteration }}]"
+                                                            name="driver[{{ $loop->iteration }}]" placeholder="Driver..."
+                                                            required>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control"
+                                                            id="nomor_polisi[{{ $loop->iteration }}]"
+                                                            name="nomor_polisi[{{ $loop->iteration }}]"
+                                                            placeholder="No Polisi..." required>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip" type="text"
+                                                            class="form-control" id="remark[{{ $loop->iteration }}]"
+                                                            name="remark[{{ $loop->iteration }}]" placeholder="Remark..."
+                                                            required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="biaya_stuffing[{{ $loop->iteration }}]"
+                                                            name="biaya_stuffing[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya Stuffing..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="biaya_trucking[{{ $loop->iteration }}]"
+                                                            name="biaya_trucking[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya Trucking..." required>
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control"
+                                                            id="ongkos_supir[{{ $loop->iteration }}]"
+                                                            name="ongkos_supir[{{ $loop->iteration }}]"
+                                                            placeholder="Ongkos Supir..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <input data-bs-toggle="tooltip"
+                                                            onkeydown="return numbersonly(this, event);"
+                                                            onkeyup="javascript:tandaPemisahTitik(this);" type="text"
+                                                            class="form-control" id="biaya_thc[{{ $loop->iteration }}]"
+                                                            name="biaya_thc[{{ $loop->iteration }}]"
+                                                            placeholder="Biaya THC..." required>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="jenis_mobil[{{ $loop->iteration }}]"
+                                                            name="jenis_mobil[{{ $loop->iteration }}]"
+                                                            class="form-select" required>
+                                                            <option selected disabled>Pilih Jenis Mobil</option>
+                                                            <option value="Mobil Sewa">Mobil Sewa</option>
+                                                            <option value="Mobil Sendiri">Mobil Sendiri</option>
+
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>

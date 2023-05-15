@@ -47,14 +47,23 @@ $(function () {
         // months : ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
     // });
     $("#bulan_seal").datepicker({
-        format: "mm-dd",
+        format: "DD, dd-MM-yyyy",
         changeMonth: true,
         changeYear: false,
-        startView: "months",
         todayBtn: "linked",
         clearBtn: true,
+        weekStart: 1,
         todayHighlight: true,
         // minViewMode: "months",
+    });
+    $("#tanggal_tiba").datepicker({
+        format: "DD, dd-MM-yyyy",
+        changeMonth: true,
+        changeYear: false,
+        todayBtn: "linked",
+        clearBtn: true,
+        weekStart: 1,
+        todayHighlight: true,
     });
 
     $("#datepicker-4").datepicker({

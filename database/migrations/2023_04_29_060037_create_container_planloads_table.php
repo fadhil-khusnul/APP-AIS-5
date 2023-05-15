@@ -35,6 +35,8 @@ return new class extends Migration
             $table->integer('bulan')->nullable();
             $table->integer('tahun')->nullable();
             $table->string('status')->nullable();
+            $table->string('surat_si')->nullable();
+            $table->string('invoice')->nullable();
             $table->timestamps();
         });
     }

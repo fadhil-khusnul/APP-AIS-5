@@ -16,18 +16,18 @@ class ContainerSeeder extends Seeder
     {
         Container::create([
 
-            'size_container' => '20`',
+            'size_container' => '20"',
         ]);
         Container::create([
 
-            'size_container' => '21`',
+            'size_container' => '21"',
         ]);
         Container::create([
 
-            'size_container' => '40`',
+            'size_container' => '40"',
         ]);
         Container::create([
-            'size_container' => '45`',
+            'size_container' => '45"',
         ]);
 
     }

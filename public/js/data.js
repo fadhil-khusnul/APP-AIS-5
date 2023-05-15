@@ -35,6 +35,18 @@ $(function () {
                 required: "Silakan Isi Nama Kompany"
             }
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
         submitHandler: function (form) {
 
             var nama_company = $("#nama_company").val();
@@ -78,6 +90,18 @@ $(function () {
             nama_depo: {
                 required: "Silakan Isi Nama Kompany"
             }
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
 
@@ -128,6 +152,18 @@ $(function () {
             nama_pelabuhan: {
                 required: "Silakan Isi Nama Pelabuhan"
             }
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
 
@@ -198,6 +234,18 @@ $(function () {
             rekening: {
                 required: "Silakan Isi rekening"
             },
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
 
@@ -275,6 +323,18 @@ $(function () {
                 required: "Silakan Isi Rekening"
             },
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
         submitHandler: function (form) {
 
             var alamat_penerima = $("#alamat_penerima").val();
@@ -333,6 +393,18 @@ $(function () {
                 required: "Silakan Isi Biaya"
             }
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
         submitHandler: function (form) {
 
             var pekerjaan_biaya = $("#pekerjaan_biaya").val();
@@ -381,6 +453,18 @@ $(function () {
             },
 
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
         submitHandler: function (form) {
 
             var type_container = $("#type_container").val();
@@ -428,6 +512,18 @@ $(function () {
                 required: "Silakan Isi Size"
             },
 
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
 
@@ -479,6 +575,18 @@ $(function () {
             },
 
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
         submitHandler: function (form) {
 
             var kegiatan_stuffing = $("#kegiatan_stuffing").val();
@@ -514,28 +622,49 @@ $(function () {
     $('#valid_stripping').validate({
         rules: {
 
-            kegiatan_stripping: {
+            kegiatan: {
+                required: true
+            },
+            jenis_kegiatan: {
                 required: true
             },
 
         },
         messages: {
 
-            kegiatan_stripping: {
+            kegiatan: {
                 required: "Silakan Isi Kegiatan"
+            },
+            jenis_kegiatan: {
+                required: "Silakan Pilih Kegiatan"
             },
 
         },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+
         submitHandler: function (form) {
 
-            var kegiatan_stripping = $("#kegiatan_stripping").val();
+            var kegiatan_stripping = $("#kegiatan").val();
+            var jenis_kegiatan = $("#jenis_kegiatan:checked").val();
             var token = $('#csrf').val();
 
 
 
             var data = {
                 "_token": token,
-                "kegiatan_stripping": kegiatan_stripping,
+                "kegiatan": kegiatan_stripping,
+                "jenis_kegiatan": jenis_kegiatan,
             }
 
             $.ajax({
@@ -545,7 +674,7 @@ $(function () {
                 success: function (response) {
                     swal.fire({
                         icon: "success",
-                        title: "Data stripping Berhasil Ditambah",
+                        title: "Data Kegiatan Berhasil Ditambah",
                         showConfirmButton: false,
                         timer: 2e3,
 
@@ -589,6 +718,18 @@ function editCompany(e) {
                         required: "Silakan Isi Nama Company"
                     },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -649,6 +790,18 @@ function editDepo(e) {
                         required: "Silakan Isi Nama Depo"
                     },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -716,6 +869,18 @@ function editpelabuhan(e) {
                         required: "Silakan Isi Nama Depo"
                     },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -806,6 +971,18 @@ function editpengirim(e) {
                     },
 
                 },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
 
                 // console.log();
                 submitHandler: function (form) {
@@ -879,6 +1056,7 @@ function editpenerima(e) {
                     },
 
                 },
+
                 messages: {
 
                     nama_penerima_edit: {
@@ -897,6 +1075,18 @@ function editpenerima(e) {
                         required: "Silakan Isi No. Rekening"
                     },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -969,6 +1159,18 @@ function editbiaya(e) {
                     },
 
                 },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
 
                 // console.log();
                 submitHandler: function (form) {
@@ -1032,6 +1234,18 @@ function edittype(e) {
 
 
                 },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
 
                 // console.log();
                 submitHandler: function (form) {
@@ -1092,6 +1306,18 @@ function editstuff(e) {
                     },
 
                 },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
 
                 // console.log();
                 submitHandler: function (form) {
@@ -1135,23 +1361,43 @@ function editstripp(e) {
         success: function (response) {
             $('#modal-discharge-edit').modal('show');
 
-            $('#kegiatan_stripping_edit').val(response.result.kegiatan);
-            $('#jenis_kegiatan_edit').val(response.result.jenis_kegiatan);
+            $('#kegiatan_edit').val(response.result.kegiatan);
+            if (response.result.jenis_kegiatan == "Stripping") {
+                $('.jenis_kegiatan_edit_stripping').prop("checked", true);
+            }else
+            {
+                $('.jenis_kegiatan_edit_stripping').prop("checked", false);
+                $('.jenis_kegiatan_edit_stuffing').prop("checked", true);
+
+            }
+
 
             $('#valid_stripping_edit').validate({
                 rules: {
 
-                    kegiatan_stripping_edit: {
+                    kegiatan_edit: {
                         required: true
                     },
 
                 },
                 messages: {
 
-                    kegiatan_stripping_edit: {
+                    kegiatan_edit: {
                         required: "Silakan Isi Nama Kegiatan"
                     },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -1163,13 +1409,13 @@ function editstripp(e) {
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            kegiatan: $('#kegiatan_stripping_edit').val(),
-                            jenis_kegiatan: $('#jenis_kegiatan_edit').val(),
+                            kegiatan: $('#kegiatan_edit').val(),
+                            jenis_kegiatan: $('#jenis_kegiatan_edit:checked').val(),
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data stripping Berhasil Diedit",
+                                title: "Data Kegiatan Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -1227,6 +1473,18 @@ function editcontainer(e) {
                     //     required: "Silakan Isi Type"
                     // },
 
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
                 },
 
                 // console.log();
@@ -1794,7 +2052,7 @@ function deletestripp(id) {
                     data: data,
                     success: function (response) {
                         swal.fire({
-                            title: "Data Stripping Dihapus",
+                            title: "Data Kegiatan Dihapus",
                             text: "Data Berhasil Dihapus",
                             icon: "success",
                             timer: 2e3,

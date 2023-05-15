@@ -49,6 +49,11 @@
                                 <input name="nomor_do" id="nomor_do" class="form-control">
                             </div>
 
+                            <div class="col-6 validation-container">
+                            <label for="inputAddress2" class="form-label">Tanggal Tiba Kapal</label>
+                                <input name="tanggal_tiba" id="tanggal_tiba" class="form-control">
+                            </div>
+
                             <div class="col-md-6 validation-container">
                                 <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
                                 <input name="vessel" id="vessel" class="form-control">
