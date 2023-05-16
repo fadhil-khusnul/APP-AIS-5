@@ -88,7 +88,7 @@
                                         <td align="top" valign="top">
                                             <ol type="1">
                                                 @foreach ($containers as $container)
-                                                    @if ($planload->id == $container->job_id)
+                                                    @if ($planload->id == $container->job_id && $container->seal != null)
                                                         <li>
                                                             {{ $container->size }} - {{$container->type}} - {{ $container->cargo }} - @if ($container->seal != null) {{$container->seal}} @else ? @endif
                                                             - @if ($container->date_activity != null) {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }} @else ? @endif
@@ -103,7 +103,7 @@
                                             @if ($planload->status == 'Process-Load')
                                                 <ol start="1">
                                                     @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id)
+                                                        @if ($planload->id == $container->job_id && $container->driver !=null)
                                                             <li>
                                                                 {{ $container->nomor_kontainer }} - {{$container->driver}} - {{$container->nomor_polisi}} - {{$container->remark}}
                                                             </li>
@@ -121,7 +121,7 @@
                                             @if ($planload->status == 'Process-Load')
                                                 <ol start="1">
                                                     @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id)
+                                                        @if ($planload->id == $container->job_id && $container->ongkos_supir != null)
                                                         <li>
                                                             {{ $container->nomor_kontainer }} - @rupiah($container->biaya_stuffing) - @rupiah($container->biaya_trucking) - @rupiah($container->ongkos_supir) - @rupiah($container->biaya_thc)
                                                         </li>
