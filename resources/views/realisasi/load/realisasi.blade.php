@@ -199,25 +199,12 @@
 
 
                                         <td class="text-center text-nowrap">
-                                            @if ($planload->status == 'Process-Load')
                                             <a href="/realisasi-load-create/{{ $planload->slug }}"
                                                 class="btn btn-label-danger rounded-pill">Realisasi Load <i
                                                     class="fa fa-pencil"></i>
 
                                             </a>
-                                            @else
-                                            {{-- <a href="/realisasi-load-create/{{ $planload->slug }}"
-                                                class="btn btn-label-danger rounded-pill">Realisasi Load <i
-                                                    class="fa fa-plus"></i>
-                                            </a> --}}
 
-                                            <a href="/invoice-load/{{ $planload->slug }}"
-                                                class="btn btn-label-success rounded-pill">Buat Invoice <i
-                                                    class="fa fa-book"></i>
-                                            </a>
-
-
-                                            @endif
                                         </td>
 
                                         {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i

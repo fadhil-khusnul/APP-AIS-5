@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('plan_discharges', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal_tiba')->nullable();
             $table->string('nomor_do');
+            $table->string('biaya_do')->nullable();
             $table->string('activity');
             $table->string('select_company');
             $table->text('vessel');

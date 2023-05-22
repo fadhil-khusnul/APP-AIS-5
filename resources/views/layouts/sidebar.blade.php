@@ -15,17 +15,7 @@
         <div class="aside-body" data-simplebar data-simplebar-direction="ltr">
             <!-- BEGIN Menu -->
             <div class="menu">
-                {{-- <div class="menu-item">
-                    <a href="index.html" data-menu-path="/index.html" class="menu-item-link">
-                        <div class="menu-item-icon">
-                            <i class="fa fa-desktop"></i>
-                        </div>
-                        <span class="menu-item-text">Dashboard</span>
-                        <div class="menu-item-addon">
-                            <span class="badge badge-success">New</span>
-                        </div>
-                    </a>
-                </div> --}}
+
                 <!-- BEGIN Menu Section -->
                 <div class="menu-section">
                     <div class="menu-section-icon">
@@ -43,42 +33,26 @@
                     </a>
                 </div>
 
-
-
-                {{-- <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
+                <div class="menu-item">
+                    <a href="/rekening-bank" data-menu-path="/rekening-bank" class="menu-item-link {{ Request::is('rekening-bank*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
-                            <i class="fa fa-desktop"></i>
+                            <i class="bi bi-bank"></i>
                         </div>
-                        <span class="menu-item-text">MONITORING</span>
-                        <div class="menu-item-addon">
-                            <i class="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    <!-- BEGIN Menu Submenu -->
-                    <div class="menu-submenu">
-                        <div class="menu-item">
-                            <a href="elements/advanced/avatar.html" data-menu-path="/elements/advanced/avatar.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">REASON OF CANCELATION</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/advanced/block-ui.html" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">CANCEL</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="elements/advanced/carousel.html" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">REPORT CANCEL</span>
-                            </a>
-                        </div>
+                        <span class="menu-item-text">REKENING BANK</span>
+                    </a>
+                </div>
 
-                    </div>
-                    <!-- END Menu Submenu -->
-                </div> --}}
+                <div class="menu-item">
+                    <a href="/ongkos-supir" data-menu-path="/ongkos-supir" class="menu-item-link {{ Request::is('ongkos-supir*') ? 'active' : '' }}">
+                        <div class="menu-item-icon">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                        <span class="menu-item-text">ONGKOS SUPIR</span>
+                    </a>
+                </div>
+
+
+
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle
                     {{
@@ -126,7 +100,7 @@
                     {{
                     Request::is('planload') || Request::is('planload/*') || Request::is('planload-edit/*') ||
                     Request::is('processload') || Request::is('processload-create/*') ||
-                    Request::is('realisasi-load') || Request::is('realisasi-load-create/*')
+                    Request::is('realisasi-load') || Request::is('realisasi-load-create/*') || Request::is('processload-edit/*')
                      ? 'active' : ''
 
                     }}">
@@ -147,7 +121,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/processload" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link {{ Request::is('processload') || Request::is('processload-create/*') ? 'active' : ''
+                            <a href="/processload" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link {{ Request::is('processload') || Request::is('processload-create/*') || Request::is('processload-edit/*') ? 'active' : ''
                         }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">LOAD-PROCESS</span>
@@ -173,7 +147,7 @@
                      ? 'active' : ''
 
                     }}">                        <div class="menu-item-icon">
-                            <i class="bi bi-lightning-charge-fill"></i>
+                            <i class="fa fa-external-link-square"></i>
                         </div>
                         <span class="menu-item-text">DISCHARGE</span>
                         <div class="menu-item-addon">
@@ -189,13 +163,13 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/processdischarge" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link {{ Request::is('processdischarge') || Request::is('processdischarge-create/*') ? 'active' : ''}}">
+                            <a href="/processdischarge" data-menu-path="" class="menu-item-link {{ Request::is('processdischarge') || Request::is('processdischarge-create/*') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">DISCHARGE-PROCESS</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/realisasi-discharge" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-discharge') || Request::is('realisasi-discharge-create/*') ? 'active' : '' }}">
+                            <a href="/realisasi-discharge" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-discharge') || Request::is('realisasi-discharge-create/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">DISCHARGE-REALISASI</span>
                             </a>
@@ -208,9 +182,9 @@
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle
                     {{
-                    Request::is('plantrucking') || Request::is('plantrucking/*') || Request::is('plandischarge-edit/*') ||
-                    Request::is('processtrucking') || Request::is('processtrucking-create/*') ||
-                    Request::is('realisasi-trucking') || Request::is('realisasi-trucking-create/*')
+                    Request::is('truckingplan') || Request::is('truckingplan/*') || Request::is('plantrucking-edit/*') ||
+                    Request::is('truckingprocess') || Request::is('truckingprocess-create/*') ||
+                    Request::is('realisasi-trucking') || Request::is('truckingrealisasi-create/*')
                      ? 'active' : ''
 
                     }}">                          <div class="menu-item-icon">
@@ -224,19 +198,19 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="/truckingplan" data-menu-path="" class="menu-item-link {{ Request::is('plantrucking') || Request::is('plantrucking/*') || Request::is('plandischarge-edit/*') ? 'active' : ''  }}">
+                            <a href="/truckingplan" data-menu-path="" class="menu-item-link {{ Request::is('truckingplan') || Request::is('truckingplan/*') || Request::is('plantrucking-edit/*') ? 'active' : ''  }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">TRUCKING-PLAN</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/truckingprocess" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link {{ Request::is('processtrucking') || Request::is('processtrucking-create/*') ? 'active' : '' }}">
+                            <a href="/truckingprocess" data-menu-path="" class="menu-item-link {{ Request::is('truckingprocess') || Request::is('truckingprocess-create/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">TRUCKING-PROCESS</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/realisasi-trucking" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-trucking') || Request::is('realisasi-trucking-create/*') ? 'active' : '' }}">
+                            <a href="/realisasi-trucking" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-trucking') || Request::is('truckingrealisasi-create/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">TRUCKING-REALISASI</span>
                             </a>
@@ -246,122 +220,11 @@
                     <!-- END Menu Submenu -->
                 </div>
 
-                {{-- <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') || Request::is('planload-edit/*') || Request::is('processload-create/*') || Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : '' }}">
-                        <div class="menu-item-icon">
-                            <i class="far fa-clone"></i>
-                        </div>
-                        <span class="menu-item-text">ACTIVITY</span>
-                        <div class="menu-item-addon">
-                            <i class="menu-item-caret caret"></i>
-                        </div>
-                    </button>
-                    <!-- BEGIN Menu Submenu -->
-                    <div class="menu-submenu">
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle {{ Request::is('planload/*') ? 'active' : '' }}">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER PLAN</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="/planload" data-menu-path="/planload" class="menu-item-link {{ Request::is('/planload/*') || Request::is('planload/create') ? 'active' : '' }}">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="/plandischarge" data-menu-path="/plandischarge" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">TRUCKING</span>
-                                    </a>
-                                </div>
 
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle {{ Request::is('processload/*') || Request::is('processload-create/*') ? 'active' : '' }}">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER PROCESS</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="/processload" data-menu-path="/processload" class="menu-item-link {{ Request::is('/processload/*') || Request::is('processload-create/*') ? 'active' : '' }} ">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-
-                                <div class="menu-item">
-                                    <a href="/processdischarge" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="/processtrucking" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">TRUKCING</span>
-                                    </a>
-                                </div>
-
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-                        <div class="menu-item">
-                            <button class="menu-item-link menu-item-toggle {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : ''}}">
-                                <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">JOB ORDER REALISASI</span>
-                                <div class="menu-item-addon">
-                                    <i class="menu-item-caret caret"></i>
-                                </div>
-                            </button>
-                            <!-- BEGIN Menu Submenu -->
-                            <div class="menu-submenu">
-                                <div class="menu-item">
-                                    <a href="/realisasi-load" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*') ? 'active' : '' }} ">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">LOAD</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">DISCHARGE</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a href="datatable/advanced/column-visibility.html" data-menu-path="/datatable/advanced/column-visibility.html" class="menu-item-link">
-                                        <i class="menu-item-bullet"></i>
-                                        <span class="menu-item-text">TRUCKING</span>
-                                    </a>
-                                </div>
-
-                            </div>
-                            <!-- END Menu Submenu -->
-                        </div>
-
-                    </div>
-                    <!-- END Menu Submenu -->
-                </div> --}}
 
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
+                    <button class="menu-item-link menu-item-toggle {{
+                        Request::is('invoice-load') || Request::is('invoice-discharge') || Request::is('invoice-trucking') ? 'active' : '' }}">
                         <div class="menu-item-icon">
                             <i class="fa fa-credit-card"></i>
                         </div>
@@ -373,24 +236,36 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="elements/advanced/avatar.html" data-menu-path="/elements/advanced/avatar.html" class="menu-item-link">
+                            <a href="/invoice-load" data-menu-path="" class="menu-item-link {{ Request::is('invoice-load') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">CREATE INV</span>
+                                <span class="menu-item-text">LOAD INV</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
+                            <a href="/invoice-discharge" data-menu-path="" class="menu-item-link {{ Request::is('invoice-discharge') ? 'active' : ''}}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">DISCHARGE INV</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="elements/advanced/block-ui.html" data-menu-path="/elements/advanced/block-ui.html" class="menu-item-link">
+                            <a href="/invoice-trucking" data-menu-path="" class="menu-item-link {{ Request::is('invoice-trucking') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">DAILY OPERATIONAL COST</span>
+                                <span class="menu-item-text">TRUCKING INV</span>
                             </a>
                         </div>
+
 
 
                     </div>
                     <!-- END Menu Submenu -->
                 </div>
                 <div class="menu-item">
-                    <button class="menu-item-link menu-item-toggle">
+                    <button class="menu-item-link menu-item-toggle {{
+                    Request::is('summary-report-load') || Request::is('cost-report-load') || Request::is('container-report-load') ||
+                    Request::is('summary-report-discharge') || Request::is('cost-report-discharge') || Request::is('container-report-discharge') ||
+                    Request::is('summary-report-trucking') || Request::is('cost-report-trucking') || Request::is('container-report-trucking')
+                     ? 'active' : ''}}">
                         <div class="menu-item-icon">
                             <i class="fa fa-book"></i>
                         </div>
@@ -402,10 +277,119 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="elements/advanced/avatar.html" data-menu-path="/elements/advanced/avatar.html" class="menu-item-link">
+                            <button class="menu-item-link menu-item-toggle
+                            {{
+                                Request::is('cost-report-load') || Request::is('cost-report-discharge')
+                                || Request::is('cost-report-trucking')
+                                ? 'active' : ''
+                            }}">
                                 <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">REPORT JOB ORDER</span>
-                            </a>
+                                <span class="menu-item-text">COST REPORT</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/cost-report-load" data-menu-path="/datatable/basic/base.html" class="menu-item-link {{  Request::is('cost-report-load') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/cost-report-discharge" data-menu-path="/datatable/basic/footer.html" class="menu-item-link {{  Request::is('cost-report-discharge') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/cost-report-trucking" data-menu-path="/datatable/basic/scrollable.html" class="menu-item-link {{  Request::is('cost-report-trucking') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle
+                            {{
+                                Request::is('summary-report-load') || Request::is('summary-report-discharge')
+                                || Request::is('summary-report-trucking')
+                                ? 'active' : ''
+                            }}
+                            ">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">SUMMARY REPORT</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/summary-report-load" data-menu-path="/summary-report-load" class="menu-item-link {{  Request::is('summary-report-load') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/summary-report-discharge" data-menu-path="/datatable/basic/footer.html" class="menu-item-link {{  Request::is('summary-report-discharge') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/summary-report-trucking" data-menu-path="/datatable/basic/scrollable.html" class="menu-item-link {{  Request::is('summary-report-trucking') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle
+                            {{
+                                Request::is('container-report-load') || Request::is('container-report-discharge')
+                                || Request::is('container-report-trucking')
+                                ? 'active' : ''
+                            }}
+
+                            ">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">CONTAINER REPORT</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/container-report-load" data-menu-path="/datatable/basic/base.html" class="menu-item-link {{  Request::is('container-report-load') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/container-report-discharge" data-menu-path="/datatable/basic/footer.html" class="menu-item-link {{  Request::is('container-report-discharge') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/container-report-trucking" data-menu-path="/datatable/basic/scrollable.html" class="menu-item-link {{  Request::is('container-report-trucking') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
                         </div>
 
                     </div>

@@ -121,22 +121,24 @@
                                         <th class="text-center">Ongkos Supir</th>
                                         <th class="text-center">Biaya THC</th>
                                         <th class="text-center">Jenis Mobil (Sewa/Sendiri)</th>
+                                        <th class="text-center">Sumber Dana (Ongkos Supir)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
                                     @foreach ($containers as $container)
+                                        <input type="hidden" value="{{ count($containers) }}" id="old_table" name="old_table">
                                         @if (count($containers) == 1)
                                         <tr>
                                             <td><button id="button_kontainer[{{ $loop->iteration }}]"
                                                     name="button_kontainer[{{ $loop->iteration }}]"
                                                     class="btn btn-label-danger btn-icon btn-circle btn-sm"
-                                                    type="button" onclick="delete_kontainer(this)" disabled @readonly(true)><i
+                                                    type="button" onclick="delete_kontainer1(this)" disabled @readonly(true)><i
                                                         class="fa fa-trash"></i></button></td>
                                             <td>{{ $loop->iteration }}</td>
 
                                             <td>
-                                                <select data-bs-toggle="tooltip" id="seal[{{ $loop->iteration }}]"
-                                                    name="seal[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
+                                                <select data-bs-toggle="tooltip" id="size[{{ $loop->iteration }}]"
+                                                    name="size[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
                                                     <option disabled>Pilih Size</option>
                                                     @foreach ($sizes as $size)
                                                         <option value="{{ $size->size_container }}" @if ($container->size == $size->size_container) selected @endif>
@@ -146,8 +148,8 @@
 
                                             </td>
                                             <td>
-                                                <select data-bs-toggle="tooltip" id="seal[{{ $loop->iteration }}]"
-                                                    name="seal[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
+                                                <select data-bs-toggle="tooltip" id="type[{{ $loop->iteration }}]"
+                                                    name="type[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
                                                     <option disabled>Pilih Lokasi</option>
                                                     @foreach ($types as $type)
                                                         <option value="{{ $type->type_container }}" @if ($container->type == $type->type_container) selected @endif>
@@ -202,7 +204,7 @@
                                                         class="form-control date_activity"
                                                         id="date_activity[{{ $loop->iteration }}]"
                                                         name="date_activity[{{ $loop->iteration }}]"
-                                                        placeholder="Date..." value="{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}" required>
+                                                        placeholder="Date..." value="{{ $container->date_activity }}" required>
                                                 </div>
                                             </td>
 
@@ -273,13 +275,13 @@
                                             </td>
                                             <td>
                                                 <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
+                                                    <input data-bs-toggle="tooltip" disabled @readonly(true)
                                                         onkeydown="return numbersonly(this, event);"
                                                         onkeyup="javascript:tandaPemisahTitik(this);" type="text"
                                                         class="form-control"
                                                         id="ongkos_supir[{{ $loop->iteration }}]"
                                                         name="ongkos_supir[{{ $loop->iteration }}]"
-                                                        placeholder="Ongkos Supir..." value="@rupiah2(old('ongkos_supir', $container->ongkos_supir))" required>
+                                                        placeholder="Ongkos Supir..." value="@rupiah2(old('ongkos_supir', $container->ongkos_supir))">
                                                 </div>
                                             </td>
                                             <td>
@@ -305,27 +307,52 @@
                                                     </select>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="validation-container">
+                                                    <select data-bs-toggle="tooltip" disabled @readonly(true)
+                                                        id="dana[{{ $loop->iteration }}]"
+                                                        name="dana[{{ $loop->iteration }}]"
+                                                        class="form-select danas">
+                                                        <option selected disabled>Pilih Sumber Dana</option>
+                                                        @foreach ($danas as $dana)
+                                                            <option value="{{ $dana->id }}"  @if ($dana->id == $container->dana) selected @endif>
+                                                                {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
                                         </tr>
                                         @else
                                         <tr>
                                             <td><button id="button_kontainer[{{ $loop->iteration }}]"
                                                     name="button_kontainer[{{ $loop->iteration }}]"
                                                     class="btn btn-label-danger btn-icon btn-circle btn-sm"
-                                                    type="button" onclick="delete_kontainer(this)"><i
+                                                    type="button" onclick="delete_kontainer1(this)" @readonly(true) disabled><i
                                                         class="fa fa-trash"></i></button></td>
                                             <td>{{ $loop->iteration }}</td>
-
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $loop->iteration }}]">{{ old('size', $container->size) }}
-                                                </label>
+                                                <select data-bs-toggle="tooltip" id="size[{{ $loop->iteration }}]"
+                                                    name="size[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
+                                                    <option disabled>Pilih Size</option>
+                                                    @foreach ($sizes as $size)
+                                                        <option value="{{ $size->size_container }}" @if ($container->size == $size->size_container) selected @endif>
+                                                            {{ $size->size_container }}</option>
+                                                    @endforeach
+                                                </select>
 
                                             </td>
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="type[{{ $loop->iteration }}]">{{ old('type', $container->type) }}</label>
+                                                <select data-bs-toggle="tooltip" id="type[{{ $loop->iteration }}]"
+                                                    name="type[{{ $loop->iteration }}]" class="form-select" disabled @readonly(true)>
+                                                    <option disabled>Pilih Lokasi</option>
+                                                    @foreach ($types as $type)
+                                                        <option value="{{ $type->type_container }}" @if ($container->type == $type->type_container) selected @endif>
+                                                            {{ $type->type_container }}</option>
+                                                    @endforeach
+                                                </select>
 
                                             </td>
+
                                             <td>
                                                 <div class="validation-container">
                                                     <input data-bs-toggle="tooltip" type="text"
@@ -372,7 +399,7 @@
                                                         class="form-control date_activity"
                                                         id="date_activity[{{ $loop->iteration }}]"
                                                         name="date_activity[{{ $loop->iteration }}]"
-                                                        placeholder="Date..." value="{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}" required>
+                                                        placeholder="Date..." value="{{ $container->date_activity }}" required>
                                                 </div>
                                             </td>
 
@@ -443,13 +470,13 @@
                                             </td>
                                             <td>
                                                 <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip"
+                                                    <input data-bs-toggle="tooltip" disabled @readonly(true)
                                                         onkeydown="return numbersonly(this, event);"
                                                         onkeyup="javascript:tandaPemisahTitik(this);" type="text"
                                                         class="form-control"
                                                         id="ongkos_supir[{{ $loop->iteration }}]"
                                                         name="ongkos_supir[{{ $loop->iteration }}]"
-                                                        placeholder="Ongkos Supir..." value="@rupiah2(old('ongkos_supir', $container->ongkos_supir))" required>
+                                                        placeholder="Ongkos Supir..." value="@rupiah2(old('ongkos_supir', $container->ongkos_supir))">
                                                 </div>
                                             </td>
                                             <td>
@@ -472,6 +499,21 @@
                                                         <option value="Mobil Sewa" @if ($container->jenis_mobil == "Mobil Sewa") selected @endif>Mobil Sewa</option>
                                                         <option value="Mobil Sendiri" @if ($container->jenis_mobil == "Mobil Sendiri") selected @endif>Mobil Sendiri</option>
 
+                                                    </select>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="validation-container">
+                                                    <select data-bs-toggle="tooltip" disabled @readonly(true)
+                                                        id="dana[{{ $loop->iteration }}]"
+                                                        name="dana[{{ $loop->iteration }}]"
+                                                        class="form-select danas">
+                                                        <option disabled>Pilih Sumber Dana</option>
+                                                        @foreach ($danas as $dana)
+                                                            <option value="{{ $dana->id }}" @if ($dana->id == $container->dana) selected @endif>
+                                                                {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </td>

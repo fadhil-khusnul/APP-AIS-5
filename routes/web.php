@@ -21,6 +21,10 @@ use App\Http\Controllers\AlihKapalController;
 use App\Http\Controllers\TypeContainerController;
 use App\Http\Controllers\RealisasiLoadController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\OngkoSupirController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportDischargeController;
+use App\Http\Controllers\ReportTruckingController;
 
 
 /*
@@ -93,7 +97,7 @@ Route::delete('/stripping/{id}', [StrippingController::class, 'destroy']);
 
 //ACTIVITY
 
-//plan
+//lOAD
 Route::get('/planload', [PlanLoadController::class, 'index']);
 Route::get('/planload/create', [PlanLoadController::class, 'create']);
 Route::get('/planload-edit/{slug}', [PlanLoadController::class, 'edit']);
@@ -103,25 +107,12 @@ Route::post('/update-job-planload', [PlanLoadController::class, 'update']);
 Route::post('/getJenisKontainer', [PlanLoadController::class, 'getJenisKontainer']);
 Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeContainer']);
 
-
-Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
-Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
-Route::post('/create-job-plandischarge', [PlanDischargeController::class, 'create_job_plandischarge']);
-Route::get('/processdischarge', [PlanDischargeController::class, 'process']);
-Route::get('/processdischarge-create/{slug}', [PlanDischargeController::class, 'create_process']);
-Route::post('/create-job-processdischarge', [PlanDischargeController::class, 'store_process']);
-Route::get('/realisasi-discharge', [PlanDischargeController::class, 'realisasi']);
-Route::get('/realisasi-discharge-create/{slug}', [PlanDischargeController::class, 'realisasi_create']);
-Route::post('/getNoSurat-discharge', [PlanDischargeController::class, 'getNoSurat_discharge']);
-Route::post('/getBiayaLain-discharge', [PlanDischargeController::class, 'getBiayaLain']);
-Route::post('/getSealProcessDischarge', [PlanDischargeController::class, 'getSealProcessLoad']);
-Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNoContainer']);
-
-//process
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
-Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
+Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
+
+Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
@@ -129,11 +120,29 @@ Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer'])
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
 Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);
 
-
-
-//realisasi
 Route::get('/realisasi-load', [RealisasiLoadController::class, 'index']);
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
+
+
+//DISCHARGE
+Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
+Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
+Route::get('/plandischarge-edit/{slug}', [PlanDischargeController::class, 'edit']);
+Route::post('/update-job-plandischarge', [PlanDischargeController::class, 'update']);
+
+Route::post('/create-job-plandischarge', [PlanDischargeController::class, 'create_job_plandischarge']);
+Route::get('/processdischarge', [PlanDischargeController::class, 'process']);
+Route::get('/processdischarge-create/{slug}', [PlanDischargeController::class, 'create_process']);
+Route::post('/create-job-processdischarge', [PlanDischargeController::class, 'store_process']);
+Route::get('/realisasi-discharge', [PlanDischargeController::class, 'realisasi']);
+Route::get('/realisasidischarge-create/{slug}', [PlanDischargeController::class, 'realisasi_create']);
+Route::post('/create-job-realisasidischarge', [PlanDischargeController::class, 'store_realisasi']);
+Route::post('/getNoSurat-discharge', [PlanDischargeController::class, 'getNoSurat_discharge']);
+Route::post('/getBiayaLain-discharge', [PlanDischargeController::class, 'getBiayaLain']);
+Route::post('/getSealProcessDischarge', [PlanDischargeController::class, 'getSealProcessLoad']);
+Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNoContainer']);
+
+
 Route::post('/create-si-container', [PdfController::class, 'create_si']);
 Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
@@ -162,13 +171,65 @@ Route::post('/tambah-damage-seal', [SealController::class, 'update_damage']);
 //TRUCKING
 Route::get('/truckingplan', [TruckingController::class, 'index']);
 Route::get('/truckingplan/create', [TruckingController::class, 'create']);
-Route::post('/create-job-truckingplan', [TruckingController::class, 'create_job_plandischarge']);
+Route::post('/create-job-truckingplan', [TruckingController::class, 'create_job_Trucking']);
+Route::get('/plantrucking-edit/{slug}', [TruckingController::class, 'edit']);
+Route::post('/update-job-truckinplan', [TruckingController::class, 'update']);
+
 Route::get('/truckingprocess', [TruckingController::class, 'process']);
 Route::get('/truckingprocess-create/{slug}', [TruckingController::class, 'create_process']);
 Route::post('/create-job-truckingprocess', [TruckingController::class, 'store_process']);
 Route::get('/realisasi-trucking', [TruckingController::class, 'realisasi']);
-Route::get('/realisasi-trucking-create/{slug}', [TruckingController::class, 'realisasi_create']);
+Route::get('/truckingrealisasi-create/{slug}', [TruckingController::class, 'realisasi_create']);
 Route::post('/getNoSurat-trucking', [TruckingController::class, 'getNoSurat_discharge']);
 Route::post('/getBiayaLain-trucking', [TruckingController::class, 'getBiayaLain']);
 Route::post('/getSealProcessTrucking', [TruckingController::class, 'getSealProcessLoad']);
 Route::post('/getNoContainer-trucking', [TruckingController::class, 'getNoContainer']);
+
+
+//ONGKOS SUPIR
+Route::get('/ongkos-supir', [OngkoSupirController::class, 'index']);
+Route::post('/add-ongkos', [OngkoSupirController::class, 'store']);
+Route::get('/ongkos-supir/{id}/edit', [OngkoSupirController::class, 'edit']);
+Route::put('/ongkos-supir/{id}', [OngkoSupirController::class, 'update']);
+Route::delete('/ongkos-supir/{id}', [OngkoSupirController::class, 'destroy']);
+//REKENING BANK
+Route::get('/rekening-bank', [OngkoSupirController::class, 'index_rekening']);
+Route::post('/add-rekening', [OngkoSupirController::class, 'store_rekening']);
+Route::get('/rekening-bank/{id}/edit', [OngkoSupirController::class, 'edit_rekening']);
+Route::put('/rekening-bank/{id}', [OngkoSupirController::class, 'update_rekening']);
+Route::delete('/rekening-bank/{id}', [OngkoSupirController::class, 'destroy_rekening']);
+
+//REPORT-LOAD
+Route::get('/summary-report-load', [ReportController::class, 'report_load']);
+Route::get('/downloadsload/{slug}', [ReportController::class, 'download_sload']);
+Route::get('/cost-report-load', [ReportController::class, 'report_cload']);
+Route::get('/downloadcload/{slug}', [ReportController::class, 'download_cload']);
+Route::get('/container-report-load', [ReportController::class, 'report_coload']);
+Route::get('/downloadcoload/{id}', [ReportController::class, 'download_coload']);
+Route::get('/invoice-load', [ReportController::class, 'invoice']);
+Route::get('/pdfinvoice-load/{slug}', [ReportController::class, 'invoice_download']);
+
+//REPORT-DISCHARGE
+Route::get('/summary-report-discharge', [ReportDischargeController::class, 'report_load']);
+Route::get('/downloadsdischarge/{slug}', [ReportDischargeController::class, 'download_sload']);
+Route::get('/cost-report-discharge', [ReportDischargeController::class, 'report_cload']);
+Route::get('/downloadcdischarge/{slug}', [ReportDischargeController::class, 'download_cload']);
+Route::get('/container-report-discharge', [ReportDischargeController::class, 'report_coload']);
+Route::get('/downloadcodischarge/{id}', [ReportDischargeController::class, 'download_coload']);
+Route::get('/invoice-discharge', [ReportDischargeController::class, 'invoice']);
+Route::get('/pdfinvoice-discharge/{slug}', [ReportDischargeController::class, 'invoice_download']);
+
+
+//REPORT-TRUCKING
+Route::get('/summary-report-trucking', [ReportTruckingController::class, 'report_load']);
+Route::get('/downloadstrucking/{slug}', [ReportTruckingController::class, 'download_sload']);
+Route::get('/cost-report-trucking', [ReportTruckingController::class, 'report_cload']);
+Route::get('/downloadctrucking/{slug}', [ReportTruckingController::class, 'download_cload']);
+Route::get('/container-report-trucking', [ReportTruckingController::class, 'report_coload']);
+Route::get('/downloadcotrucking/{id}', [ReportTruckingController::class, 'download_coload']);
+Route::get('/invoice-trucking', [ReportTruckingController::class, 'invoice']);
+Route::get('/pdfinvoice-trucking/{slug}', [ReportTruckingController::class, 'invoice_download']);
+
+
+
+

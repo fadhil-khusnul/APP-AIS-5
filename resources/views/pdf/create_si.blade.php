@@ -57,7 +57,7 @@
                     <tr>
                         <td>FEEDER</td>
                         <td>:</td>
-                        <td colspan="3">PT. AIS LOGISTIK MAKASSAR</td>
+                        <td colspan="3">{{$load->select_company}}</td>
                     </tr>
                     <tr>
                         <td>VESSEL</td>

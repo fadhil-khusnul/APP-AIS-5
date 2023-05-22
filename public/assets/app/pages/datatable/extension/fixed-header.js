@@ -58,6 +58,19 @@ $("#biaya").DataTable({
         offset
     }
 });
+$("#realisasi-create").DataTable({
+    responsive:true,
+    search:false,
+    paging:false,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    }
+});
+
+
 $("#trucking").DataTable({
     responsive:true,
     fixedHeader:
@@ -130,6 +143,7 @@ $("#realisasiload_create").DataTable({
     "paging": false,
     "info": false,
     "searching": false,
+    "scroll" :false,
     fixedHeader: {
         header:true,
         headerOffset:

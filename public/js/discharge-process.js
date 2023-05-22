@@ -1,7 +1,7 @@
 
 
 
-function UpdateteJobProcessDischarge() {
+function CreateJobProcessDischarge() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -32,7 +32,8 @@ function UpdateteJobProcessDischarge() {
             // Event.preventDefault();
 
             let old_slug = document.getElementById("old_slug").value;
-            var table_container = document.getElementById("processload-create");
+            let biaya_do = document.getElementById("biaya_do").value;
+            var table_container = document.getElementById("processload_create");
             var urutan = table_container.tBodies[0].rows.length;
 
             var nomor_kontainer = [];
@@ -40,21 +41,18 @@ function UpdateteJobProcessDischarge() {
             var date_activity = [];
             var tempDate = [];
             var formattedDate = [];
-            var tempDate1 = [];
-            var formattedDate1 = [];
+
             var cargo = [];
             var lokasi = [];
-            var lokasi_kembali = [];
-            var tanggal_kembali = [];
+            var activity = [];
+            var biaya_relokasi = [];
+            var detail_barang = [];
             var driver = [];
             var nomor_polisi = [];
             var remark = [];
             var jaminan_kontainer = [];
-            var biaya_trucking = [];
-            var ongkos_supir = [];
-            var biaya_thc = [];
-            var biaya_demurrage = [];
-            // var no_surat = [];
+            var jenis_mobil = [];
+
 
             var fd = new FormData();
 
@@ -74,6 +72,11 @@ function UpdateteJobProcessDischarge() {
                 ).value;
                 fd.append("cargo[]", cargo[i]);
 
+                detail_barang[i] = document.getElementById(
+                    "detail_barang[" + (i + 1) + "]"
+                ).value;
+                fd.append("detail_barang[]", detail_barang[i]);
+
                 date_activity[i] = document.getElementById(
                     "date_activity[" + (i + 1) + "]"
                 ).value;
@@ -85,26 +88,12 @@ function UpdateteJobProcessDischarge() {
                 ].join("-");
                 fd.append("date_activity[]", formattedDate[i]);
 
-                tanggal_kembali[i] = document.getElementById(
-                    "tanggal_kembali[" + (i + 1) + "]"
-                ).value;
-                tempDate1[i] = new Date(tanggal_kembali[i]);
-                formattedDate1[i] = [
-                    tempDate1[i].getFullYear(),
-                    tempDate1[i].getMonth() + 1,
-                    tempDate1[i].getDate(),
-                ].join("-");
-                fd.append("tanggal_kembali[]", formattedDate1[i]);
 
                 lokasi[i] = document.getElementById(
                     "lokasi[" + (i + 1) + "]"
                 ).value;
                 fd.append("lokasi[]", lokasi[i]);
 
-                lokasi_kembali[i] = document.getElementById(
-                    "lokasi_kembali[" + (i + 1) + "]"
-                ).value;
-                fd.append("lokasi_kembali[]", lokasi_kembali[i]);
 
                 driver[i] = document.getElementById(
                     "driver[" + (i + 1) + "]"
@@ -126,25 +115,22 @@ function UpdateteJobProcessDischarge() {
                 ).value;
                 fd.append("jaminan_kontainer[]", jaminan_kontainer[i]);
 
-                biaya_trucking[i] = document.getElementById(
-                    "biaya_trucking[" + (i + 1) + "]"
+                biaya_relokasi[i] = document.getElementById(
+                    "biaya_relokasi[" + (i + 1) + "]"
                 ).value;
-                fd.append("biaya_trucking[]", biaya_trucking[i]);
+                fd.append("biaya_relokasi[]", biaya_relokasi[i]);
 
-                ongkos_supir[i] = document.getElementById(
-                    "ongkos_supir[" + (i + 1) + "]"
+                activity[i] = document.getElementById(
+                    "activity[" + (i + 1) + "]"
                 ).value;
-                fd.append("ongkos_supir[]", ongkos_supir[i]);
+                fd.append("activity[]", activity[i]);
 
-                biaya_thc[i] = document.getElementById(
-                    "biaya_thc[" + (i + 1) + "]"
+                jenis_mobil[i] = document.getElementById(
+                    "jenis_mobil[" + (i + 1) + "]"
                 ).value;
-                fd.append("biaya_thc[]", biaya_thc[i]);
+                fd.append("jenis_mobil[]", jenis_mobil[i]);
 
-                biaya_demurrage[i] = document.getElementById(
-                    "biaya_demurrage[" + (i + 1) + "]"
-                ).value;
-                fd.append("biaya_demurrage[]", biaya_demurrage[i]);
+
             }
 
             var no_surat = [];
@@ -228,6 +214,7 @@ function UpdateteJobProcessDischarge() {
             fd.append("tambah", tambah);
 
             fd.append("old_slug", old_slug);
+            fd.append("biaya_do", biaya_do);
 
             swal.fire({
                 title: "Apakah anda yakin?",
@@ -271,7 +258,7 @@ function UpdateteJobProcessDischarge() {
                         });
                     } else {
                         swal.fire({
-                            title: "Load Job Tidak Diproess",
+                            title: "Job Tidak Diproess",
                             text: "Silakan Cek Kembali Data Anda",
                             icon: "error",
                             timer: 10e3,
@@ -280,6 +267,8 @@ function UpdateteJobProcessDischarge() {
                     }
                 }
             );
+
+
         },
     });
 }
@@ -295,7 +284,7 @@ function change_container_discharge(ini) {
         },
         success: function (response) {
             var baris = ini.parentNode.parentNode.parentNode.rowIndex;
-            var table = document.getElementById("processload-create");
+            var table = document.getElementById("processload_create");
             var count_row = table.tBodies[0].rows.length;
 
             for (var i = 1; i <= count_row; i++) {
@@ -342,7 +331,7 @@ function seal_discharge(ini) {
         success: function (response) {
             var baris =
                 ini.parentNode.parentNode.parentNode.parentNode.rowIndex;
-            var table = document.getElementById("processload-create");
+            var table = document.getElementById("processload_create");
             var count_row = table.tBodies[0].rows.length;
 
             for (var i = 1; i <= count_row; i++) {
@@ -372,7 +361,7 @@ function seal_discharge(ini) {
 }
 
 
-function blur_no_container_discharge(ini) {
+function blur_no_container(ini) {
     let token = $("#csrf").val();
 
     $.ajax({
@@ -383,7 +372,7 @@ function blur_no_container_discharge(ini) {
         },
         success: function (response) {
             var baris = ini.parentNode.parentNode.parentNode.rowIndex;
-            var table = document.getElementById("processload-create");
+            var table = document.getElementById("processload_create");
             var count_row = table.tBodies[0].rows.length;
 
             for (var i = 1; i <= count_row; i++) {
@@ -451,7 +440,7 @@ function tambah_biaya() {
     var table = document.getElementById("tbody_biaya");
     tambah++;
 
-    var table_container = document.getElementById("processload-create");
+    var table_container = document.getElementById("processload_create");
     var urutan = table_container.tBodies[0].rows.length;
     var ifkontainer = [];
 
@@ -472,7 +461,7 @@ function tambah_biaya() {
     } else {
         var nomor_kontainer = [""];
 
-        var table_container = document.getElementById("processload-create");
+        var table_container = document.getElementById("processload_create");
         var urutan = table_container.tBodies[0].rows.length;
         for (var i = 0; i < urutan; i++) {
             value_kontainer = document.getElementById(
@@ -591,4 +580,35 @@ function delete_biaya(r) {
     }
 
     reindex_biaya();
+}
+
+function char(ini, evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+
+    var regex = /[A-Z]/;
+    var regex2 = /[a-z]/;
+    var regex3 = /[0-9]/;
+
+    if (
+        (!regex.test(key) && !regex2.test(key) && ini.value.length <= 3) ||
+        (!regex3.test(key) && ini.value.length >= 4) ||
+        ini.value.length == 11
+    ) {
+        theEvent.returnValue = false;
+    }
+}
+
+function no_paste(event) {
+    if (
+        event.ctrlKey == true &&
+        (event.which == "118" || event.which == "86")
+    ) {
+        event.preventDefault();
+    }
+}
+
+function uppercase(ini) {
+    ini.value = ini.value.toUpperCase();
 }

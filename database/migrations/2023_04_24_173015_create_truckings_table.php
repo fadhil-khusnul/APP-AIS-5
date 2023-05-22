@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('truckings', function (Blueprint $table) {
             $table->id();
-            $table->string('pelayaran');
+            $table->date('tanggal')->nullable();
             $table->text('vessel');
             $table->text('vessel_code');
+            $table->string('select_company');
+            $table->string('pengirim');
+            $table->string('penerima');
             $table->string('activity');
             $table->string('emkl');
             $table->text('slug');

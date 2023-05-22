@@ -44,7 +44,7 @@
                                     name="tanggal_planload">
                             </div> --}}
 
-                            <div class="col-md-12 validation-container">
+                            <div class="col-md-6 validation-container">
                                 <label for="inputAddress2" class="form-label">Nomor DO</label>
                                 <input name="nomor_do" id="nomor_do" class="form-control">
                             </div>

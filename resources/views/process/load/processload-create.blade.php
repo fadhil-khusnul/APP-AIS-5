@@ -120,6 +120,7 @@
                                         <th class="text-center">Ongkos Supir</th>
                                         <th class="text-center">Biaya THC</th>
                                         <th class="text-center">Jenis Mobil (Sewa/Sendiri)</th>
+                                        <th class="text-center">Sumber Dana (Ongkos Supir)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
@@ -288,6 +289,20 @@
                                                         </select>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="dana[{{ $loop->iteration }}]"
+                                                            name="dana[{{ $loop->iteration }}]"
+                                                            class="form-select danas" required>
+                                                            <option selected disabled>Pilih Sumber Dana</option>
+                                                            @foreach ($danas as $dana)
+                                                                <option value="{{ $dana->id }}">
+                                                                    {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @else
                                             <tr>
@@ -452,6 +467,20 @@
                                                         </select>
                                                     </div>
                                                 </td>
+                                                <td>
+                                                    <div class="validation-container">
+                                                        <select data-bs-toggle="tooltip"
+                                                            id="dana[{{ $loop->iteration }}]"
+                                                            name="dana[{{ $loop->iteration }}]"
+                                                            class="form-select danas" required>
+                                                            <option selected disabled>Pilih Sumber Dana</option>
+                                                            @foreach ($danas as $dana)
+                                                                <option value="{{ $dana->id }}">
+                                                                    {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -605,7 +634,7 @@
                                 class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
                         </div>
                         <div class="col-12 text-end">
-                            <button type="submit" onclick="UpdateteJobProcessload()"
+                            <button type="submit" onclick="CreateJobProcessload()"
                                 class="btn btn-primary">Proccess</button>
                         </div>
 

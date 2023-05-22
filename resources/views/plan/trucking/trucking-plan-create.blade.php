@@ -12,16 +12,16 @@
                         <!-- BEGIN Breadcrumb -->
                         {{-- <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}"> --}}
                         <div class="breadcrumb breadcrumb-transparent mb-0">
-                            <a href="/plandischarge" class="breadcrumb-item text-primary">
+                            <a href="/truckingplan" class="breadcrumb-item text-primary">
                                 <div class="breadcrumb-icon">
                                     <i class="fa fa-clone"></i>
                                 </div>
                                 <span class="breadcrumb-text">Activity</span>
                             </a>
-                            <a href="/plandischarge" class="breadcrumb-item text-primary">
-                                <span class="breadcrumb-text">Load</span>
+                            <a href="/truckingplan" class="breadcrumb-item text-primary">
+                                <span class="breadcrumb-text">Trucking</span>
                             </a>
-                            <a href="/plandischarge" class="breadcrumb-item text-warning">
+                            <a href="/truckingplan" class="breadcrumb-item text-warning">
                                 <span class="breadcrumb-text">Plan</span>
                             </a>
 
@@ -38,49 +38,68 @@
                     <div class="portlet-body row">
                         <!-- BEGIN Form -->
 
-                            {{-- <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Date</label>
-                                <input type="text" class="form-control data-date-end-date="0d"" placeholder="Select Date" id="tanggal_planload"
-                                    name="tanggal_planload">
-                            </div> --}}
 
-                            <div class="col-md-12 validation-container">
-                                <label for="inputAddress2" class="form-label">Pelayaran :</label>
-                                <input name="pelayaran" id="pelayaran" class="form-control">
-                            </div>
 
                             <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel/Voyage :</label>
+                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
                                 <input name="vessel" id="vessel" class="form-control">
                             </div>
-
                             <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel Code :</label>
+                                <label for="inputAddress2" class="form-label">Vessel Code</label>
                                 <input name="vessel_code" id="vessel_code" class="form-control">
                             </div>
 
 
-
-
                             <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity :</label>
-                                <select id="activity" name="activity" class="form-select">
-                                    <option selected disabled value="0">Pilih Activity</option>
-                                    @foreach ($activity as $activity)
-                                    <option value="{{ $activity->kegiatan}}">{{ $activity->kegiatan }}</option>
+                                <label for="company" class="form-label">Shipping Company</label>
+                                <select id="select_company" name="select_company" class="form-select">
+                                    <option selected disabled>Pilih Company</option>
+                                    @foreach ($shippingcompany as $shippingcompany)
+                                        <option value="{{ $shippingcompany->nama_company }}">{{ $shippingcompany->nama_company }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">EMKL :</label>
-                                <input name="emkl" id="emkl" class="form-control">
+                                <label for="POL" class="form-label">Pengirim</label>
+                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled value="0">Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Penerima</label>
+                                <select id="penerima_1" name="penerima_1" class="form-select">
+                                    <option selected disabled value="0">Pilih Penerima</option>
+                                    @foreach ($penerima as $penerima)
+                                        <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Activity</label>
+                                <select id="activity" name="activity" class="form-select">
+                                    <option selected disabled value="0">Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan}}">{{ $activity->kegiatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">EMKL :</label>
+                                <input name="emkl" id="emkl" class="form-control align-center">
+                            </div>
 
 
 
                     </div>
+
+
                 </div>
                 <!-- BEGIN Portlet -->
 
@@ -125,8 +144,8 @@
 
                         <div class="col-12 text-end">
                             {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
-                            <button type="submit" onclick="CreateJobPlanDischarge()"
-                                class="btn btn-primary">Proccess</button>
+                            <button type="submit" onclick="CreateTrucking()"
+                                class="btn btn-primary">Selesai</button>
                         </div>
                         <!-- END Form -->
                     </div>

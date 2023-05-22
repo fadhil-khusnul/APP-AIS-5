@@ -50,6 +50,9 @@ function CreateJobPlanDischarge() {
             Pengirim_1: {
                 required: true,
             },
+            tanggal_tiba: {
+                required: true,
+            },
 
         },
         messages: {
@@ -84,6 +87,9 @@ function CreateJobPlanDischarge() {
             Pengirim_1: {
                 required: "Silakan Pilih Pengirim",
             },
+            tanggal_tiba: {
+                required: "Silakan Isi Tanggal Tiba",
+            },
 
         },
         highlight: function highlight(element, errorClass, validClass) {
@@ -109,9 +115,20 @@ function CreateJobPlanDischarge() {
             let pengirim = document.getElementById("Pengirim_1").value;
             let penerima = document.getElementById("penerima_1").value;
             let nomor_do = document.getElementById("nomor_do").value;
-            // let penerima = document.getElementById("Penerima_1").value;
+
+            let tanggal_tiba = document.getElementById("tanggal_tiba").value;
+            var tempDate;
+            var formattedDate;
+
+            tempDate = new Date(tanggal_tiba);
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
 
             var fd = new FormData();
+            fd.append("tanggal_tiba", formattedDate);
             fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);
@@ -122,7 +139,6 @@ function CreateJobPlanDischarge() {
             fd.append("pengirim", pengirim);
             fd.append("penerima", penerima);
             fd.append("nomor_do", nomor_do);
-            // fd.append("penerima", penerima);
             fd.append("tambah", tambah);
 
             var jumlah_kontainer = [];
@@ -190,7 +206,7 @@ function CreateJobPlanDischarge() {
     });
 }
 
-function UpdateteJobPlanload() {
+function UpdateteJobPlanDischarge() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -218,9 +234,6 @@ function UpdateteJobPlanload() {
             POL_1: {
                 required: true,
             },
-            POT_1: {
-                required: true,
-            },
             POD_1: {
                 required: true,
             },
@@ -230,12 +243,16 @@ function UpdateteJobPlanload() {
             Pengirim_1: {
                 required: true,
             },
+            nomor_do: {
+                required: true,
+            },
+            tanggal_tiba: {
+                required: true,
+            },
 
         },
         messages: {
-            tanggal_planload: {
-                required: "Silakan Isi Tanggal",
-            },
+
             activity: {
                 required: "Silakan Pilih Activity",
             },
@@ -251,9 +268,7 @@ function UpdateteJobPlanload() {
             POL_1: {
                 required: "Silakan Pilih POL",
             },
-            POT_1: {
-                required: "Silakan Pilih POT",
-            },
+
             POD_1: {
                 required: "Silakan Pilih POD",
             },
@@ -265,6 +280,12 @@ function UpdateteJobPlanload() {
             },
             nama_barang: {
                 required: "Silakan Isi Nama Barang",
+            },
+            nomor_do: {
+                required: "Silakan Isi Masukkan Nomor DO",
+            },
+            tanggal_tiba: {
+                required: "Silakan Isi Masukkan Tanggal Tiba",
             },
         },
         highlight: function highlight(element, errorClass, validClass) {
@@ -286,25 +307,38 @@ function UpdateteJobPlanload() {
             let vessel = document.getElementById("vessel").value;
             let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
-            let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
             let pengirim = document.getElementById("Pengirim_1").value;
-            // let penerima = document.getElementById("Penerima_1").value;
+            let penerima = document.getElementById("Penerima_1").value;
             let old_slug = document.getElementById("old_slug").value;
+            let nomor_do = document.getElementById("nomor_do").value;
 
+            let tanggal_tiba = document.getElementById("tanggal_tiba").value;
+            var tempDate;
+            var formattedDate;
+
+            tempDate = new Date(tanggal_tiba);
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
 
             var fd = new FormData();
+
             fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);
             fd.append("vessel", vessel);
             fd.append("vessel_code", vessel_code);
             fd.append("pol", pol);
-            fd.append("pot", pot);
             fd.append("pod", pod);
             fd.append("pengirim", pengirim);
-            // fd.append("penerima", penerima);
+            fd.append("penerima", penerima);
+            fd.append("tanggal_tiba", formattedDate);
+            fd.append("nomor_do", nomor_do);
             fd.append("old_slug", old_slug);
+            
             var table_container = document.getElementById("table_container");
             var urutan = table_container.tBodies[0].rows.length;
 
@@ -345,20 +379,20 @@ function UpdateteJobPlanload() {
                 if (willCreate.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "/update-job-planload",
+                        url: "/update-job-plandischarge",
                         data: fd,
                         contentType: false,
                         processData: false,
                         dataType: "json",
                         success: function (response) {
                             swal.fire({
-                                title: "JOB Planload DIUPDATE",
-                                text: "JOB Planload Telah Berhasil DIUPDATE",
+                                title: "JOB DIUPDATE",
+                                text: "JOB Telah Berhasil DIUPDATE",
                                 icon: "success",
                                 timer: 9e3,
                                 showConfirmButton: false,
                             });
-                            window.location.href = "../planload";
+                            window.location.href = "../plandischarge";
                         },
                     });
                 } else {

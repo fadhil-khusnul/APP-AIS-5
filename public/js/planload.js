@@ -101,9 +101,23 @@ function CreateJobPlanload() {
             let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
             let pengirim = document.getElementById("Pengirim_1").value;
+
+
             // let penerima = document.getElementById("Penerima_1").value;
 
             var fd = new FormData();
+
+            var tempDate;
+            var formattedDate;
+
+            tempDate = new Date();
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
+            fd.append("tanggal", formattedDate);
+
             fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);
@@ -240,7 +254,7 @@ function UpdateteJobPlanload() {
             POL_1: {
                 required: "Silakan Pilih POL",
             },
-         
+
             POD_1: {
                 required: "Silakan Pilih POD",
             },
@@ -281,6 +295,17 @@ function UpdateteJobPlanload() {
 
 
             var fd = new FormData();
+            var tempDate;
+            var formattedDate;
+
+            tempDate = new Date();
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
+            fd.append("tanggal", formattedDate);
+            
             fd.append("_token", token);
             fd.append("activity", activity);
             fd.append("select_company", select_company);

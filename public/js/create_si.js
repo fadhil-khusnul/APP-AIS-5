@@ -164,9 +164,9 @@ function pdf_si() {
                                     link.download = ""+old_slug+dformat+".pdf";
                                     link.click();
 
-                                    // setTimeout(function(){
-                                    //     window.location.reload();
-                                    // }, 10);
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    }, 10);
 
 
                                 }

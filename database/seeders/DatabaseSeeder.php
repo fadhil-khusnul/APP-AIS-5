@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             ShippingCompanySeeder::class,
+            BankInvoiceSeeder::class,
+            OngkoSupirSeeder::class,
+            RekeningBankSeeder::class,
             BiayaSeeder::class,
             ContainerSeeder::class,
             DepoSeeder::class,

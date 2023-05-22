@@ -14,16 +14,16 @@
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                         <div class="breadcrumb breadcrumb-transparent mb-0">
-                            <a href="/planload" class="breadcrumb-item text-primary">
+                            <a href="/plandischarge" class="breadcrumb-item text-primary">
                                 <div class="breadcrumb-icon">
                                     <i class="fa fa-clone"></i>
                                 </div>
                                 <span class="breadcrumb-text">Activity</span>
                             </a>
-                            <a href="/planload" class="breadcrumb-item text-primary">
-                                <span class="breadcrumb-text">Load</span>
+                            <a href="/plandischarge" class="breadcrumb-item text-primary">
+                                <span class="breadcrumb-text">Discharge</span>
                             </a>
-                            <a href="/planload" class="breadcrumb-item text-warning">
+                            <a href="/plandischarge" class="breadcrumb-item text-warning">
                                 <span class="breadcrumb-text">Plan</span>
                             </a>
 
@@ -39,6 +39,8 @@
 
                     <div class="portlet-body row">
                         <!-- BEGIN Form -->
+
+
 
                             <div class="col-md-6 validation-container">
                                 <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
@@ -66,49 +68,7 @@
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity</label>
-                                <select id="activity" name="activity" class="form-select">
-                                    <option selected disabled>Pilih Activity</option>
-                                    @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan_stuffing }}" @if ($activity->kegiatan_stuffing == $planload->activity) selected @endif>{{ $activity->kegiatan_stuffing }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POL</label>
-                                <select id="POL_1" name="POL_1" class="form-select">
-                                    <option selected disabled>Pilih POL</option>
-                                    @foreach ($pol as $pol)
-                                        <option value="{{ $pol->nama_pelabuhan }}" @if ($pol->nama_pelabuhan == $planload->pol) selected @endif>{{ $pol->area_code }} - {{ $pol->nama_pelabuhan }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POT</label>
-                                <select id="POT_1" name="POT_1" class="form-select">
-                                    <option selected disabled>Pilih POT</option>
-                                    @foreach ($pot as $pot)
-                                        <option value="{{ $pot->nama_pelabuhan }}" @if ($pot->nama_pelabuhan == $planload->pot) selected @endif>{{ $pot->area_code }} - {{ $pot->nama_pelabuhan }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POD</label>
-                                <select id="POD_1" name="POD_1" class="form-select">
-                                    <option selected disabled>Pilih POD</option>
-                                    @foreach ($pod as $pod)
-                                        <option value="{{ $pod->nama_pelabuhan }}" @if ($pod->nama_pelabuhan == $planload->pod) selected @endif>{{ $pod->area_code }} -
-                                            {{ $pod->nama_pelabuhan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">Penerima</label>
                                 <select id="Penerima_1" name="Penerima_1" class="form-select">
                                     <option selected disabled>Pilih Penerima</option>
@@ -116,8 +76,26 @@
                                         <option value="{{ $penerima->nama_penerima }}" @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}</option>
                                     @endforeach
                                 </select>
-                            </div> --}}
-                        <!-- END Form -->
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Activity</label>
+                                <select id="activity" name="activity" class="form-select">
+                                    <option selected disabled>Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="inputAddress2" class="form-label">EMKL :</label>
+                                <input name="emkl" id="emkl" class="form-control" value="{{old('emkl', $planload->emkl)}}">
+                            </div>
+
+
+
+
 
                     </div>
                 </div>
@@ -204,7 +182,7 @@
 
                         <div class="col-12 text-end">
                             {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
-                            <button type="submit" onclick="UpdateteJobPlanload()"
+                            <button type="submit" onclick="UpdatetePlan()"
                                 class="btn btn-primary">Proccess</button>
                         </div>
                         <!-- END Form -->
@@ -224,5 +202,5 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/planload.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/trucking-plan.js"></script>
 @endsection

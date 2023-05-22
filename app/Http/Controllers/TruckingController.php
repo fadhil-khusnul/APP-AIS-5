@@ -31,7 +31,7 @@ class TruckingController extends Controller
     public function index()
     {
         //
-        $truckings = Trucking::orderBy('id', 'DESC')->get();
+        $truckings = Trucking::orderBy('id', 'DESC')->where('status', 'Plan-Trucking')->get();
         $containers = TruckingContainer::all();
         $select_company =  Trucking::all()->unique('pelayaran');
         $vessel =  Trucking::all()->unique('vessel');
@@ -97,11 +97,13 @@ class TruckingController extends Controller
         $slug = $company.'-'.$vessel.'-'.$request->vessel_code.'-'.$random;
 
         $orderJob = [
-            'activity' => $request->activity,
-            'select_company' => $request->select_company,
+            'tanggal' => $request->tanggal,
             'vessel' => $request->vessel,
             'vessel_code' => $request->vessel_code,
-            'pelayaran' => $request->pelayaran,
+            'select_company' => $request->select_company,
+            'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
+            'activity' => $request->activity,
             'emkl' => $request->emkl,
             'slug' => $slug,
             'status' => "Plan-Trucking",
@@ -142,59 +144,116 @@ class TruckingController extends Controller
 
         return response()->json(['success' => true]);
     }
-    public function getNoSurat_trucking(Request $request) {
-        $tahun = $request->tahun;
-        $no_surat = TruckingContainer::where('tahun', $tahun)->get();
-        $count_no_surat = count($no_surat);
 
-        return response()->json($count_no_surat);
-    }
-
-    public function getSealProcessLoad(Request $request) {
-        $seal = TruckingContainer::all();
-        $seal_process_load = [];
-        for($i = 0; $i < count($seal); $i++) {
-            $seal_process_load[$i] = $seal[$i]->seal;
-        }
-        $seal_process_load_without_null = array_merge(array_diff($seal_process_load, array(null)));
-        return response()->json($seal_process_load_without_null);
-    }
-
-    public function getNoContainer() {
-        $no_container = TruckingContainer::all();
-        $no_container_process_load = [];
-        for($i = 0; $i < count($no_container); $i++) {
-            $no_container_process_load[$i] = $no_container[$i]->nomor_kontainer;
-        }
-        $no_container_process_load_without_null = array_merge(array_diff($no_container_process_load, array(null)));
-        return response()->json($no_container_process_load_without_null);
-    }
-
-    public function getBiayaLain(Request $request)
+    public function edit(Request $request)
     {
-        $slug = $request->slug;
-        $get_id = Trucking::where('slug', $slug)->value('id');
-        $get_container = TruckingContainer::select('kontainer')->where('job_id', $get_id)->get();
-        $count_container = count($get_container);
-        $get_job_container = [];
-        for($i = 0; $i < $count_container; $i++) {
-            $int_container = (int)$get_container[$i]->kontainer;
-            $get_job_container[$i] = [
-                'id' => (int)$get_container[$i]->kontainer,
-                'kontainer' => Container::where('id', $int_container)->value('jenis_container')
-            ];
-        }
+        $id = Trucking::where('slug', $request->slug)->value('id');
+        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
+        $shipping_company = ShippingCompany::all();
+        $pol = Pelabuhan::all();
+        $pot = Pelabuhan::all();
+        $pod = Pelabuhan::all();
+        $pengirim = Pengirim::all();
+        $penerima = Penerima::all();
+        $size = Container::all();
+        $type = TypeContainer::all();
+        // dd($activity);
+        return view('plan.trucking.plantrucking-edit', [
+            'title' => 'Edit Trucking-Plan',
+            'active' => 'Plan',
+            'activity' => $activity,
+            'shippingcompany' => $shipping_company,
+            'pol' => $pol,
+            'pot' => $pot,
+            'pod' => $pod,
+            'pengirim' => $pengirim,
+            'penerima' => $penerima,
+            'sizes' => $size,
+            'types' => $type,
+            'planload' => Trucking::find($id),
+            'containers' => TruckingContainer::select('type', 'jumlah_kontainer', 'size', 'cargo')->where('job_id', $id)->groupBy('jumlah_kontainer', 'type', 'size', 'cargo')->get()
+        ]);
 
-        return response()->json($get_job_container);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function update(Request $request)
+    {
+        // dd($request);
+
+        $old_slug = $request->old_slug;
+
+        $old_id = Trucking::where('slug', $old_slug)->value('id');
+
+        $random = Str::random(15);
+
+        $company = $request->select_company;
+        $company = str_replace('.', '_', $company);
+        $company = str_replace('/','-', $company);
+        $company = str_replace(' ','-', $company);
+
+        $vessel = $request->vessel;
+        $vessel = str_replace('.', '_', $vessel);
+        $vessel = str_replace('/','-', $vessel);
+        $vessel = str_replace(' ','-', $vessel);
+
+        $slug = $company.'-'.$vessel.'-'.$request->vessel_code.'-'.$random;
+
+        $Trucking = Trucking::findOrFail($old_id);
+
+
+        $orderJob = [
+            'tanggal' => $request->tanggal,
+            'vessel' => $request->vessel,
+            'vessel_code' => $request->vessel_code,
+            'select_company' => $request->select_company,
+            'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
+            'activity' => $request->activity,
+            'emkl' => $request->emkl,
+            'slug' => $slug,
+            'status' => "Plan-Trucking",
+        ];
+
+        $Trucking->update($orderJob);
+
+        TruckingContainer::where('job_id', $old_id)->delete();
+        $job_id = [];
+
+        $tambah = $request->urutan;
+
+        $jumlah_kontainer = [];
+        $size = [];
+        $type = [];
+        $cargo = [];
+
+        for ($j = 0; $j < $tambah; $j++) {
+            $job_id[$j] = $old_id;
+            $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
+            $size[$j] = [];
+            $type[$j] = [];
+            $cargo[$j] = [];
+            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
+
+                $container = [
+                    'job_id' => $job_id[$j],
+                    'jumlah_kontainer' => $jumlah_kontainer[$j],
+                    'size' => $request->size[$j][$i],
+                    'type' => $request->type[$j][$i],
+                    'cargo' => $request->cargo[$j][$i],
+                ];
+                TruckingContainer::create($container);
+            }
+        }
+
+        return response()->json(['success' => true]);
+
+    }
+
+
 
     public function process()
     {
-        $planloads = Trucking::orderBy('id', 'DESC')->get();
+        $truckings = Trucking::orderBy('id', 'DESC')->get();
         $containers = TruckingContainer::all();
         $containers_group = TruckingContainer::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  Trucking::all()->unique('select_company');
@@ -203,10 +262,10 @@ class TruckingController extends Controller
         $biayas= BiayaLaintrucking::all();
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
-        return view('process.trucking.processtrucking',[
+        return view('process.trucking.process',[
             'title' => 'Trucking-Process',
             'active' => 'Trucking',
-            'planloads' => $planloads,
+            'truckings' => $truckings,
             'containers' => $containers,
             'containers_group' => $containers_group,
             'select_company' => $select_company,
@@ -226,19 +285,23 @@ class TruckingController extends Controller
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
         $pod = Pelabuhan::all();
+        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
+
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
         $lokasis = Depo::all();
         $seals = Seal::all();
-        return view('process.trucking.processtrucking-create',[
-            'title' => 'trucking-Process',
-            'active' => 'trucking',
+        return view('process.trucking.process-create',[
+            'title' => 'Trucking-Process',
+            'active' => 'Trucking',
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
             'pengirim' => $pengirim,
+            'activity' => $activity,
+
             'penerima' => $penerima,
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
@@ -288,19 +351,15 @@ class TruckingController extends Controller
                 'seal' => $request->seal[$k],
                 'cargo' => $request->cargo[$k],
                 'date_activity' => $request->date_activity[$k],
-                'tanggal_kembali' => $request->tanggal_kembali[$k],
-                'lokasi_depo' => $request->lokasi[$k],
-                'lokasi_kembali' => $request->lokasi_kembali[$k],
+                'lokasi_pickup' => $request->lokasi_pickup[$k],
+                'lokasi_tujuan' => $request->lokasi_tujuan[$k],
+                'mty_to' => $request->mty_to[$k],
                 'driver' => $request->driver[$k],
                 'nomor_polisi' => $request->nomor_polisi[$k],
-                'remark' => $request->remark[$k],
-                'jaminan_kontainer' => str_replace(".", "", $request->jaminan_kontainer[$k]),
-                'biaya_demurrage' => str_replace(".", "", $request->biaya_demurrage[$k]),
-                'biaya_trucking' => str_replace(".", "", $request->biaya_trucking[$k]),
                 'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
-                'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
-                'nomor_surat' => $request->no_surat[$k],
-                'tahun' => (int)$request->tahun[$k],
+                'remark' => $request->remark[$k],
+                'jenis_mobil' => $request->jenis_mobil[$k],
+                'detail_barang' => $request->detail_barang[$k],
                 'status' => $status,
             ];
             TruckingContainer::where('id',$processload_update[$k])->update($container);
@@ -319,7 +378,7 @@ class TruckingController extends Controller
                 'keterangan' => $request->keterangan[$i],
             ];
 
-            BiayaLaintrucking::create($biayas);
+            BiayaLainTrucking::create($biayas);
         }
 
 
@@ -329,7 +388,7 @@ class TruckingController extends Controller
 
     public function realisasi()
     {
-        $planloads = Trucking::orderBy('id', 'DESC')->where("status", "Process-Trucking")->get();
+        $truckings = Trucking::orderBy('id', 'DESC')->where("status", "Process-Trucking")->orWhere('status', 'Realisasi')->get();
         $containers = TruckingContainer::all();
         $containers_group = TruckingContainer::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  Trucking::all()->unique('select_company');
@@ -341,7 +400,7 @@ class TruckingController extends Controller
         return view('realisasi.trucking.realisasi',[
             'title' => 'Trucking-Realisasi',
             'active' => 'Realisasi',
-            'planloads' => $planloads,
+            'truckings' => $truckings,
             'containers' => $containers,
             'containers_group' => $containers_group,
             'select_company' => $select_company,
@@ -387,64 +446,7 @@ class TruckingController extends Controller
         ]);
     }
 
+  
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Trucking $trucking)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        //
-
-        $Trucking = Trucking::find($id);
-
-        return response()->json([
-            'result' => $Trucking,
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        //
-
-        $request->validate([
-
-            'nomor_polisi' => 'required',
-            'nama_driver' => 'required',
-
-        ]);
-
-        $trucking = Trucking::findOrFail($id);
-
-        $data = [
-            "nomor_polisi" =>$request->nomor_polisi,
-            "nama_driver" =>$request->nama_driver,
-        ];
-        $trucking->update($data);
-        return response()->json(['success' => true]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-
-        $Trucking = Trucking::find($id);
-        $Trucking->delete();
-        return response()->json([
-            'success'   => true
-        ]);
-    }
 }

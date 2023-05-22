@@ -10,110 +10,77 @@
                     <h3 class="portlet-title">{{ $title }}</h3>
                 </div>
                 <div class="portlet-body">
-                    <div class="row row-cols-lg-auto px-5 g-5">
-                        <div class="col-6">
-                            <select class="form-select" id="filter_company">
-                                <option selected disabled>Filter Shipping Company</option>
-                                @foreach ($select_company as $select_company)
-                                    <option value="{{$select_company->select_company}}">{{$select_company->select_company}}</option>
 
-                                @endforeach
-
-                            </select>
-
-                        </div>
-                        <div class="col-6">
-                            <select class="form-select" id="filter_vessel">
-                                <option selected disabled>Filter Vessel</option>
-                                @foreach ($vessel as $vessel)
-                                    <option value="{{$vessel->vessel}}">{{$vessel->vessel}}</option>
-
-                                @endforeach
-
-                            </select>
-
-                        </div>
-
-
-                    </div>
                     <hr>
 
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
-                        <table id="planload" class="table mb-0 table-bordered table-striped table-hover autosize">
-                            <thead>
+                        <table id="processdischarge" class="table mb-0 table-bordered table-striped table-hover autosize">
+                            <thead class="align-top text-nowrap">
                                 <tr>
                                     <th>No</th>
-                                    <th>Status</th>
+                                    <th>Tanggal Tiba</th>
+                                    <th>Nomor DO</th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
                                     <th>Pengirim</th>
+                                    <th>Penerima</th>
                                     <th>Activity</th>
                                     <th>POL</th>
-                                    <th>POT</th>
                                     <th>POD</th>
-
 
                                     <th class="align-top"> (JUMLAH) X SIZE - TYPE - CARGO KONTAINER :</th>
                                     <th class="align-top">SEAL KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
-                                    <th class="align-top">REMARK KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK): </th>
-                                    <th class="align-top">BIAYA KONTAINER (NOMOR KONTAINER - BIAYA STUFFING - BIAYA TRUCKING - ONGKOS SUPIR - THC):</th>
-                                    <th class="align-top">BIAYA LAIN KONTAINER (NOMOR KONTAINER - BIAYA - KETERANGAN) :</th>
-
-
+                                    <th class="align-top">REMARK KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK) :</th>
+                                    <th class="align-top">BIAYA KONTAINER (NOMOR KONTAINER - BIAYA RELOKASI - JAMINAN KONTAINER) :</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($planloads as $planload)
-                                    {{-- @if ($planload->status == "Process-Discharge" || $planload->status == "Realisasi" ) --}}
-
+                                @foreach ($plandischarges as $plandischarge)
                                     <tr>
                                         <td>
-                                            {{ $loop->iteration }}
+                                            {{$loop->iteration}}
                                         </td>
-                                        <td class="align-middle text-nowrap">
-                                            @if ($planload->status == 'Process-Discharge')
-                                            <i class="marker marker-dot text-success"></i>
-                                                {{ $planload->status }}
-                                            @endif
-                                            @if ($planload->status == 'Plan-Discharge')
-                                            <i class="marker marker-dot text-warning"></i>
-                                                {{ $planload->status }}
-                                            @endif
+                                        <td>{{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
                                         </td>
 
                                         <td>
-                                            {{$planload->vessel}}
+                                            {{$plandischarge->vessel}}
                                         </td>
                                         <td>
-                                            {{$planload->vessel_code}}
+                                            {{$plandischarge->nomor_do}}
                                         </td>
                                         <td>
-                                            {{$planload->select_company}}
+                                            {{$plandischarge->vessel_code}}
                                         </td>
                                         <td>
-                                            {{$planload->pengirim}}
+                                            {{$plandischarge->select_company}}
                                         </td>
                                         <td>
-                                            {{$planload->activity}}
+                                            {{$plandischarge->pengirim}}
                                         </td>
                                         <td>
-                                            {{$planload->pol}}
+                                            {{$plandischarge->penerima}}
                                         </td>
                                         <td>
-                                            {{$planload->pot}}
+                                            {{$plandischarge->activity}}
                                         </td>
                                         <td>
-                                            {{$planload->pod}}
+                                            {{$plandischarge->pol}}
+                                        </td>
+
+                                        <td>
+                                            {{$plandischarge->pod}}
                                         </td>
 
                                         <td align="top" valign="top">
                                             <ol type="1">
                                                 @foreach ($containers_group as $container)
-                                                    @if ($planload->id == $container->job_id)
+                                                    @if ($plandischarge->id == $container->job_id)
                                                         <li>
                                                             ({{ $container->jumlah_kontainer }}) x {{ $container->size }} - {{$container->type}} - {{ $container->cargo }}
                                                         </li>
@@ -125,7 +92,7 @@
                                         <td align="top" valign="top">
                                             <ol type="1">
                                                 @foreach ($containers as $container)
-                                                    @if ($planload->id == $container->job_id)
+                                                    @if ($plandischarge->id == $container->job_id)
                                                         <li>
                                                             {{ $container->size }} - {{$container->type}} - {{ $container->cargo }} - @if ($container->seal != null) {{$container->seal}} @else ? @endif -
                                                             @if ($container->date_activity != null) {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }} @else ? @endif
@@ -137,10 +104,10 @@
 
                                         </td>
                                         <td align="top" valign="top">
-                                            @if ($planload->status == 'Process-Discharge')
+                                            @if ($plandischarge->status == 'Process-Discharge')
                                                 <ol start="1">
                                                     @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id)
+                                                        @if ($plandischarge->id == $container->job_id)
                                                             <li>
                                                                 {{ $container->nomor_kontainer }} - {{$container->driver}} - {{$container->nomor_polisi}} - {{$container->remark}}
                                                             </li>
@@ -155,13 +122,13 @@
 
                                         </td>
                                         <td align="top" valign="top">
-                                            @if ($planload->status == 'Process-Discharge')
+                                            @if ($plandischarge->status == 'Process-Discharge')
                                                 <ol start="1">
                                                     @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id)
-                                                        <li>
-                                                            {{ $container->nomor_kontainer }} - @rupiah($container->jaminan_kontainer) - @rupiah($container->biaya_trucking) - @rupiah($container->ongkos_supir) - @rupiah($container->biaya_thc)
-                                                        </li>
+                                                        @if ($plandischarge->id == $container->job_id)
+                                                            <li>
+                                                                {{ $container->nomor_kontainer }} - @rupiah($container->biaya_relokasi) - @rupiah($container->jaminan_kontainer)
+                                                            </li>
                                                         @endif
                                                     @endforeach
 
@@ -170,51 +137,41 @@
                                                 -
                                             @endif
 
-
                                         </td>
-                                        <td align="top" valign="top">
-                                            @if ($planload->status == 'Process-Discharge')
-                                                <ol start="1">
-                                                    @foreach ($biayas as $biaya)
-                                                        @if ($planload->id == $biaya->job_id)
-                                                        <li>
-                                                            {{$biaya->kontainer_biaya}} - @rupiah($biaya->harga_biaya) - {{$biaya->keterangan}}
-                                                        </li>
-                                                        @endif
-                                                    @endforeach
 
-                                                </ol>
-                                            @else
-                                                -
+
+
+
+
+
+                                        <td class="align-middle text-nowrap">
+                                            @if ($plandischarge->status == 'Process-Discharge')
+                                            <i class="marker marker-dot text-success"></i>
+                                                {{ $plandischarge->status }}
                                             @endif
-
-
+                                            @if ($plandischarge->status == 'Realisasi')
+                                            <i class="marker marker-dot text-danger"></i>
+                                                {{ $plandischarge->status }}
+                                            @endif
                                         </td>
-
                                         <td class="text-center text-nowrap">
-                                            @if ($planload->status == 'Process-Discharge')
-                                            <a href="/realisasi-discharge-create/{{ $planload->slug }}"
-                                                class="btn btn-label-danger rounded-pill">Realisasi Load <i
+                                            @if ($plandischarge->status == 'Realisasi')
+                                            <button disabled class="btn btn-label-secondary rounded-pill">
+                                             Realisasi Discharge <i class="fa fa-pencil"></i>
+                                            </button>
+
+                                            @else
+                                            <a href="/realisasidischarge-create/{{ $plandischarge->slug }}"
+                                                class="btn btn-label-danger rounded-pill">Realisasi Discharge <i
                                                     class="fa fa-pencil"></i>
 
                                             </a>
-                                            @else
-                                            <button disabled @readonly(true)
-                                                class="btn btn-label-secondary rounded-pill">Realisasi Load <i
-                                                    class="fa fa-pencil"></i>
-
-                                            </button>
-
 
                                             @endif
                                         </td>
 
-                                        {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                    class="fa fa-trash"></i></button></td> --}}
 
                                     </tr>
-                                    {{-- @endif --}}
-
                                 @endforeach
 
 

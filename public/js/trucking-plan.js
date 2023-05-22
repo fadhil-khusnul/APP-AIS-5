@@ -5,7 +5,7 @@
 
 var tambah = 0;
 
-function CreateJobPlanDischarge() {
+function CreateTrucking() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -19,9 +19,7 @@ function CreateJobPlanDischarge() {
         // ignore: [],
         ignore: 'input[type=hidden]',
         rules: {
-            // tanggal_planload: {
-            //     required: true,
-            // },
+
             activity: {
                 required: true,
             },
@@ -37,7 +35,13 @@ function CreateJobPlanDischarge() {
             vessel_code: {
                 required: true,
             },
-            pelayaran: {
+            select_company: {
+                required: true,
+            },
+            Pengirim_1: {
+                required: true,
+            },
+            penerima_1: {
                 required: true,
             },
 
@@ -45,23 +49,27 @@ function CreateJobPlanDischarge() {
 
         },
         messages: {
-            // tanggal_planload: {
-            //     required: "Silakan Isi Tanggal",
-            // },
-            pelayaran: {
-                required: "Silakan Masukkan Nomor DO",
+
+            select_company: {
+                required: "Silakan Pilih Pelayaran",
             },
             activity: {
                 required: "Silakan Pilih Activity",
             },
             emkl: {
-                required: "Silakan Pilih Nama Kompany",
+                required: "Silakan isi EMKL",
             },
             vessel: {
                 required: "Silakan Isi Vessel/Voyage",
             },
             vessel_code: {
                 required: "Silakan Isi Vessel Code",
+            },
+            penerima_1: {
+                required: "Silakan Pilih Penerima",
+            },
+            Pengirim_1: {
+                required: "Silakan Pilih Pengirim",
             },
 
 
@@ -84,19 +92,34 @@ function CreateJobPlanDischarge() {
             let vessel = document.getElementById("vessel").value;
             let vessel_code = document.getElementById("vessel_code").value;
             let emkl = document.getElementById("emkl").value;
-            let pelayaran = document.getElementById("pelayaran").value;
+            let select_company = document.getElementById("select_company").value;
+            let penerima = document.getElementById("penerima_1").value;
+            let pengirim = document.getElementById("Pengirim_1").value;
+
 
             // let penerima = document.getElementById("Penerima_1").value;
 
             var fd = new FormData();
-            fd.append("_token", token);
-            fd.append("activity", activity);
-            fd.append("vessel_code", vessel_code);
-            fd.append("vessel", vessel);
-            fd.append("emkl", emkl);
-            fd.append("pelayaran", pelayaran);
+            var tempDate;
+            var formattedDate;
 
-            // fd.append("penerima", penerima);
+            tempDate = new Date();
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
+
+            fd.append("_token", token);
+            fd.append("tanggal", formattedDate);
+            fd.append("vessel", vessel);
+            fd.append("vessel_code", vessel_code);
+            fd.append("select_company", select_company);
+            fd.append("pengirim", pengirim);
+            fd.append("penerima", penerima);
+            fd.append("activity", activity);
+            fd.append("emkl", emkl);
+
             fd.append("tambah", tambah);
 
             var jumlah_kontainer = [];
@@ -141,8 +164,8 @@ function CreateJobPlanDischarge() {
                         dataType: "json",
                         success: function (response) {
                             swal.fire({
-                                title: "Plan Discharge Dibuat",
-                                text: "Plan cDischarge Telah Berhasil Dibuat",
+                                title: "Plan Trucking Dibuat",
+                                text: "Plan Trucking Telah Berhasil Dibuat",
                                 icon: "success",
                                 timer: 2e3,
                                 showConfirmButton: false,
@@ -164,7 +187,7 @@ function CreateJobPlanDischarge() {
     });
 }
 
-function UpdateteJobPlanload() {
+function UpdatetePlan() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -175,12 +198,17 @@ function UpdateteJobPlanload() {
     });
 
     $("#valid_planload").validate({
+        ignore: 'input[type=hidden]',
+
         rules: {
 
             activity: {
                 required: true,
             },
-            select_company: {
+            nomor_do: {
+                required: true,
+            },
+            emkl: {
                 required: true,
             },
             vessel: {
@@ -189,47 +217,35 @@ function UpdateteJobPlanload() {
             vessel_code: {
                 required: true,
             },
-            POL_1: {
-                required: true,
-            },
-            POT_1: {
-                required: true,
-            },
-            POD_1: {
-                required: true,
-            },
-            Penerima_1: {
+            select_company: {
                 required: true,
             },
             Pengirim_1: {
                 required: true,
             },
+            Penerima_1: {
+                required: true,
+            },
+
+
 
         },
         messages: {
-            tanggal_planload: {
-                required: "Silakan Isi Tanggal",
+
+            select_company: {
+                required: "Silakan Pilih Pelayaran",
             },
             activity: {
                 required: "Silakan Pilih Activity",
             },
-            select_company: {
-                required: "Silakan Pilih Nama Kompany",
+            emkl: {
+                required: "Silakan isi EMKL",
             },
             vessel: {
                 required: "Silakan Isi Vessel/Voyage",
             },
             vessel_code: {
-                required: "Silakan Masukkan Vessel Code",
-            },
-            POL_1: {
-                required: "Silakan Pilih POL",
-            },
-            POT_1: {
-                required: "Silakan Pilih POT",
-            },
-            POD_1: {
-                required: "Silakan Pilih POD",
+                required: "Silakan Isi Vessel Code",
             },
             Penerima_1: {
                 required: "Silakan Pilih Penerima",
@@ -237,9 +253,8 @@ function UpdateteJobPlanload() {
             Pengirim_1: {
                 required: "Silakan Pilih Pengirim",
             },
-            nama_barang: {
-                required: "Silakan Isi Nama Barang",
-            },
+
+
         },
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
@@ -256,28 +271,39 @@ function UpdateteJobPlanload() {
         submitHandler: function (form) {
             let token = $("#csrf").val();
             let activity = document.getElementById("activity").value;
-            let select_company = document.getElementById("select_company").value;
             let vessel = document.getElementById("vessel").value;
             let vessel_code = document.getElementById("vessel_code").value;
-            let pol = document.getElementById("POL_1").value;
-            let pot = document.getElementById("POT_1").value;
-            let pod = document.getElementById("POD_1").value;
+            let emkl = document.getElementById("emkl").value;
+            let select_company = document.getElementById("select_company").value;
+            let penerima = document.getElementById("Penerima_1").value;
             let pengirim = document.getElementById("Pengirim_1").value;
-            // let penerima = document.getElementById("Penerima_1").value;
             let old_slug = document.getElementById("old_slug").value;
 
 
+            // let penerima = document.getElementById("Penerima_1").value;
+
             var fd = new FormData();
+            var tempDate;
+            var formattedDate;
+
+            tempDate = new Date();
+            formattedDate = [
+                tempDate.getFullYear(),
+                tempDate.getMonth() + 1,
+                tempDate.getDate(),
+            ].join("-");
+
             fd.append("_token", token);
-            fd.append("activity", activity);
-            fd.append("select_company", select_company);
+            fd.append("tanggal", formattedDate);
             fd.append("vessel", vessel);
             fd.append("vessel_code", vessel_code);
-            fd.append("pol", pol);
-            fd.append("pot", pot);
-            fd.append("pod", pod);
+            fd.append("select_company", select_company);
             fd.append("pengirim", pengirim);
-            // fd.append("penerima", penerima);
+            fd.append("penerima", penerima);
+            fd.append("activity", activity);
+            fd.append("emkl", emkl);
+
+
             fd.append("old_slug", old_slug);
             var table_container = document.getElementById("table_container");
             var urutan = table_container.tBodies[0].rows.length;
@@ -319,20 +345,20 @@ function UpdateteJobPlanload() {
                 if (willCreate.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "/update-job-planload",
+                        url: "/update-job-truckinplan",
                         data: fd,
                         contentType: false,
                         processData: false,
                         dataType: "json",
                         success: function (response) {
                             swal.fire({
-                                title: "JOB Planload DIUPDATE",
-                                text: "JOB Planload Telah Berhasil DIUPDATE",
+                                title: "JOB Trucking DIUPDATE",
+                                text: "JOB Trucking Telah Berhasil DIUPDATE",
                                 icon: "success",
                                 timer: 9e3,
                                 showConfirmButton: false,
                             });
-                            window.location.href = "../planload";
+                            window.location.href = "../truckingplan";
                         },
                     });
                 } else {

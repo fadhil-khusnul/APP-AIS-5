@@ -202,6 +202,10 @@
                                             <i class="marker marker-dot text-warning"></i>
                                                 {{ $planload->status }}
                                             @endif
+                                            @if ($planload->status == 'Realisasi')
+                                            <i class="marker marker-dot text-danger"></i>
+                                                {{ $planload->status }}
+                                            @endif
                                         </td>
                                         <td class="text-center text-nowrap">
                                             @if ($planload->status == 'Plan-Load')

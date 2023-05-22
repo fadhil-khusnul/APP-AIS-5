@@ -32,11 +32,12 @@ return new class extends Migration
             $table->string('nomor_surat')->nullable();
             $table->string('jenis_mobil')->nullable();
             $table->text('detail_barang')->nullable();
-            $table->integer('bulan')->nullable();
             $table->integer('tahun')->nullable();
-            $table->string('status')->nullable();
             $table->string('surat_si')->nullable();
+            $table->string('dana')->nullable();
             $table->string('invoice')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
