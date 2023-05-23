@@ -57,6 +57,16 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="" class="form-label">Activity</label>
+                                <select id="activity" name="activity" class="form-select">
+                                    <option selected disabled>Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">Pengirim</label>
                                 <select id="Pengirim_1" name="Pengirim_1" class="form-select">
@@ -68,14 +78,18 @@
                             </div>
 
                             <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity</label>
-                                <select id="activity" name="activity" class="form-select">
-                                    <option selected disabled>Pilih Activity</option>
-                                    @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}</option>
+                                <label for="POL" class="form-label">Penerima</label>
+                                <select id="Penerima_1" name="Penerima_1" class="form-select">
+                                    <option selected disabled>Pilih Penerima</option>
+                                    @foreach ($penerima as $penerima)
+                                        <option value="{{ $penerima->nama_penerima }}"@if ($penerima->nama_penerima == $planload->penerima) selected
+
+                                        @endif>{{ $penerima->nama_penerima }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
+
 
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">POL</label>

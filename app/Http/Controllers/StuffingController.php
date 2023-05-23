@@ -34,7 +34,7 @@ class StuffingController extends Controller
 
         ]);
         Stuffing::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**

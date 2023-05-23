@@ -37,7 +37,7 @@ class StrippingController extends Controller
 
         ]);
         Stripping::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**

@@ -36,7 +36,7 @@ class ShippingController extends Controller
 
         ]);
         ShippingCompany::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
 
     }
 

@@ -100,6 +100,7 @@ class PlanLoadController extends Controller
             'pot' => $request->pot,
             'pod' => $request->pod,
             'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
             'tanggal' => $request->tanggal,
             'slug' => $slug,
             'status' => "Plan-Load",

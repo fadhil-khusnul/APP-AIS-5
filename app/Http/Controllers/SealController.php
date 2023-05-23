@@ -24,6 +24,48 @@ class SealController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+           // dd($id);
+           $Seal = Seal::find($id);
+
+           return response()->json([
+               'result' => $Seal,
+           ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+
+            'kode_seal' => 'required',
+
+        ]);
+
+        $seal = Seal::findOrFail($id);
+
+        $data = [
+            "kode_seal" =>$request->kode_seal,
+        ];
+        $seal->update($data);
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy($id)
+    {
+        //
+
+        $sela = Seal::find($id);
+        $sela->delete();
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+
     public function index_damage()
     {
         $seal = Seal::where('status', 'input')->orderBy('id', 'DESC')->get();
@@ -126,26 +168,7 @@ class SealController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Seal $seal)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSealRequest $request, Seal $seal)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Seal $seal)
-    {
-        //
-    }
 
     public function getSeal()
     {

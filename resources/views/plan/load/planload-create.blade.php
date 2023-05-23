@@ -65,16 +65,6 @@
                             </div>
 
                             <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pemilik Barang</label>
-                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
-                                    <option selected disabled>Pilih Pemilik Barang</option>
-                                    @foreach ($pengirim as $pengirim)
-                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-6 validation-container">
                                 <label for="" class="form-label">Activity</label>
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled>Pilih Activity</option>
@@ -83,6 +73,28 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Pengirim</label>
+                                <select id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled>Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 validation-container">
+                                <label for="POL" class="form-label">Penerima</label>
+                                <select id="Penerima_1" name="Penerima_1" class="form-select">
+                                    <option selected disabled>Pilih Penerima</option>
+                                    @foreach ($penerima as $penerima)
+                                        <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
                             <div class="col-md-6 validation-container">
                                 <label for="POL" class="form-label">POL</label>
                                 <select id="POL_1" name="POL_1" class="form-select">
@@ -114,15 +126,7 @@
                                 </select>
                             </div>
 
-                            {{-- <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Penerima</label>
-                                <select id="Penerima_1" name="Penerima_1" class="form-select">
-                                    <option selected disabled>Pilih Penerima</option>
-                                    @foreach ($penerima as $penerima)
-                                        <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
+
 
 
                         <!-- END Form -->

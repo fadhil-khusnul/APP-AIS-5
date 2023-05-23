@@ -295,3 +295,133 @@ function damage_seal() {
     });
 }
 
+function editseal(e) {
+    var id = e.value;
+    console.log(id);
+
+
+    $.ajax({
+        url: 'seal/' + id + '/edit',
+        type: 'GET',
+        success: function (response) {
+            $('#modal-seal-edit').modal('show');
+
+            $('#kode_seal_edit').val(response.result.kode_seal);
+
+            $('#valid_pelabuhan_edit').validate({
+                rules: {
+
+                    kode_seal_edit: {
+                        required: true
+                    },
+
+                },
+                messages: {
+
+                    kode_seal_edit: {
+                        required: "Silakan Isi Kode Seal"
+                    },
+
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var token = $('#csrf').val();
+
+                    $.ajax({
+                        url: 'seal-update/' + id,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            kode_seal: $('#kode_seal_edit').val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Data Seal Berhasil Diedit",
+                                showConfirmButton: false,
+                                timer: 2e3,
+
+                            })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+
+        }
+    });
+}
+
+
+
+function deleteseal(id) {
+    var deleteid = id.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1" },
+            buttonsStyling: false
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin?",
+        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    })
+        .then((willDelete) => {
+            if (willDelete.isConfirmed) {
+
+                var data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': deleteid,
+                };
+                $.ajax({
+                    type: "DELETE",
+                    url: 'seal/' + deleteid,
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "Data Seal Dihapus",
+                            text: "Data Berhasil Dihapus",
+                            icon: "success",
+                            timer: 2e3,
+                            showConfirmButton: false
+                        })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: "Data Tidak Dihapus",
+                    text: "Data Batal Dihapus",
+                    icon: "error",
+                    timer: 2e3,
+                    showConfirmButton: false
+                });
+            }
+        });
+}
+
+

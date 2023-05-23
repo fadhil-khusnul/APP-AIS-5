@@ -155,6 +155,11 @@ Route::get('/batal-muat', [AlihKapalController::class, 'index']);
 
 //seal
 Route::get('/seal', [SealController::class, 'index']);
+Route::get('/seal/{id}/edit', [SealController::class, 'edit']);
+Route::delete('/seal/{id}', [SealController::class, 'destroy']);
+Route::put('/seal-update/{id}', [SealController::class, 'update']);
+
+
 Route::get('/report-seal', [SealController::class, 'index_report']);
 
 

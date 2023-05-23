@@ -74,8 +74,8 @@
                             <tr>
                                 <th>No</th>
                                 <th>Kode Seal</th>
-                                {{-- <th>Tahun</th>
-                                <th>Aksi</th> --}}
+                                {{-- <th>Tahun</th> --}}
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,13 +90,13 @@
                                     {{-- <td>
                                         {{ $seal-> }}
                                     </td> --}}
-                                    {{-- <td class="text-center"><button onclick="editstripp(this)" value="{{ $seal->id }}"
+                                    <td class="text-center"><button onclick="editseal(this)" value="{{ $seal->id }}"
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
                                         <button onclick="deleteseal(this)" value="{{ $seal->id }}" type="button"
                                             class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                                class="fa fa-trash"></i></button> --}}
+                                                class="fa fa-trash"></i></button>
                                     </td>
 
                                 </tr>
@@ -114,6 +114,39 @@
             <!-- END Portlet -->
         </div>
 
+    </div>
+
+
+    <div class="modal fade" id="modal-seal-edit">
+        <div class="modal-dialog">
+            <form action="#" name="valid_pelabuhan_edit" id="valid_pelabuhan_edit">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data SEAK</h5>
+                    <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="validation-container">
+                        <label class="form-label" for="area_code">KODE SEAL :</label>
+                        <input class="form-control" id="kode_seal_edit" name="kode_seal_edit" type="text">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            </form>
+
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

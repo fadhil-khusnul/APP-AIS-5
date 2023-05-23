@@ -37,7 +37,7 @@ class DepoController extends Controller
 
         ]);
         Depo::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**

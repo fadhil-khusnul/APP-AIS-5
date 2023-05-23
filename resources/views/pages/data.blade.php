@@ -241,7 +241,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="pengirim" class="table table-bordered table-striped table-hover autosize">
+                <table id="pengirim_tabel" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -304,7 +304,7 @@
                 <hr>
 
                 <!-- BEGIN Datatable -->
-                <table id="penerima" class="table table-bordered table-striped table-hover autosize">
+                <table id="penerima_tabel" class="table table-bordered table-striped table-hover autosize">
                     <thead>
                         <tr>
                             <th>No</th>

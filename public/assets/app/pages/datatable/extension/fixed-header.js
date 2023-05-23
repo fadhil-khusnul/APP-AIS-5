@@ -31,7 +31,7 @@ $("#pol").DataTable({
         offset
     }
 });
-$("#pengirim").DataTable({
+$("#pengirim_tabel").DataTable({
     responsive:true,
     fixedHeader:
     {
@@ -40,7 +40,7 @@ $("#pengirim").DataTable({
         offset
     }
 });
-$("#penerima").DataTable({
+$("#penerima_tabel").DataTable({
     responsive:true,
     fixedHeader:
     {

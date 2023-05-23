@@ -42,7 +42,7 @@ class PengirimController extends Controller
 
         ]);
         Pengirim::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**

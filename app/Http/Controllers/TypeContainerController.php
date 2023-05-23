@@ -35,7 +35,7 @@ class TypeContainerController extends Controller
 
         ]);
         TypeContainer::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**

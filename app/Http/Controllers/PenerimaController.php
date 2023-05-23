@@ -40,7 +40,7 @@ class PenerimaController extends Controller
 
         ]);
         Penerima::create($validatedData);
-        return redirect('/data');
+        return response()->json(['success' => true]);
     }
 
     /**
