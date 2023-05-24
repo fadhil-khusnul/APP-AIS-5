@@ -126,6 +126,7 @@
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
                                     @foreach ($containers as $container)
+                                        <input type="hidden" id="slug_container" name="slug_container" value="{{ old('slug', $container->slug) }}">
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
 
@@ -207,6 +208,7 @@
                                             </td>
 
                                         </tr>
+
                                     @endforeach
                                 </tbody>
                             </table>

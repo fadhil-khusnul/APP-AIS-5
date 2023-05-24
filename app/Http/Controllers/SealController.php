@@ -124,18 +124,7 @@ class SealController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-
-        // $validatedData = $request->validate([
-
-        //     'bulan_seal' => 'required',
-        //     'kode_seal' => 'required',
-        //     'touch_seal' => 'required',
-
-        // ]);
-
-
-
+       
         $seals = [];
 
         for ($i=0; $i <count($request->touch_seal) ; $i++) {

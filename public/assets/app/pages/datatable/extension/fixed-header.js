@@ -7,7 +7,28 @@ $("#shipping").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Pelayaran',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Pelayaran',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1],
+    }},
+    ],
 });
 
 
@@ -19,7 +40,28 @@ $("#depo").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Depo',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Depo',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1],
+    }},
+    ],
+
 });
 
 $("#pol").DataTable({
@@ -29,7 +71,28 @@ $("#pol").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Pelabuhan',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1,2],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Pelabuhan',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1, 2],
+    }},
+    ],
 });
 $("#pengirim_tabel").DataTable({
     responsive:true,
@@ -38,7 +101,29 @@ $("#pengirim_tabel").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Pengirim',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1,2,3,4,5,6],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Pengirim',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1,2,3,4,5,6],
+            }},
+    ],
+
 });
 $("#penerima_tabel").DataTable({
     responsive:true,
@@ -47,7 +132,30 @@ $("#penerima_tabel").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Penerima',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1,2,3,4,5,6],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Penerima',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1,2,3,4,5,6],
+            }},
+    ],
+
+
 });
 $("#biaya").DataTable({
     responsive:true,
@@ -56,7 +164,30 @@ $("#biaya").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Biaya',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1,2],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Biaya',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1,2],
+            }},
+    ],
+
+
 });
 $("#realisasi-create").DataTable({
     responsive:true,
@@ -78,7 +209,28 @@ $("#trucking").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Type Container',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Type Container',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1],
+            }},
+    ],
 });
 $("#table-container").DataTable({
     responsive:true,
@@ -87,7 +239,28 @@ $("#table-container").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel size Container',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Size Container',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1],
+            }},
+    ],
 });
 $("#kegiatan-stuffing").DataTable({
     responsive:true,
@@ -105,7 +278,28 @@ $("#kegiatan-stripping").DataTable({
         header:true,
         headerOffset:
         offset
-    }
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel Kegiatan',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1,2],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data Tabel Kegiatan',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1,2],
+            }},
+    ],
 });
 
 

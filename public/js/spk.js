@@ -1,4 +1,4 @@
-function Tambah_Seal() {
+function Tambah_SPK() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -29,28 +29,28 @@ function Tambah_Seal() {
 
     $("#valid_seal").validate({
         rules: {
-            start_seal: {
+            start_spk: {
                 required: true,
                 min: 1,
             },
-            kode_seal: {
+            kode_spk: {
                 required: true,
             },
-            touch_seal: {
+            touch_spk: {
                 required: true,
                 min: 1,
                 max: 250,
             },
         },
         messages: {
-            start_seal: {
-                required: "Silahkan Masukkan Nilai Awal Seal",
+            start_spk: {
+                required: "Silahkan Masukkan Nilai Awal Spk",
                 min: "Harus Lebih Besar dari 0",
             },
-            kode_seal: {
-                required: "Silakan Masukkan Kode Seal",
+            kode_spk: {
+                required: "Silakan Masukkan Kode Spk",
             },
-            touch_seal: {
+            touch_spk: {
                 required: "Silakan Isi Nama Kompany",
                 min: "Harus Lebih Besar dari 0",
                 max: "Harus Lebih Kecil dari 250",
@@ -69,22 +69,22 @@ function Tambah_Seal() {
             element.closest(".validation-container").append(error);
         },
         submitHandler: function (form) {
-            var code = document.getElementById("kode_seal").value;
-            var start_seal = document.getElementById("start_seal").value;
-            start_seal = parseInt(start_seal);
-            var touch_seal = document.getElementById("touch_seal").value;
-            touch_seal = parseInt(touch_seal);
+            var code = document.getElementById("kode_spk").value;
+            var start_spk = document.getElementById("start_spk").value;
+            start_spk = parseInt(start_spk);
+            var touch_spk = document.getElementById("touch_spk").value;
+            touch_spk = parseInt(touch_spk);
             var token = $("#csrf").val();
 
-            var data_kode_seal = [];
+            var data_kode_spk = [];
             var data_code = [];
-            var data_start_seal = [];
-            var data_touch_seal = [];
+            var data_start_spk = [];
+            var data_touch_spk = [];
             let fd = new FormData();
             var result;
 
             $.ajax({
-                url: "/getCodeSeal",
+                url: "/getCodeSpk",
                 type: "post",
                 datatype: "json",
                 async: false,
@@ -95,32 +95,32 @@ function Tambah_Seal() {
                 success: function (response) {
                     result = response;
                     // if (response.length == 0) {
-                    for (let i = 0; i < touch_seal; i++) {
-                        data_kode_seal[i] =
-                            code + String(start_seal + i).padStart(6, "0");
-                        fd.append("kode_seal[]", data_kode_seal[i]);
+                    for (let i = 0; i < touch_spk; i++) {
+                        data_kode_spk[i] =
+                            code + String(start_spk + i).padStart(6, "0");
+                        fd.append("kode_spk[]", data_kode_spk[i]);
                         data_code[i] = code;
                         fd.append("code[]", data_code[i]);
-                        data_start_seal[i] = start_seal + i;
-                        fd.append("start_seal[]", data_start_seal[i]);
-                        data_touch_seal[i] = touch_seal;
-                        fd.append("touch_seal[]", data_touch_seal[i]);
+                        data_start_spk[i] = start_spk + i;
+                        fd.append("start_spk[]", data_start_spk[i]);
+                        data_touch_spk[i] = touch_spk;
+                        fd.append("touch_spk[]", data_touch_spk[i]);
                     }
                 },
             });
 
-            var database_kode_seal = [];
+            var database_kode_spk = [];
 
             for(var i = 0; i < result.length; i++) {
-                database_kode_seal[i] = result[i].kode_seal;
+                database_kode_spk[i] = result[i].kode_spk;
             }
 
             fd.append("_token", token);
 
-            if (database_kode_seal.some((item) => data_kode_seal.includes(item))) {
+            if (database_kode_spk.some((item) => data_kode_spk.includes(item))) {
                 swal.fire({
-                    title: "Kode Seal yang Dimasukkan Sudah Ada",
-                    text: "Silakan Masukkan Kode Baru atau Masukkan Start Seal yang Berbeda",
+                    title: "Kode Spk yang Dimasukkan Sudah Ada",
+                    text: "Silakan Masukkan Kode Baru atau Masukkan Start Spk yang Berbeda",
                     icon: "error",
                     timer: 2e3,
                     showConfirmButton: false,
@@ -129,8 +129,8 @@ function Tambah_Seal() {
                 swal.fire({
                     title:
                         "Apakah anda yakin? Ingin Menambah Sebanyak " +
-                        touch_seal +
-                        " Seal?",
+                        touch_spk +
+                        " Spk?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonText: "Iya",
@@ -139,7 +139,7 @@ function Tambah_Seal() {
                     if (willCreate.isConfirmed) {
                         $.ajax({
                             type: "POST",
-                            url: "/tambah-seal",
+                            url: "/tambah-spk",
                             data: fd,
                             contentType: false,
                             processData: false,
@@ -149,8 +149,8 @@ function Tambah_Seal() {
                                     icon: "success",
                                     title:
                                         "Sebanyak " +
-                                        touch_seal +
-                                        "  Seal Berhasil Ditambah",
+                                        touch_spk +
+                                        "  Spk Berhasil Ditambah",
                                     showConfirmButton: false,
                                     timer: 2e3,
                                 }).then((result) => {
@@ -160,8 +160,8 @@ function Tambah_Seal() {
                         });
                     } else {
                         swal.fire({
-                            title: "Seal Tidak Dibuat",
-                            text: "Seal Batal Dibuat",
+                            title: "Spk Tidak Dibuat",
+                            text: "Spk Batal Dibuat",
                             icon: "error",
                             timer: 2e3,
                             showConfirmButton: false,
@@ -174,152 +174,32 @@ function Tambah_Seal() {
 }
 
 
-function damage_seal() {
-    var swal = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-label-success btn-wide mx-1",
-            denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1",
-        },
-        buttonsStyling: false,
-    });
-    var toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3e3,
-        timerProgressBar: true,
-        didOpen: function didOpen(toast) {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-    });
 
-    $.validator.addMethod(
-        "notEqual",
-        function (value, element, arg) {
-            return arg !== value;
-        },
-        "Value must not equal arg."
-    );
-
-    $("#valid_seal").validate({
-        ignore: "select[type=hidden]",
-        rules: {
-            seal: {
-                required: true,
-            },
-            keterangan_damage: {
-                required: true,
-            },
-
-        },
-        messages: {
-            seal: {
-                required: "Silahkan Pilih Seal",
-            },
-            keterangan_damage: {
-                required: "Silakan Masukkan Keterangan Seal",
-            },
-
-        },
-        highlight: function highlight(element, errorClass, validClass) {
-            $(element).addClass("is-invalid");
-            $(element).removeClass("is-valid");
-        },
-        unhighlight: function unhighlight(element, errorClass, validClass) {
-            $(element).removeClass("is-invalid");
-            $(element).addClass("is-valid");
-        },
-        errorPlacement: function errorPlacement(error, element) {
-            error.addClass("invalid-feedback");
-            element.closest(".validation-container").append(error);
-        },
-        submitHandler: function (form) {
-            var seal = document.getElementById("seal").value;
-            var keterangan_damage = document.getElementById("keterangan_damage").value;
-            var token = $("#csrf").val();
-
-            let fd = new FormData();
-
-            fd.append("seal", seal);
-            fd.append("keterangan_damage", keterangan_damage);
-            fd.append("_token", token);
-
-
-
-
-                swal.fire({
-                    title:
-                        "Apakah anda yakin? Ingin Mengkategorikan Seal ini : " +
-                        seal +
-                        " Kedalam Damage Seal (Rusak)",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Iya",
-                    cancelButtonText: "Tidak",
-                }).then((willCreate) => {
-                    if (willCreate.isConfirmed) {
-                        $.ajax({
-                            type: "POST",
-                            url: "/tambah-damage-seal",
-                            data: fd,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function () {
-                                swal.fire({
-                                    icon: "success",
-                                    title:
-                                        "Seal " +
-                                        seal +
-                                        " Ini Berhasil Dikategorikan Rusak",
-                                    showConfirmButton: false,
-                                    timer: 2e3,
-                                }).then((result) => {
-                                    location.reload();
-                                });
-                            },
-                        });
-                    } else {
-                        swal.fire({
-                            title: "Seal Batal dikategorikan",
-                            icon: "error",
-                            timer: 2e3,
-                            showConfirmButton: false,
-                        });
-                    }
-                });
-
-        },
-    });
-}
-
-function editseal(e) {
+function editspk(e) {
     var id = e.value;
     console.log(id);
 
 
     $.ajax({
-        url: 'seal/' + id + '/edit',
+        url: 'spk/' + id + '/edit',
         type: 'GET',
         success: function (response) {
-            $('#modal-seal-edit').modal('show');
+            $('#modal-spk-edit').modal('show');
 
-            $('#kode_seal_edit').val(response.result.kode_seal);
+            $('#kode_spk_edit').val(response.result.kode_spk);
 
-            $('#valid_pelabuhan_edit').validate({
+            $('#valid_spk_edit').validate({
                 rules: {
 
-                    kode_seal_edit: {
+                    kode_spk_edit: {
                         required: true
                     },
 
                 },
                 messages: {
 
-                    kode_seal_edit: {
-                        required: "Silakan Isi Kode Seal"
+                    kode_spk_edit: {
+                        required: "Silakan Isi Kode Spk"
                     },
 
                 },
@@ -341,16 +221,16 @@ function editseal(e) {
                     var token = $('#csrf').val();
 
                     $.ajax({
-                        url: 'seal-update/' + id,
+                        url: 'spk-update/' + id,
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            kode_seal: $('#kode_seal_edit').val(),
+                            kode_spk: $('#kode_spk_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data Seal Berhasil Diedit",
+                                title: "Data Spk Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -369,7 +249,7 @@ function editseal(e) {
 
 
 
-function deleteseal(id) {
+function deletespk(id) {
     var deleteid = id.value;
 
     var swal = Swal.mixin({
@@ -398,11 +278,11 @@ function deleteseal(id) {
                 };
                 $.ajax({
                     type: "DELETE",
-                    url: 'seal/' + deleteid,
+                    url: 'spk/' + deleteid,
                     data: data,
                     success: function (response) {
                         swal.fire({
-                            title: "Data Seal Dihapus",
+                            title: "Data Spk Dihapus",
                             text: "Data Berhasil Dihapus",
                             icon: "success",
                             timer: 2e3,

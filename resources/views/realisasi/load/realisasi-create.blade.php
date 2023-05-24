@@ -324,10 +324,23 @@
                         <!-- END Form -->
                         <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
 
-                            <div class="col-6">
-                                <button type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak SI <i
+
+
+                            <div class="col-auto">
+                                <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak SI <i
                                         class="fa fa-print"></i></button>
                             </div>
+
+                            @if ($planload->status == 'Realisasi')
+
+                            <div class="col-auto">
+                                <a type="button" href="/preview-si/{{$planload->slug}}" class="btn btn-success ">VieW .pdf SI <i
+                                        class="fa fa-eye"></i></a>
+                            </div>
+                            @endif
+
+
+
 
 
                         </div>
@@ -575,7 +588,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Buatkan SI</button>
+                        <button type="submit" id="btnFinish"  class="btn btn-primary">Buatkan SI</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -591,11 +604,18 @@
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
+
         $(document).ready(function() {
-            $('input, select, .date_activity').blur(function() {
-                var $txt = $(this).val();
-                $(this).attr('data-bs-original-title', $txt);
-            })
-        })
+            var check = $(".check-container");
+
+            $("#submit-id").attr("disabled", "disabled");
+            check.click(function() {
+                if ($(this).is(":checked")) {
+                    $("#submit-id").removeAttr("disabled");
+                } else {
+                    $("#submit-id").attr("disabled", "disabled");
+                }
+            });
+        });
     </script>
 @endsection

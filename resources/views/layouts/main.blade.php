@@ -36,7 +36,7 @@
         @include('layouts.sidebar')
         <!-- END Aside -->
         <!-- BEGIN Page Wrapper -->
-        <div class="wrapper">
+        <div class="wrapper" id="loading-wrapper">
             <!-- BEGIN Header -->
             @include('layouts.header')
             <!-- END Header -->

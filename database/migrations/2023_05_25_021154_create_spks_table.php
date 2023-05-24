@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seals', function (Blueprint $table) {
+        Schema::create('spks', function (Blueprint $table) {
             $table->id();
             $table->string('code')->nullable();
-            $table->double('start_seal');
-            $table->double('touch_seal')->nullable();
+            $table->double('start_spk');
+            $table->double('touch_spk')->nullable();
             $table->string('status')->nullable();
-            $table->text('kode_seal');
-            $table->string('keterangan_damage')->nullable();
-
+            $table->text('kode_spk');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seals');
+        Schema::dropIfExists('spks');
     }
 };

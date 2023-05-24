@@ -11,7 +11,7 @@ $(function () {
     });
 
 
-    $("#start_seal").TouchSpin({
+    $("#start_seal, #start_spk").TouchSpin({
         buttondown_class: "btn btn-label-success",
         buttonup_class: "btn btn-label-success",
         step: 1,
@@ -19,7 +19,7 @@ $(function () {
 
     });
 
-    $("#touchspin-8, #touch_seal, #jumlah_container, #size-20, #size-21, #size-40, #size-45, #touch-cargo, #touch-stuffing, #touch-trucking, #touch-supir"
+    $("#touchspin-8, #touch_spk, #touch_seal, #jumlah_container, #size-20, #size-21, #size-40, #size-45, #touch-cargo, #touch-stuffing, #touch-trucking, #touch-supir"
     ).TouchSpin({
         buttondown_class: "btn btn-label-success",
         buttonup_class: "btn btn-label-success",

@@ -95,6 +95,48 @@
                     </div>
                     <!-- END Menu Submenu -->
                 </div>
+
+                <div class="menu-item">
+                    <button class="menu-item-link menu-item-toggle
+                    {{
+                        Request::is('spk') || Request::is('report-spk')
+                        ? 'active' : ''
+
+                        }}
+
+                    ">
+                        <div class="menu-item-icon">
+                            <i class="fa fa-list-ol"></i>
+                        </div>
+                        <span class="menu-item-text">SPK</span>
+                        <div class="menu-item-addon">
+                            <i class="menu-item-caret caret"></i>
+                        </div>
+                    </button>
+                    <!-- BEGIN Menu Submenu -->
+                    <div class="menu-submenu">
+                        <div class="menu-item">
+                            <a href="/spk" data-menu-path="/spk" class="menu-item-link
+                            {{ Request::is('spk') ? 'active' : '' }}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">INPUT SPK</span>
+                            </a>
+                        </div>
+
+                        <div class="menu-item">
+                            <a href="/report-spk" data-menu-path="" class="menu-item-link {{ Request::is('report-spk') ? 'active' : '' }}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">REPORT & STOCK SPK</span>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- END Menu Submenu -->
+                </div>
+
+
+
+
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle
                     {{

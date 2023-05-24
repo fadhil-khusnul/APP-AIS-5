@@ -108,4 +108,13 @@ class PenerimaController extends Controller
             'success'   => true
         ]);
     }
+
+    public function getnamapenerima(Request $request) {
+        $penerima = Penerima::all();
+        $penerima_array = [];
+        for($i = 0; $i < count($penerima); $i++) {
+            $penerima_array[$i] = $penerima[$i]->nama_penerima;
+        }
+        return response()->json($penerima_array);
+    }
 }

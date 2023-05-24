@@ -691,6 +691,90 @@ $(function () {
 
 });
 
+function nama_pengirim(ini) {
+    console.log(ini.value);
+    let token = $("#csrf").val();
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    $.ajax({
+            url: "/getnamapengirim",
+            type: "post",
+            data: {
+                _token: token,
+            },
+            success: function (response) {
+                console.log(response);
+
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i] == ini.value) {
+
+                        swal.fire({
+                            title: "Nama Pengirim Mirip Dengan Data yang Sudah Ada",
+                            text: "Silakan Cek List Tabel Pengirim yang Ada",
+                            icon: "warning",
+                            timer: 10e3,
+                            showConfirmButton: true,
+                        });
+                    }
+
+                }
+
+
+            },
+        });
+
+
+}
+
+function onblur_nama_penerima(ini) {
+    let token = $("#csrf").val();
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    $.ajax({
+            url: "/getnamapenerima",
+            type: "post",
+            data: {
+                _token: token,
+            },
+            success: function (response) {
+
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i] == ini.value) {
+
+                        swal.fire({
+                            title: "Nama Penerima Mirip Dengan Data yang Sudah Ada",
+                            text: "Silakan Cek List Tabel Penerima yang Ada",
+                            icon: "warning",
+                            timer: 10e3,
+                            showConfirmButton: true,
+                        });
+                    }
+
+                }
+
+
+            },
+        });
+
+
+}
+
 function editCompany(e) {
     var id = e.value;
     console.log(id);

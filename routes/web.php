@@ -9,6 +9,7 @@ use App\Http\Controllers\DepoController;
 use App\Http\Controllers\PlanDischargeController;
 use App\Http\Controllers\ProcessLoadController;
 use App\Http\Controllers\SealController;
+use App\Http\Controllers\SpkController;
 use App\Http\Controllers\PelabuhanController;
 use App\Http\Controllers\PengirimController;
 use App\Http\Controllers\PenerimaController;
@@ -68,6 +69,8 @@ Route::post('/add-penerima', [PenerimaController::class, 'store']);
 Route::get('/penerima/{id}/edit', [PenerimaController::class, 'edit']);
 Route::put('/penerima/{id}', [PenerimaController::class, 'update']);
 Route::delete('/penerima/{id}', [PenerimaController::class, 'destroy']);
+Route::post('/getnamapenerima', [PenerimaController::class, 'getnamapenerima']);
+
 
 
 Route::post('/add-biaya', [BiayaController::class, 'store']);
@@ -146,6 +149,8 @@ Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNo
 Route::post('/create-si-container', [PdfController::class, 'create_si']);
 Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
+Route::get('/preview-si/{slug}', [PdfController::class, 'preview_si']);
+Route::post('/konfirmasi-si', [PdfController::class, 'konfirmasi_si']);
 
 
 //ALih Kapal
@@ -158,19 +163,26 @@ Route::get('/seal', [SealController::class, 'index']);
 Route::get('/seal/{id}/edit', [SealController::class, 'edit']);
 Route::delete('/seal/{id}', [SealController::class, 'destroy']);
 Route::put('/seal-update/{id}', [SealController::class, 'update']);
-
-
 Route::get('/report-seal', [SealController::class, 'index_report']);
-
-
 Route::post('/tambah-seal', [SealController::class, 'store']);
 Route::post('/getSeal', [SealController::class, 'getSeal']);
 Route::post('/getCodeSeal', [SealController::class, 'getCodeSeal']);
 Route::post('/getKodeSeal', [SealController::class, 'getKodeSeal']);
 
-
 Route::get('/damage-seal', [SealController::class, 'index_damage']);
 Route::post('/tambah-damage-seal', [SealController::class, 'update_damage']);
+
+//SPK
+Route::get('/spk', [SpkController::class, 'index']);
+Route::get('/spk/{id}/edit', [SpkController::class, 'edit']);
+Route::delete('/spk/{id}', [SpkController::class, 'destroy']);
+Route::put('/spk-update/{id}', [SpkController::class, 'update']);
+Route::get('/report-spk', [SpkController::class, 'index_report']);
+Route::post('/tambah-spk', [SpkController::class, 'store']);
+Route::post('/getSeal', [SpkController::class, 'getSpk']);
+Route::post('/getCodeSpk', [SpkController::class, 'getCodeSpk']);
+Route::post('/getKodeSpk', [SpkController::class, 'getKodeSpk']);
+
 
 
 //TRUCKING

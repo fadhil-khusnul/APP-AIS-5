@@ -109,4 +109,13 @@ class PengirimController extends Controller
             'success'   => true
         ]);
     }
+
+    public function getnamapengirim(Request $request) {
+        $pengirim = Pengirim::all();
+        $pengirim_array = [];
+        for($i = 0; $i < count($pengirim); $i++) {
+            $pengirim_array[$i] = $pengirim[$i]->nama_costumer;
+        }
+        return response()->json($pengirim_array);
+    }
 }

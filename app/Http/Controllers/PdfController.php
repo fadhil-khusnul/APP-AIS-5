@@ -22,6 +22,7 @@ use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Models\PlanDischarge;
 use App\Models\PlanDischargeContainer;
+use App\Models\SiPdfContainer;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -36,6 +37,8 @@ class PdfController extends Controller
      */
     public function create_si(Request $request)
     {
+        // dd($request);
+        $random = Str::random(15);
 
         $unique_size = array_values(array_unique($request->size));
         $jumlah = [];
@@ -64,9 +67,13 @@ class PdfController extends Controller
             $container = [
                 'status' => "Realisasi",
             ];
+            $container2 = [
+                'status' => "Realisasi",
+                'slug' => $random.time(),
+            ];
 
             OrderJobPlanload::where('id', $old_id)->update($container);
-            ContainerPlanload::where('id',$request->chek_container[$i])->update($container);
+            ContainerPlanload::where('id',$request->chek_container[$i])->update($container2);
         }
 
         $checked = [];
@@ -115,11 +122,28 @@ class PdfController extends Controller
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
 
-        $path1 = 'storage/si-container/SI-'.$old_slug.'-'.$dt.'.pdf';
-        // dd($path1);
+        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'.pdf';
+        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-progress.pdf';
+        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
 
 
-        $pdf = Pdf::loadview('pdf.create_si',[
+        // dd($checked);
+
+
+        $si_pdf =[
+            'job_id' => $old_id,
+            'container_id' => $random.time(),
+            'path' => 'SI-'.$old_slug.'-'.$random.time(),
+
+        ];
+
+        SiPdfContainer::create($si_pdf);
+
+
+        // dd($si_pdf);
+
+
+        $pdf1 = Pdf::loadview('pdf.create_si',[
             "loads" => $loads,
             "containers" => $new_container,
             "vessel" => $old_slug,
@@ -129,10 +153,115 @@ class PdfController extends Controller
 
         ]);
 
-        $pdf->save($path1);
+        $pdf1->save($save1);
 
-        return response()->download($path1);
+        //ON-PROGRESS
+
+        $pdf2 = Pdf::loadview('pdf.create_si_progress',[
+            "loads" => $loads,
+            "containers" => $new_container,
+            "vessel" => $old_slug,
+            "shipper" => $request->shipper,
+            "consigne" => $request->consigne,
+            "quantity" => $quantity
+
+        ]);
+        $status1 = 'ON-PROGRESS';
+
+        $this->make_watermark($pdf2, $status1);
+
+        $pdf2->save($save2);
+
+
+        //DITOLAK
+        $pdf3 = Pdf::loadview('pdf.create_si_progress',[
+            "loads" => $loads,
+            "containers" => $new_container,
+            "vessel" => $old_slug,
+            "shipper" => $request->shipper,
+            "consigne" => $request->consigne,
+            "quantity" => $quantity
+
+        ]);
+
+        $status2 = 'SI-DITOLAK';
+
+        $this->make_watermark($pdf3, $status2);
+
+        $pdf3->save($save3);
+
+
+
+        return response()->download($save2);
     }
+
+    public function make_watermark($pdf, $status){
+        $pdf->render();
+        $canvas = $pdf->getCanvas();
+        $height = $canvas->get_height();
+        $width = $canvas->get_width();
+        $height_divider = 1;
+        $width_divider = 1;
+
+        if($status == "SI-DITOLAK"){
+            $height_divider = 1.7;
+            $width_divider = 5;
+        }
+        else if($status == "ON-PROGRESS"){
+            $height_divider = 1.7;
+            $width_divider = 7;
+        }
+        // dd($status);
+        $canvas->page_script('
+        $pdf->set_opacity(.2, "Multiply");
+        $pdf->text('.($width/$width_divider).', '.($height/$height_divider).', "'.($status).'",
+        "Calibri",65, array(0,0,0), 10, 10, -30);');
+
+    }
+
+    public function preview_si(Request $request)
+
+    {
+        $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
+        $containers = ContainerPlanload::where('job_id', $id)->orWhere('status', 'Realisasi')->get();
+
+
+
+        $pdfs= SiPdfContainer::orderBy('id', 'DESC')->where('job_id', $id)->get();
+        // dd($pdfs);
+
+        return view('realisasi.load.preview-si', [
+            'title' => 'Preview Shipping Intructions',
+            'active' => 'Realisasi',
+            'pdfs' => $pdfs,
+            'containers' => $containers,
+            'planload' => OrderJobPlanload::find($id),
+
+
+        ]);
+
+
+
+    }
+
+    public function konfirmasi_si(Request $request){
+        // dd($request->container_id);
+        $pdf = SiPdfContainer::where('container_id', $request->container_id)->value('id');
+
+        $si_pdf= SiPdfContainer::findOrFail($pdf);
+
+        $data =[
+
+            "status" => $request->terima,
+
+        ];
+
+        $si_pdf->update($data);
+
+        return response()->json(['success' => true]);
+
+    }
+
 
     public function invoice_load(Request $request)
     {

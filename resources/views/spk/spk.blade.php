@@ -15,7 +15,7 @@
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Kode</label>
-                                <input type="text" class="form-control" id="kode_seal" name="kode_seal" required>
+                                <input type="text" class="form-control" id="kode_spk" name="kode_spk" required>
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                             </div>
                         </div>
@@ -23,8 +23,8 @@
                             <div class="text-center">
 
                                 <div class="validation-container">
-                                        <label for="" class="form-label">Nilai Awal Seal :</label>
-                                        <input id="start_seal" name="start_seal" type="text" value="0" class="form-control" required><span
+                                        <label for="" class="form-label">Nilai Awal SPK :</label>
+                                        <input id="start_spk" name="start_spk" type="text" value="0" class="form-control" required><span
                                             class="col-md-6 form-control">
                                 </div>
                             </div>
@@ -34,15 +34,15 @@
                         <div class="col-md-6" style="margin-left: auto; margin-right:auto;">
                             <div class="text-center">
                                 <div class="validation-container">
-                                    <label for="" class="form-label">Stock (Jumlah) Seal :</label>
+                                    <label for="" class="form-label">Stock (Jumlah) SPK :</label>
                                     <input class="col-md-6 form-control"
-                                        id="touch_seal" name="touch_seal" value="0" type="text" required>
+                                        id="touch_spk" name="touch_spk" value="0" type="text" required>
                                 </div>
                             </div>
                         </div>
 
                         <div class="text-end">
-                            <button type="submit" onclick="Tambah_Seal()" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Seal</button>
+                            <button type="submit" onclick="Tambah_SPK()" class="btn btn-success"> <i class="fa fa-plus"></i> Buat SPK</button>
                         </div>
                     </form>
 
@@ -73,28 +73,28 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Seal</th>
+                                <th>Kode SPK</th>
                                 {{-- <th>Tahun</th> --}}
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($seals as $seal)
+                            @foreach ($spks as $spk)
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
                                     <td>
-                                        {{ $seal->kode_seal }}
+                                        {{ $spk->kode_spk }}
                                     </td>
                                     {{-- <td>
-                                        {{ $seal-> }}
+                                        {{ $spk-> }}
                                     </td> --}}
-                                    <td class="text-center"><button onclick="editseal(this)" value="{{ $seal->id }}"
+                                    <td class="text-center"><button onclick="editspk(this)" value="{{ $spk->id }}"
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
-                                        <button onclick="deleteseal(this)" value="{{ $seal->id }}" type="button"
+                                        <button onclick="deletespk(this)" value="{{ $spk->id }}" type="button"
                                             class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-trash"></i></button>
                                     </td>
@@ -117,23 +117,23 @@
     </div>
 
 
-    <div class="modal fade" id="modal-seal-edit">
+    <div class="modal fade" id="modal-spk-edit">
         <div class="modal-dialog">
-            <form action="#" name="valid_pelabuhan_edit" id="valid_pelabuhan_edit">
+            <form action="#" name="valid_spk_edit" id="valid_spk_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data SEAL</h5>
+                    <h5 class="modal-title">Edit Data SPK</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="validation-container">
-                        <label class="form-label" for="area_code">KODE SEAL :</label>
-                        <input class="form-control" id="kode_seal_edit" name="kode_seal_edit" type="text">
+                        <label class="form-label" for="area_code">KODE SPK :</label>
+                        <input class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
                     </div>
 
 
@@ -151,6 +151,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/seal.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/spk.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 @endsection

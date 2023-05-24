@@ -245,7 +245,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Costumer</th>
+                            <th>Nama Pengirim</th>
                             <th>Alamat</th>
                             <th>Email</th>
                             <th>No. Telp</th>
@@ -308,7 +308,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Customer</th>
+                            <th>Nama Penerima</th>
                             <th>Alamat</th>
                             <th>Email</th>
                             <th>No. Telp</th>
@@ -802,8 +802,8 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label" for="text">Nama Costumer</label>
-                        <input class="form-control" id="nama_costumer" name="nama_costumer" type="text">
+                        <label class="form-label" for="text">Nama Pengirim</label>
+                        <input class="form-control" id="nama_costumer" name="nama_costumer" type="text" onblur="nama_pengirim(this)">
                     </div>
                     <div>
                         <label class="form-label" for="text">Alamat</label>
@@ -846,7 +846,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label" for="text">Nama Costumer</label>
+                        <label class="form-label" for="text">Nama Pengirim</label>
                         <input class="form-control" id="nama_costumer_edit" name="nama_costumer_edit" type="text">
                     </div>
                     <div>
@@ -890,8 +890,8 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label" for="text">Nama Costumer</label>
-                        <input class="form-control" id="nama_penerima" name="nama_penerima" type="text">
+                        <label class="form-label" for="text">Nama Penerima</label>
+                        <input class="form-control" id="nama_penerima" name="nama_penerima" type="text" onblur="onblur_nama_penerima(this)">
                     </div>
                     <div>
                         <label class="form-label" for="text">Alamat</label>
@@ -934,7 +934,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <label class="form-label" for="text">Nama Costumer</label>
+                        <label class="form-label" for="text">Nama Penerima</label>
                         <input class="form-control" id="nama_penerima_edit" name="nama_penerima_edit" type="text">
                     </div>
                     <div>
