@@ -59,6 +59,17 @@ function CreateJobProcessload() {
             var fd = new FormData();
 
             for (let i = 0; i < urutan; i++) {
+
+                type[i] = document.getElementById(
+                    "type[" + (i + 1) + "]"
+                ).value;
+                fd.append("type[]", type[i]);
+
+                size[i] = document.getElementById(
+                    "size[" + (i + 1) + "]"
+                ).value;
+                fd.append("size[]", size[i]);
+
                 nomor_kontainer[i] = document.getElementById(
                     "nomor_kontainer[" + (i + 1) + "]"
                 ).value;
@@ -449,6 +460,395 @@ function CreateJobProcessload() {
             });
         },
     });
+}
+function save_kontainer() {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+
+            let token = $("#csrf").val();
+
+            // Event.preventDefault();
+
+            let old_slug = document.getElementById("old_slug").value;
+            var table_container = document.getElementById("processload_create");
+            var urutan = table_container.tBodies[0].rows.length;
+
+            var nomor_kontainer = [];
+            var seal = [];
+            var date_activity = [];
+            var tempDate = [];
+            var formattedDate = [];
+            var cargo = [];
+            var lokasi = [];
+            var driver = [];
+            var nomor_polisi = [];
+            var remark = [];
+            var biaya_stuffing = [];
+            var biaya_trucking = [];
+            var ongkos_supir = [];
+            var biaya_thc = [];
+            var jenis_mobil = [];
+            var detail_barang = [];
+            var type = [];
+            var size = [];
+            var values = [];
+            var dana = [];
+
+            var fd = new FormData();
+
+            for (let i = 0; i < urutan; i++) {
+
+                type[i] = document.getElementById(
+                    "type[" + (i + 1) + "]"
+                ).value;
+                fd.append("type[]", type[i]);
+
+                size[i] = document.getElementById(
+                    "size[" + (i + 1) + "]"
+                ).value;
+                fd.append("size[]", size[i]);
+
+                nomor_kontainer[i] = document.getElementById(
+                    "nomor_kontainer[" + (i + 1) + "]"
+                ).value;
+                fd.append("nomor_kontainer[]", nomor_kontainer[i]);
+
+                seal[i] = document.getElementById('seal[' + (i+1) + ']').selectedOptions;
+
+                values[i] = Array.from(seal[i]).map(({ value }) => value);
+                for (let j = 0; j < values[i].length; j++) {
+                    fd.append("seal["+i+"][]", values[i][j]);
+                    console.log(values[i][j]);
+                }
+                cargo[i] = document.getElementById(
+                    "cargo[" + (i + 1) + "]"
+                ).value;
+                fd.append("cargo[]", cargo[i]);
+
+                date_activity[i] = document.getElementById(
+                    "date_activity[" + (i + 1) + "]"
+                ).value;
+                tempDate[i] = new Date(date_activity[i]);
+                formattedDate[i] = [
+                    tempDate[i].getFullYear(),
+                    tempDate[i].getMonth() + 1,
+                    tempDate[i].getDate(),
+                ].join("-");
+                fd.append("date_activity[]", formattedDate[i]);
+                lokasi[i] = document.getElementById(
+                    "lokasi[" + (i + 1) + "]"
+                ).value;
+                fd.append("lokasi[]", lokasi[i]);
+
+                driver[i] = document.getElementById(
+                    "driver[" + (i + 1) + "]"
+                ).value;
+                fd.append("driver[]", driver[i]);
+
+                nomor_polisi[i] = document.getElementById(
+                    "nomor_polisi[" + (i + 1) + "]"
+                ).value;
+                fd.append("nomor_polisi[]", nomor_polisi[i]);
+
+                remark[i] = document.getElementById(
+                    "remark[" + (i + 1) + "]"
+                ).value;
+                fd.append("remark[]", remark[i]);
+
+                biaya_stuffing[i] = document.getElementById(
+                    "biaya_stuffing[" + (i + 1) + "]"
+                ).value;
+                fd.append("biaya_stuffing[]", biaya_stuffing[i]);
+
+                biaya_trucking[i] = document.getElementById(
+                    "biaya_trucking[" + (i + 1) + "]"
+                ).value;
+                fd.append("biaya_trucking[]", biaya_trucking[i]);
+
+                ongkos_supir[i] = document.getElementById(
+                    "ongkos_supir[" + (i + 1) + "]"
+                ).value;
+                fd.append("ongkos_supir[]", ongkos_supir[i]);
+
+                biaya_thc[i] = document.getElementById(
+                    "biaya_thc[" + (i + 1) + "]"
+                ).value;
+                fd.append("biaya_thc[]", biaya_thc[i]);
+
+                detail_barang[i] = document.getElementById(
+                    "detail_barang[" + (i + 1) + "]"
+                ).value;
+                fd.append("detail_barang[]", detail_barang[i]);
+
+                jenis_mobil[i] = document.getElementById(
+                    "jenis_mobil[" + (i + 1) + "]"
+                ).value;
+                fd.append("jenis_mobil[]", jenis_mobil[i]);
+
+                dana[i] = document.getElementById(
+                    "dana[" + (i + 1) + "]"
+                ).value;
+                fd.append("dana[]", dana[i]);
+            }
+
+            var no_surat = [];
+            var date_activity2 = [];
+            var tempDate2 = [];
+            var tahun2 = [];
+
+            for (var i = 0; i < urutan; i++) {
+                $.ajax({
+                    url: "/getNoSurat",
+                    type: "post",
+                    datatype: "json",
+                    async: false,
+                    data: {
+                        tahun: tempDate[i].getFullYear(),
+                        _token: token,
+                    },
+                    success: function (response) {
+                        var sjc = "SJC";
+                        var ais = "AIS";
+                        var m = "M";
+                        date_activity2[i] = document.getElementById(
+                            "date_activity[" + (i + 1) + "]"
+                        ).value;
+                        tempDate2[i] = new Date(date_activity2[i]);
+                        tahun2[i] = tempDate2[i].getFullYear();
+
+                        if (response == 0) {
+                            if (i == 0) {
+                                var first = 1;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(first).padStart(6, "0") +
+                                    m;
+                                fd.append("no_surat[]", no_surat[i]);
+                                fd.append("tahun[]", tempDate[i].getFullYear());
+                            } else {
+                                var mid_last = tahun2.filter(
+                                    (j) => j === tahun2[i]
+                                ).length;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(mid_last).padStart(6, "0") +
+                                    m;
+                                fd.append("no_surat[]", no_surat[i]);
+                                fd.append("tahun[]", tempDate[i].getFullYear());
+                            }
+                        } else {
+                            if (i == 0) {
+                                var first = 1;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(first + response).padStart(6, "0") +
+                                    m;
+                                fd.append("no_surat[]", no_surat[i]);
+                                fd.append("tahun[]", tempDate[i].getFullYear());
+                            } else {
+                                var mid_last = tahun2.filter(
+                                    (j) => j === tahun2[i]
+                                ).length;
+                                no_surat[i] =
+                                    sjc +
+                                    tempDate[i].getFullYear() +
+                                    ais +
+                                    String(tempDate[i].getMonth() + 1).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(tempDate[i].getDate()).padStart(
+                                        2,
+                                        "0"
+                                    ) +
+                                    String(mid_last + response).padStart(
+                                        6,
+                                        "0"
+                                    ) +
+                                    m;
+                                fd.append("no_surat[]", no_surat[i]);
+                                fd.append("tahun[]", tempDate[i].getFullYear());
+                            }
+                        }
+                    },
+                });
+            }
+
+            var kontainer_biaya = [];
+            var harga_biaya = [];
+            var keterangan = [];
+
+            for (let i = 0; i < tambah; i++) {
+                kontainer_biaya[i] = document.getElementById(
+                    "kontainer_biaya[" + (i + 1) + "]"
+                ).value;
+                fd.append("kontainer_biaya[]", kontainer_biaya[i]);
+
+                harga_biaya[i] = document.getElementById(
+                    "harga[" + (i + 1) + "]"
+                ).value;
+                fd.append("harga_biaya[]", harga_biaya[i]);
+
+                keterangan[i] = document.getElementById(
+                    "keterangan[" + (i + 1) + "]"
+                ).value;
+                fd.append("keterangan[]", keterangan[i]);
+            }
+
+            var kontainer_alih = [];
+            var harga_alih_kapal = [];
+            var keterangan_alih_kapal = [];
+
+            var pelayaran_alih = [];
+            var pot_alih = [];
+            var pod_alih = [];
+            var vesseL_alih = [];
+            var code_vesseL_alih = [];
+
+            for (let i = 0; i < clickalih; i++) {
+                kontainer_alih[i] = document.getElementById(
+                    "kontainer_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("kontainer_alih[]", kontainer_alih[i]);
+
+                harga_alih_kapal[i] = document.getElementById(
+                    "harga_alih_kapal[" + (i + 1) + "]"
+                ).value;
+                fd.append("harga_alih_kapal[]", harga_alih_kapal[i]);
+
+                keterangan_alih_kapal[i] = document.getElementById(
+                    "keterangan_alih_kapal[" + (i + 1) + "]"
+                ).value;
+                fd.append("keterangan_alih_kapal[]", keterangan_alih_kapal[i]);
+
+                pelayaran_alih[i] = document.getElementById(
+                    "pelayaran_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("pelayaran_alih[]", pelayaran_alih[i]);
+
+                pot_alih[i] = document.getElementById(
+                    "pot_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("pot_alih[]", pot_alih[i]);
+
+                pod_alih[i] = document.getElementById(
+                    "pod_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("pod_alih[]", pod_alih[i]);
+
+                vesseL_alih[i] = document.getElementById(
+                    "vesseL_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("vesseL_alih[]", vesseL_alih[i]);
+
+                code_vesseL_alih[i] = document.getElementById(
+                    "code_vesseL_alih[" + (i + 1) + "]"
+                ).value;
+                fd.append("code_vesseL_alih[]", code_vesseL_alih[i]);
+            }
+
+            var kontainer_batal = [];
+            var harga_batal_muat = [];
+            var keterangan_batal_muat = [];
+
+            for (let i = 0; i < clickbatal; i++) {
+                kontainer_batal[i] = document.getElementById(
+                    "kontainer_batal[" + (i + 1) + "]"
+                ).value;
+                fd.append("kontainer_batal[]", kontainer_batal[i]);
+
+                harga_batal_muat[i] = document.getElementById(
+                    "harga[" + (i + 1) + "]"
+                ).value;
+                fd.append("harga_batal_muat[]", harga_batal_muat[i]);
+
+                keterangan_batal_muat[i] = document.getElementById(
+                    "keterangan_batal_muat[" + (i + 1) + "]"
+                ).value;
+                fd.append("keterangan_batal_muat[]", keterangan_batal_muat[i]);
+            }
+
+            fd.append("_token", token);
+            fd.append("urutan", urutan);
+            fd.append("tambah", tambah);
+            fd.append("clickalih", clickalih);
+            fd.append("clickbatal", clickbatal);
+            fd.append("old_slug", old_slug);
+
+            swal.fire({
+                title: "Apakah anda yakin Ingin SAVE Job Ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Iya",
+                cancelButtonText: "Tidak",
+            }).then((willCreate) => {
+                if (willCreate.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/save-job-processload",
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function (response) {
+                            swal.fire({
+                                title: "JOB DISAVE",
+                                text: "JOB Telah Berhasil DISAVE",
+                                icon: "success",
+                                timer: 9e3,
+                                showConfirmButton: false,
+                            });
+                            window.location.reload();
+                        },
+                    });
+                } else {
+                    swal.fire({
+                        title: "JOB Tidak DISAVE",
+                        text: "Silakan Cek Kembali Data Anda",
+                        icon: "error",
+                        timer: 10e3,
+                        showConfirmButton: false,
+                    });
+                }
+            });
+
 }
 
 function UpdateteJobProcessload() {
@@ -1438,192 +1838,293 @@ function delete_kontainer1(r) {
     // }
 
     // reindex_container1();
-    var table = r.parentNode.parentNode.rowIndex;
-    document.getElementById("processload_create").deleteRow(table);
-    urutan1--;
 
-    var button = document.querySelectorAll(
-        "#processload_create tr td:nth-child(1) button"
-    );
 
-    for (var i = 0; i < button.length; i++) {
-        button[i].id = "button_kontainer[" + (i + 1) + "]";
-        button[i].name = "button_kontainer[" + (i + 1) + "]";
-    }
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
 
-    var label = document.querySelectorAll(
-        "#processload_create tr td:nth-child(3) select"
-    );
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus CONTAINER INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var table = r.parentNode.parentNode.rowIndex;
+            document.getElementById("processload_create").deleteRow(table);
+            urutan1--;
 
-    for (var i = 0; i < label.length; i++) {
-        label[i].id = "size[" + (i + 1) + "]";
-        label[i].name = "size[" + (i + 1) + "]";
-    }
+            var button = document.querySelectorAll(
+                "#processload_create tr td:nth-child(1) button"
+            );
 
-    var label1 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(4) select"
-    );
+            for (var i = 0; i < button.length; i++) {
+                button[i].id = "button_kontainer[" + (i + 1) + "]";
+                button[i].name = "button_kontainer[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < label1.length; i++) {
-        label1[i].id = "type[" + (i + 1) + "]";
-        label1[i].name = "type[" + (i + 1) + "]";
-    }
+            var label = document.querySelectorAll(
+                "#processload_create tr td:nth-child(3) select"
+            );
 
-    var input = document.querySelectorAll(
-        "#processload_create tr td:nth-child(5) input"
-    );
+            for (var i = 0; i < label.length; i++) {
+                label[i].id = "size[" + (i + 1) + "]";
+                label[i].name = "size[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input.length; i++) {
-        input[i].id = "nomor_kontainer[" + (i + 1) + "]";
-        input[i].name = "nomor_kontainer[" + (i + 1) + "]";
-    }
+            var label1 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(4) select"
+            );
 
-    var input2 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(6) input"
-    );
+            for (var i = 0; i < label1.length; i++) {
+                label1[i].id = "type[" + (i + 1) + "]";
+                label1[i].name = "type[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input2.length; i++) {
-        input2[i].id = "cargo[" + (i + 1) + "]";
-        input2[i].name = "cargo[" + (i + 1) + "]";
-    }
+            var input = document.querySelectorAll(
+                "#processload_create tr td:nth-child(5) input"
+            );
 
-    var textarea = document.querySelectorAll(
-        "#processload_create tr td:nth-child(7) textarea"
-    );
+            for (var i = 0; i < input.length; i++) {
+                input[i].id = "nomor_kontainer[" + (i + 1) + "]";
+                input[i].name = "nomor_kontainer[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < textarea.length; i++) {
-        textarea[i].id = "detail_barang[" + (i + 1) + "]";
-        textarea[i].name = "detail_barang[" + (i + 1) + "]";
-    }
+            var input2 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(6) input"
+            );
 
-    var select1 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(8) select"
-    );
+            for (var i = 0; i < input2.length; i++) {
+                input2[i].id = "cargo[" + (i + 1) + "]";
+                input2[i].name = "cargo[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < select1.length; i++) {
-        select1[i].id = "seal[" + (i + 1) + "]";
-        select1[i].name = "seal[" + (i + 1) + "]";
-    }
+            var textarea = document.querySelectorAll(
+                "#processload_create tr td:nth-child(7) textarea"
+            );
 
-    var input3 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(9) input"
-    );
+            for (var i = 0; i < textarea.length; i++) {
+                textarea[i].id = "detail_barang[" + (i + 1) + "]";
+                textarea[i].name = "detail_barang[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input3.length; i++) {
-        input3[i].id = "date_activity[" + (i + 1) + "]";
-        input3[i].name = "date_activity[" + (i + 1) + "]";
-    }
+            var select1 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(8) select"
+            );
 
-    var select2 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(10) select"
-    );
+            for (var i = 0; i < select1.length; i++) {
+                select1[i].id = "seal[" + (i + 1) + "]";
+                select1[i].name = "seal[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < select2.length; i++) {
-        select2[i].id = "lokasi[" + (i + 1) + "]";
-        select2[i].name = "lokasi[" + (i + 1) + "]";
-    }
+            var input3 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(9) input"
+            );
 
-    var input4 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(11) input"
-    );
+            for (var i = 0; i < input3.length; i++) {
+                input3[i].id = "date_activity[" + (i + 1) + "]";
+                input3[i].name = "date_activity[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input4.length; i++) {
-        input4[i].id = "driver[" + (i + 1) + "]";
-        input4[i].name = "driver[" + (i + 1) + "]";
-    }
+            var select2 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(10) select"
+            );
 
-    var input5 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(12) input"
-    );
+            for (var i = 0; i < select2.length; i++) {
+                select2[i].id = "lokasi[" + (i + 1) + "]";
+                select2[i].name = "lokasi[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input5.length; i++) {
-        input5[i].id = "nomor_polisi[" + (i + 1) + "]";
-        input5[i].name = "nomor_polisi[" + (i + 1) + "]";
-    }
+            var input4 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(11) input"
+            );
 
-    var input6 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(13) input"
-    );
+            for (var i = 0; i < input4.length; i++) {
+                input4[i].id = "driver[" + (i + 1) + "]";
+                input4[i].name = "driver[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input6.length; i++) {
-        input6[i].id = "remark[" + (i + 1) + "]";
-        input6[i].name = "remark[" + (i + 1) + "]";
-    }
+            var input5 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(12) input"
+            );
 
-    var input7 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(14) input"
-    );
+            for (var i = 0; i < input5.length; i++) {
+                input5[i].id = "nomor_polisi[" + (i + 1) + "]";
+                input5[i].name = "nomor_polisi[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input7.length; i++) {
-        input7[i].id = "biaya_stuffing[" + (i + 1) + "]";
-        input7[i].name = "biaya_stuffing[" + (i + 1) + "]";
-    }
+            var input6 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(13) input"
+            );
 
-    var input8 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(15) input"
-    );
+            for (var i = 0; i < input6.length; i++) {
+                input6[i].id = "remark[" + (i + 1) + "]";
+                input6[i].name = "remark[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input8.length; i++) {
-        input8[i].id = "biaya_trucking[" + (i + 1) + "]";
-        input8[i].name = "biaya_trucking[" + (i + 1) + "]";
-    }
+            var input7 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(14) input"
+            );
 
-    var input9 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(16) input"
-    );
+            for (var i = 0; i < input7.length; i++) {
+                input7[i].id = "biaya_stuffing[" + (i + 1) + "]";
+                input7[i].name = "biaya_stuffing[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input9.length; i++) {
-        input9[i].id = "ongkos_supir[" + (i + 1) + "]";
-        input9[i].name = "ongkos_supir[" + (i + 1) + "]";
-    }
+            var input8 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(15) input"
+            );
 
-    var input10 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(17) input"
-    );
+            for (var i = 0; i < input8.length; i++) {
+                input8[i].id = "biaya_trucking[" + (i + 1) + "]";
+                input8[i].name = "biaya_trucking[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < input10.length; i++) {
-        input10[i].id = "biaya_thc[" + (i + 1) + "]";
-        input10[i].name = "biaya_thc[" + (i + 1) + "]";
-    }
+            var input9 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(16) input"
+            );
 
-    var select3 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(18) select"
-    );
+            for (var i = 0; i < input9.length; i++) {
+                input9[i].id = "ongkos_supir[" + (i + 1) + "]";
+                input9[i].name = "ongkos_supir[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < select3.length; i++) {
-        select3[i].id = "jenis_mobil[" + (i + 1) + "]";
-        select3[i].name = "jenis_mobil[" + (i + 1) + "]";
-    }
+            var input10 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(17) input"
+            );
 
-    var select4 = document.querySelectorAll(
-        "#processload_create tr td:nth-child(19) select"
-    );
+            for (var i = 0; i < input10.length; i++) {
+                input10[i].id = "biaya_thc[" + (i + 1) + "]";
+                input10[i].name = "biaya_thc[" + (i + 1) + "]";
+            }
 
-    for (var i = 0; i < select4.length; i++) {
-        select4[i].id = "dana[" + (i + 1) + "]";
-        select4[i].name = "dana[" + (i + 1) + "]";
-    }
+            var select3 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(18) select"
+            );
 
-    if (document.getElementById("tbody_biaya").innerHTML != "") {
-        document.getElementById("tbody_biaya").innerHTML = "";
-    }
-    if (document.getElementById("tbody_alih").innerHTML != "") {
-        document.getElementById("tbody_alih").innerHTML = "";
-    }
-    if (document.getElementById("tbody_batal_muat").innerHTML != "") {
-        document.getElementById("tbody_batal_muat").innerHTML = "";
-    }
+            for (var i = 0; i < select3.length; i++) {
+                select3[i].id = "jenis_mobil[" + (i + 1) + "]";
+                select3[i].name = "jenis_mobil[" + (i + 1) + "]";
+            }
 
-    if (urutan1 == 1) {
-        document
-            .getElementById("button_kontainer[1]")
-            .setAttribute("disabled", true);
-        document
-            .getElementById("button_kontainer[1]")
-            .setAttribute("readonly", true);
-    }
+            var select4 = document.querySelectorAll(
+                "#processload_create tr td:nth-child(19) select"
+            );
 
-    reindex_container1();
+            for (var i = 0; i < select4.length; i++) {
+                select4[i].id = "dana[" + (i + 1) + "]";
+                select4[i].name = "dana[" + (i + 1) + "]";
+            }
+
+            if (document.getElementById("tbody_biaya").innerHTML != "") {
+                document.getElementById("tbody_biaya").innerHTML = "";
+            }
+            if (document.getElementById("tbody_alih").innerHTML != "") {
+                document.getElementById("tbody_alih").innerHTML = "";
+            }
+            if (document.getElementById("tbody_batal_muat").innerHTML != "") {
+                document.getElementById("tbody_batal_muat").innerHTML = "";
+            }
+
+            if (urutan1 == 1) {
+                document
+                    .getElementById("button_kontainer[1]")
+                    .setAttribute("disabled", true);
+                document
+                    .getElementById("button_kontainer[1]")
+                    .setAttribute("readonly", true);
+            }
+
+            swal.fire({
+                title: "Container BERHASIL DIHAPUS",
+                icon: "success",
+                timer: 9e3,
+                showConfirmButton: true,
+            });
+
+            reindex_container1();
+
+        } else {
+            swal.fire({
+                title: "Container TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: true,
+            });
+        }
+    });
+
+
+
+
+}
+
+function delete_kontainerDB(r) {
+
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus CONTAINER INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                "_token": $('input[name=_token]').val(),
+                'id': deleteid,
+                'old_slug': old_slug,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/container-delete/" + deleteid,
+                data: data,
+                // contentType: false,
+                // processData: false,
+                // dataType: "json",
+                success: function (response) {
+                    swal.fire({
+                        title: "Container BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Container TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+
+
+
+
 }
 
 function reindex_container() {

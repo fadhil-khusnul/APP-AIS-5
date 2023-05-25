@@ -21,7 +21,23 @@ $("#penerima_1").select2
 
 
 });
-$("#select2-1, #penerima, #pengirim, .danas, .seals, .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
+$(".seals").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    closeOnSelect:false,
+    placeholder:"Pilih Seal",
+    // allowClear:true,
+    maximumSelectionLength: 4,
+        formatSelectionTooBig: function (limit) {
+
+            return 'Maksimal 4 Seal/Container';
+        }
+
+
+
+});
+$("#select2-1, #penerima, #pengirim, .danas, , .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
 ({
     dir:direction,
     dropdownAutoWidth:true,

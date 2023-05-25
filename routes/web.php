@@ -113,6 +113,7 @@ Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeCon
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
+Route::post('/save-job-processload', [ProcessLoadController::class, 'save']);
 Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
 
 Route::get('/processload', [ProcessLoadController::class, 'index']);
@@ -122,6 +123,7 @@ Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProces
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
 Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);
+Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
 
 Route::get('/realisasi-load', [RealisasiLoadController::class, 'index']);
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);

@@ -78,7 +78,7 @@
                                                 @foreach ($containers_group as $container)
                                                     @if ($planload->id == $container->job_id)
                                                         <li>
-                                                            ({{ $container->jumlah_kontainer }}) x {{ $container->size }} - {{$container->type}} - {{ $container->cargo }}
+                                                            ({{$container->jumlah_kontainer}}) x {{ $container->size }} - {{$container->type}} - {{ $container->cargo }}
                                                         </li>
                                                     @endif
                                                 @endforeach
