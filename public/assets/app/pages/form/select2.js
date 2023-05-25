@@ -37,7 +37,7 @@ $(".seals").select2
 
 
 });
-$("#select2-1, #penerima, #pengirim, .danas, , .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
+$("#select2-1, #penerima, #pengirim, .danas, .lokasi-pickup, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
 ({
     dir:direction,
     dropdownAutoWidth:true,

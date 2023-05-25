@@ -3210,14 +3210,14 @@ function char(ini, evt) {
     }
 }
 
-function no_paste(event) {
-    if (
-        event.ctrlKey == true &&
-        (event.which == "118" || event.which == "86")
-    ) {
-        event.preventDefault();
-    }
-}
+// function no_paste(event) {
+//     if (
+//         event.ctrlKey == true &&
+//         (event.which == "118" || event.which == "86")
+//     ) {
+//         event.preventDefault();
+//     }
+// }
 
 function uppercase(ini) {
     ini.value = ini.value.toUpperCase();
