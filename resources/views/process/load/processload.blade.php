@@ -216,11 +216,12 @@
                                             </a>
 
                                             @else
-                                            <a href="/processload-edit/{{ $planload->slug }}"
-                                                class="btn btn-label-primary rounded-pill">Edit (Kontainer) <i
+                                            <a href="/processload-create/{{ $planload->slug }}"
+                                                class="btn btn-label-success rounded-pill">Process Load <i
                                                     class="fa fa-pencil"></i>
 
                                             </a>
+
 
 
                                             @endif

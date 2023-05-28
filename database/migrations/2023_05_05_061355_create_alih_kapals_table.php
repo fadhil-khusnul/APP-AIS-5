@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('alih_kapals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_id');
+            $table->string('job_id');
             $table->string('kontainer_alih');
             $table->double('harga_alih_kapal');
             $table->string('keterangan_alih_kapal');
             $table->string('pelayaran_alih');
-            $table->string('pot_alih');
+            $table->string('pot_alih')->nullable();
             $table->string('pod_alih');
             $table->string('vesseL_alih');
             $table->string('code_vesseL_alih');

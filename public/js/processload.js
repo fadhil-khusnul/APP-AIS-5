@@ -2066,66 +2066,7 @@ function delete_kontainer1(r) {
 
 }
 
-function delete_kontainerDB(r) {
 
-    var deleteid = r.value;
-
-    var swal = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-label-success btn-wide mx-1",
-            denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1",
-        },
-        buttonsStyling: false,
-    });
-
-    swal.fire({
-        title: "Apakah anda yakin Ingin Menghapus CONTAINER INI ?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    }).then((willCreate) => {
-        if (willCreate.isConfirmed) {
-
-            var old_slug = document.getElementById("old_slug").value;
-
-            var data = {
-                "_token": $('input[name=_token]').val(),
-                'id': deleteid,
-                'old_slug': old_slug,
-            };
-            $.ajax({
-                type: "DELETE",
-                url: "/container-delete/" + deleteid,
-                data: data,
-                // contentType: false,
-                // processData: false,
-                // dataType: "json",
-                success: function (response) {
-                    swal.fire({
-                        title: "Container BERHASIL DIHAPUS",
-                        icon: "success",
-                        timer: 9e3,
-                        showConfirmButton: false,
-                    });
-                    window.location.reload();
-                },
-            });
-        } else {
-            swal.fire({
-                title: "Container TIDAK DIHAPUS",
-                icon: "error",
-                timer: 10e3,
-                showConfirmButton: false,
-            });
-        }
-    });
-
-
-
-
-}
 
 function reindex_container() {
     const ids = document.querySelectorAll(

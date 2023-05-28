@@ -68,13 +68,17 @@ class ProcessLoadController extends Controller
      */
     public function create(Request $request)
     {
+        // dd($request->btn_detail);
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
 
-        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
+        $activity = Stripping::where('jenis_kegiatan', 'Stuffing')->get();
+
         $shipping_company = ShippingCompany::all();
+        $shipping_companys = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
         $pod = Pelabuhan::all();
+        $pelabuhans = Pelabuhan::all();
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
@@ -83,25 +87,59 @@ class ProcessLoadController extends Controller
         $sizes = Container::all();
         $types = TypeContainer::all();
         $seals = Seal::where('status', 'input')->orWhere('status', 'Container')->get();
+        $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
+
+        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', '!=', 'Batal-Muat')
+            ->where('status', '!=', 'Alih-Kapal')
+                ->orWhereNull('status');
+        })->get();
+
+
+
+        $container_batal = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', 'Batal-Muat')
+                ->orWhere('status', 'Biaya-Lainnya');
+        })->get();
+        $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->get();
+        // dd($containers);
+
+        $containers_alih = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', '!=', 'Batal-Muat')
+            ->where('status', '!=', 'Alih-Kapal')
+                ->whereNotNull('status');
+        })->get();
+
+
+        $alihs = AlihKapal::where('job_id', $id)->get();
+
         //
         return view('process.load.processload-create',[
             'title' => 'Buat Load-Process',
             'active' => 'Process',
             'activity' => $activity,
+            'alihs' => $alihs,
             'shippingcompany' => $shipping_company,
+            'shipping_companys' => $shipping_companys,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
+            'pelabuhans' => $pelabuhans,
             'pengirim' => $pengirim,
             'penerima' => $penerima,
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
             'seals' => $seals,
+            'sealscontainer' => $sealscontainer,
             'sizes' => $sizes,
             'types' => $types,
             'danas' => $danas,
+            'containers' => $containers,
+            'container_batal' => $container_batal,
+            'containers_alih' => $containers_alih,
+            'select_batal_edit' => $select_batal_edit,
             'planload' => OrderJobPlanload::find($id),
-            'containers' => ContainerPlanload::where('job_id', $id)->get(),
+            'biayas' => BiayaLainnya::where('job_id', $id)->get(),
         ]);
     }
 
@@ -109,7 +147,8 @@ class ProcessLoadController extends Controller
     {
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
 
-        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
+        $activity = Stripping::where('jenis_kegiatan', 'Stuffing')->get();
+
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
@@ -145,12 +184,442 @@ class ProcessLoadController extends Controller
         ]);
     }
 
+    public function input($id)
+    {
+
+        $container = ContainerPlanload::find($id);
+        $seal_containers = SealContainer::where("kontainer_id", $id)->get();
+
+        // dd($seal_containers);
+        return response()->json([
+            'result' => $container,
+            'seal_containers' => $seal_containers,
+        ]);
+    }
+    public function input_update(Request $request, $id)
+    {
+        // dd($request);
+
+
+        $container = ContainerPlanload::findOrFail($id);
+        $planload = OrderJobPlanload::findOrFail($request->job_id);
+
+
+        $status = "Process-Load";
+
+        $load = [
+            'status' => $status,
+        ];
+
+        $data = [
+            'size' => $request->size,
+            'type' => $request->type,
+            'nomor_kontainer' => $request->nomor_kontainer,
+            // 'seal' => $request->seal,
+            'cargo' => $request->cargo,
+            'date_activity' => $request->date_activity,
+            'lokasi_depo' => $request->lokasi,
+            'driver' => $request->driver,
+            'nomor_polisi' => $request->nomor_polisi,
+            'remark' => $request->remark,
+            'biaya_stuffing' =>$request->biaya_stuffing,
+            'biaya_trucking' =>$request->biaya_trucking,
+            'ongkos_supir' =>$request->ongkos_supir,
+            'biaya_thc' =>$request->biaya_thc,
+            'nomor_surat' => $request->no_surat,
+            'jenis_mobil' => $request->jenis_mobil,
+            'detail_barang' => $request->detail_barang,
+            'tahun' => (int)$request->tahun,
+            'dana' => $request->dana,
+            'status' => $status,
+
+            // 'slug' => $request->nomor_kontainer.'-'.$request->seal.'-'.time(),
+
+        ];
+
+
+        SealContainer::where('kontainer_id', $id)->delete();
+
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $seal = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id,
+                "seal_kontainer" => $request->seal[$i],
+            ];
+
+            SealContainer::create($seal);
+        }
+
+
+
+
+        $planload->update($load);
+        $container->update($data);
+
+        return response()->json(['success' => true]);
+    }
+    public function input_tambah(Request $request)
+    {
+        // dd($request);
+
+        $planload = OrderJobPlanload::findOrFail($request->job_id);
+
+        $status = [
+            "status" => "Process-Load",
+
+
+        ];
+
+        $planload->update($status);
+
+
+        $data = [
+            'job_id' => $request->job_id,
+            'size' => $request->size,
+            'type' => $request->type,
+            'nomor_kontainer' => $request->nomor_kontainer,
+            // 'seal' => $request->seal,
+            'cargo' => $request->cargo,
+            'date_activity' => $request->date_activity,
+            'lokasi_depo' => $request->lokasi,
+            'driver' => $request->driver,
+            'nomor_polisi' => $request->nomor_polisi,
+            'remark' => $request->remark,
+            'biaya_stuffing' =>$request->biaya_stuffing,
+            'biaya_trucking' =>$request->biaya_trucking,
+            'ongkos_supir' =>$request->ongkos_supir,
+            'biaya_thc' =>$request->biaya_thc,
+            'nomor_surat' => $request->no_surat,
+            'jenis_mobil' => $request->jenis_mobil,
+            'detail_barang' => $request->detail_barang,
+            'tahun' => (int)$request->tahun,
+            'dana' => $request->dana,
+            "status" => "Process-Load",
+            // 'slug' => $request->nomor_kontainer.'-'.$request->seal.'-'.time(),
+
+        ];
+        // dd($data);
+
+        $id = ContainerPlanload::create($data);
+
+        // dd($id->id);
+
+
+
+
+
+        // SealContainer::where('kontainer_id', $id)->delete();
+
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $seal = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id->id,
+                "seal_kontainer" => $request->seal[$i],
+            ];
+
+            SealContainer::create($seal);
+        }
+
+        return response()->json(['success' => true]);
+    }
+//BIAYA-LAINNYA
+    public function biayalain(Request $request)
+    {
+        // dd($request);
+
+        $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
+
+        $update_container = [
+            'status' => "Biaya-Lainnya",
+        ];
+
+        $container->update($update_container);
+
+
+        $data = [
+            'job_id' => $request->job_id,
+            'kontainer_id' => $request->kontainer_biaya,
+            'harga_biaya' => $request->harga_biaya,
+            'keterangan' => $request->keterangan,
+
+
+        ];
+
+        BiayaLainnya::create($data);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function biayalain_edit($id)
+    {
+
+        $biaya = BiayaLainnya::find($id);
+
+        return response()->json([
+            'result' => $biaya,
+        ]);
+    }
+
+    public function biayalain_update(Request $request, $id)
+    {
+        // dd($request);
+
+        $container_old = ContainerPlanload::findOrFail($request->old_id_container_biaya);
+
+        $update_container_old = [
+            'status' => "Process-Load",
+        ];
+
+        $container_old->update($update_container_old);
+
+
+        $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
+
+        $update_container = [
+            'status' => "Biaya-Lainnya",
+        ];
+
+        $container->update($update_container);
+
+
+
+        $biayas = BiayaLainnya::findOrFail($id);
+        $data = [
+            'job_id' => $request->job_id,
+            'kontainer_id' => $request->kontainer_biaya,
+            'harga_biaya' => $request->harga_biaya,
+            'keterangan' => $request->keterangan,
+
+
+        ];
+
+        $biayas->update($data);
+
+        return response()->json(['success' => true]);
+    }
+    public function destroy_biaya(Request $request)
+    {
+
+
+        $id_container = BiayaLainnya::where('id', $request->id)->value('kontainer_id');
+        $id_biaya = BiayaLainnya::find($request->id);
+        $container = ContainerPlanload::find($id_container);
+
+        $data = [
+            "status" => "Process-Load",
+        ];
+
+        $container->update($data);
+
+        $id_biaya->delete();
+
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+//BATAL-MUAT
+    public function batalmuat(Request $request)
+    {
+        // dd($request);
+
+        $id = $request->kontainer_batal;
+        // BiayaLainnya::where('kontainer_id', $id)->delete();
+
+        $container = ContainerPlanload::findOrFail($id);
+
+        $update_container = [
+            'status' => "Batal-Muat",
+            'harga_batal' => $request->harga_batal,
+            'keterangan_batal' => $request->keterangan_batal,
+        ];
+
+        $container->update($update_container);
+
+
+        return response()->json(['success' => true]);
+    }
+
+    public function batalmuat_edit($id)
+    {
+
+        $container = ContainerPlanload::find($id);
+
+        return response()->json([
+            'result' => $container,
+        ]);
+    }
+
+    public function batalmuat_update(Request $request, $id)
+    {
+        // dd($request);
+
+        $id = $request->kontainer_batal;
+        // BiayaLainnya::where('kontainer_id', $id)->delete();
+
+        $container = ContainerPlanload::findOrFail($id);
+
+        $update_container = [
+            'status' => "Batal-Muat",
+            'harga_batal' => $request->harga_batal,
+            'keterangan_batal' => $request->keterangan_batal,
+        ];
+
+        $container->update($update_container);
+
+
+        return response()->json(['success' => true]);
+    }
+    public function destroy_batal($id)
+    {
+        // dd($id);
+
+
+        $container = ContainerPlanload::find($id);
+
+        $data = [
+            "status" => "Process-Load",
+            "harga_batal" => null,
+            "keterangan_batal" => null,
+        ];
+
+        $container->update($data);
+
+
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+
+//ALIH-kapal
+    public function alihkapal(Request $request)
+    {
+        // dd($request);
+
+        $alihkapals = [
+            "job_id" => $request->job_id,
+            "kontainer_alih" => $request->kontainer_alih,
+            "pelayaran_alih" => $request->pelayaran_alih,
+            "pot_alih" => $request->pot_alih,
+            "pod_alih" => $request->pod_alih,
+            "vesseL_alih" => $request->vessel_alih,
+            "code_vesseL_alih" => $request->code_vesseL_alih,
+            "harga_alih_kapal" => $request->harga_alih_kapal,
+            "keterangan_alih_kapal" => $request->keterangan_alih_kapal,
+
+        ];
+
+        $id = AlihKapal::create($alihkapals);
+
+        $update = [
+            'harga_alih' => $id->id,
+            'status' => 'Alih-Kapal',
+
+        ];
+
+        $container = ContainerPlanload::find($request->kontainer_alih);
+
+        $container->update($update);
+        return response()->json(['success' => true]);
+    }
+
+    public function alihkapal_edit($id)
+    {
+
+        $alihkapal = AlihKapal::find($id);
+
+        return response()->json([
+            'result' => $alihkapal,
+        ]);
+    }
+
+    public function alihkapal_update(Request $request, $id)
+    {
+        // dd($id);
+
+        $alihs = AlihKapal::findOrFail($id);
+
+        $alihkapals = [
+            "job_id" => $request->job_id,
+            "kontainer_alih" => $request->kontainer_alih,
+            "pelayaran_alih" => $request->pelayaran_alih,
+            "pot_alih" => $request->pot_alih,
+            "pod_alih" => $request->pod_alih,
+            "vesseL_alih" => $request->vessel_alih,
+            "code_vesseL_alih" => $request->code_vesseL_alih,
+            "harga_alih_kapal" => $request->harga_alih_kapal,
+            "keterangan_alih_kapal" => $request->keterangan_alih_kapal,
+
+        ];
+
+
+        $alihs->update($alihkapals);
+
+
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy_alihkapal($id)
+    {
+        // dd($id);
+        AlihKapal::where('kontainer_alih', $id)->delete();
+
+
+        $container = ContainerPlanload::find($id);
+
+        $data = [
+            "status" => "Process-Load",
+            "harga_alih" => null,
+        ];
+
+        $container->update($data);
+
+
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+
+    public function plan_update(Request $request, $id)
+    {
+
+        $OrderJobPlanload = OrderJobPlanload::findOrFail($id);
+
+        $orderJob = [
+            'activity' => $request->activity,
+            'select_company' => $request->select_company,
+            'vessel' => $request->vessel,
+            'vessel_code' => $request->vessel_code,
+            'pol' => $request->pol,
+            'pot' => $request->pot,
+            'pod' => $request->pod,
+            'pengirim' => $request->pengirim,
+            'penerima' => $request->penerima,
+        ];
+
+        $OrderJobPlanload->update($orderJob);
+
+        return response()->json(['success' => true]);
+    }
+
+
+
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
 
+        dd($request);
 
         $ongkos_supir = [];
 
@@ -674,11 +1143,6 @@ class ProcessLoadController extends Controller
     public function destroy(Request $request)
     {
         // dd($id);
-        $plan_id = OrderJobPlanload::where('slug', $request->old_slug)->value('id');
-
-
-        $job_id =ContainerPlanload ::where('job_id', $plan_id)->get();
-
 
         $container = ContainerPlanload::find($request->id);
         $container->delete();
@@ -694,6 +1158,7 @@ class ProcessLoadController extends Controller
         ]);
 
     }
+
 
     public function getBiayaLain(Request $request)
     {

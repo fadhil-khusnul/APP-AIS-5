@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('biaya_lainnyas', function (Blueprint $table) {
-            $table->id();
-            $table->string('job_id');
-            $table->string('kontainer_id');
-            $table->double('harga_biaya');
-            $table->text('keterangan');
-            $table->timestamps();
+        Schema::table('container_planloads', function (Blueprint $table) {
+            //
+            $table->string('harga_alih')->nullable()->after('keterangan_batal');
+            $table->string('keterangan_alih')->nullable()->after('harga_alih');
         });
-
     }
 
     /**
@@ -27,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('biaya_lainnyas');
+        Schema::table('container_planloads', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -18,6 +18,8 @@ use App\Models\Container;
 use App\Models\Depo;
 use App\Models\Seal;
 use App\Models\BiayaLainnya;
+use App\Models\OngkoSupir;
+use App\Models\TypeContainer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AlihKapal;
@@ -76,6 +78,17 @@ class RealisasiLoadController extends Controller
         $kontainer = Container::all();
         $lokasis = Depo::all();
         $seals = Seal::all();
+        $sizes = Container::all();
+        $types = TypeContainer::all();
+        $danas = OngkoSupir::all();
+
+
+        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', '!=', 'Batal-Muat')
+            ->where('status', '!=', 'Alih-Kapal');
+        })->get();
+
+        // dd($containers);
         //
         return view('realisasi.load.realisasi-create',[
             'title' => 'Buat Load-Realisasi',
@@ -90,8 +103,12 @@ class RealisasiLoadController extends Controller
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
             'seals' => $seals,
+            'sizes' => $sizes,
+            'types' => $types,
+            'danas' => $danas,
+
             'planload' => OrderJobPlanload::find($id),
-            'containers' => ContainerPlanload::where('job_id', $id)->get(),
+            'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->get(),
             'batals' => BatalMuat::where('job_id', $id)->get(),

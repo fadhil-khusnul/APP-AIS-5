@@ -110,11 +110,37 @@ Route::post('/update-job-planload', [PlanLoadController::class, 'update']);
 Route::post('/getJenisKontainer', [PlanLoadController::class, 'getJenisKontainer']);
 Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeContainer']);
 
+
+//PROCES-LOAD
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
-Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
-Route::post('/save-job-processload', [ProcessLoadController::class, 'save']);
-Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
+Route::get('/detail-kontainer/{id}/input', [ProcessLoadController::class, 'input']);
+Route::put('/detail-kontainer-update/{id}', [ProcessLoadController::class, 'input_update']);
+Route::post('/detail-kontainer-tambah', [ProcessLoadController::class, 'input_tambah']);
+Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
+Route::post('/biayalain-kontainer', [ProcessLoadController::class, 'biayalain']);
+Route::delete('/biayalainnya-delete/{id}', [ProcessLoadController::class, 'destroy_biaya']);
+Route::get('/biayalainnya-edit/{id}', [ProcessLoadController::class, 'biayalain_edit']);
+Route::put('/biayalainnya-update/{id}', [ProcessLoadController::class, 'biayalain_update']);
+
+//BATAL-MUAT
+Route::post('/batalmuat-kontainer', [ProcessLoadController::class, 'batalmuat']);
+Route::get('/batalmuat-edit/{id}', [ProcessLoadController::class, 'batalmuat_edit']);
+Route::put('/batalmuat-update/{id}', [ProcessLoadController::class, 'batalmuat_update']);
+Route::delete('/batalmuat-delete/{id}', [ProcessLoadController::class, 'destroy_batal']);
+
+//ALIH-KAPL
+Route::post('/alihkapal-kontainer', [ProcessLoadController::class, 'alihkapal']);
+Route::get('/alihkapal-edit/{id}', [ProcessLoadController::class, 'alihkapal_edit']);
+Route::put('/alihkapal-update/{id}', [ProcessLoadController::class, 'alihkapal_update']);
+Route::delete('/alihkapal-delete/{id}', [ProcessLoadController::class, 'destroy_alihkapal']);
+
+Route::put('/plan-kapal-detail-update/{id}', [ProcessLoadController::class, 'plan_update']);
+
+
+// Route::post('/create-job-processload', [ProcessLoadController::class, 'store']);
+// Route::post('/save-job-processload', [ProcessLoadController::class, 'save']);
+// Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
 
 Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
@@ -123,7 +149,7 @@ Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProces
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
 Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);
-Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
+
 
 Route::get('/realisasi-load', [RealisasiLoadController::class, 'index']);
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);

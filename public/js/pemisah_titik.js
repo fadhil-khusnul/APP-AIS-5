@@ -80,3 +80,25 @@ function numbersonly(ini, e) {
         return false;
     }
 }
+function numbersonly1(e) {
+    setTimeout(() => {
+      let parts = $(this).val().split(".");
+      let v = parts[0].replace(/\D/g, ""),
+        dec = parts[1]
+      let calc_num = Number((dec !== undefined ? v + "." + dec : v));
+      // use this for numeric calculations
+      // console.log('number for calculations: ', calc_num);
+      let n = new Intl.NumberFormat('id-ID').format(v);
+      n = dec !== undefined ? n + "." + dec : n;
+      $(this).val(n);
+    })
+}
+
+function setFormat(id) {
+
+    if (document.getElementById(id).value != "") {
+      document.getElementById(id).value = parseFloat(document.getElementById(id).value.replace(/\./g, ""))
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+  }

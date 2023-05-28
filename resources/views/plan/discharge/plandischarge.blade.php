@@ -57,11 +57,12 @@
                             <td>{{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
                             </td>
 
-                            <td>
-                                {{$plandischarge->vessel}}
-                            </td>
+
                             <td>
                                 {{$plandischarge->nomor_do}}
+                            </td>
+                            <td>
+                                {{$plandischarge->vessel}}
                             </td>
                             <td>
                                 {{$plandischarge->vessel_code}}

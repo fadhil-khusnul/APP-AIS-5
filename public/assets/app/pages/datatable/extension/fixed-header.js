@@ -200,6 +200,17 @@ $("#realisasi-create").DataTable({
         offset
     }
 });
+// $("#table_alih_kapal").DataTable({
+//     responsive:true,
+//     search:false,
+//     paging:false,
+//     fixedHeader:
+//     {
+//         header:true,
+//         headerOffset:
+//         offset
+//     }
+// });
 
 
 $("#trucking").DataTable({
