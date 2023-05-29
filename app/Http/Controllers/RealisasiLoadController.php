@@ -24,6 +24,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\AlihKapal;
 use App\Models\BatalMuat;
+use App\Models\SealContainer;
 
 class RealisasiLoadController extends Controller
 {
@@ -88,6 +89,8 @@ class RealisasiLoadController extends Controller
             ->where('status', '!=', 'Alih-Kapal');
         })->get();
 
+        $sealsc = SealContainer::where('job_id', $id)->get();
+
         // dd($containers);
         //
         return view('realisasi.load.realisasi-create',[
@@ -106,6 +109,7 @@ class RealisasiLoadController extends Controller
             'sizes' => $sizes,
             'types' => $types,
             'danas' => $danas,
+            'sealsc' => $sealsc,
 
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seal;
+use App\Models\SealContainer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreSealRequest;
@@ -100,6 +101,7 @@ class SealController extends Controller
         $rusak = Seal::where('status', 'damage')->orderBy('id', 'DESC')->get();
         $container = Seal::where('status', 'Container')->orderBy('id', 'DESC')->get();
         $seals = Seal::all();
+        $sealsc = SealContainer::all();
         return view('seal.report-seal',[
             'title' => 'Report Seal',
             'active' => 'Seal',
@@ -107,6 +109,7 @@ class SealController extends Controller
             'rusak' => $rusak,
             'container' => $container,
             'seals' => $seals,
+            'sealsc' => $sealsc,
 
         ]);
     }
@@ -124,7 +127,7 @@ class SealController extends Controller
      */
     public function store(Request $request)
     {
-       
+
         $seals = [];
 
         for ($i=0; $i <count($request->touch_seal) ; $i++) {

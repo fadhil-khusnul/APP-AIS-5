@@ -10,4 +10,10 @@ class SealContainer extends Model
     use HasFactory;
     protected $guarded = [''];
 
+    public function container_planloads(){
+        return $this->belongsTo(ContainerPlanload::class, 'kontainer_id', 'id');
+    }
+
+
+
 }

@@ -185,8 +185,21 @@
                                             </td>
 
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="seal[{{ $container->id }}]">{{ old('seal', $container->seal) }}</label>
+                                                <ol type="1.">
+
+                                                @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id == $container->id)
+                                                        <li>
+                                                            {{$seal->seal_kontainer}}
+
+                                                        </li>
+
+                                                    @endif
+
+                                                @endforeach
+                                                </ol>
+
+
                                                 {{-- <div class="validation-container">
                                                     <select data-bs-toggle="tooltip" id="seal[{{ $container->id }}]"
                                                         name="seal[{{ $container->id }}]" class="form-select seals"
@@ -201,7 +214,7 @@
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
-                                                    id="date_activity[{{ $container->id }}]">{{ old('date_activity', $container->date_activity) }}</label>
+                                                    id="date_activity[{{ $container->id }}]">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</label>
                                                 {{-- <div class="validation-container">
                                                     <input data-bs-toggle="tooltip" type="text"
                                                         class="form-control date_activity"

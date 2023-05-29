@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Spk;
+use App\Models\SpkContainer;
 use App\Models\ShippingCompany;
 
 
@@ -29,12 +30,14 @@ class SpkController extends Controller
         $tersedia = Spk::where('status', 'input')->orderBy('id', 'DESC')->get();
         $container = Spk::where('status', 'Container')->orderBy('id', 'DESC')->get();
         $spks = Spk::all();
+        $spksc = SpkContainer::all();
         return view('spk.report-spk',[
             'title' => 'Report SPK',
             'active' => 'SPK',
             'tersedia' => $tersedia,
             'container' => $container,
             'spks' => $spks,
+            'spksc' => $spksc,
 
         ]);
     }

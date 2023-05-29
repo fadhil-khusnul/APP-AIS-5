@@ -831,6 +831,8 @@ function detail_update(e) {
                             cargo: $("#cargo_update").val(),
                             detail_barang: $("#detail_barang_update").val(),
                             seal: $("#seal_update").val(),
+                            seal_old: seals,
+                            spk_old: spk,
                             date_activity: formattedDate,
                             lokasi: $("#lokasi_update").val(),
                             driver: $("#driver_update").val(),

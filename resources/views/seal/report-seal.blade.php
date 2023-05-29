@@ -116,12 +116,19 @@
                                     <td>
                                         {{ $seal->kode_seal }}
                                     </td>
-                                    @if ($seal->status === "Container")
-                                    <td> {{$seal->container_planloads->nomor_kontainer}}
+                                    <td> @if ($seal->status == "Container")
+                                            @foreach ($sealsc as $c)
+                                                @if ($c->seal_kontainer === $seal->kode_seal)
+                                                {{$c->container_planloads->nomor_kontainer}}
+                                                @endif
+                                            @endforeach
+                                        @else
+                                        -
+                                        @endif
+
                                     </td>
-                                    @else
-                                    <td>-</td>
-                                    @endif
+
+
 
 
 

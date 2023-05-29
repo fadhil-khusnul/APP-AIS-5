@@ -244,8 +244,10 @@ class ProcessLoadController extends Controller
             // 'slug' => $request->nomor_kontainer.'-'.$request->seal.'-'.time(),
 
         ];
+        $planload->update($load);
+        $container->update($data);
 
-
+        SealContainer::where('kontainer_id', $id)->delete();
 
         for ($i=0; $i <count($request->seal) ; $i++) {
 
@@ -257,11 +259,19 @@ class ProcessLoadController extends Controller
 
             SealContainer::create($seal);
         }
+        for ($i=0; $i <count($request->seal) ; $i++) {
 
-        // SpkContainer::where('kontainer_id', $id)->delete();
+            $data = [
+                "status" => "Container",
+
+            ];
+
+            Seal::where("kode_seal", $request->seal[$i])->update($data);
+        }
+
 
         if ($request->spk != null){
-
+            SpkContainer::where('kontainer_id', $id)->delete();
             for ($i=0; $i <count($request->spk) ; $i++) {
 
                 $spk = [
@@ -272,13 +282,17 @@ class ProcessLoadController extends Controller
 
                 SpkContainer::create($spk);
             }
+
+            for ($i=0; $i <count($request->spk) ; $i++) {
+
+                $data = [
+                    "status" => "Container",
+
+                ];
+
+                Spk::where("kode_spk", $request->spk[$i])->update($data);
+            }
         }
-
-
-
-
-        $planload->update($load);
-        $container->update($data);
 
         return response()->json(['success' => true]);
     }
@@ -336,6 +350,24 @@ class ProcessLoadController extends Controller
 
             SealContainer::create($seal);
         }
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $data = [
+                "status" => "Container",
+
+            ];
+
+            Seal::where("kode_seal", $request->seal[$i])->update($data);
+        }
+        for ($i=0; $i <count($request->seal_old) ; $i++) {
+
+            $data = [
+                "status" => "input",
+
+            ];
+
+            Seal::where("kode_seal", $request->seal_old[$i])->update($data);
+        }
 
         if ($request->spk != null) {
             # code...
@@ -351,6 +383,25 @@ class ProcessLoadController extends Controller
                 ];
 
                 SpkContainer::create($spk);
+            }
+
+            for ($i=0; $i <count($request->spk) ; $i++) {
+
+                $data = [
+                    "status" => "Container",
+
+                ];
+
+                Spk::where("kode_spk", $request->spk[$i])->update($data);
+            }
+
+            for ($i=0; $i <count($request->spk_old) ; $i++) {
+
+                $data = [
+                    "status" => "input",
+
+                ];
+                Spk::where("kode_spk", $request->spk_old[$i])->update($data);
             }
     }
 
@@ -424,18 +475,40 @@ class ProcessLoadController extends Controller
 
             SealContainer::create($seal);
         }
+        for ($i=0; $i <count($request->seal) ; $i++) {
 
+            $data = [
+                "status" => "Container",
 
-        for ($i=0; $i <count($request->spk) ; $i++) {
-
-            $spk = [
-                "job_id" => $request->job_id,
-                "kontainer_id" => $id,
-                "spk_kontainer" => $request->spk[$i],
             ];
 
-            SpkContainer::create($spk);
+            Seal::where("kode_seal", $request->seal[$i])->update($data);
         }
+        if($request->spk != null){
+
+            for ($i=0; $i <count($request->spk) ; $i++) {
+
+                $spk = [
+                    "job_id" => $request->job_id,
+                    "kontainer_id" => $id,
+                    "spk_kontainer" => $request->spk[$i],
+                ];
+
+                SpkContainer::create($spk);
+            }
+
+            for ($i=0; $i <count($request->spk) ; $i++) {
+
+                $data = [
+                    "status" => "Container",
+
+                ];
+
+                Spk::where("kode_spk", $request->spk[$i])->update($data);
+            }
+
+        }
+
 
 
         return response()->json(['success' => true]);

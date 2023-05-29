@@ -14,7 +14,7 @@ class Seal extends Model
     public function container_planloads(){
         return $this->belongsTo(ContainerPlanload::class, 'kode_seal', 'seal');
     }
-    public function spk_containers(){
+    public function seal_containers(){
         return $this->belongsTo(SealContainer::class, 'kode_seal', 'seal_kontainer');
     }
 

@@ -64,6 +64,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Status SPK</th>
+                                <th>Nama Shipping Company (Pelayaran)</th>
                                 <th>Kode SPK</th>
                                 <th>Nomor Kontainer</th>
 
@@ -81,22 +82,28 @@
                                             Available
                                         @endif
 
-
-
                                         @if ($spk->status == 'Container')
                                         <i class="marker marker-dot text-info"></i>
                                            Used
                                         @endif
                                     </td>
                                     <td>
+                                        {{ $spk->pelabuhans->nama_company }}
+                                    </td>
+                                    <td>
                                         {{ $spk->kode_spk }}
                                     </td>
-                                    @if ($spk->status === "Container")
-                                    <td> {{$spk->container_planloads->nomor_kontainer}}
-                                    </td>
+                                    <td> @if ($spk->status == "Container")
+                                        @foreach ($spksc as $c)
+                                            @if ($c->spk_kontainer === $spk->kode_spk)
+                                            {{$c->container_planloads->nomor_kontainer}}
+                                            @endif
+                                        @endforeach
                                     @else
-                                    <td>-</td>
+                                    -
                                     @endif
+
+                                </td>
 
 
 
