@@ -147,6 +147,7 @@ Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
+Route::post('/getSpkProcessLoad', [ProcessLoadController::class, 'getSpkProcessLoad']);
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
 Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);

@@ -69,8 +69,7 @@ function detail(e) {
 
                             if (seal_already.includes(last_seal)) {
                                 swal.fire({
-                                    title: "Seal Kontainer Sudah Ada",
-                                    text: "Silakan Masukkan Seal yang Lain",
+                                    title: "Seal Kontainer Sudah Dipakai",
                                     icon: "error",
                                     timer: 10e3,
                                     showConfirmButton: false,
@@ -101,6 +100,53 @@ function detail(e) {
                 .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    let token = $("#csrf").val();
+
+                    $.ajax({
+                        url: "/getSpkProcessLoad",
+                        type: "post",
+                        async :false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (response) {
+                            var seal = $("#spk").val();
+                            var last_seal = seal[seal.length - 1];
+                            console.log(seal, last_seal);
+                            var count_seal = response.length;
+                            var seal_already = [];
+                            for (var i = 0; i < count_seal; i++) {
+                                seal_already[i] = response[i].spk_kontainer;
+                            }
+
+                            if (seal_already.includes(last_seal)) {
+                                swal.fire({
+                                    title: "SPK Kontainer Sudah Dipakai",
+                                    icon: "error",
+                                    timer: 10e3,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    var wanted_option = $(
+                                        '#spk option[value="' +
+                                            last_seal +
+                                            '"]'
+                                    );
+                                    console.log(wanted_option);
+
+                                    wanted_option.prop("selected", false);
+                                    $("#spk").trigger("change.select2");
+                                });
+                            }
+                        },
+                    });
                 });
             $("#date_activity").val(response.result.date_activity);
             $("#lokasi")
@@ -303,6 +349,53 @@ function detail_tambah() {
                 .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    let token = $("#csrf").val();
+
+                    $.ajax({
+                        url: "/getSpkProcessLoad",
+                        type: "post",
+                        async :false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (response) {
+                            var seal = $("#spk_tambah").val();
+                            var last_seal = seal[seal.length - 1];
+                            console.log(seal, last_seal);
+                            var count_seal = response.length;
+                            var seal_already = [];
+                            for (var i = 0; i < count_seal; i++) {
+                                seal_already[i] = response[i].spk_kontainer;
+                            }
+
+                            if (seal_already.includes(last_seal)) {
+                                swal.fire({
+                                    title: "SPK Kontainer Sudah Dipakai",
+                                    icon: "error",
+                                    timer: 10e3,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    var wanted_option = $(
+                                        '#spk_tambah option[value="' +
+                                            last_seal +
+                                            '"]'
+                                    );
+                                    console.log(wanted_option);
+
+                                    wanted_option.prop("selected", false);
+                                    $("#spk_tambah").trigger("change.select2");
+                                });
+                            }
+                        },
+                    });
                 });
 
 
@@ -558,7 +651,6 @@ function detail_update(e) {
                                 if (seal_already.includes(last_seal)) {
                                     swal.fire({
                                         title: "Seal Kontainer Sudah Dipakai",
-                                        text: "Silakan Masukkan Seal yang Lain",
                                         icon: "error",
                                         timer: 10e3,
                                         async:false,
@@ -592,6 +684,61 @@ function detail_update(e) {
                 .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
+                    // console.log(select_val);
+
+                    // console.log(seals);
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    let token = $("#csrf").val();
+
+                    $.ajax({
+                        url: "/getSpkProcessLoad",
+                        type: "post",
+                        async: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (response) {
+                            // console.log(seals);
+                            var seal = $("#spk_update").val();
+                            var last_seal = seal[seal.length - 1];
+                            console.log(seal, last_seal);
+                            var count_seal = response.length;
+                            var seal_already = [];
+                            for (var i = 0; i < count_seal; i++) {
+                                seal_already[i] = response[i].spk_kontainer;
+                            }
+
+                            if (spk.includes(last_seal) == false) {
+                                if (seal_already.includes(last_seal)) {
+                                    swal.fire({
+                                        title: "SPK Kontainer Sudah Dipakai",
+                                        icon: "error",
+                                        timer: 10e3,
+                                        async:false,
+                                        showConfirmButton: false,
+                                    }).then(() => {
+                                        var wanted_option = $(
+                                            '#spk_update option[value="' +
+                                                last_seal +
+                                                '"]'
+                                        );
+                                        console.log(wanted_option);
+
+                                        wanted_option.prop("selected", false);
+                                        // $(this).trigger("change.select2");
+                                        $("#spk_update").trigger("change.select2");
+                                    });
+                                }
+                            }
+                        },
+                    });
                 });
             $("#date_activity_update").val(response.result.date_activity);
             $("#lokasi_update")
