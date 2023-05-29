@@ -259,17 +259,20 @@ class ProcessLoadController extends Controller
             SealContainer::create($seal);
         }
 
-        SpkContainer::where('kontainer_id', $id)->delete();
+        // SpkContainer::where('kontainer_id', $id)->delete();
 
-        for ($i=0; $i <count($request->spk) ; $i++) {
+        if ($request->spk != null){
 
-            $spk = [
-                "job_id" => $request->job_id,
-                "kontainer_id" => $id,
-                "spk_kontainer" => $request->spk[$i],
-            ];
+            for ($i=0; $i <count($request->spk) ; $i++) {
 
-            SpkContainer::create($spk);
+                $spk = [
+                    "job_id" => $request->job_id,
+                    "kontainer_id" => $id,
+                    "spk_kontainer" => $request->spk[$i],
+                ];
+
+                SpkContainer::create($spk);
+            }
         }
 
 

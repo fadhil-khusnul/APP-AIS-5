@@ -192,6 +192,7 @@ function editspk(e) {
             $('#modal-spk-edit').modal('show');
 
             $('#kode_spk_edit').val(response.result.kode_spk);
+            $('#select_company_edit').val(response.result.pelayaran_id);
 
             $('#valid_spk_edit').validate({
                 rules: {
@@ -231,6 +232,7 @@ function editspk(e) {
                         data: {
                             "_token": token,
                             kode_spk: $('#kode_spk_edit').val(),
+                            select_company: $('#select_company_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({

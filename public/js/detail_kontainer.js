@@ -209,6 +209,7 @@ function detail(e) {
                             biaya_thc: $("#biaya_thc").val().replace(/\./g, ""),
                             jenis_mobil: $("#jenis_mobil").val(),
                             dana: $("#dana").val(),
+                            spk: $("#spk").val(),
                         },
                         success: function (response) {
                             swal.fire({

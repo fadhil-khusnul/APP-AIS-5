@@ -21,6 +21,16 @@ $("#penerima_1").select2
 
 
 });
+$("#filter_pelayaran").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih Pelayaran",
+    allowClear:true
+
+
+
+});
 
 
 $("#select2-1, #penerima, #pengirim, .danas, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2

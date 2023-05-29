@@ -381,7 +381,7 @@ $("#table_alih_kapal_realisasi").DataTable({
 //     }}
 // });
 
-$("#input-seal").DataTable({
+var spk = $("#input-seal").DataTable({
     responsive:true,
     fixedHeader:
     {
@@ -389,6 +389,20 @@ $("#input-seal").DataTable({
         headerOffset:
         offset
     }
+});
+
+$('#filter_pelayaran').on("change", function(event) {
+    var pelayaran = $('#filter_pelayaran').val();
+    console.log(pelayaran);
+    if (pelayaran == null) {
+
+        spk.columns(1).search('').draw();
+    }
+    else{
+
+        spk.columns(1).search(pelayaran).draw();
+    }
+
 });
 
 $("#datatable-2").DataTable({

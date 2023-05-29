@@ -50,6 +50,7 @@ class SpkController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request);
         $request->validate([
 
             'kode_spk' => 'required',
@@ -60,6 +61,7 @@ class SpkController extends Controller
 
         $data = [
             "kode_spk" =>$request->kode_spk,
+            "pelayaran_id" =>$request->select_company,
         ];
         $Spk->update($data);
         return response()->json(['success' => true]);

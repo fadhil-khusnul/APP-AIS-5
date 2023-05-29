@@ -72,6 +72,15 @@
                     <h3 class="portlet-title">{{ $title }}</h3>
                 </div>
                 <div class="portlet-body">
+                    <div class="col-6">
+                            <label for="company" class="form-label filter">Shipping Company (Pelayaran)</label>
+                            <select id="filter_pelayaran" name="filter_pelayaran" class="form-select">
+                                <option selected disabled>Pilih Shipping Company (Pelayaran)</option>
+                                @foreach ($pelayarans as $shippingcompany)
+                                    <option value="{{ $shippingcompany->nama_company }}">{{ $shippingcompany->nama_company }}</option>
+                                @endforeach
+                            </select>
+                    </div>
                     {{-- <div class="text-end">
 
                     <a href="planload/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Job (Load)</a>
@@ -84,8 +93,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Nama Shipping Company (Pelayaran)</th>
                                 <th>Kode SPK</th>
-                                {{-- <th>Tahun</th> --}}
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -94,6 +103,9 @@
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
+                                    </td>
+                                    <td>
+                                        {{ $spk->pelabuhans->nama_company }}
                                     </td>
                                     <td>
                                         {{ $spk->kode_spk }}
@@ -142,6 +154,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <div class="validation-container">
+                        <label for="company" class="form-label">Pilih Shipping Company (Pelayaran)</label>
+                        <select id="select_company_edit" name="select_company_edit" class="form-select">
+                            <option selected disabled>Pilih Pelayaran</option>
+                            @foreach ($pelayarans as $shippingcompany)
+                                <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="validation-container">
                         <label class="form-label" for="area_code">KODE SPK :</label>
                         <input class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
@@ -164,4 +187,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/spk.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
+
+
 @endsection
