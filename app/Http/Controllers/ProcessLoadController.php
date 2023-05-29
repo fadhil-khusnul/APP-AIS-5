@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProcessLoad;
+use App\Models\SpkContainer;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Requests\StoreProcessLoadRequest;
@@ -21,6 +22,7 @@ use App\Models\Container;
 use App\Models\TypeContainer;
 use App\Models\Depo;
 use App\Models\Seal;
+use App\Models\Spk;
 use App\Models\SealContainer;
 use App\Models\BiayaLainnya;
 use App\Models\OngkoSupir;
@@ -70,6 +72,8 @@ class ProcessLoadController extends Controller
     {
         // dd($request->btn_detail);
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
+        $select_company = OrderJobPlanload::where('slug', $request->slug)->value('select_company');
+        $pelayaran_id = ShippingCompany::where('nama_company', $select_company)->value('id');
 
         $activity = Stripping::where('jenis_kegiatan', 'Stuffing')->get();
 
@@ -87,6 +91,7 @@ class ProcessLoadController extends Controller
         $sizes = Container::all();
         $types = TypeContainer::all();
         $seals = Seal::where('status', 'input')->orWhere('status', 'Container')->get();
+        $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
         $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
 
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
@@ -119,6 +124,7 @@ class ProcessLoadController extends Controller
             'active' => 'Process',
             'activity' => $activity,
             'alihs' => $alihs,
+            'spks' => $spks,
             'shippingcompany' => $shipping_company,
             'shipping_companys' => $shipping_companys,
             'pol' => $pol,
@@ -189,11 +195,13 @@ class ProcessLoadController extends Controller
 
         $container = ContainerPlanload::find($id);
         $seal_containers = SealContainer::where("kontainer_id", $id)->get();
+        $spks = SpkContainer::where("kontainer_id", $id)->get();
 
         // dd($seal_containers);
         return response()->json([
             'result' => $container,
             'seal_containers' => $seal_containers,
+            'spks' => $spks,
         ]);
     }
     public function input_update(Request $request, $id)
@@ -249,6 +257,95 @@ class ProcessLoadController extends Controller
             ];
 
             SealContainer::create($seal);
+        }
+
+        SpkContainer::where('kontainer_id', $id)->delete();
+
+        for ($i=0; $i <count($request->spk) ; $i++) {
+
+            $spk = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id,
+                "spk_kontainer" => $request->spk[$i],
+            ];
+
+            SpkContainer::create($spk);
+        }
+
+
+
+
+        $planload->update($load);
+        $container->update($data);
+
+        return response()->json(['success' => true]);
+    }
+    public function input_edit(Request $request, $id)
+    {
+        // dd($request);
+
+
+        $container = ContainerPlanload::findOrFail($id);
+        $planload = OrderJobPlanload::findOrFail($request->job_id);
+
+
+        $status = "Process-Load";
+
+        $load = [
+            'status' => $status,
+        ];
+
+        $data = [
+            'size' => $request->size,
+            'type' => $request->type,
+            'nomor_kontainer' => $request->nomor_kontainer,
+            // 'seal' => $request->seal,
+            'cargo' => $request->cargo,
+            'date_activity' => $request->date_activity,
+            'lokasi_depo' => $request->lokasi,
+            'driver' => $request->driver,
+            'nomor_polisi' => $request->nomor_polisi,
+            'remark' => $request->remark,
+            'biaya_stuffing' =>$request->biaya_stuffing,
+            'biaya_trucking' =>$request->biaya_trucking,
+            'ongkos_supir' =>$request->ongkos_supir,
+            'biaya_thc' =>$request->biaya_thc,
+            'nomor_surat' => $request->no_surat,
+            'jenis_mobil' => $request->jenis_mobil,
+            'detail_barang' => $request->detail_barang,
+            'tahun' => (int)$request->tahun,
+            'dana' => $request->dana,
+            'status' => $status,
+
+            // 'slug' => $request->nomor_kontainer.'-'.$request->seal.'-'.time(),
+
+        ];
+
+
+        SealContainer::where('kontainer_id', $id)->delete();
+
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $seal = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id,
+                "seal_kontainer" => $request->seal[$i],
+            ];
+
+            SealContainer::create($seal);
+        }
+
+        SpkContainer::where('kontainer_id', $id)->delete();
+
+        for ($i=0; $i <count($request->spk) ; $i++) {
+
+            $spk = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id,
+                "spk_kontainer" => $request->spk[$i],
+            ];
+
+            SpkContainer::create($spk);
         }
 
 
@@ -321,6 +418,19 @@ class ProcessLoadController extends Controller
 
             SealContainer::create($seal);
         }
+
+
+        for ($i=0; $i <count($request->spk) ; $i++) {
+
+            $spk = [
+                "job_id" => $request->job_id,
+                "kontainer_id" => $id,
+                "spk_kontainer" => $request->spk[$i],
+            ];
+
+            SpkContainer::create($spk);
+        }
+
 
         return response()->json(['success' => true]);
     }
@@ -1189,23 +1299,30 @@ class ProcessLoadController extends Controller
 
 
     public function getSealProcessLoad(Request $request) {
-        $seal = ContainerPlanload::all();
-        $seal_process_load = [];
-        for($i = 0; $i < count($seal); $i++) {
-            $seal_process_load[$i] = $seal[$i]->seal;
-        }
-        $seal_process_load_without_null = array_merge(array_diff($seal_process_load, array(null)));
-        return response()->json($seal_process_load_without_null);
+
+
+
+        $seal = SealContainer::all();
+
+        return response()->json($seal);
     }
 
-    public function getNoContainer() {
-        $no_container = ContainerPlanload::all();
-        $no_container_process_load = [];
-        for($i = 0; $i < count($no_container); $i++) {
-            $no_container_process_load[$i] = $no_container[$i]->nomor_kontainer;
+    public function getNoContainer(Request $request) {
+        // dd($request);
+        $check_no_kontainer = ContainerPlanLoad::where('job_id', $request->job_id)->get();
+        $no_kontainer_already = [];
+        for($i = 0; $i < count($check_no_kontainer); $i++){
+            $no_kontainer_already[$i] = $check_no_kontainer[$i]->nomor_kontainer;
         }
-        $no_container_process_load_without_null = array_merge(array_diff($no_container_process_load, array(null)));
-        return response()->json($no_container_process_load_without_null);
+        return response()->json($no_kontainer_already);
+        // dd($no_kontainer_already);
+        // $no_container = ContainerPlanload::all();
+        // $no_container_process_load = [];
+        // for($i = 0; $i < count($no_container); $i++) {
+        //     $no_container_process_load[$i] = $no_container[$i]->nomor_kontainer;
+        // }
+        // $no_container_process_load_without_null = array_merge(array_diff($no_container_process_load, array(null)));
+        // return response()->json($no_container_process_load_without_null);
     }
 
     public function getpelayaran()

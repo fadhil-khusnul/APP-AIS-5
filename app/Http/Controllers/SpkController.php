@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Spk;
+use App\Models\ShippingCompany;
 
 
 class SpkController extends Controller
@@ -12,11 +13,13 @@ class SpkController extends Controller
 
     public function index()
     {
+        $pelayarans = ShippingCompany::all();
         $spks = Spk::where('status', 'input')->orderBy('id', 'DESC')->get();
         return view('spk.spk',[
             'title' => 'Data SPK',
             'active' => 'SPK',
             'spks' => $spks,
+            'pelayarans' => $pelayarans,
 
         ]);
     }
@@ -87,6 +90,7 @@ class SpkController extends Controller
                 'start_spk' => $request->start_spk[$i],
                 'touch_spk' => $request->touch_spk[$i],
                 'kode_spk' => $request->kode_spk[$i],
+                'pelayaran_id' => $request->select_company[$i],
                 'status' => 'input',
             ];
 

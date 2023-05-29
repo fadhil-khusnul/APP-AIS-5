@@ -14,6 +14,17 @@
                     <form class="row g-3" id="valid_seal" name="valid_seal">
                         <div class="col-md-12">
                             <div class="validation-container">
+                                <label for="company" class="form-label">Pilih Shipping Company (Pelayaran)</label>
+                                <select id="select_company" name="select_company" class="form-select">
+                                    <option selected disabled>Pilih Pelayaran</option>
+                                    @foreach ($pelayarans as $shippingcompany)
+                                        <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="validation-container">
                                 <label for="" class="form-label">Kode</label>
                                 <input type="text" class="form-control" id="kode_spk" name="kode_spk" required>
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">

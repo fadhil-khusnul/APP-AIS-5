@@ -116,6 +116,7 @@ Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create'
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::get('/detail-kontainer/{id}/input', [ProcessLoadController::class, 'input']);
 Route::put('/detail-kontainer-update/{id}', [ProcessLoadController::class, 'input_update']);
+Route::put('/detail-kontainer-edit/{id}', [ProcessLoadController::class, 'input_edit']);
 Route::post('/detail-kontainer-tambah', [ProcessLoadController::class, 'input_tambah']);
 Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
 Route::post('/biayalain-kontainer', [ProcessLoadController::class, 'biayalain']);

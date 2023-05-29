@@ -28,6 +28,7 @@ function Tambah_SPK() {
     );
 
     $("#valid_seal").validate({
+        ignore: "select[type=hidden]",
         rules: {
             start_spk: {
                 required: true,
@@ -73,6 +74,7 @@ function Tambah_SPK() {
             var start_spk = document.getElementById("start_spk").value;
             start_spk = parseInt(start_spk);
             var touch_spk = document.getElementById("touch_spk").value;
+            var select_company = document.getElementById("select_company").value;
             touch_spk = parseInt(touch_spk);
             var token = $("#csrf").val();
 
@@ -80,6 +82,7 @@ function Tambah_SPK() {
             var data_code = [];
             var data_start_spk = [];
             var data_touch_spk = [];
+            var data_select = [];
             let fd = new FormData();
             var result;
 
@@ -105,6 +108,8 @@ function Tambah_SPK() {
                         fd.append("start_spk[]", data_start_spk[i]);
                         data_touch_spk[i] = touch_spk;
                         fd.append("touch_spk[]", data_touch_spk[i]);
+                        data_select[i] = select_company;
+                        fd.append("select_company[]", data_select[i]);
                     }
                 },
             });
