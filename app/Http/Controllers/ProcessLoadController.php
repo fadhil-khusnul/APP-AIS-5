@@ -261,12 +261,12 @@ class ProcessLoadController extends Controller
         }
         for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $data = [
+            $data1 = [
                 "status" => "Container",
 
             ];
 
-            Seal::where("kode_seal", $request->seal[$i])->update($data);
+            Seal::where("kode_seal", $request->seal[$i])->update($data1);
         }
 
 
@@ -285,12 +285,12 @@ class ProcessLoadController extends Controller
 
             for ($i=0; $i <count($request->spk) ; $i++) {
 
-                $data = [
+                $data2 = [
                     "status" => "Container",
 
                 ];
 
-                Spk::where("kode_spk", $request->spk[$i])->update($data);
+                Spk::where("kode_spk", $request->spk[$i])->update($data2);
             }
         }
 
@@ -298,7 +298,7 @@ class ProcessLoadController extends Controller
     }
     public function input_edit(Request $request, $id)
     {
-        // dd($request);
+        dd($request);
 
 
         $container = ContainerPlanload::findOrFail($id);
@@ -350,24 +350,25 @@ class ProcessLoadController extends Controller
 
             SealContainer::create($seal);
         }
-        for ($i=0; $i <count($request->seal) ; $i++) {
-
-            $data = [
-                "status" => "Container",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal[$i])->update($data);
-        }
         for ($i=0; $i <count($request->seal_old) ; $i++) {
 
-            $data = [
+            $data2 = [
                 "status" => "input",
 
             ];
 
-            Seal::where("kode_seal", $request->seal_old[$i])->update($data);
+            Seal::where("kode_seal", $request->seal_old[$i])->update($data2);
         }
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $data1 = [
+                "status" => "Container",
+
+            ];
+
+            Seal::where("kode_seal", $request->seal[$i])->update($data1);
+        }
+
 
         if ($request->spk != null) {
             # code...
@@ -387,21 +388,21 @@ class ProcessLoadController extends Controller
 
             for ($i=0; $i <count($request->spk) ; $i++) {
 
-                $data = [
+                $data3 = [
                     "status" => "Container",
 
                 ];
 
-                Spk::where("kode_spk", $request->spk[$i])->update($data);
+                Spk::where("kode_spk", $request->spk[$i])->update($data3);
             }
 
             for ($i=0; $i <count($request->spk_old) ; $i++) {
 
-                $data = [
+                $data4 = [
                     "status" => "input",
 
                 ];
-                Spk::where("kode_spk", $request->spk_old[$i])->update($data);
+                Spk::where("kode_spk", $request->spk_old[$i])->update($data4);
             }
     }
 
@@ -477,12 +478,12 @@ class ProcessLoadController extends Controller
         }
         for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $data = [
+            $data1 = [
                 "status" => "Container",
 
             ];
 
-            Seal::where("kode_seal", $request->seal[$i])->update($data);
+            Seal::where("kode_seal", $request->seal[$i])->update($data1);
         }
         if($request->spk != null){
 
@@ -499,12 +500,12 @@ class ProcessLoadController extends Controller
 
             for ($i=0; $i <count($request->spk) ; $i++) {
 
-                $data = [
+                $data2 = [
                     "status" => "Container",
 
                 ];
 
-                Spk::where("kode_spk", $request->spk[$i])->update($data);
+                Spk::where("kode_spk", $request->spk[$i])->update($data2);
             }
 
         }

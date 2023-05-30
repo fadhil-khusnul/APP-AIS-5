@@ -560,6 +560,7 @@
                         </div>
 
                         <div class="validation-container">
+                            <input type="hidden" name="seal_old" id="seal_old">
                             <label for="">Seal-Container :<span class="text-danger">*</span></label>
 
                             <select data-bs-toggle="tooltip" id="seal" multiple="multiple" name="seal"

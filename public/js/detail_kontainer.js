@@ -536,7 +536,7 @@ function detail_tambah() {
                 cargo: $("#cargo_tambah").val(),
                 detail_barang: $("#detail_barang_tambah").val(),
                 seal: $("#seal_tambah").val(),
-                seal: $("#spk_tambah").val(),
+                spk: $("#spk_tambah").val(),
                 date_activity: formattedDate,
                 lokasi: $("#lokasi_tambah").val(),
                 driver: $("#driver_tambah").val(),
@@ -603,6 +603,8 @@ function detail_update(e) {
             $("#no_container_edit").val(response.result.nomor_kontainer);
             $("#cargo_update").val(response.result.cargo);
             $("#detail_barang_update").val(response.result.detail_barang);
+            $("#seal_old").val(seals);
+
             $("#seal_update")
                 .val(seals)
                 .select2({
@@ -831,7 +833,7 @@ function detail_update(e) {
                             cargo: $("#cargo_update").val(),
                             detail_barang: $("#detail_barang_update").val(),
                             seal: $("#seal_update").val(),
-                            seal_old: seals,
+                            seal_old: $("#seal_old").val(),
                             spk_old: spk,
                             date_activity: formattedDate,
                             lokasi: $("#lokasi_update").val(),
