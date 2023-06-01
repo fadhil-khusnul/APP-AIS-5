@@ -16,6 +16,14 @@ return new class extends Migration
             $table->string('job_id');
             $table->string('container_id');
             $table->string('path')->nullable();
+            $table->string('shipper')->nullable();
+            $table->string('consigne')->nullable();
+            $table->date('tanggal_bl')->nullable();
+            $table->string('nomor_bl')->nullable();
+            $table->double('biaya_do_pol')->nullable();
+            $table->date('tanggal_do_pol')->nullable();
+            $table->double('biaya_do_pod')->nullable();
+            $table->date('tanggal_do_pod')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

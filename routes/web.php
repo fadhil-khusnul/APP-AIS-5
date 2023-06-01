@@ -48,6 +48,11 @@ Route::get('/company/{id}/edit', [ShippingController::class, 'edit']);
 Route::put('/company/{id}', [ShippingController::class, 'update']);
 Route::delete('/company/{id}', [ShippingController::class, 'destroy']);
 
+Route::post('/vendor-mobil', [ShippingController::class, 'store_vendor']);
+Route::get('/vendor-mobil/{id}/edit', [ShippingController::class, 'edit_vendor']);
+Route::put('/vendor-mobil/{id}', [ShippingController::class, 'update_vendor']);
+Route::delete('/vendor-mobil/{id}', [ShippingController::class, 'destroy_vendor']);
+
 
 Route::post('/add-depo', [DepoController::class, 'store']);
 Route::get('/depo/{id}/edit', [DepoController::class, 'edit']);
@@ -115,14 +120,19 @@ Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeCon
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::get('/detail-kontainer/{id}/input', [ProcessLoadController::class, 'input']);
+Route::get('/detail-alihkapal/{id}', [ProcessLoadController::class, 'detail_alihkapal']);
 Route::put('/detail-kontainer-update/{id}', [ProcessLoadController::class, 'input_update']);
 Route::put('/detail-kontainer-edit/{id}', [ProcessLoadController::class, 'input_edit']);
 Route::post('/detail-kontainer-tambah', [ProcessLoadController::class, 'input_tambah']);
 Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
+Route::post('/detailbarang-kontainer', [ProcessLoadController::class, 'detailbarang']);
 Route::post('/biayalain-kontainer', [ProcessLoadController::class, 'biayalain']);
 Route::delete('/biayalainnya-delete/{id}', [ProcessLoadController::class, 'destroy_biaya']);
+Route::delete('/detailbarang-delete/{id}', [ProcessLoadController::class, 'destroy_detailbarang']);
 Route::get('/biayalainnya-edit/{id}', [ProcessLoadController::class, 'biayalain_edit']);
+Route::get('/detailbarang-edit/{id}', [ProcessLoadController::class, 'detailbarang_edit']);
 Route::put('/biayalainnya-update/{id}', [ProcessLoadController::class, 'biayalain_update']);
+Route::put('/detailbarang-update/{id}', [ProcessLoadController::class, 'detailbarang_update']);
 
 //BATAL-MUAT
 Route::post('/batalmuat-kontainer', [ProcessLoadController::class, 'batalmuat']);
@@ -146,6 +156,7 @@ Route::put('/plan-kapal-detail-update/{id}', [ProcessLoadController::class, 'pla
 Route::get('/processload', [ProcessLoadController::class, 'index']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
+Route::post('/getVendor', [ProcessLoadController::class, 'getVendor']);
 Route::post('/getSealProcessLoad', [ProcessLoadController::class, 'getSealProcessLoad']);
 Route::post('/getSpkProcessLoad', [ProcessLoadController::class, 'getSpkProcessLoad']);
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
@@ -179,7 +190,7 @@ Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNo
 Route::post('/create-si-container', [PdfController::class, 'create_si']);
 Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
-Route::get('/preview-si/{slug}', [PdfController::class, 'preview_si']);
+Route::get('/preview-si/{path}', [PdfController::class, 'preview_si']);
 Route::post('/konfirmasi-si', [PdfController::class, 'konfirmasi_si']);
 
 
@@ -240,11 +251,17 @@ Route::get('/ongkos-supir/{id}/edit', [OngkoSupirController::class, 'edit']);
 Route::put('/ongkos-supir/{id}', [OngkoSupirController::class, 'update']);
 Route::delete('/ongkos-supir/{id}', [OngkoSupirController::class, 'destroy']);
 //REKENING BANK
-Route::get('/rekening-bank', [OngkoSupirController::class, 'index_rekening']);
 Route::post('/add-rekening', [OngkoSupirController::class, 'store_rekening']);
 Route::get('/rekening-bank/{id}/edit', [OngkoSupirController::class, 'edit_rekening']);
 Route::put('/rekening-bank/{id}', [OngkoSupirController::class, 'update_rekening']);
 Route::delete('/rekening-bank/{id}', [OngkoSupirController::class, 'destroy_rekening']);
+
+//supir
+Route::get('/supir-mobil', [OngkoSupirController::class, 'index_supir']);
+Route::post('/add-supir', [OngkoSupirController::class, 'store_supir']);
+Route::get('/supir-mobil/{id}/edit', [OngkoSupirController::class, 'edit_supir']);
+Route::put('/supir-mobil/{id}', [OngkoSupirController::class, 'update_supir']);
+Route::delete('/supir-mobil/{id}', [OngkoSupirController::class, 'destroy_supir']);
 
 //REPORT-LOAD
 Route::get('/summary-report-load', [ReportController::class, 'report_load']);

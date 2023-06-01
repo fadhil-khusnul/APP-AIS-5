@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('size');
             $table->string('type');
             $table->string('cargo');
+            $table->string('pengirim')->nullable();
+            $table->string('penerima')->nullable();
             $table->integer('jumlah_kontainer')->nullable();
             $table->string('nomor_kontainer')->nullable();
             $table->string('seal')->nullable();
@@ -29,6 +31,13 @@ return new class extends Migration
             $table->double('biaya_trucking')->nullable();
             $table->double('ongkos_supir')->nullable();
             $table->double('biaya_thc')->nullable();
+            $table->double('biaya_seal')->nullable();
+            $table->double('freight')->nullable();
+            $table->double('lss')->nullable();
+            $table->double('thc_pod')->nullable();
+            $table->double('lolo')->nullable();
+            $table->double('dooring')->nullable();
+            $table->double('demurrage')->nullable();
             $table->string('nomor_surat')->nullable();
             $table->string('jenis_mobil')->nullable();
             $table->text('detail_barang')->nullable();

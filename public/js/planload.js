@@ -100,10 +100,8 @@ function CreateJobPlanload() {
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
-            let pengirim = document.getElementById("Pengirim_1").value;
 
 
-            let penerima = document.getElementById("Penerima_1").value;
 
             var fd = new FormData();
 
@@ -126,8 +124,6 @@ function CreateJobPlanload() {
             fd.append("pol", pol);
             fd.append("pot", pot);
             fd.append("pod", pod);
-            fd.append("pengirim", pengirim);
-            fd.append("penerima", penerima);
             fd.append("tambah", tambah);
 
             var jumlah_kontainer = [];
@@ -289,8 +285,6 @@ function UpdateteJobPlanload() {
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
             let pod = document.getElementById("POD_1").value;
-            let pengirim = document.getElementById("Pengirim_1").value;
-            let penerima = document.getElementById("Penerima_1").value;
             let old_slug = document.getElementById("old_slug").value;
 
 
@@ -314,8 +308,6 @@ function UpdateteJobPlanload() {
             fd.append("pol", pol);
             fd.append("pot", pot);
             fd.append("pod", pod);
-            fd.append("pengirim", pengirim);
-            fd.append("penerima", penerima);
             fd.append("old_slug", old_slug);
             var table_container = document.getElementById("table_container");
             var urutan = table_container.tBodies[0].rows.length;

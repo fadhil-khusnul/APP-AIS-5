@@ -23,6 +23,7 @@ use App\Models\ContainerPlanload;
 use App\Models\PlanDischarge;
 use App\Models\PlanDischargeContainer;
 use App\Models\SiPdfContainer;
+use App\Models\SealContainer;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -37,7 +38,7 @@ class PdfController extends Controller
      */
     public function create_si(Request $request)
     {
-        // dd($request);
+        dd($request);
         $random = Str::random(15);
 
         $unique_size = array_values(array_unique($request->size));
@@ -63,11 +64,21 @@ class PdfController extends Controller
 
         // dd($containers);
 
+        $si_pdf =[
+            'job_id' => $old_id,
+            'container_id' => $random.time(),
+            'path' => 'SI-'.$old_slug.'-'.$random.time(),
+
+        ];
+
+        $sis = SiPdfContainer::create($si_pdf);
+
         for ($i=0; $i < count($request->chek_container) ; $i++) {
             $container = [
                 'status' => "Realisasi",
             ];
             $container2 = [
+                'surat_si' => $sis->id,
                 'status' => "Realisasi",
                 'slug' => $random.time(),
             ];
@@ -107,7 +118,7 @@ class PdfController extends Controller
                 'type' => $containers[$i][0][0]->type,
                 'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
                 'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
-                'seal' => $containers[$i][0][0]->seal,
+                'seal' => SealContainer::where('kontainer_id',$request->chek_container[$i])->value('seal_kontainer'),
                 'lokasi_depo' => $containers[$i][0][0]->lokasi_depo,
                 'cargo' => $containers[$i][0][0]->cargo,
 
@@ -115,6 +126,15 @@ class PdfController extends Controller
 
 
         }
+
+        $seal_container = [];
+
+        // for ($i=0; $i <count($request->chek_container) ; $i++) {
+        //     $seal_container[$i] = SealContainer::where('kontainer_id',$request->chek_container[$i])->get();
+
+        // }
+
+        dd($new_container);
 
 
 
@@ -127,17 +147,11 @@ class PdfController extends Controller
         $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
 
 
-        // dd($checked);
 
 
-        $si_pdf =[
-            'job_id' => $old_id,
-            'container_id' => $random.time(),
-            'path' => 'SI-'.$old_slug.'-'.$random.time(),
 
-        ];
 
-        SiPdfContainer::create($si_pdf);
+
 
 
         // dd($si_pdf);
@@ -149,7 +163,9 @@ class PdfController extends Controller
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
-            "quantity" => $quantity
+            "quantity" => $quantity,
+            "seal_container" => $seal_container,
+
 
         ]);
 
@@ -160,6 +176,7 @@ class PdfController extends Controller
         $pdf2 = Pdf::loadview('pdf.create_si_progress',[
             "loads" => $loads,
             "containers" => $new_container,
+            "seal_container" => $seal_container,
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
@@ -180,7 +197,9 @@ class PdfController extends Controller
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
-            "quantity" => $quantity
+            "quantity" => $quantity,
+            "seal_container" => $seal_container,
+
 
         ]);
 
@@ -222,20 +241,19 @@ class PdfController extends Controller
     public function preview_si(Request $request)
 
     {
-        $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
-        $containers = ContainerPlanload::where('job_id', $id)->orWhere('status', 'Realisasi')->get();
+        $id = SiPdfContainer::where('path', $request->path)->value('id');
+        $job_id = SiPdfContainer::where('path', $request->path)->value('job_id');
 
 
 
-        $pdfs= SiPdfContainer::orderBy('id', 'DESC')->where('job_id', $id)->get();
-        // dd($pdfs);
+
+        $pdf= SiPdfContainer::findOrFail($id);
 
         return view('realisasi.load.preview-si', [
             'title' => 'Preview Shipping Intructions',
             'active' => 'Realisasi',
-            'pdfs' => $pdfs,
-            'containers' => $containers,
-            'planload' => OrderJobPlanload::find($id),
+            'pdf' => $pdf,
+            'planload' => OrderJobPlanload::find($job_id),
 
 
         ]);

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('pol');
             $table->string('pot')->nullable();
             $table->string('pod');
-            $table->string('pengirim');
+            $table->string('pengirim')->nullable();
             $table->string('penerima')->nullable();
             $table->text('slug');
             $table->string('status');

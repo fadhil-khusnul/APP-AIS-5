@@ -30,6 +30,36 @@ $("#shipping").DataTable({
     }},
     ],
 });
+$("#data_vendor").DataTable({
+    responsive:true,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    },
+
+    dom: 'Bfrtip',
+    buttons:[
+    {
+        extend:"excel",
+        title: 'Data Tabel VENDOR MOBIL',
+        className:"btn btn-flat-primary",
+        exportOptions: {
+            columns: [0,1],
+        }
+
+    },
+    {
+            extend:"pdf",
+            className:"btn btn-flat-primary",
+            title: 'Data VENDOR MOBIL',
+            className:"btn btn-flat-primary",
+            exportOptions: {
+                columns: [0,1],
+    }},
+    ],
+});
 
 
 

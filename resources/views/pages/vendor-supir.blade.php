@@ -7,32 +7,35 @@
 
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="portlet-title">For Tambah {{ $title }}</h3>
+                    <h3 class="portlet-title">Tambah {{ $title }}</h3>
                 </div>
                 <div class="portlet-body">
 
-                    <form class="row g-3" id="valid_rekening" name="valid_rekening">
+                    <form class="row g-3" id="valid_supir" name="valid_supir">
                         <div class="col-md-12">
                             <div class="validation-container">
-                                <label for="" class="form-label">Masukkan Nama Bank:</label>
-                                <input id="nama_bank" name="nama_bank" type="text" placeholder="Nama BANK ex. BCA" class="form-control"
-                                    required>
-                                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                                <label for="company" class="form-label">Pilih Vendor Truck :</label>
+                                <select required id="nama_vendor" name="nama_vendor" class="form-select">
+                                    <option selected disabled>Pilih Vendor</option>
+                                    @foreach ($vendors as $vendor)
+                                        <option value="{{ $vendor->id }}">{{ $vendor->nama_vendor }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="validation-container">
-                                <label for="" class="form-label">Masukkan No. Rekening:</label>
-                                <input id="no_rekening" name="no_rekening" type="text" placeholder="No.Rekening (123xxxxxx)" class="form-control"
+                                <label for="" class="form-label">Masukkan Nama Supir :</label>
+                                <input id="nama_supir" name="nama_supir" type="text" placeholder="Nama Supir" class="form-control"
                                     required>
                             </div>
                         </div>
 
                         <div class="col-md-12">
                             <div class="validation-container">
-                                <label for="" class="form-label">Masukkan Pemilik Rekening:</label>
-                                <input id="atas_nama" name="atas_nama" type="text" placeholder="ex. John Doe" class="form-control"
+                                <label for="" class="form-label">Masukkan Nomor Polisi (Truck) :</label>
+                                <input id="nomor_polisi" name="nomor_polisi" type="text" placeholder="ex. DD 22212 RT" class="form-control"
                                     required>
                             </div>
                         </div>
@@ -65,34 +68,34 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>NAMA BANK</th>
-                                <th>NO. REKENING</th>
-                                <th>PEMILIK REKENING</th>
+                                <th>NAMA VENDOR</th>
+                                <th>NAMA SUPIR</th>
+                                <th>NOMOR DD</th>
                                 <th class="text-center">Aksi</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($danas as $dana)
+                            @foreach ($supirs as $supir)
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
                                     <td>
-                                        {{ $dana->nama_bank }}
+                                        {{ $supir->vendors->nama_vendor }}
                                     </td>
                                     <td>
-                                        {{ $dana->no_rekening }}
+                                        {{ $supir->nama_supir }}
                                     </td>
                                     <td>
-                                        {{ $dana->atas_nama }}
+                                        {{ $supir->nomor_polisi }}
                                     </td>
 
-                                    <td class="text-center"><button onclick="editrekening(this)" value="{{ $dana->id }}"
+                                    <td class="text-center"><button onclick="editsupir(this)" value="{{ $supir->id }}"
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
-                                        <button onclick="deleterekening(this)" value="{{ $dana->id }}" type="button"
+                                        <button onclick="deletesupir(this)" value="{{ $supir->id }}" type="button"
                                             class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-trash"></i></button>
                                     </td>
@@ -115,36 +118,40 @@
 
     </div>
 
-    <div class="modal fade" id="modal-dana-edit">
+    <div class="modal fade" id="modal-supir-edit">
         <div class="modal-dialog">
-            <form action="#" name="valid_rekening_edit" id="valid_rekening_edit">
+            <form action="#" name="valid_supir_edit" id="valid_supir_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="old_id_supir" id="old_id_supir">
 
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Pelabuhan</h5>
+                    <h5 class="modal-title">Edit Data Supir</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="validation-container">
-                        <label for="" class="form-label">Masukkan Nama Bank:</label>
-                        <input id="nama_bank_edit" name="nama_bank_edit" type="text" placeholder="Nama BANK ex. BCA" class="form-control"
-                            required>
-                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                        <label for="company" class="form-label">Pilih Vendor Truck :</label>
+                        <select required id="nama_vendor_edit" name="nama_vendor_edit" class="form-select">
+                            <option selected disabled>Pilih Vendor</option>
+                            @foreach ($vendors as $vendor)
+                                <option value="{{ $vendor->id }}">{{ $vendor->nama_vendor }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="validation-container">
-                        <label for="" class="form-label">Masukkan No. Rekening:</label>
-                        <input id="no_rekening_edit" name="no_rekening_edit" type="text" placeholder="No.Rekening (123xxxxxx)" class="form-control"
+                        <label for="" class="form-label">Masukkan Nama Supir :</label>
+                        <input id="nama_supir_edit" name="nama_supir_edit" type="text" placeholder="Nama Supir" class="form-control"
                             required>
                     </div>
 
                     <div class="validation-container">
-                        <label for="" class="form-label">Masukkan Pemilik Rekening:</label>
-                        <input id="atas_nama_edit" name="atas_nama_edit" type="text" placeholder="ex. John Doe" class="form-control"
+                        <label for="" class="form-label">Masukkan Nomor Polisi (Truck) :</label>
+                        <input id="nomor_polisi_edit" name="nomor_polisi_edit" type="text" placeholder="ex. DD 22212 RT" class="form-control"
                             required>
                     </div>
                 </div>

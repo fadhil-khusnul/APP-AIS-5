@@ -77,6 +77,61 @@ $(function () {
             });
         }
     });
+    $('#valid_vendor').validate({
+        rules: {
+
+            nama_vendor: {
+                required: true
+            }
+        },
+        messages: {
+
+            nama_vendor: {
+                required: "Silakan Isi Nama Vendor"
+            }
+        },
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+        submitHandler: function (form) {
+
+            var nama_vendor = $("#nama_vendor").val();
+            var token = $('#csrf').val();
+
+
+            var data = {
+                "_token": token,
+                "nama_vendor": nama_vendor
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/vendor-mobil',
+                data: data,
+                success: function (response) {
+                    swal.fire({
+                        icon: "success",
+                        title: "Vendor Berhasil Ditambah",
+                    showConfirmButton: false,
+                        timer: 2e3,
+
+                    })
+                        .then((result) => {
+                            location.reload();
+                        });
+                },
+            });
+        }
+    });
 
     $('#valid_depo').validate({
         rules: {
@@ -374,24 +429,95 @@ $(function () {
         }
     });
 
-    $('#valid_biaya').validate({
+    // $('#valid_biaya').validate({
+    //     rules: {
+
+    //         pekerjaan_biaya: {
+    //             required: true
+    //         },
+    //         biaya_cost: {
+    //             required: true
+    //         }
+    //     },
+    //     messages: {
+
+    //         pekerjaan_biaya: {
+    //             required: "Silakan Isi Pekerjaan"
+    //         },
+    //         biaya_cost: {
+    //             required: "Silakan Isi Biaya"
+    //         }
+    //     },
+    //     highlight: function highlight(element, errorClass, validClass) {
+    //         $(element).addClass("is-invalid");
+    //         $(element).removeClass("is-valid");
+    //     },
+    //     unhighlight: function unhighlight(element, errorClass, validClass) {
+    //         $(element).removeClass("is-invalid");
+    //         $(element).addClass("is-valid");
+    //     },
+    //     errorPlacement: function errorPlacement(error, element) {
+    //         error.addClass("invalid-feedback");
+    //         element.closest(".validation-container").append(error);
+    //     },
+    //     submitHandler: function (form) {
+
+    //         var pekerjaan_biaya = $("#pekerjaan_biaya").val();
+    //         var biaya_cost = $("#biaya_cost").val();
+    //         var token = $('#csrf').val();
+
+
+    //         var data = {
+    //             "_token": token,
+    //             "pekerjaan_biaya": pekerjaan_biaya,
+    //             "biaya_cost": biaya_cost
+    //         }
+
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: 'add-biaya',
+    //             data: data,
+    //             success: function (response) {
+    //                 swal.fire({
+    //                     icon: "success",
+    //                     title: "Data Biaya Berhasil Ditambah",
+    //                     showConfirmButton: false,
+    //                     timer: 2e3,
+
+    //                 })
+    //                     .then((result) => {
+    //                         location.reload();
+    //                     });
+    //             },
+    //         });
+    //     }
+    // });
+
+    $('#valid_rekening').validate({
         rules: {
 
-            pekerjaan_biaya: {
+            no_rekening: {
                 required: true
             },
-            biaya_cost: {
+            atas_nama: {
                 required: true
-            }
+            },
+            nama_bank: {
+                required: true
+            },
         },
         messages: {
 
-            pekerjaan_biaya: {
-                required: "Silakan Isi Pekerjaan"
+            nama_bank: {
+                required: "Silakan Isi Nama Bank"
             },
-            biaya_cost: {
-                required: "Silakan Isi Biaya"
-            }
+            no_rekening: {
+                required: "Silakan Isi No. Rekening"
+            },
+
+            atas_nama: {
+                required: "Silakan Isi Nama Pemilik Rekening"
+            },
         },
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
@@ -407,25 +533,27 @@ $(function () {
         },
         submitHandler: function (form) {
 
-            var pekerjaan_biaya = $("#pekerjaan_biaya").val();
-            var biaya_cost = $("#biaya_cost").val();
+            var nama_bank = $("#nama_bank").val();
+            var no_rekening = $("#no_rekening").val();
+            var atas_nama = $("#atas_nama").val();
             var token = $('#csrf').val();
 
 
             var data = {
                 "_token": token,
-                "pekerjaan_biaya": pekerjaan_biaya,
-                "biaya_cost": biaya_cost
+                "nama_bank": nama_bank,
+                "no_rekening": no_rekening,
+                "atas_nama": atas_nama,
             }
 
             $.ajax({
                 type: 'POST',
-                url: 'add-biaya',
+                url: '/add-rekening',
                 data: data,
                 success: function (response) {
                     swal.fire({
                         icon: "success",
-                        title: "Data Biaya Berhasil Ditambah",
+                        title: "Data Rekening Bank Berhasil Ditambah",
                         showConfirmButton: false,
                         timer: 2e3,
 
@@ -436,7 +564,7 @@ $(function () {
                 },
             });
         }
-    });
+});
 
     $('#valid_type').validate({
         rules: {
@@ -691,6 +819,152 @@ $(function () {
 
 });
 
+function editrekening(e) {
+    var id = e.value;
+    console.log(id);
+
+
+    $.ajax({
+        url: '/rekening-bank/' + id + '/edit',
+        type: 'GET',
+        success: function (response) {
+            $('#modal-dana-edit').modal('show');
+
+            $('#nama_bank_edit').val(response.result.nama_bank);
+            $('#no_rekening_edit').val(response.result.no_rekening);
+            $('#atas_nama_edit').val(response.result.atas_nama);
+            $('#old_id_rekening').val(response.result.id);
+
+
+            $('#valid_rekening_edit').validate({
+                rules: {
+
+                    nama_bank_edit: {
+                        required: true
+                    },
+                    atas_nama_edit: {
+                        required: true
+                    },
+                    no_rekening_edit: {
+                        required: true
+                    },
+
+                },
+                messages: {
+
+                    nama_bank_edit: {
+                        required: "Silakan Isi Nama Bank"
+                    },
+                    no_rekening_edit: {
+                        required: "Silakan Isi No. Rekening"
+                    },
+                    atas_nama_edit: {
+                        required: "Silakan Isi Nama Rekening"
+                    },
+
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var token = $('#csrf').val();
+                    var oldid = $('#old_id_rekening').val();
+
+                    $.ajax({
+                        url: '/rekening-bank/' + oldid,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            nama_bank: $('#nama_bank_edit').val(),
+                            no_rekening: $('#no_rekening_edit').val(),
+                            atas_nama: $('#atas_nama_edit').val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Data Rekening Bank Berhasil Diedit",
+                                showConfirmButton: false,
+                                timer: 2e3,
+
+                            })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+
+        }
+    });
+}
+
+function deleterekening(id) {
+    var deleteid = id.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1" },
+            buttonsStyling: false
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin?",
+        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    })
+        .then((willDelete) => {
+            if (willDelete.isConfirmed) {
+
+                var data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': deleteid,
+                };
+                $.ajax({
+                    type: "DELETE",
+                    url: '/rekening-bank/' + deleteid,
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "Data Rekening Bank Dihapus",
+                            text: "Data Berhasil Dihapus",
+                            icon: "success",
+                            timer: 2e3,
+                            showConfirmButton: false
+                        })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: "Data Tidak Dihapus",
+                    text: "Data Batal Dihapus",
+                    icon: "error",
+                    timer: 2e3,
+                    showConfirmButton: false
+                });
+            }
+        });
+}
+
 function nama_pengirim(ini) {
     console.log(ini.value);
     let token = $("#csrf").val();
@@ -787,6 +1061,7 @@ function editCompany(e) {
             $('#modal-company-edit').modal('show');
 
             $('#nama_company_edit').val(response.result.nama_company);
+            $('#old_id_company').val(response.result.id);
 
             $('#valid_company_edit').validate({
                 rules: {
@@ -819,9 +1094,10 @@ function editCompany(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var oldid = $('#old_id_company').val();
 
                     $.ajax({
-                        url: 'company/' + id,
+                        url: 'company/' + oldid,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -831,6 +1107,80 @@ function editCompany(e) {
                             swal.fire({
                                 icon: "success",
                                 title: "Data Company Berhasil Diedit",
+                                showConfirmButton: false,
+                                timer: 2e3,
+
+                            })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+
+        }
+    });
+}
+function editVendor(e) {
+    var id = e.value;
+    console.log(id);
+
+
+    $.ajax({
+        url: 'vendor-mobil/' + id + '/edit',
+        type: 'GET',
+        success: function (response) {
+            $('#modal-vendor-edit').modal('show');
+
+            $('#nama_vendor_edit').val(response.result.nama_vendor);
+            $('#old_id_vendor').val(response.result.id);
+
+
+            $('#valid_vendor_edit').validate({
+                rules: {
+
+                    nama_vendor_edit: {
+                        required: true
+                    },
+
+                },
+                messages: {
+
+                    nama_vendor_edit: {
+                        required: "Silakan Isi Nama vendor"
+                    },
+
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var token = $('#csrf').val();
+                    var old_id = $('#old_id_vendor').val();
+
+                    $.ajax({
+                        url: '/vendor-mobil/' + old_id,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            nama_vendor: $('#nama_vendor_edit').val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Data vendor Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -859,6 +1209,8 @@ function editDepo(e) {
             $('#modal-depo-edit').modal('show');
 
             $('#nama_depo_edit').val(response.result.nama_depo);
+            $('#old_id_depo').val(response.result.id);
+
 
             $('#valid_depo_edit').validate({
                 rules: {
@@ -891,9 +1243,10 @@ function editDepo(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_depo').val();
 
                     $.ajax({
-                        url: 'depo/' + id,
+                        url: '/depo/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -929,6 +1282,8 @@ function editpelabuhan(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-pelabuhan-edit').modal('show');
+
+            $('#old_id_pelabuhan').val(response.result.id);
 
             $('#area_code_edit').val(response.result.area_code);
             $('#nama_pelabuhan_edit').val(response.result.nama_pelabuhan);
@@ -970,9 +1325,10 @@ function editpelabuhan(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_pelabuhan').val();
 
                     $.ajax({
-                        url: 'pelabuhan/' + id,
+                        url: '/pelabuhan/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1009,6 +1365,7 @@ function editpengirim(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-pengirim-edit').modal('show');
+            $('#old_id_pengirim').val(response.result.id);
 
             $('#nama_costumer_edit').val(response.result.nama_costumer);
             $('#alamat_edit').val(response.result.alamat);
@@ -1071,9 +1428,10 @@ function editpengirim(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_pengirim').val();
 
                     $.ajax({
-                        url: 'pengirim/' + id,
+                        url: '/pengirim/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1113,6 +1471,7 @@ function editpenerima(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-penerima-edit').modal('show');
+            $('#old_id_penerima').val(response.result.id);
 
             $('#nama_penerima_edit').val(response.result.nama_penerima);
             $('#alamat_penerima_edit').val(response.result.alamat_penerima);
@@ -1176,9 +1535,10 @@ function editpenerima(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_penerima').val();
 
                     $.ajax({
-                        url: 'penerima/' + id,
+                        url: '/penerima/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1298,6 +1658,8 @@ function edittype(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-type-edit').modal('show');
+            $('#old_id_type').val(response.result.id);
+
 
             $('#type_container_edit').val(response.result.type_container);
 
@@ -1334,9 +1696,10 @@ function edittype(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_type').val();
 
                     $.ajax({
-                        url: 'type/' + id,
+                        url: 'type/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1444,6 +1807,8 @@ function editstripp(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-discharge-edit').modal('show');
+            $('#old_id_kegiatan').val(response.result.id);
+
 
             $('#kegiatan_edit').val(response.result.kegiatan);
             if (response.result.jenis_kegiatan == "Stripping") {
@@ -1487,9 +1852,10 @@ function editstripp(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_kegiatan').val();
 
                     $.ajax({
-                        url: 'stripping/' + id,
+                        url: 'stripping/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1526,6 +1892,8 @@ function editcontainer(e) {
         type: 'GET',
         success: function (response) {
             $('#modal-container-edit').modal('show');
+            $('#old_id_container').val(response.result.id);
+
 
             // $('#jenis_container_edit').val(response.result.jenis_container);
             $('#size_container_edit').val(response.result.size_container);
@@ -1574,9 +1942,10 @@ function editcontainer(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_container').val();
 
                     $.ajax({
-                        url: 'container/' + id,
+                        url: 'container/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -1637,6 +2006,60 @@ function deleteCompany(id) {
                 $.ajax({
                     type: "DELETE",
                     url: 'company/' + deleteid,
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "Data Dihapus",
+                            text: "Data Berhasil Dihapus",
+                            icon: "success",
+                            timer: 2e3,
+                            showConfirmButton: false
+                        })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: "Data Tidak Dihapus",
+                    text: "Data Batal Dihapus",
+                    icon: "error",
+                    timer: 2e3,
+                    showConfirmButton: false
+                });
+            }
+        });
+}
+function deleteVendor(id) {
+    var deleteid = id.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1" },
+            buttonsStyling: false
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin?",
+        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    })
+        .then((willDelete) => {
+            if (willDelete.isConfirmed) {
+
+                var data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': deleteid,
+                };
+                $.ajax({
+                    type: "DELETE",
+                    url: '/vendor-mobil/' + deleteid,
                     data: data,
                     success: function (response) {
                         swal.fire({

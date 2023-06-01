@@ -95,7 +95,9 @@
                     @foreach ($containers as $container)
                     <tr>
                         <td align="center" valign="top">{{$container['nomor_kontainer']}}</td>
-                        <td colspan="2" align="center" valign="top">{{$container['seal']}}</td>
+                        <td colspan="2" align="center" valign="top">
+                            {{$container['seal']}}
+                        </td>
                         <td align="center" valign="top">{{$container['cargo']}}</td>
                     </tr>
 

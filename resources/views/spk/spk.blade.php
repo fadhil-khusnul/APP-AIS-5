@@ -144,6 +144,7 @@
         <div class="modal-dialog">
             <form action="#" name="valid_spk_edit" id="valid_spk_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="old_id_spk" id="old_id_spk">
 
 
             <div class="modal-content">

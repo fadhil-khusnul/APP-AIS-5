@@ -34,11 +34,11 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="/rekening-bank" data-menu-path="/rekening-bank" class="menu-item-link {{ Request::is('rekening-bank*') ? 'active' : '' }}">
+                    <a href="/supir-mobil" data-menu-path="/supir-mobil" class="menu-item-link {{ Request::is('rekening-bank*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
-                            <i class="bi bi-bank"></i>
+                            <i class="bi bi-truck-front-fill"></i>
                         </div>
-                        <span class="menu-item-text">REKENING BANK</span>
+                        <span class="menu-item-text">VENDOR MOBIL TRUCK</span>
                     </a>
                 </div>
 
@@ -47,7 +47,7 @@
                         <div class="menu-item-icon">
                             <i class="bi bi-cash-stack"></i>
                         </div>
-                        <span class="menu-item-text">ONGKOS SUPIR</span>
+                        <span class="menu-item-text">DEPOSIT TRUCKING</span>
                     </a>
                 </div>
 
@@ -173,7 +173,14 @@
                             <a href="/realisasi-load" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*')
                             ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
-                                <span class="menu-item-text">LOAD-REALISASI</span>
+                                <span class="menu-item-text">REALISASI POL</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/realisasi-load" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*')
+                            ? 'active' : ''}}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">REALISASI POD</span>
                             </a>
                         </div>
 

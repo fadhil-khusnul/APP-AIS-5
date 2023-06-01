@@ -35,7 +35,7 @@
             <div class=" col-md-6">
                 <div class="portlet">
 
-                    <div class="portlet-body row">
+                    <div class="portlet-body px-5 py-5">
                         <!-- BEGIN Form -->
 
                             {{-- <div class="col-md-6 validation-container">
@@ -44,59 +44,74 @@
                                     name="tanggal_planload">
                             </div> --}}
 
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
-                                <input name="vessel" id="vessel" class="form-control">
+                            <div class=" row mb-3">
+                                <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel/Voyage :</label>
+                                <div class="col-sm-8 validation-container">
+                                    <input name="vessel" id="vessel" class="form-control">
+                                </div>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel Code</label>
-                                <input name="vessel_code" id="vessel_code" class="form-control">
+                            <div class=" row mb-3">
+                                <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel Code :</label>
+                                <div class="col-sm-8 validation-container">
+
+                                    <input name="vessel_code" id="vessel_code" class="form-control">
+                                </div>
                             </div>
 
 
-                            <div class="col-md-6 validation-container">
-                                <label for="company" class="form-label">Shipping Company (Pelayaran)</label>
+                            <div class="row mb-3">
+                                <label for="company" class="col-sm-4 col-form-label">Shipping Company (Pelayaran) :</label>
+                                <div class="col-sm-8  validation-container ">
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Company</option>
                                     @foreach ($shippingcompany as $shippingcompany)
                                         <option value="{{ $shippingcompany->nama_company }}">{{ $shippingcompany->nama_company }}</option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity</label>
+                            <div class="row mb-3">
+                                <label for="" class="col-sm-4 col-form-label">Activity :</label>
+                                <div class="col-sm-8  validation-container ">
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled>Pilih Activity</option>
                                     @foreach ($activity as $activity)
                                         <option value="{{ $activity->kegiatan }}">{{ $activity->kegiatan }}</option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pengirim</label>
+                            {{-- <div class="row mb-3">
+                                <label for="POL" class="col-sm-4 col-form-label">Pengirim :</label>
+                                <div class="col-sm-8  validation-container ">
                                 <select id="Pengirim_1" name="Pengirim_1" class="form-select">
                                     <option selected disabled>Pilih Pengirim</option>
                                     @foreach ($pengirim as $pengirim)
                                         <option value="{{ $pengirim->nama_costumer }}">{{ $pengirim->nama_costumer }}</option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Penerima</label>
+                            <div class="row mb-3">
+                                <label for="POL" class="col-sm-4 col-form-label">Penerima :</label>
+                                <div class="col-sm-8 validation-container">
+
                                 <select id="Penerima_1" name="Penerima_1" class="form-select">
                                     <option selected disabled>Pilih Penerima</option>
                                     @foreach ($penerima as $penerima)
                                         <option value="{{ $penerima->nama_penerima }}">{{ $penerima->nama_penerima }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                                </div>
+                            </div> --}}
 
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POL</label>
+                            <div class="row mb-3">
+                                <label for="POL" class="col-sm-4 col-form-label">POL :</label>
+                                <div class="col-sm-8 validation-container">
                                 <select id="POL_1" name="POL_1" class="form-select">
                                     <option selected disabled>Pilih POL</option>
                                     @foreach ($pol as $pol)
@@ -104,9 +119,12 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POT</label>
+                            <div class="row mb-3">
+                                <label for="POL" class="col-sm-4 col-form-label">POT :</label>
+                                <div class="col-sm-8 validation-container">
+
                                 <select id="POT_1" name="POT_1" class="form-select">
                                     <option selected disabled value="">Pilih POT</option>
                                     @foreach ($pot as $pot)
@@ -114,9 +132,11 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POD</label>
+                            <div class="row">
+                                <label for="POL" class="col-sm-4 col-form-label">POD :</label>
+                                <div class="col-sm-8 validation-container">
                                 <select id="POD_1" name="POD_1" class="form-select">
                                     <option selected disabled>Pilih POD</option>
                                     @foreach ($pod as $pod)
@@ -124,6 +144,7 @@
                                             {{ $pod->nama_pelabuhan }}</option>
                                     @endforeach
                                 </select>
+                                </div>
                             </div>
 
 

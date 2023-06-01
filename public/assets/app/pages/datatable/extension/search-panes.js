@@ -166,7 +166,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [1, 3, 4, 5, 6, 7, 8, 9, 10, 16],
+            columns: [1, 2, 4, 5, 6, 8, 10, 11, 13, 17],
             cascadePanes: false,
             viewTotal: true,
 
@@ -185,7 +185,7 @@
 
 
             },
-            targets: [1, 3, 4, 6, 8, 9, 10, 16],
+            targets: [1, 2, 4, 5, 6, 8, 10, 13, 17],
         }],
     })
     $("#realisasiload").DataTable({

@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 use App\Models\AlihKapal;
 use App\Models\BatalMuat;
 use App\Models\SealContainer;
+use App\Models\SiPdfContainer;
+use App\Models\DetailBarangLoad;
 
 class RealisasiLoadController extends Controller
 {
@@ -110,12 +112,16 @@ class RealisasiLoadController extends Controller
             'types' => $types,
             'danas' => $danas,
             'sealsc' => $sealsc,
+            'sealsc' => $sealsc,
 
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->get(),
+            'pdfs' => SiPdfContainer::where('job_id', $id)->get(),
             'batals' => BatalMuat::where('job_id', $id)->get(),
+            'details' => DetailBarangLoad::where('job_id', $id)->get(),
+
         ]);
     }
 

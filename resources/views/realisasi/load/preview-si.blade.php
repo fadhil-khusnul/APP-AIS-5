@@ -57,26 +57,24 @@
                                 )</h3>
                         </div>
 
-                        @foreach ($pdfs as $pdf)
-
-                        @if ($pdf->job_id == $planload->id)
 
 
-                                <div class="col-md-6 mb-3">
+
+                                <div class="col-md-12 mb-3">
                                     <div class="col-12"  style="padding-left: 20px; padding-right: 20px">
                                         @if ($pdf->status == "Disetujui")
 
                                         <embed src="{{ asset('storage/si-container/'.$pdf->path.'.pdf') }}"
-                                        type="application/pdf" width="100%" height="450px" />
+                                        type="application/pdf" width="100%" height="650px" />
 
                                         @elseif ($pdf->status == "Ditolak")
 
                                         <embed src="{{ asset('storage/si-container/'.$pdf->path.'-ditolak.pdf') }}"
-                                            type="application/pdf" width="100%" height="450px" />
+                                            type="application/pdf" width="100%" height="650px" />
 
                                         @else
                                         <embed src="{{ asset('storage/si-container/'.$pdf->path.'-progress.pdf') }}"
-                                            type="application/pdf" width="100%" height="450px" />
+                                            type="application/pdf" width="100%" height="650px" />
                                         @endif
                                     </div>
 
@@ -87,16 +85,15 @@
                                                 class="fa fa-check"></i></button>
                                         <button type="button" value="{{$pdf->container_id}}" onclick="tolak_si(this)" class="btn btn-danger ">Tolak SI <i
                                                 class="fa  fa-times"></i></button>
+
                                     </div>
 
 
 
                                 </div>
 
-                            @endif
 
 
-                        @endforeach
 
 
 

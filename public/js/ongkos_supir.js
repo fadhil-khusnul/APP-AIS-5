@@ -63,33 +63,8 @@ $(function () {
                 });
             }
     });
+    $('#valid_supir').validate({
 
-    $('#valid_rekening').validate({
-            rules: {
-
-                no_rekening: {
-                    required: true
-                },
-                atas_nama: {
-                    required: true
-                },
-                nama_bank: {
-                    required: true
-                },
-            },
-            messages: {
-
-                nama_bank: {
-                    required: "Silakan Isi Nama Bank"
-                },
-                no_rekening: {
-                    required: "Silakan Isi No. Rekening"
-                },
-
-                atas_nama: {
-                    required: "Silakan Isi Nama Pemilik Rekening"
-                },
-            },
             highlight: function highlight(element, errorClass, validClass) {
                 $(element).addClass("is-invalid");
                 $(element).removeClass("is-valid");
@@ -104,27 +79,27 @@ $(function () {
             },
             submitHandler: function (form) {
 
-                var nama_bank = $("#nama_bank").val();
-                var no_rekening = $("#no_rekening").val();
-                var atas_nama = $("#atas_nama").val();
+                var nama_vendor = $("#nama_vendor").val();
+                var nama_supir = $("#nama_supir").val();
+                var nomor_polisi = $("#nomor_polisi").val();
                 var token = $('#csrf').val();
 
 
                 var data = {
                     "_token": token,
-                    "nama_bank": nama_bank,
-                    "no_rekening": no_rekening,
-                    "atas_nama": atas_nama,
+                    "nama_vendor": nama_vendor,
+                    "nama_supir": nama_supir,
+                    "nomor_polisi": nomor_polisi,
                 }
 
                 $.ajax({
                     type: 'POST',
-                    url: 'add-rekening',
+                    url: '/add-supir',
                     data: data,
                     success: function (response) {
                         swal.fire({
                             icon: "success",
-                            title: "Data Rekening Bank Berhasil Ditambah",
+                            title: "Data Supir Berhasil Ditambah",
                             showConfirmButton: false,
                             timer: 2e3,
 
@@ -136,6 +111,7 @@ $(function () {
                 });
             }
     });
+
 });
 
 function editdana(e) {
@@ -217,49 +193,24 @@ function editdana(e) {
         }
     });
 }
-
-function editrekening(e) {
+function editsupir(e) {
     var id = e.value;
     console.log(id);
 
 
     $.ajax({
-        url: 'rekening-bank/' + id + '/edit',
+        url: 'supir-mobil/' + id + '/edit',
         type: 'GET',
         success: function (response) {
-            $('#modal-dana-edit').modal('show');
+            $('#modal-supir-edit').modal('show');
 
-            $('#nama_bank_edit').val(response.result.nama_bank);
-            $('#no_rekening_edit').val(response.result.no_rekening);
-            $('#atas_nama_edit').val(response.result.atas_nama);
+            $('#old_id_supir').val(response.result.id);
+            $('#nama_vendor_edit').val(response.result.vendor_id);
+            $('#nama_supir_edit').val(response.result.nama_supir);
+            $('#nomor_polisi_edit').val(response.result.nomor_polisi);
 
-            $('#valid_rekening_edit').validate({
-                rules: {
+            $('#valid_supir_edit').validate({
 
-                    nama_bank_edit: {
-                        required: true
-                    },
-                    atas_nama_edit: {
-                        required: true
-                    },
-                    no_rekening_edit: {
-                        required: true
-                    },
-
-                },
-                messages: {
-
-                    nama_bank_edit: {
-                        required: "Silakan Isi Nama Bank"
-                    },
-                    no_rekening_edit: {
-                        required: "Silakan Isi No. Rekening"
-                    },
-                    atas_nama_edit: {
-                        required: "Silakan Isi Nama Rekening"
-                    },
-
-                },
                 highlight: function highlight(element, errorClass, validClass) {
                     $(element).addClass("is-invalid");
                     $(element).removeClass("is-valid");
@@ -276,20 +227,21 @@ function editrekening(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var old = $('#old_id_supir').val();
 
                     $.ajax({
-                        url: 'rekening-bank/' + id,
+                        url: '/supir-mobil/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            nama_bank: $('#nama_bank_edit').val(),
-                            no_rekening: $('#no_rekening_edit').val(),
-                            atas_nama: $('#atas_nama_edit').val(),
+                            nama_vendor: $('#nama_vendor_edit').val(),
+                            nama_supir: $('#nama_supir_edit').val(),
+                            nomor_polisi: $('#nomor_polisi_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data Rekening Bank Berhasil Diedit",
+                                title: "Data Supir Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 
@@ -305,6 +257,7 @@ function editrekening(e) {
         }
     });
 }
+
 
 function deletedana(id) {
     var deleteid = id.value;
@@ -360,8 +313,7 @@ function deletedana(id) {
             }
         });
 }
-
-function deleterekening(id) {
+function deletesupir(id) {
     var deleteid = id.value;
 
     var swal = Swal.mixin({
@@ -389,11 +341,11 @@ function deleterekening(id) {
                 };
                 $.ajax({
                     type: "DELETE",
-                    url: 'rekening-bank/' + deleteid,
+                    url: '/supir-mobil/' + deleteid,
                     data: data,
                     success: function (response) {
                         swal.fire({
-                            title: "Data Rekening Bank Dihapus",
+                            title: "Data Supir Dihapus",
                             text: "Data Berhasil Dihapus",
                             icon: "success",
                             timer: 2e3,
@@ -415,3 +367,5 @@ function deleterekening(id) {
             }
         });
 }
+
+

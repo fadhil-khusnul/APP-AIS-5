@@ -3,7 +3,11 @@
         {mask:"99-9999999",
         placeholder:
         ""})
-        ;$("#inputmask-4").inputmask({mask:"9",repeat:10,greedy:false});$("#inputmask-5").inputmask({mask:"$ 999.999.999,99",numericInput:true});
+        ;$("#inputmask-4").inputmask({mask:"9",repeat:10,greedy:false});
+
+        $("#inputmask-5").inputmask({
+            mask:"$ 999.999.999,99",
+            numericInput:true});
 
 
         $("#inputmask-6").inputmask({mask:"999.999.999.999"});
@@ -25,6 +29,20 @@
             mask:"AAAA9999999",
             placeholder:"",
     });
+
+    $(".currency-rupiah").inputmask({
+        alias : "numeric",
+        prefix: '',
+        'groupSeparator': '.',
+        'autoGroup': true,
+        'digits': 0,
+        'digitsOptional': false,
+        placeholder: '0',
+
+
+    });
+
+    
 
 
     });

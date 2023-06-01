@@ -117,8 +117,8 @@ function pdf_si() {
                         },
                         submitHandler: function (form) {
 
-                            document.getElementById('loading-wrapper').style.cursor = "wait";
-                            document.getElementById('btnFinish').setAttribute('disabled', true);
+                            // document.getElementById('loading-wrapper').style.cursor = "wait";
+                            // document.getElementById('btnFinish').setAttribute('disabled', true);
                             var shipper = $('#shipper').val();
                             var consigne = $('#consigne').val();
                             // var slug_container = $('#slug_container').val();

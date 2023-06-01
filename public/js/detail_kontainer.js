@@ -1,6 +1,14 @@
 function detail(e) {
     let id = e.value;
     console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
 
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
@@ -32,7 +40,7 @@ function detail(e) {
                 .select2({
                     dropdownAutoWidth: true,
                     // tags: true,
-                    placeholder: "Silahkan Pilih",
+                    placeholder: "Silahkan Pilih Seal",
                     // allowClear:true,
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
@@ -72,7 +80,7 @@ function detail(e) {
                                     title: "Seal Kontainer Sudah Dipakai",
                                     icon: "error",
                                     timer: 10e3,
-                                    showConfirmButton: false,
+                                    showConfirmButton: true,
                                 }).then(() => {
                                     var wanted_option = $(
                                         '#seal option[value="' +
@@ -132,7 +140,7 @@ function detail(e) {
                                     title: "SPK Kontainer Sudah Dipakai",
                                     icon: "error",
                                     timer: 10e3,
-                                    showConfirmButton: false,
+                                    showConfirmButton: true,
                                 }).then(() => {
                                     var wanted_option = $(
                                         '#spk option[value="' +
@@ -153,15 +161,55 @@ function detail(e) {
                 .val(response.result.lokasi_depo)
                 .select2({
                     dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih",
+                    placeholder: "Silahkan Pilih Lokasi Pickup",
                     allowClear: true,
                     dropdownParent: $("#modal-job"),
                 });
-            // .on("select2:select", function (e) {
-            //     var selected_element = $(e.currentTarget);
-            //     var select_val = selected_element.val();
-            // });
-            $("#driver").val(response.result.driver);
+            $("#pengirim")
+                .val(response.result.pengirim)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Pengirim",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job"),
+                });
+            $("#penerima")
+                .val(response.result.penerima)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih penerima",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job"),
+                });
+
+            $("#driver").val(response.result.driver).select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Vendor",
+                allowClear: true,
+                dropdownParent: $("#modal-job"),
+            }).change(function() {
+                let vendor_id = $(this).val();
+                let token = $('#csrf').val();;
+                $.ajax({
+                    url: '/getVendor',
+                    type: 'POST',
+                    data: {
+
+                        'vendor_id' : vendor_id,
+                        '_token' : token,
+                    },
+                    success: function(result) {
+                        $('#nomor_polisi').select2({
+                            dropdownAutoWidth: true,
+                            placeholder: "Silahkan Pilih Supir",
+                            allowClear: true,
+                            dropdownParent: $("#modal-job"),
+                        }).html(result)
+                    }
+                });
+            });
+
+
             $("#new_id").val(response.result.id);
             $("#nomor_polisi").val(response.result.nomor_polisi);
             $("#remark").val(response.result.remark);
@@ -240,6 +288,8 @@ function detail(e) {
                             seal: $("#seal").val(),
                             date_activity: formattedDate,
                             lokasi: $("#lokasi").val(),
+                            penerima: $("#penerima").val(),
+                            pengirim: $("#pengirim").val(),
                             driver: $("#driver").val(),
                             nomor_polisi: $("#nomor_polisi").val(),
                             remark: $("#remark").val(),
@@ -253,6 +303,9 @@ function detail(e) {
                                 .val()
                                 .replace(/\./g, ""),
                             biaya_thc: $("#biaya_thc").val().replace(/\./g, ""),
+                            biaya_seal: $("#biaya_seal").val().replace(/\./g, ""),
+                            freight: $("#freight").val().replace(/\./g, ""),
+                            lss: $("#lss").val().replace(/\./g, ""),
                             jenis_mobil: $("#jenis_mobil").val(),
                             dana: $("#dana").val(),
                             spk: $("#spk").val(),
@@ -323,7 +376,7 @@ function delete_kontainerDB(r) {
                 title: "Container TIDAK DIHAPUS",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: false,
+                showConfirmButton: true,
             });
         }
     });
@@ -331,10 +384,30 @@ function delete_kontainerDB(r) {
 
 function detail_tambah() {
     $("#modal-job-tambah").modal("show");
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
 
     $("#lokasi_tambah").select2({
         dropdownAutoWidth: true,
         placeholder: "Silahkan Pilih Lokasi",
+        allowClear: true,
+        dropdownParent: $("#modal-job-tambah"),
+    });
+    $("#pengirim_tambah").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Pengirim",
+        allowClear: true,
+        dropdownParent: $("#modal-job-tambah"),
+    });
+    $("#penerima_tambah").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Penerima",
         allowClear: true,
         dropdownParent: $("#modal-job-tambah"),
     });
@@ -381,7 +454,7 @@ function detail_tambah() {
                                     title: "SPK Kontainer Sudah Dipakai",
                                     icon: "error",
                                     timer: 10e3,
-                                    showConfirmButton: false,
+                                    showConfirmButton: true,
                                 }).then(() => {
                                     var wanted_option = $(
                                         '#spk_tambah option[value="' +
@@ -445,7 +518,7 @@ function detail_tambah() {
                         text: "Silakan Masukkan Seal yang Lain",
                         icon: "error",
                         timer: 10e3,
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                     }).then(() => {
                         var wanted_option = $(
                             '#seal_tambah option[value="' +
@@ -469,6 +542,33 @@ function detail_tambah() {
         dropdownParent: $("#modal-job-tambah"),
     });
 
+    $("#driver_tambah").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Vendor",
+        allowClear: true,
+        dropdownParent: $("#modal-job-tambah"),
+    }).change(function() {
+        let vendor_id = $(this).val();
+        let token = $('#csrf').val();;
+        $.ajax({
+            url: '/getVendor',
+            type: 'POST',
+            data: {
+
+                'vendor_id' : vendor_id,
+                '_token' : token,
+            },
+            success: function(result) {
+                $('#nomor_polisi_tambah').select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Supir",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-tambah"),
+                }).html(result)
+            }
+        });
+    })
+
     $("#valid_job_tambah").validate({
         ignore: "select[type=hidden]",
 
@@ -476,26 +576,6 @@ function detail_tambah() {
             size: {
                 required: true,
             },
-        },
-        messages: {
-            // size: {
-            //     required: "Silakan Pilih Size"
-            // },
-            // type: {
-            //     required: "Silakan Pilih Type"
-            // },
-            // nomor_kontainer: {
-            //     required: "Silakan Masukkan Nomor Kontainer"
-            // },
-            // cargo: {
-            //     required: "Silakan Masukkan Cargo"
-            // },
-            // detail_barang: {
-            //     required: "Silakan Masukkan Detail Barang"
-            // },
-            // seal_tambah: {
-            //     required: "Silakan Pilih Seal"
-            // },
         },
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
@@ -530,6 +610,8 @@ function detail_tambah() {
             var data = {
                 _token: token,
                 job_id: $("#job_id").val(),
+                pengirim: $("#pengirim_tambah").val(),
+                penerima: $("#penerima_tambah").val(),
                 size: $("#size_tambah").val(),
                 type: $("#type_tambah").val(),
                 nomor_kontainer: $("#nomor_kontainer_tambah").val(),
@@ -552,6 +634,9 @@ function detail_tambah() {
                     .val()
                     .replace(/\./g, ""),
                 biaya_thc: $("#biaya_thc_tambah").val().replace(/\./g, ""),
+                biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
+                freight: $("#freight_tambah").val().replace(/\./g, ""),
+                lss: $("#lss_tambah").val().replace(/\./g, ""),
                 jenis_mobil: $("#jenis_mobil_tambah").val(),
                 dana: $("#dana_tambah").val(),
             };
@@ -577,6 +662,14 @@ function detail_tambah() {
 function detail_update(e) {
     let id = e.value;
     console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
 
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
@@ -587,12 +680,20 @@ function detail_update(e) {
 
             var seals = [""];
             var spk = [""];
+            var supir = [""];
 
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
             for (let i = 0; i < response.spks.length; i++) {
                 spk[i] = response.spks[i].spk_kontainer;
+            }
+            for (let i = 0; i < response.supirs.length; i++) {
+                supir +=   "<option value='" +
+                response.supirs[i].id +
+                "'>" +
+                response.supirs[i].nama_supir + "/" + response.supirs[i].nomor_polisi+
+                "</option>";
             }
             console.log(seals);
             $("#modal-job-update").modal("show");
@@ -656,7 +757,7 @@ function detail_update(e) {
                                         icon: "error",
                                         timer: 10e3,
                                         async:false,
-                                        showConfirmButton: false,
+                                        showConfirmButton: true,
                                     }).then(() => {
                                         var wanted_option = $(
                                             '#seal_update option[value="' +
@@ -724,7 +825,7 @@ function detail_update(e) {
                                         icon: "error",
                                         timer: 10e3,
                                         async:false,
-                                        showConfirmButton: false,
+                                        showConfirmButton: true,
                                     }).then(() => {
                                         var wanted_option = $(
                                             '#spk_update option[value="' +
@@ -742,7 +843,9 @@ function detail_update(e) {
                         },
                     });
                 });
-            $("#date_activity_update").val(response.result.date_activity);
+
+            var old_tanggal_result = moment(response.result.date_activity, 'YYYY-MM-DD').format('dddd, DD-MM-YYYY');
+            $("#date_activity_update").val(old_tanggal_result);
             $("#lokasi_update")
                 .val(response.result.lokasi_depo)
                 .select2({
@@ -751,17 +854,65 @@ function detail_update(e) {
                     allowClear: true,
                     dropdownParent: $("#modal-job-update"),
                 });
-            // .on("select2:select", function (e) {
-            //     var selected_element = $(e.currentTarget);
-            //     var select_val = selected_element.val();
-            // });
-            $("#driver_update").val(response.result.driver);
+            $("#pengirim_update")
+                .val(response.result.pengirim)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Pengirim",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+            });
+            $("#penerima_update")
+                .val(response.result.penerima)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih penerima",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+            });
+
+
             $("#new_id_update").val(response.result.id);
-            $("#nomor_polisi_update").val(response.result.nomor_polisi);
+            $('#nomor_polisi_update').html(supir).select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Supir",
+                allowClear: true,
+                dropdownParent: $("#modal-job-update"),
+            })
+            $("#driver_update").val(response.result.driver).select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Vendor",
+                allowClear: true,
+                dropdownParent: $("#modal-job-update"),
+            }).change(function() {
+                let vendor_id = $(this).val();
+                let token = $('#csrf').val();;
+                $.ajax({
+                    url: '/getVendor',
+                    type: 'POST',
+                    data: {
+
+                        'vendor_id' : vendor_id,
+                        '_token' : token,
+                    },
+                    success: function(result) {
+                        $('#nomor_polisi_update').select2({
+                            dropdownAutoWidth: true,
+                            placeholder: "Silahkan Pilih Supir",
+                            allowClear: true,
+                            dropdownParent: $("#modal-job-update"),
+                        }).html(result)
+                    }
+                });
+            })
             $("#remark_update").val(response.result.remark);
             $("#biaya_stuffing_update").val(response.result.biaya_stuffing);
             $("#biaya_trucking_update").val(response.result.biaya_trucking);
             $("#biaya_thc_update").val(response.result.biaya_thc);
+            $("#ongkos_supir_update").val(response.result.ongkos_supir);
+            $("#biaya_seal_update").val(response.result.biaya_seal);
+            $("#freight_update").val(response.result.freight);
+            $("#lss_update").val(response.result.lss);
             $("#jenis_mobil_update").val(response.result.jenis_mobil);
             $("#dana_update")
                 .val(response.result.dana)
@@ -814,7 +965,9 @@ function detail_update(e) {
                     var tempDate;
                     var formattedDate;
 
+
                     tempDate = new Date(date_activity);
+                    console.log(tempDate);
                     formattedDate = [
                         tempDate.getFullYear(),
                         tempDate.getMonth() + 1,
@@ -833,10 +986,12 @@ function detail_update(e) {
                             cargo: $("#cargo_update").val(),
                             detail_barang: $("#detail_barang_update").val(),
                             seal: $("#seal_update").val(),
-                            seal_old: $("#seal_old").val(),
+                            seal_old: seals,
                             spk_old: spk,
                             date_activity: formattedDate,
                             lokasi: $("#lokasi_update").val(),
+                            penerima: $("#penerima_update").val(),
+                            pengirim: $("#pengirim_update").val(),
                             driver: $("#driver_update").val(),
                             nomor_polisi: $("#nomor_polisi_update").val(),
                             remark: $("#remark_update").val(),
@@ -850,6 +1005,9 @@ function detail_update(e) {
                                 .val()
                                 .replace(/\./g, ""),
                             biaya_thc: $("#biaya_thc_update").val().replace(/\./g, ""),
+                            biaya_seal: $("#biaya_seal_update").val().replace(/\./g, ""),
+                            freight: $("#freight_update").val().replace(/\./g, ""),
+                            lss: $("#lss_update").val().replace(/\./g, ""),
                             jenis_mobil: $("#jenis_mobil_update").val(),
                             dana: $("#dana_update").val(),
                             spk: $("#spk_update").val(),
@@ -899,14 +1057,14 @@ function realisasi_page(slug) {
                 title: "BERALIH BERHASIL",
                 icon: "success",
                 timer: 9e3,
-                showConfirmButton: false,
+                showConfirmButton: true,
             });
         } else {
             swal.fire({
                 title: "Batal Beralih Halaman",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: false,
+                showConfirmButton: true,
             });
         }
     });
@@ -1100,6 +1258,193 @@ function delete_laiannyaDB(r) {
     });
 }
 
+function detail_barang() {
+    $("#modal_detail_barang").modal("show");
+
+    $("#valid_detail_barang").validate({
+        ignore: "select[type=hidden]",
+
+        rules: {
+            size: {
+                required: true,
+            },
+        },
+        messages: {},
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+
+        // console.log();
+        submitHandler: function (form) {
+            var token = $("#csrf").val();
+
+            var data = {
+                _token: token,
+                job_id: $("#job_id").val(),
+                kontainer_id: $("#kontainer_detail").val(),
+                detail_barang: $("#detail_barang").val(),
+            };
+
+            $.ajax({
+                url: "/detailbarang-kontainer",
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    swal.fire({
+                        icon: "success",
+                        title: "Detail Barang Berhasil Dimasukkan",
+                        showConfirmButton: false,
+                        timer: 2e3,
+                    }).then((result) => {
+                        location.reload();
+                    });
+                },
+            });
+        },
+    });
+}
+
+function detail_barang_edit(e) {
+    let id = e.value;
+    console.log(id);
+
+    $.ajax({
+        url: "/detailbarang-edit/" + id,
+        type: "GET",
+        success: function (response) {
+            $("#modal_detail_barang_edit").modal("show");
+
+            $("#id_lama_detail").val(response.result.id);
+            $("#old_id_container_detail").val(response.result.kontainer_id);
+            $("#kontainer_detail_edit")
+                .val(response.result.kontainer_id)
+                .is(":selected");
+            $("#detail_barang_edit").val(response.result.detail_barang);
+
+            $("#valid_detail_barang_edit").validate({
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var old_id_container_detail = document.getElementById(
+                        "old_id_container_detail"
+                    ).value;
+                    var id_lama_detail =
+                        document.getElementById("id_lama_detail").value;
+                    console.log(id_lama_detail);
+                    var token = $("#csrf").val();
+
+                    var data = {
+                        _token: token,
+                        job_id: $("#job_id").val(),
+                        kontainer_id: $("#kontainer_detail_edit").val(),
+                        old_id_container_detail: old_id_container_detail,
+                        detail_barang: $("#detail_barang_edit").val(),
+                    };
+
+                    $.ajax({
+                        url: "/detailbarang-update/" + id_lama_detail,
+                        type: "PUT",
+                        data: data,
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Detail Barang Berhasil Diupdate",
+                                showConfirmButton: false,
+                                timer: 2e3,
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+                },
+            });
+        },
+    });
+}
+
+function delete_detailbarangDB(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus Detail Barang Kontainer INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+                old_slug: old_slug,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/detailbarang-delete/" + deleteid,
+                data: data,
+                // contentType: false,
+                // processData: false,
+                // dataType: "json",
+                success: function (response) {
+                    swal.fire({
+                        title: "DETAIL BARANG Berhasil DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Detail Barang Kontainer Tidak Dihapus",
+                icon: "error",
+                timer: 3e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
+
+
+
+
 function detail_batal_muat() {
     $("#modal_batal_muat").modal("show");
 
@@ -1145,7 +1490,7 @@ function detail_batal_muat() {
                     swal.fire({
                         icon: "success",
                         title: "Kontainer Berhasil BATAL MUATAN",
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                         timer: 2e3,
                     }).then((result) => {
                         location.reload();
@@ -1215,7 +1560,7 @@ function detail_batal_muat_edit(e) {
                             swal.fire({
                                 icon: "success",
                                 title: "Isi Batal Muat Berhasil Diupdate",
-                                showConfirmButton: false,
+                                showConfirmButton: true,
                                 timer: 2e3,
                             }).then((result) => {
                                 location.reload();
@@ -1265,7 +1610,7 @@ function delete_batalDB(r) {
                         title: "Kontainer Berhasil DIKEMBALIKAN",
                         icon: "success",
                         timer: 9e3,
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                     });
                     window.location.reload();
                 },
@@ -1275,7 +1620,7 @@ function delete_batalDB(r) {
                 title: "Container TIDAK DIBATALKAN",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: false,
+                showConfirmButton: true,
             });
         }
     });
@@ -1350,7 +1695,7 @@ function detail_alih_kapal() {
                     swal.fire({
                         icon: "success",
                         title: "Kontainer Berhasil DIALIHKAPALKAN",
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                         timer: 2e3,
                     }).then((result) => {
                         location.reload();
@@ -1455,7 +1800,7 @@ function detail_alih_kapal_edit(e) {
                             swal.fire({
                                 icon: "success",
                                 title: "Isi Alih Kapal Berhasil Diupdate",
-                                showConfirmButton: false,
+                                showConfirmButton: true,
                                 timer: 2e3,
                             }).then((result) => {
                                 location.reload();
@@ -1505,7 +1850,7 @@ function delete_alihDB(r) {
                         title: "Kontainer Berhasil DIKEMBALIKAN",
                         icon: "success",
                         timer: 9e3,
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                     });
                     window.location.reload();
                 },
@@ -1515,7 +1860,7 @@ function delete_alihDB(r) {
                 title: "Container TIDAK DIALIHKAN",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: false,
+                showConfirmButton: true,
             });
         }
     });
@@ -1665,7 +2010,7 @@ function edit_planloaad_job(e) {
                                 title: "DETAIL KAPAL DIUPDATE",
                                 icon: "success",
                                 timer: 9e3,
-                                showConfirmButton: false,
+                                showConfirmButton: true,
                             });
                             window.location.reload();
                         },
@@ -1676,7 +2021,7 @@ function edit_planloaad_job(e) {
                         text: "Silakan Cek Kembali Data Anda",
                         icon: "error",
                         timer: 10e3,
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                     });
                 }
             });
@@ -1685,6 +2030,15 @@ function edit_planloaad_job(e) {
 }
 
 function blur_no_container(ini) {
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
     let token = $("#csrf").val();
 
     var no_kontainer = ini.value;
@@ -1710,7 +2064,7 @@ function blur_no_container(ini) {
                     text: "Silakan Masukkan Nomor Kontainer yang Lain",
                     icon: "error",
                     timer: 10e3,
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                 }).then(() => {
                     ini.value = "";
                 });
@@ -1747,7 +2101,7 @@ function blur_no_container_edit(ini) {
                         text: "Silakan Masukkan Nomor Kontainer yang Lain",
                         icon: "error",
                         timer: 10e3,
-                        showConfirmButton: false,
+                        showConfirmButton: true,
                     }).then(() => {
                         ini.value = "";
                     });
@@ -1791,7 +2145,7 @@ $("#seal").on("select2:select", function (evt) {
                     text: "Silakan Masukkan Seal yang Lain",
                     icon: "error",
                     timer: 10e3,
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                 }).then(() => {
                     var wanted_option = $(
                         '#seal option[value="' + last_seal + '"]'
@@ -1822,7 +2176,7 @@ $("#seal").on("select2:select", function (evt) {
             //                     text: "Silakan Pilih Seal yang Lain",
             //                     icon: "error",
             //                     timer: 10e3,
-            //                     showConfirmButton: false,
+            //                     showConfirmButton: true,
             //                 }).then(() => {
             //                     document.getElementById(
             //                         "select2-seal" + baris + "-container"
@@ -1882,7 +2236,7 @@ function change_container() {
                     text: "Silakan Masukkan Seal yang Lain",
                     icon: "error",
                     timer: 10e3,
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                 }).then(() => {
                     var wanted_option = $(
                         '#seal option[value="' + last_seal + '"]'
@@ -1913,7 +2267,7 @@ function change_container() {
             //                     text: "Silakan Pilih Seal yang Lain",
             //                     icon: "error",
             //                     timer: 10e3,
-            //                     showConfirmButton: false,
+            //                     showConfirmButton: true,
             //                 }).then(() => {
             //                     document.getElementById(
             //                         "select2-seal" + baris + "-container"

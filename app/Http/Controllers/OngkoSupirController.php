@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\OngkoSupir;
+use App\Models\SupirMobil;
+use App\Models\VendorMobil;
 use App\Models\RekeningBank;
 use Illuminate\Http\Request;
 
@@ -22,14 +24,16 @@ class OngkoSupirController extends Controller
 
         ]);
     }
-    public function index_rekening()
+    public function index_supir()
     {
         //
-        $danas = RekeningBank::orderBy('id', 'DESC')->get();
-        return view('pages.rekening-bank',[
-            'title' => 'Data Rekening Bank',
-            'active' => 'Rekening',
-            'danas' => $danas,
+        $vendors = VendorMobil::all();
+        $supirs = SupirMobil::orderBy('id', 'DESC')->get();
+        return view('pages.vendor-supir',[
+            'title' => 'Data Vendor Mobil Truck',
+            'active' => 'Vendor',
+            'supirs' => $supirs,
+            'vendors' => $vendors,
 
         ]);
     }
@@ -79,6 +83,23 @@ class OngkoSupirController extends Controller
             'success'   => true
         ]);
     }
+    public function store_supir(Request $request)
+    {
+        //
+        $data = [
+
+            'vendor_id' => $request->nama_vendor,
+            'nama_supir' => $request->nama_supir,
+            'nomor_polisi' => $request->nomor_polisi,
+
+        ];
+
+        SupirMobil::create($data);
+
+        return response()->json([
+            'success'   => true
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -108,6 +129,15 @@ class OngkoSupirController extends Controller
 
         return response()->json([
             'result' => $RekeningBank,
+        ]);
+    }
+    public function edit_supir($id)
+    {
+        //
+        $SupirMobil = SupirMobil::find($id);
+
+        return response()->json([
+            'result' => $SupirMobil,
         ]);
     }
 
@@ -144,6 +174,21 @@ class OngkoSupirController extends Controller
         $danas->update($data);
         return response()->json(['success' => true]);
     }
+    public function update_supir(Request $request, $id)
+    {
+        //
+
+        $supirs = SupirMobil::findOrFail($id);
+
+        $data = [
+            'vendor_id' => $request->nama_vendor,
+            'nama_supir' => $request->nama_supir,
+            'nomor_polisi' => $request->nomor_polisi,
+        ];
+
+        $supirs->update($data);
+        return response()->json(['success' => true]);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -162,6 +207,16 @@ class OngkoSupirController extends Controller
     {
         //u
         $danas = RekeningBank::find($id);
+        $danas->delete();
+        return response()->json([
+            'success'   => true
+        ]);
+    }
+
+    public function destroy_supir($id)
+    {
+        //u
+        $danas = SupirMobil::find($id);
         $danas->delete();
         return response()->json([
             'success'   => true

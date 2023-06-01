@@ -14,6 +14,9 @@ use App\Models\Container;
 use App\Models\Stuffing;
 use App\Models\Stripping;
 use App\Models\TypeContainer;
+use App\Models\VendorMobil;
+use App\Models\RekeningBank;
+
 
 class DataController extends Controller
 {
@@ -23,16 +26,19 @@ class DataController extends Controller
     public function index()
     {
 
-        $companies = ShippingCompany::all();
-        $depos = Depo::all();
-        $pelabuhans = Pelabuhan::all();
-        $pengirims = Pengirim::all();
-        $penerimas = Penerima::all();
-        $biayas = Biaya::all();
-        $types = TypeContainer::all();
-        $containers = Container::all();
-        $stuffings = Stuffing::all();
-        $strippings = Stripping::all();
+        $companies = ShippingCompany::orderBy('id', 'DESC')->get();
+        $depos = Depo::orderBy('id', 'DESC')->get();
+        $pelabuhans = Pelabuhan::orderBy('id', 'DESC')->get();
+        $pengirims = Pengirim::orderBy('id', 'DESC')->get();
+        $penerimas = Penerima::orderBy('id', 'DESC')->get();
+        $biayas = Biaya::orderBy('id', 'DESC')->get();
+        $types = TypeContainer::orderBy('id', 'DESC')->get();
+        $containers = Container::orderBy('id', 'DESC')->get();
+        $stuffings = Stuffing::orderBy('id', 'DESC')->get();
+        $strippings = Stripping::orderBy('id', 'DESC')->get();
+        $vendors = VendorMobil::orderBy('id', 'DESC')->get();
+
+        $danas = RekeningBank::orderBy('id', 'DESC')->get();
 
         return view('pages.data',[
             'title' => 'Data',
@@ -47,6 +53,9 @@ class DataController extends Controller
             'containers' => $containers,
             'stuffings' => $stuffings,
             'strippings' => $strippings,
+            'vendors' => $vendors,
+            'danas' => $danas,
+
         ]);
     }
 

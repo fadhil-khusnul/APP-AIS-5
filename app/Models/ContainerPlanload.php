@@ -17,9 +17,13 @@ class ContainerPlanload extends Model
 
 
 
-    public function order_job_planloads()
+    public function planload()
     {
-        return $this->belongsTo(OrderJobPlanload::class, 'id');
+        return $this->belongsTo(OrderJobPlanload::class, 'job_id', 'id');
+    }
+    public function mobils()
+    {
+        return $this->belongsTo(SupirMobil::class, 'nomor_polisi', 'id');
     }
 
 }
