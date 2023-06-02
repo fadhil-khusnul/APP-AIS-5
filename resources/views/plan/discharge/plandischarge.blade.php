@@ -54,7 +54,8 @@
                             <td>
                                 {{$loop->iteration}}
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
+                            <td>
+                                {{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
                             </td>
 
 

@@ -15,7 +15,6 @@ function detail(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            console.log(new_id);
 
             var seals = [""];
             var spk = [""];
@@ -128,7 +127,6 @@ function detail(e) {
                         success: function (response) {
                             var seal = $("#spk").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -147,8 +145,6 @@ function detail(e) {
                                             last_seal +
                                             '"]'
                                     );
-                                    console.log(wanted_option);
-
                                     wanted_option.prop("selected", false);
                                     $("#spk").trigger("change.select2");
                                 });
@@ -703,6 +699,8 @@ function detail_update(e) {
             $("#nomor_kontainer_update").val(response.result.nomor_kontainer);
             $("#no_container_edit").val(response.result.nomor_kontainer);
             $("#cargo_update").val(response.result.cargo);
+            $("#old_ongkos_supir").val(response.result.ongkos_supir);
+            $("#old_dana").val(response.result.dana);
             $("#detail_barang_update").val(response.result.detail_barang);
             $("#seal_old").val(seals);
 
@@ -1004,6 +1002,8 @@ function detail_update(e) {
                             ongkos_supir: $("#ongkos_supir_update")
                                 .val()
                                 .replace(/\./g, ""),
+                            old_ongkos_supir: $("#old_ongkos_supir").val(),
+                            old_dana: $("#old_dana").val(),
                             biaya_thc: $("#biaya_thc_update").val().replace(/\./g, ""),
                             biaya_seal: $("#biaya_seal_update").val().replace(/\./g, ""),
                             freight: $("#freight_update").val().replace(/\./g, ""),
@@ -1292,7 +1292,7 @@ function detail_disabled(e) {
                     dropdownParent: $("#modal-job-update"),
                 });
 
-           
+
         },
     });
 }

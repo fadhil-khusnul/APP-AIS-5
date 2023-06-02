@@ -6,6 +6,7 @@ use App\Models\OngkoSupir;
 use App\Models\SupirMobil;
 use App\Models\VendorMobil;
 use App\Models\RekeningBank;
+use App\Models\ContainerPlanload;
 use Illuminate\Http\Request;
 
 class OngkoSupirController extends Controller
@@ -37,6 +38,21 @@ class OngkoSupirController extends Controller
 
         ]);
     }
+
+    public function report_load()
+    {
+        $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
+
+        return view('pages.vendor.report-load', [
+
+            'title' => 'Report Mobil Truck Load',
+            'active' => 'truck',
+            "containers" => $containers,
+
+        ]);
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

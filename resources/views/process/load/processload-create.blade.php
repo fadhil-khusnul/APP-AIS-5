@@ -1222,11 +1222,14 @@
                             </div>
                         </div>
                         <div class="row">
+                            <input type="hidden" id="old_dana" name="old_dana">
+                            <input type="hidden" id="old_ongkos_supir" name="old_ongkos_supir">
                             <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select data-bs-toggle="tooltip" required @readonly(true) id="dana_update"
                                 name="dana_update" class="form-select danas">
+
                                 @foreach ($danas as $dana)
                                     <option value="{{ $dana->id }}"
                                         @if ($dana->id) selected @endif>

@@ -189,6 +189,7 @@ Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNo
 
 Route::post('/create-si-container', [PdfController::class, 'create_si']);
 Route::post('/create-si-alih', [PdfController::class, 'create_si_alih']);
+Route::post('/getAlihKapal', [PdfController::class, 'getAlihKapal']);
 Route::post('/masukkan-bl', [PdfController::class, 'masukkan_bl']);
 Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
@@ -260,6 +261,10 @@ Route::delete('/rekening-bank/{id}', [OngkoSupirController::class, 'destroy_reke
 
 //supir
 Route::get('/supir-mobil', [OngkoSupirController::class, 'index_supir']);
+Route::get('/report-vendor-load', [OngkoSupirController::class, 'report_load']);
+Route::get('/report-vendor-discharge', [OngkoSupirController::class, 'report_discharge']);
+Route::get('/report-vendor-trucking', [OngkoSupirController::class, 'report_trucking']);
+
 Route::post('/add-supir', [OngkoSupirController::class, 'store_supir']);
 Route::get('/supir-mobil/{id}/edit', [OngkoSupirController::class, 'edit_supir']);
 Route::put('/supir-mobil/{id}', [OngkoSupirController::class, 'update_supir']);

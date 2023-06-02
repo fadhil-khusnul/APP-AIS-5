@@ -34,13 +34,73 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="/supir-mobil" data-menu-path="/supir-mobil" class="menu-item-link {{ Request::is('rekening-bank*') ? 'active' : '' }}">
-                        <div class="menu-item-icon">
-                            <i class="bi bi-truck-front-fill"></i>
+                    <button class="menu-item-link menu-item-toggle {{
+                        Request::is('report-vendor-load') || Request::is('supir-mobil') ||
+                        Request::is('report-vendor-discharge') ||
+                        Request::is('report-vendor-trucking')
+                         ? 'active' : ''}}">
+                            <div class="menu-item-icon">
+                                <i class="bi bi-truck-front-fill"></i>
+                            </div>
+                            <span class="menu-item-text">VENDOR MOBIL TRUCK</span>
+                            <div class="menu-item-addon">
+                                <i class="menu-item-caret caret"></i>
+                            </div>
+                        </button>
+
+
+                    <div class="menu-submenu">
+
+                        <div class="menu-item">
+                            <a href="/supir-mobil" data-menu-path="/supir-mobil" class="menu-item-link {{ Request::is('rekening-bank*') ? 'active' : '' }}">
+                                <div class="menu-item-icon">
+                                    <i class="menu-item-bullet"></i>
+                                </div>
+                                <span class="menu-item-text">DATA</span>
+                            </a>
+
                         </div>
-                        <span class="menu-item-text">VENDOR MOBIL TRUCK</span>
-                    </a>
+                        <div class="menu-item">
+                            <button class="menu-item-link menu-item-toggle
+                            {{
+                                Request::is('report-vendor-load') || Request::is('report-vendor-discharge')
+                                || Request::is('report-vendor-trucking')
+                                ? 'active' : ''
+                            }}">
+                                <i class="menu-item-bullet"></i>
+                                <span class="menu-item-text">REPORT</span>
+                                <div class="menu-item-addon">
+                                    <i class="menu-item-caret caret"></i>
+                                </div>
+                            </button>
+                            <!-- BEGIN Menu Submenu -->
+                            <div class="menu-submenu">
+                                <div class="menu-item">
+                                    <a href="/report-vendor-load" data-menu-path="/datatable/basic/base.html" class="menu-item-link {{  Request::is('report-vendor-load') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">LOAD</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/report-vendor-discharge" data-menu-path="/datatable/basic/footer.html" class="menu-item-link {{  Request::is('report-vendor-discharge') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">DISCHARGE</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/report-vendor-trucking" data-menu-path="/datatable/basic/scrollable.html" class="menu-item-link {{  Request::is('report-vendor-trucking') ? 'active' : ''}}">
+                                        <i class="menu-item-bullet"></i>
+                                        <span class="menu-item-text">TRUCKING</span>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
+
 
                 <div class="menu-item">
                     <a href="/ongkos-supir" data-menu-path="/ongkos-supir" class="menu-item-link {{ Request::is('ongkos-supir*') ? 'active' : '' }}">
@@ -49,6 +109,7 @@
                         </div>
                         <span class="menu-item-text">DEPOSIT TRUCKING</span>
                     </a>
+
                 </div>
 
 

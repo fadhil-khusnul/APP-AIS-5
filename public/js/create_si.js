@@ -1,4 +1,3 @@
-
 function pdf_si() {
     var swal = Swal.mixin({
         customClass: {
@@ -11,27 +10,27 @@ function pdf_si() {
 
     var toast = Swal.mixin({
         toast: true,
-        position: "top-end", showConfirmButton: false,
+        position: "top-end",
+        showConfirmButton: false,
         timer: 3e3,
         timerProgressBar: true,
         didOpen: function didOpen(toast) {
-            toast.addEventListener("mouseenter", Swal.stopTimer); toast.addEventListener("mouseleave", Swal.resumeTimer)
-        }
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
     });
 
     $("#valid_realisasi").validate({
         ignore: "select[type=hidden]",
         rules: {
             letter: {
-                required: true
+                required: true,
             },
         },
         messages: {
-
             letter: {
-                required: "Silakan Pilih Minimal 1 Container"
+                required: "Silakan Pilih Minimal 1 Container",
             },
-
         },
 
         highlight: function highlight(element, errorClass, validClass) {
@@ -52,21 +51,23 @@ function pdf_si() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            var chek_container = $('.check-container:checked').map(function() {
-                return this.value;
-            }).get();
+            var chek_container = $(".check-container:checked")
+                .map(function () {
+                    return this.value;
+                })
+                .get();
 
-            var old_slug = $('#old_slug').val();
+            var old_slug = $("#old_slug").val();
 
             var d = new Date(),
-            dformat = [
-                d.getFullYear(),
-                d.getMonth()+1,
-                d.getDate(),
-                d.getHours(),
-                d.getMinutes(),
-                d.getSeconds(),
-            ].join('-');
+                dformat = [
+                    d.getFullYear(),
+                    d.getMonth() + 1,
+                    d.getDate(),
+                    d.getHours(),
+                    d.getMinutes(),
+                    d.getSeconds(),
+                ].join("-");
 
             console.log(chek_container);
 
@@ -79,133 +80,138 @@ function pdf_si() {
                 cancelButtonText: "Tidak",
             }).then((willCreate) => {
                 if (willCreate.isConfirmed) {
-                    $('#modal-si').modal('show');
+                    $("#modal-si").modal("show");
 
-
-                    $('#valid_si').validate({
+                    $("#valid_si").validate({
                         rules: {
-
                             shipper: {
-                                required: true
+                                required: true,
                             },
                             consigne: {
-                                required: true
+                                required: true,
                             },
-
                         },
                         messages: {
-
                             shipper: {
-                                required: "Silakan Isi SHIPPER"
+                                required: "Silakan Isi SHIPPER",
                             },
                             consigne: {
-                                required: "Silakan Isi CONSIGNE"
+                                required: "Silakan Isi CONSIGNE",
                             },
-
                         },
-                        highlight: function highlight(element, errorClass, validClass) {
+                        highlight: function highlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
                             $(element).addClass("is-invalid");
                             $(element).removeClass("is-valid");
                         },
-                        unhighlight: function unhighlight(element, errorClass, validClass) {
+                        unhighlight: function unhighlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
                             $(element).removeClass("is-invalid");
                         },
-                        errorPlacement: function errorPlacement(error, element) {
+                        errorPlacement: function errorPlacement(
+                            error,
+                            element
+                        ) {
                             error.addClass("invalid-feedback");
-                            element.closest(".validation-container").append(error);
-
+                            element
+                                .closest(".validation-container")
+                                .append(error);
                         },
                         submitHandler: function (form) {
-
                             // document.getElementById('loading-wrapper').style.cursor = "wait";
                             // document.getElementById('btnFinish').setAttribute('disabled', true);
-                            var shipper = $('#shipper').val();
-                            var consigne = $('#consigne').val();
+                            var shipper = $("#shipper").val();
+                            var consigne = $("#consigne").val();
                             // var slug_container = $('#slug_container').val();
 
                             var size = [];
-                            var type = []
-                            var nomor_kontainer = []
-                            var cargo = []
-                            var seal = []
+                            var type = [];
+                            var nomor_kontainer = [];
+                            var cargo = [];
+                            var seal = [];
                             for (var i = 0; i < chek_container.length; i++) {
-                                size[i] = document.getElementById("size[" + chek_container[i] + "]").innerText;
-                                type[i] = document.getElementById("type[" + chek_container[i] + "]").innerText;
-                                nomor_kontainer[i] = document.getElementById("nomor_kontainer[" + chek_container[i] + "]").innerText;
-                                cargo[i] = document.getElementById("cargo[" + chek_container[i] + "]").innerText;
-                                seal[i] = document.getElementById("seal[" + chek_container[i] + "]").innerText;
+                                size[i] = document.getElementById(
+                                    "size[" + chek_container[i] + "]"
+                                ).innerText;
+                                type[i] = document.getElementById(
+                                    "type[" + chek_container[i] + "]"
+                                ).innerText;
+                                nomor_kontainer[i] = document.getElementById(
+                                    "nomor_kontainer[" + chek_container[i] + "]"
+                                ).innerText;
+                                cargo[i] = document.getElementById(
+                                    "cargo[" + chek_container[i] + "]"
+                                ).innerText;
+                                seal[i] = document.getElementById(
+                                    "seal[" + chek_container[i] + "]"
+                                ).innerText;
                             }
                             var data = {
-                                "_token": token,
-                                'chek_container': chek_container,
-                                'old_slug': old_slug,
-                                'shipper': shipper,
-                                'consigne': consigne,
-                                'type': type,
-                                'size': size,
-                                'nomor_kontainer': nomor_kontainer,
-                                'cargo': cargo,
-                                'seal': seal,
-                                'status_si': "Default",
+                                _token: token,
+                                chek_container: chek_container,
+                                old_slug: old_slug,
+                                shipper: shipper,
+                                consigne: consigne,
+                                type: type,
+                                size: size,
+                                nomor_kontainer: nomor_kontainer,
+                                cargo: cargo,
+                                seal: seal,
+                                status_si: "Default",
                             };
                             // console.log(data);
 
                             $.ajax({
                                 type: "POST",
-                                url: '/create-si-container',
+                                url: "/create-si-container",
                                 data: data,
                                 xhrFields: {
-                                    responseType: 'blob'
+                                    responseType: "blob",
                                 },
                                 success: function (response) {
                                     // console.log(response);
                                     toast.fire({
                                         icon: "success",
-                                        title: "SI Berhasil Dibuat"
-                                    })
+                                        title: "SI Berhasil Dibuat",
+                                    });
                                     var blob = new Blob([response]);
-                                    var link = document.createElement('a');
-                                    link.href = window.URL.createObjectURL(blob);
-                                    link.download = ""+old_slug+dformat+".pdf";
+                                    var link = document.createElement("a");
+                                    link.href =
+                                        window.URL.createObjectURL(blob);
+                                    link.download =
+                                        "" + old_slug + dformat + ".pdf";
                                     link.click();
 
-                                    setTimeout(function(){
+                                    setTimeout(function () {
                                         window.location.reload();
                                     }, 10);
-
-
-                                }
+                                },
                             });
-
-                        }
-
-
+                        },
                     });
-
                 } else {
                     swal.fire({
                         title: "SI Tidak Dibuat",
                         // text: "Data Batal Dihapus",
                         icon: "error",
                         timer: 2e3,
-                        showConfirmButton: false
+                        showConfirmButton: false,
                     });
                 }
             });
 
-
-
             // for (let i = 0; i < chek_container.length; i++) {
             //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
 
-
             // }
-        }
-
+        },
     });
-
-
-
 }
 
 function pdf_si_alih() {
@@ -220,28 +226,27 @@ function pdf_si_alih() {
 
     var toast = Swal.mixin({
         toast: true,
-        position: "top-end", showConfirmButton: false,
+        position: "top-end",
+        showConfirmButton: false,
         timer: 3e3,
         timerProgressBar: true,
         didOpen: function didOpen(toast) {
-            toast.addEventListener("mouseenter", Swal.stopTimer); toast.addEventListener("mouseleave", Swal.resumeTimer)
-        }
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
     });
-
 
     $("#valid_realisasi").validate({
         ignore: "select[type=hidden]",
         rules: {
             letter: {
-                required: true
+                required: true,
             },
         },
         messages: {
-
             letter: {
-                required: "Silakan Pilih Minimal 1 Container"
+                required: "Silakan Pilih Minimal 1 Container",
             },
-
         },
 
         highlight: function highlight(element, errorClass, validClass) {
@@ -262,150 +267,142 @@ function pdf_si_alih() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            var chek_container = $('.check-container1:checked').map(function() {
-                return this.value;
-            }).get();
+            var chek_container = $(".check-container1:checked")
+                .map(function () {
+                    return this.value;
+                })
+                .get();
 
-            var old_slug = $('#old_slug').val();
+            $.ajax({
+                type: "post",
+                url: "/getAlihKapal",
+                data: {
+                    _token: token,
+                    kontainer_alih: chek_container,
+                },
+                success: function (response) {
+                    var unique_alih_kapal = [...new Set(response)];
 
-            var d = new Date(),
-            dformat = [
-                d.getFullYear(),
-                d.getMonth()+1,
-                d.getDate(),
-                d.getHours(),
-                d.getMinutes(),
-                d.getSeconds(),
-            ].join('-');
-
-            console.log(chek_container);
-
-            swal.fire({
-                title: " Buat SI Untuk Job Load ini?",
-                text: "Silahkan Periksa Semua Data yang ada Sebelum Membuat Shipping Container (SI).",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Iya",
-                cancelButtonText: "Tidak",
-            }).then((willCreate) => {
-                if (willCreate.isConfirmed) {
-
-                    $('#modal-si').modal('show');
-
-
-                    $('#valid_si').validate({
-                        rules: {
-
-                            shipper: {
-                                required: true
-                            },
-                            consigne: {
-                                required: true
-                            },
-
-                        },
-                        messages: {
-
-                            shipper: {
-                                required: "Silakan Isi SHIPPER"
-                            },
-                            consigne: {
-                                required: "Silakan Isi CONSIGNE"
-                            },
-
-                        },
-                        highlight: function highlight(element, errorClass, validClass) {
-                            $(element).addClass("is-invalid");
-                            $(element).removeClass("is-valid");
-                        },
-                        unhighlight: function unhighlight(element, errorClass, validClass) {
-                            $(element).removeClass("is-invalid");
-                        },
-                        errorPlacement: function errorPlacement(error, element) {
-                            error.addClass("invalid-feedback");
-                            element.closest(".validation-container").append(error);
-
-                        },
-                        submitHandler: function (form) {
-
-                            // document.getElementById('loading-wrapper').style.cursor = "wait";
-                            // document.getElementById('btnFinish').setAttribute('disabled', true);
-                            var shipper = $('#shipper').val();
-                            var consigne = $('#consigne').val();
-                            var old_slug = $('#old_slug').val();
-                            // var slug_container = $('#slug_container').val();
-
-                            console.log(chek_container);
-                            var data = {
-                                "_token": token,
-                                'chek_container': chek_container,
-                                'shipper': shipper,
-                                'consigne': consigne,
-                                'old_slug': old_slug,
-
-                                'status_si': "Alih-Kapal",
-                            };
-                            // console.log(data);
-
-                            $.ajax({
-                                type: "POST",
-                                url: '/create-si-alih',
-                                data: data,
-                                xhrFields: {
-                                    responseType: 'blob'
-                                },
-                                success: function (response) {
-                                    // console.log(response);
-                                    toast.fire({
-                                        icon: "success",
-                                        title: "SI Berhasil Dibuat"
-                                    })
-                                    var blob = new Blob([response]);
-                                    var link = document.createElement('a');
-                                    link.href = window.URL.createObjectURL(blob);
-                                    link.download = ""+old_slug+dformat+".pdf";
-                                    link.click();
-
-                                    setTimeout(function(){
-                                        window.location.reload();
-                                    }, 10);
-
-
-                                }
-                            });
-
+                    if (unique_alih_kapal.length != 1) {
+                        swal.fire({
+                            title: "Vessel/Voyage Alih Kapal Tidak Sama",
+                            text: "Silahkan Perhatikan Detail Alih-Kapalnya",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        });
+                    } else {
+                        var old_slug = $('#old_slug').val();
+                        var d = new Date(),
+                        dformat = [
+                            d.getFullYear(),
+                            d.getMonth()+1,
+                            d.getDate(),
+                            d.getHours(),
+                            d.getMinutes(),
+                            d.getSeconds(),
+                        ].join('-');
+                        console.log(chek_container);
+                        swal.fire({
+                            title: " Buat SI Untuk Job Load ini?",
+                            text: "Silahkan Periksa Semua Data yang ada Sebelum Membuat Shipping Container (SI).",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Iya",
+                            cancelButtonText: "Tidak",
+                        }).then((willCreate) => {
+                            if (willCreate.isConfirmed) {
+                                $('#modal-si').modal('show');
+                                $('#valid_si').validate({
+                                    rules: {
+                                        shipper: {
+                                            required: true
+                                        },
+                                        consigne: {
+                                            required: true
+                                        },
+                                    },
+                                    messages: {
+                                        shipper: {
+                                            required: "Silakan Isi SHIPPER"
+                                        },
+                                        consigne: {
+                                            required: "Silakan Isi CONSIGNE"
+                                        },
+                                    },
+                                    highlight: function highlight(element, errorClass, validClass) {
+                                        $(element).addClass("is-invalid");
+                                        $(element).removeClass("is-valid");
+                                    },
+                                    unhighlight: function unhighlight(element, errorClass, validClass) {
+                                        $(element).removeClass("is-invalid");
+                                    },
+                                    errorPlacement: function errorPlacement(error, element) {
+                                        error.addClass("invalid-feedback");
+                                        element.closest(".validation-container").append(error);
+                                    },
+                                    submitHandler: function (form) {
+                                        // document.getElementById('loading-wrapper').style.cursor = "wait";
+                                        // document.getElementById('btnFinish').setAttribute('disabled', true);
+                                        var shipper = $('#shipper').val();
+                                        var consigne = $('#consigne').val();
+                                        var old_slug = $('#old_slug').val();
+                                        // var slug_container = $('#slug_container').val();
+                                        console.log(chek_container);
+                                        var data = {
+                                            "_token": token,
+                                            'chek_container': chek_container,
+                                            'shipper': shipper,
+                                            'consigne': consigne,
+                                            'old_slug': old_slug,
+                                            'status_si': "Alih-Kapal",
+                                        };
+                                        // console.log(data);
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '/create-si-alih',
+                                            data: data,
+                                            xhrFields: {
+                                                responseType: 'blob'
+                                            },
+                                            success: function (response) {
+                                                // console.log(response);
+                                                toast.fire({
+                                                    icon: "success",
+                                                    title: "SI Berhasil Dibuat"
+                                                })
+                                                var blob = new Blob([response]);
+                                                var link = document.createElement('a');
+                                                link.href = window.URL.createObjectURL(blob);
+                                                link.download = ""+old_slug+dformat+".pdf";
+                                                link.click();
+                                                setTimeout(function(){
+                                                    window.location.reload();
+                                                }, 10);
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                swal.fire({
+                                    title: "SI Tidak Dibuat",
+                                    // text: "Data Batal Dihapus",
+                                    icon: "error",
+                                    timer: 2e3,
+                                    showConfirmButton: false
+                                });
+                            }
+                        });
+                        for (let i = 0; i < chek_container.length; i++) {
+                            volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
                         }
-
-
-                    });
-
-                } else {
-                    swal.fire({
-                        title: "SI Tidak Dibuat",
-                        // text: "Data Batal Dihapus",
-                        icon: "error",
-                        timer: 2e3,
-                        showConfirmButton: false
-                    });
-                }
+                    }
+                },
             });
-
-
-
-            // for (let i = 0; i < chek_container.length; i++) {
-            //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
-
-
-            // }
-        }
-
+        },
     });
-
-
-
 }
 function input_bl(e) {
-
     var id = e.value;
     var swal = Swal.mixin({
         customClass: {
@@ -418,15 +415,15 @@ function input_bl(e) {
 
     var toast = Swal.mixin({
         toast: true,
-        position: "top-end", showConfirmButton: false,
+        position: "top-end",
+        showConfirmButton: false,
         timer: 3e3,
         timerProgressBar: true,
         didOpen: function didOpen(toast) {
-            toast.addEventListener("mouseenter", Swal.stopTimer); toast.addEventListener("mouseleave", Swal.resumeTimer)
-        }
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
     });
-
-
 
     swal.fire({
         title: " Masukkkan Nomor BL untuk SI ini?",
@@ -436,51 +433,50 @@ function input_bl(e) {
         cancelButtonText: "Tidak",
     }).then((willCreate) => {
         if (willCreate.isConfirmed) {
-            $('#modal-bl').modal('show');
+            $("#modal-bl").modal("show");
 
-
-            $('#valid_bl').validate({
+            $("#valid_bl").validate({
                 rules: {
-
                     nomor_bl: {
-                        required: true
+                        required: true,
                     },
                     tanggal_bl: {
-                        required: true
+                        required: true,
                     },
-
                 },
                 messages: {
-
                     nomor_bl: {
-                        required: "Silakan Isi Nomor BL"
+                        required: "Silakan Isi Nomor BL",
                     },
                     tanggal_bl: {
-                        required: "Silakan Isi Tanggal BL"
+                        required: "Silakan Isi Tanggal BL",
                     },
-
                 },
                 highlight: function highlight(element, errorClass, validClass) {
                     $(element).addClass("is-invalid");
                     $(element).removeClass("is-valid");
                 },
-                unhighlight: function unhighlight(element, errorClass, validClass) {
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
                     $(element).removeClass("is-invalid");
                 },
                 errorPlacement: function errorPlacement(error, element) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
-
                 },
                 submitHandler: function (form) {
+                    document.getElementById("loading-wrapper").style.cursor =
+                        "wait";
+                    document
+                        .getElementById("btnFinish1")
+                        .setAttribute("disabled", true);
 
-                    document.getElementById('loading-wrapper').style.cursor = "wait";
-                    document.getElementById('btnFinish1').setAttribute('disabled', true);
-
-
-                    var csrf = $('#csrf').val();
-                    var nomor_bl = $('#nomor_bl').val();
-                    var tanggal_bl = $('#tanggal_bl').val();
+                    var csrf = $("#csrf").val();
+                    var nomor_bl = $("#nomor_bl").val();
+                    var tanggal_bl = $("#tanggal_bl").val();
 
                     tempDate = new Date(tanggal_bl);
                     formattedDate = [
@@ -490,39 +486,33 @@ function input_bl(e) {
                     ].join("-");
 
                     var data = {
-                        "_token": csrf,
-                        'id': id,
-                        'nomor_bl': nomor_bl,
-                        'tanggal_bl': formattedDate,
-
+                        _token: csrf,
+                        id: id,
+                        nomor_bl: nomor_bl,
+                        tanggal_bl: formattedDate,
                     };
                     // console.log(data);
 
                     $.ajax({
                         type: "POST",
-                        url: '/masukkan-bl',
+                        url: "/masukkan-bl",
                         data: data,
 
                         success: function (response) {
                             // console.log(response);
-                            toast.fire({
-                                icon: "success",
-                                title: "Nomor Berhasil Dimasukkan",
-                                timer: 2e3,
-
-                            }).then((result)=>{
-                                location.reload();
-                            })
-
-
-                        }
+                            toast
+                                .fire({
+                                    icon: "success",
+                                    title: "Nomor Berhasil Dimasukkan",
+                                    timer: 2e3,
+                                })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        },
                     });
-
-                }
-
-
+                },
             });
-
         } else {
             toast.fire({
                 title: "Nomor BL Tidak dimasukkan",
@@ -532,21 +522,13 @@ function input_bl(e) {
         }
     });
 
+    // for (let i = 0; i < chek_container.length; i++) {
+    //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
 
-
-            // for (let i = 0; i < chek_container.length; i++) {
-            //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
-
-
-            // }
-
-
-
+    // }
 }
 
-
 function approve_si(ini) {
-
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -561,59 +543,50 @@ function approve_si(ini) {
 
     var container_id = ini.value;
     var data = {
-        "_token": token,
-        'terima': terima,
-        'container_id': container_id
+        _token: token,
+        terima: terima,
+        container_id: container_id,
     };
 
     if (terima == "Disetujui") {
         swal.fire({
-                title: "Apakah anda yakin Ingin APPROVE SI ini?",
-                text: "Setelah SI disetujui, Anda tidak dapat menolak SI ini lagi!",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Iya",
-                cancelButtonText: "Tidak",
-            })
-            .then((willCreate) => {
-                if (willCreate.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/konfirmasi-si',
-                        data: data,
-                        success: function(response) {
-                            swal.fire({
-                                    title: "SI Diapprove",
-                                    text: "SI Telah Diapprove",
-                                    icon: "success",
-                                    timer: 2e3,
-                                    showConfirmButton: false
-                                })
-                                .then((result) => {
-                                    window.location.reload();
-                                });
-                        }
-                    });
-                } else {
-                    swal.fire({
-                        title: "SI Belum Diapprove",
-                        text: "Silakan Perhatikan SI Lagi Sebelum Diapprove",
-                        icon: "warning",
-                        timer: 2e3,
-                        showConfirmButton: false
-                    });
-                }
-            });
+            title: "Apakah anda yakin Ingin APPROVE SI ini?",
+            text: "Setelah SI disetujui, Anda tidak dapat menolak SI ini lagi!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        }).then((willCreate) => {
+            if (willCreate.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/konfirmasi-si",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "SI Diapprove",
+                            text: "SI Telah Diapprove",
+                            icon: "success",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            window.location.reload();
+                        });
+                    },
+                });
+            } else {
+                swal.fire({
+                    title: "SI Belum Diapprove",
+                    text: "Silakan Perhatikan SI Lagi Sebelum Diapprove",
+                    icon: "warning",
+                    timer: 2e3,
+                    showConfirmButton: false,
+                });
+            }
+        });
     }
-
-
-
-
-
-
 }
 function tolak_si(ini) {
-
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -628,56 +601,48 @@ function tolak_si(ini) {
 
     var container_id = ini.value;
     var data = {
-        "_token": token,
-        'terima': terima,
-        'container_id': container_id
+        _token: token,
+        terima: terima,
+        container_id: container_id,
     };
 
     if (terima == "Ditolak") {
         swal.fire({
-                title: "Apakah anda yakin ingin MENOLAK SI ini?",
-                text: "Setelah SI ditolak, Anda tidak dapat menyetujui SI ini lagi!",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Iya",
-                cancelButtonText: "Tidak",
-            })
-            .then((willCreate) => {
-                if (willCreate.isConfirmed) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/konfirmasi-si',
-                        data: data,
-                        success: function(response) {
-                            swal.fire({
-                                    title: "SI Ditolak",
-                                    text: "SI Telah Ditolak",
-                                    icon: "error",
-                                    timer: 2e3,
-                                    showConfirmButton: false
-                                })
-                                .then((result) => {
-                                    window.location.reload();
-                                });
-                        }
-                    });
-                } else {
-                    swal.fire({
-                        title: "SI Belum Ditolak",
-                        text: "Silakan Perhatikan SI Lagi Sebelum Ditolak",
-                        icon: "warning",
-                        timer: 2e3,
-                        showConfirmButton: false
-                    });
-                }
-            });
+            title: "Apakah anda yakin ingin MENOLAK SI ini?",
+            text: "Setelah SI ditolak, Anda tidak dapat menyetujui SI ini lagi!",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        }).then((willCreate) => {
+            if (willCreate.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/konfirmasi-si",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "SI Ditolak",
+                            text: "SI Telah Ditolak",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            window.location.reload();
+                        });
+                    },
+                });
+            } else {
+                swal.fire({
+                    title: "SI Belum Ditolak",
+                    text: "Silakan Perhatikan SI Lagi Sebelum Ditolak",
+                    icon: "warning",
+                    timer: 2e3,
+                    showConfirmButton: false,
+                });
+            }
+        });
     }
-
-
-
-
-
-
 }
 
 function detail_update(e) {
@@ -710,11 +675,14 @@ function detail_update(e) {
                 spk[i] = response.spks[i].spk_kontainer;
             }
             for (let i = 0; i < response.supirs.length; i++) {
-                supir +=   "<option value='" +
-                response.supirs[i].id +
-                "'>" +
-                response.supirs[i].nama_supir + "/" + response.supirs[i].nomor_polisi+
-                "</option>";
+                supir +=
+                    "<option value='" +
+                    response.supirs[i].id +
+                    "'>" +
+                    response.supirs[i].nama_supir +
+                    "/" +
+                    response.supirs[i].nomor_polisi +
+                    "</option>";
             }
             console.log(seals);
             $("#modal-job-update").modal("show");
@@ -777,7 +745,7 @@ function detail_update(e) {
                                         title: "Seal Kontainer Sudah Dipakai",
                                         icon: "error",
                                         timer: 10e3,
-                                        async:false,
+                                        async: false,
                                         showConfirmButton: true,
                                     }).then(() => {
                                         var wanted_option = $(
@@ -789,7 +757,9 @@ function detail_update(e) {
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
-                                        $("#seal_update").trigger("change.select2");
+                                        $("#seal_update").trigger(
+                                            "change.select2"
+                                        );
                                     });
                                 }
                             }
@@ -845,7 +815,7 @@ function detail_update(e) {
                                         title: "SPK Kontainer Sudah Dipakai",
                                         icon: "error",
                                         timer: 10e3,
-                                        async:false,
+                                        async: false,
                                         showConfirmButton: true,
                                     }).then(() => {
                                         var wanted_option = $(
@@ -857,7 +827,9 @@ function detail_update(e) {
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
-                                        $("#spk_update").trigger("change.select2");
+                                        $("#spk_update").trigger(
+                                            "change.select2"
+                                        );
                                     });
                                 }
                             }
@@ -865,7 +837,10 @@ function detail_update(e) {
                     });
                 });
 
-            var old_tanggal_result = moment(response.result.date_activity, 'YYYY-MM-DD').format('dddd, DD-MM-YYYY');
+            var old_tanggal_result = moment(
+                response.result.date_activity,
+                "YYYY-MM-DD"
+            ).format("dddd, DD-MM-YYYY");
             $("#date_activity_update").val(old_tanggal_result);
             $("#lokasi_update")
                 .val(response.result.lokasi_depo)
@@ -882,7 +857,7 @@ function detail_update(e) {
                     placeholder: "Silahkan Pilih Pengirim",
                     allowClear: true,
                     dropdownParent: $("#modal-job-update"),
-            });
+                });
             $("#penerima_update")
                 .val(response.result.penerima)
                 .select2({
@@ -890,42 +865,47 @@ function detail_update(e) {
                     placeholder: "Silahkan Pilih penerima",
                     allowClear: true,
                     dropdownParent: $("#modal-job-update"),
-            });
-
+                });
 
             $("#new_id_update").val(response.result.id);
-            $('#nomor_polisi_update').html(supir).select2({
-                dropdownAutoWidth: true,
-                placeholder: "Silahkan Pilih Supir",
-                allowClear: true,
-                dropdownParent: $("#modal-job-update"),
-            })
-            $("#driver_update").val(response.result.driver).select2({
-                dropdownAutoWidth: true,
-                placeholder: "Silahkan Pilih Vendor",
-                allowClear: true,
-                dropdownParent: $("#modal-job-update"),
-            }).change(function() {
-                let vendor_id = $(this).val();
-                let token = $('#csrf').val();;
-                $.ajax({
-                    url: '/getVendor',
-                    type: 'POST',
-                    data: {
-
-                        'vendor_id' : vendor_id,
-                        '_token' : token,
-                    },
-                    success: function(result) {
-                        $('#nomor_polisi_update').select2({
-                            dropdownAutoWidth: true,
-                            placeholder: "Silahkan Pilih Supir",
-                            allowClear: true,
-                            dropdownParent: $("#modal-job-update"),
-                        }).html(result)
-                    }
+            $("#nomor_polisi_update")
+                .html(supir)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Supir",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
                 });
-            })
+            $("#driver_update")
+                .val(response.result.driver)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Vendor",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+                })
+                .change(function () {
+                    let vendor_id = $(this).val();
+                    let token = $("#csrf").val();
+                    $.ajax({
+                        url: "/getVendor",
+                        type: "POST",
+                        data: {
+                            vendor_id: vendor_id,
+                            _token: token,
+                        },
+                        success: function (result) {
+                            $("#nomor_polisi_update")
+                                .select2({
+                                    dropdownAutoWidth: true,
+                                    placeholder: "Silahkan Pilih Supir",
+                                    allowClear: true,
+                                    dropdownParent: $("#modal-job-update"),
+                                })
+                                .html(result);
+                        },
+                    });
+                });
             $("#remark_update").val(response.result.remark);
             $("#biaya_stuffing_update").val(response.result.biaya_stuffing);
             $("#biaya_trucking_update").val(response.result.biaya_trucking);
@@ -981,11 +961,11 @@ function detail_update(e) {
                     console.log(id);
                     var token = $("#csrf").val();
 
-                    let date_activity =
-                        document.getElementById("date_activity_update").value;
+                    let date_activity = document.getElementById(
+                        "date_activity_update"
+                    ).value;
                     var tempDate;
                     var formattedDate;
-
 
                     tempDate = new Date(date_activity);
                     console.log(tempDate);
@@ -1025,9 +1005,15 @@ function detail_update(e) {
                             ongkos_supir: $("#ongkos_supir_update")
                                 .val()
                                 .replace(/\./g, ""),
-                            biaya_thc: $("#biaya_thc_update").val().replace(/\./g, ""),
-                            biaya_seal: $("#biaya_seal_update").val().replace(/\./g, ""),
-                            freight: $("#freight_update").val().replace(/\./g, ""),
+                            biaya_thc: $("#biaya_thc_update")
+                                .val()
+                                .replace(/\./g, ""),
+                            biaya_seal: $("#biaya_seal_update")
+                                .val()
+                                .replace(/\./g, ""),
+                            freight: $("#freight_update")
+                                .val()
+                                .replace(/\./g, ""),
                             lss: $("#lss_update").val().replace(/\./g, ""),
                             jenis_mobil: $("#jenis_mobil_update").val(),
                             dana: $("#dana_update").val(),
@@ -1049,4 +1035,3 @@ function detail_update(e) {
         },
     });
 }
-

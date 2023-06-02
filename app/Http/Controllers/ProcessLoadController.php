@@ -119,6 +119,8 @@ class ProcessLoadController extends Controller
         $containers_alih = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
+            ->where('status', '!=', 'Realisasi-Alih')
+            ->where('status', '!=', 'Realisasi')
                 ->whereNotNull('status');
         })->get();
 
@@ -275,8 +277,6 @@ class ProcessLoadController extends Controller
             'tahun' => (int)$request->tahun,
             'dana' => $request->dana,
             'status' => $status,
-
-
         ];
         $planload->update($load);
         $container->update($data);
@@ -303,6 +303,13 @@ class ProcessLoadController extends Controller
             Seal::where("kode_seal", $request->seal[$i])->update($data1);
         }
 
+        $dana = OngkoSupir::where('id', $request->dana)->value('nominal');
+
+        $update_dana = [
+            "nominal" => (int)$dana - (int)$request->ongkos_supir
+        ];
+
+        OngkoSupir::where("id", $request->dana)->update($update_dana);
 
         if ($request->spk != null){
             SpkContainer::where('kontainer_id', $id)->delete();
@@ -332,7 +339,7 @@ class ProcessLoadController extends Controller
     }
     public function input_edit(Request $request, $id)
     {
-        // dd($request);
+        // dd($request->old_dana);
 
 
 
@@ -371,8 +378,6 @@ class ProcessLoadController extends Controller
             'tahun' => (int)$request->tahun,
             'dana' => $request->dana,
             'status' => $status,
-
-
         ];
 
 
@@ -409,6 +414,25 @@ class ProcessLoadController extends Controller
 
             Seal::where("kode_seal", $request->seal[$i])->update($data1);
         }
+
+        $old_ongkos_supir = $request->old_ongkos_supir;
+        $old_dana = $request->old_dana;
+
+        $dana_back = OngkoSupir::where('id', $old_dana)->value('nominal');
+
+        $dana_kembali = [
+            "nominal" => (int)$dana_back + (int)$old_ongkos_supir
+        ];
+
+        OngkoSupir::where('id', $old_dana)->update($dana_kembali);
+
+        $dana = OngkoSupir::where('id', $request->dana)->value('nominal');
+
+        $update_dana = [
+            "nominal" => (int)$dana - (int)$request->ongkos_supir
+        ];
+
+        OngkoSupir::where("id", $request->dana)->update($update_dana);
 
 
         if ($request->spk != null) {
@@ -537,7 +561,7 @@ class ProcessLoadController extends Controller
 
                 $spk = [
                     "job_id" => $request->job_id,
-                    "kontainer_id" => $id,
+                    "kontainer_id" => $id->id,
                     "spk_kontainer" => $request->spk[$i],
                 ];
 
@@ -565,13 +589,13 @@ class ProcessLoadController extends Controller
     {
         // dd($request);
 
-        $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
+        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
 
-        $update_container = [
-            'status' => "Biaya-Lainnya",
-        ];
+        // $update_container = [
+        //     'status' => "Biaya-Lainnya",
+        // ];
 
-        $container->update($update_container);
+        // $container->update($update_container);
 
 
         $data = [
@@ -602,22 +626,22 @@ class ProcessLoadController extends Controller
     {
         // dd($request);
 
-        $container_old = ContainerPlanload::findOrFail($request->old_id_container_biaya);
+        // $container_old = ContainerPlanload::findOrFail($request->old_id_container_biaya);
 
-        $update_container_old = [
-            'status' => "Process-Load",
-        ];
+        // $update_container_old = [
+        //     'status' => "Process-Load",
+        // ];
 
-        $container_old->update($update_container_old);
+        // $container_old->update($update_container_old);
 
 
-        $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
+        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
 
-        $update_container = [
-            'status' => "Biaya-Lainnya",
-        ];
+        // $update_container = [
+        //     'status' => "Biaya-Lainnya",
+        // ];
 
-        $container->update($update_container);
+        // $container->update($update_container);
 
 
 
@@ -949,343 +973,6 @@ class ProcessLoadController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-
-        dd($request);
-
-        $ongkos_supir = [];
-
-        for($i = 0; $i < count($request->dana); $i++){
-            $ongkos_supir[$i] = (int)OngkoSupir::where('id', (int)$request->dana[$i])->value('nominal');
-        }
-
-        // dd((int)str_replace(".", "", $request->ongkos_supir[0]));
-
-        $old_slug = $request->old_slug;
-
-        $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-
-        $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
-
-        $orderjob = [
-            'status' => 'Process-Load',
-        ];
-
-        $OrderJobPlanload->update($orderjob);
-
-
-
-        $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
-
-        $processload_update = [];
-
-        for($i = 0; $i < count($all_id); $i++) {
-            $processload_update[$i] =   $all_id[$i]->id;
-        }
-
-        $urutan = (int)$request->urutan;
-
-
-        $status = "Process-Load";
-
-
-        for ($k = 0; $k < $urutan; $k++) {
-            $container = [
-                'size' => $request->size[$k],
-                'type' => $request->type[$k],
-                'nomor_kontainer' => $request->nomor_kontainer[$k],
-                'seal' => $request->seal[$k],
-                'cargo' => $request->cargo[$k],
-                'date_activity' => $request->date_activity[$k],
-                'lokasi_depo' => $request->lokasi[$k],
-                'driver' => $request->driver[$k],
-                'nomor_polisi' => $request->nomor_polisi[$k],
-                'remark' => $request->remark[$k],
-                'biaya_stuffing' => str_replace(".", "", $request->biaya_stuffing[$k]),
-                'biaya_trucking' => str_replace(".", "", $request->biaya_trucking[$k]),
-                'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
-                'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
-                'nomor_surat' => $request->no_surat[$k],
-                'jenis_mobil' => $request->jenis_mobil[$k],
-                'detail_barang' => $request->detail_barang[$k],
-                'tahun' => (int)$request->tahun[$k],
-                'dana' => $request->dana[$k],
-                'slug' => $request->nomor_kontainer[$k].'-'.$request->seal[$k].'-'.time(),
-                'status' => $status,
-            ];
-            ContainerPlanload::where('id', $processload_update[$k])->update($container);
-        }
-
-        $ongkos_supir_now = [];
-        for($i = 0; $i < count($request->dana); $i++) {
-            $ongkos_supir_now[$i] = $ongkos_supir[$i] - (int)str_replace(".", "", $request->ongkos_supir[$i]);
-            OngkoSupir::where('id', (int)$request->dana[$i])->update(array('nominal' => (float)$ongkos_supir_now[$i]));
-        }
-        // $update_id->update($container);
-
-        $all_seal =[];
-
-        for ($i=0; $i <$urutan ; $i++) {
-            $all_seal[$i] =
-            [
-                "id" => $request->seal[$i],
-            ];
-
-        }
-
-
-        $seal_update = [];
-
-        for($i = 0; $i < count($all_seal); $i++) {
-            $seal_update[$i] = Seal::where('kode_seal', $all_seal[$i]["id"])->value('id');
-        }
-
-
-
-        for ($i=0; $i < $urutan ; $i++) {
-
-            $seal = [
-                "status" => "Container",
-            ];
-            Seal::where('id', $seal_update[$i])->update($seal);
-        }
-
-        // dd($seal_update);
-
-
-        $job_id = [];
-
-
-        for ($i=0; $i <$request->tambah ; $i++) {
-            $job_id[$i] = $old_id;
-            $biayas =[
-                'job_id' => $job_id[$i],
-                'kontainer_biaya' => $request->kontainer_biaya[$i],
-                'harga_biaya' => str_replace(".", "", $request->harga_biaya[$i]),
-                'keterangan' => $request->keterangan[$i],
-            ];
-
-            BiayaLainnya::create($biayas);
-        }
-
-        for ($i=0; $i <$request->clickalih ; $i++) {
-            $job_id[$i] = $old_id;
-            $alihs =[
-                'job_id' => $job_id[$i],
-                'kontainer_alih' => $request->kontainer_alih[$i],
-                'harga_alih_kapal' => str_replace(".", "", $request->harga_alih_kapal[$i]),
-                'keterangan_alih_kapal' => $request->keterangan_alih_kapal[$i],
-                'pelayaran_alih' => $request->pelayaran_alih[$i],
-                'pot_alih' => $request->pot_alih[$i],
-                'pod_alih' => $request->pod_alih[$i],
-                'vesseL_alih' => $request->vesseL_alih[$i],
-                'code_vesseL_alih' => $request->code_vesseL_alih[$i],
-            ];
-
-            AlihKapal::create($alihs);
-        }
-
-        for ($i=0; $i <$request->clickbatal ; $i++) {
-            $job_id[$i] = $old_id;
-            $batals =[
-                'job_id' => $job_id[$i],
-                'kontainer_batal' => $request->kontainer_batal[$i],
-                'harga_batal_muat' => str_replace(".", "", $request->harga_batal_muat[$i]),
-                'keterangan_batal_muat' => $request->keterangan_batal_muat[$i],
-            ];
-
-            BatalMuat::create($batals);
-        }
-
-        return response()->json(['success' => true]);
-    }
-    public function save(Request $request)
-    {
-
-        dd($request->seal);
-
-        $ongkos_supir = [];
-
-        for($i = 0; $i < count($request->dana); $i++){
-            $ongkos_supir[$i] = (int)OngkoSupir::where('id', (int)$request->dana[$i])->value('nominal');
-        }
-
-        // dd((int)str_replace(".", "", $request->ongkos_supir[0]));
-
-        $old_slug = $request->old_slug;
-
-        $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-
-        $OrderJobPlanload = OrderJobPlanload::findOrFail($old_id);
-
-        // $orderjob = [
-        //     'status' => 'Process-Load',
-        // ];
-
-        // $OrderJobPlanload->update($orderjob);
-
-
-        //CREATE-CONTAINER
-        $urutan = (int)$request->urutan;
-
-
-        ContainerPlanload::where('job_id', $old_id)->delete();
-        for ($i = 0; $i < $urutan; $i++) {
-
-            $container = [
-                'job_id' => $old_id,
-                'size' => $request->size[$i],
-                'type' => $request->type[$i],
-                'cargo' => $request->cargo[$i],
-            ];
-            ContainerPlanload::create($container);
-        }
-        $all_id = ContainerPlanload::where('job_id', $old_id)->get('id');
-
-        $processload_update = [];
-
-        for($i = 0; $i < count($all_id); $i++) {
-            $processload_update[$i] =   $all_id[$i]->id;
-        }
-
-        //SEAL-CONTAINER
-
-        // if ($request->seal != null) {
-
-            // SealContainer::where('job_id', $old_id)->delete();
-
-            for ($i=0; $i <count($request->seal) ; $i++) {
-                $id_seal[$i] = $request->seal[$i];
-
-                for ($j=0; $j <count($id_seal[$i]) ; $j++) {
-                    $seal_container = [
-                        "job_id" => $old_id,
-                        "kontainer_id" => $all_id[$i]->id,
-                        "seal_kontainer" => $request->seal[$i][$j],
-
-                    ];
-
-                    SealContainer::create($seal_container);
-                }
-
-            }
-        // }
-
-        dd($seal_container);
-
-
-        //CONTAINER-UPDATE
-
-        for ($k = 0; $k < $urutan; $k++) {
-            $container = [
-                'size' => $request->size[$k],
-                'type' => $request->type[$k],
-                'nomor_kontainer' => $request->nomor_kontainer[$k],
-                'seal' => $request->seal[$k],
-                'cargo' => $request->cargo[$k],
-                // 'date_activity' =>  $request->date_activity[$k],
-                'lokasi_depo' => $request->lokasi[$k],
-                'driver' => $request->driver[$k],
-                'nomor_polisi' => $request->nomor_polisi[$k],
-                'remark' => $request->remark[$k],
-                // 'biaya_stuffing' => str_replace(".", "", $request->biaya_stuffing[$k]),
-                // 'biaya_trucking' => str_replace(".", "", $request->biaya_trucking[$k]),
-                // 'ongkos_supir' => str_replace(".", "", $request->ongkos_supir[$k]),
-                // 'biaya_thc' => str_replace(".", "", $request->biaya_thc[$k]),
-                'nomor_surat' => $request->no_surat[$k],
-                'jenis_mobil' => $request->jenis_mobil[$k],
-                'detail_barang' => $request->detail_barang[$k],
-                'tahun' => (int)$request->tahun[$k],
-                'dana' => $request->dana[$k],
-                'slug' => $request->nomor_kontainer[$k].'-'.$request->seal[$k].'-'.time(),
-            ];
-            ContainerPlanload::where('id', $processload_update[$k])->update($container);
-        }
-
-        $ongkos_supir_now = [];
-        for($i = 0; $i < count($request->dana); $i++) {
-            $ongkos_supir_now[$i] = $ongkos_supir[$i] - (int)str_replace(".", "", $request->ongkos_supir[$i]);
-            OngkoSupir::where('id', (int)$request->dana[$i])->update(array('nominal' => (float)$ongkos_supir_now[$i]));
-        }
-        // $update_id->update($container);
-
-        $all_seal =[];
-
-        for ($i=0; $i <$urutan ; $i++) {
-            $all_seal[$i] =
-            [
-                "id" => $request->seal[$i],
-            ];
-
-        }
-
-
-        $seal_update = [];
-
-        for($i = 0; $i < count($all_seal); $i++) {
-            $seal_update[$i] = Seal::where('kode_seal', $all_seal[$i]["id"])->value('id');
-        }
-
-
-
-        for ($i=0; $i < $urutan ; $i++) {
-
-            $seal = [
-                "status" => "Container",
-            ];
-            Seal::where('id', $seal_update[$i])->update($seal);
-        }
-
-        // dd($seal_update);
-
-
-        $job_id = [];
-
-
-        for ($i=0; $i <$request->tambah ; $i++) {
-            $job_id[$i] = $old_id;
-            $biayas =[
-                'job_id' => $job_id[$i],
-                'kontainer_biaya' => $request->kontainer_biaya[$i],
-                'harga_biaya' => str_replace(".", "", $request->harga_biaya[$i]),
-                'keterangan' => $request->keterangan[$i],
-            ];
-
-            BiayaLainnya::create($biayas);
-        }
-
-        for ($i=0; $i <$request->clickalih ; $i++) {
-            $job_id[$i] = $old_id;
-            $alihs =[
-                'job_id' => $job_id[$i],
-                'kontainer_alih' => $request->kontainer_alih[$i],
-                'harga_alih_kapal' => str_replace(".", "", $request->harga_alih_kapal[$i]),
-                'keterangan_alih_kapal' => $request->keterangan_alih_kapal[$i],
-                'pelayaran_alih' => $request->pelayaran_alih[$i],
-                'pot_alih' => $request->pot_alih[$i],
-                'pod_alih' => $request->pod_alih[$i],
-                'vesseL_alih' => $request->vesseL_alih[$i],
-                'code_vesseL_alih' => $request->code_vesseL_alih[$i],
-            ];
-
-            AlihKapal::create($alihs);
-        }
-
-        for ($i=0; $i <$request->clickbatal ; $i++) {
-            $job_id[$i] = $old_id;
-            $batals =[
-                'job_id' => $job_id[$i],
-                'kontainer_batal' => $request->kontainer_batal[$i],
-                'harga_batal_muat' => str_replace(".", "", $request->harga_batal_muat[$i]),
-                'keterangan_batal_muat' => $request->keterangan_batal_muat[$i],
-            ];
-
-            BatalMuat::create($batals);
-        }
-
-        return response()->json(['success' => true]);
-    }
 
     /**
      * Display the specified resource.
@@ -1475,17 +1162,46 @@ class ProcessLoadController extends Controller
      */
     public function destroy(Request $request)
     {
-        // dd($id);
+
+
+        // dd($seals);
+
+        $seals = SealContainer::where('kontainer_id', $request->id)->get('seal_kontainer');
+
+
+
+        for ($i = 0; $i < count($seals) ; $i++) {
+            $input = [
+                "status" => 'input',
+            ];
+            Seal::where('kode_seal', $seals[$i]->seal_kontainer)->update($input);
+        }
+        $spks = SpkContainer::where('kontainer_id', $request->id)->get();
+
+        for ($i = 0; $i < count($spks) ; $i++) {
+            $input = [
+                "status" => 'input',
+            ];
+            Spk::where('kode_spk', $spks[$i]->spk_kontainer)->update($input);
+        }
+
+        $old_ongkos_supir = ContainerPlanLoad::where('id', $request->id)->value('ongkos_supir');
+        $id_dana = ContainerPlanLoad::where('id', $request->id)->value('dana');
+        $dana_back = OngkoSupir::where('id', $id_dana)->value('nominal');
+
+        $dana_kembali = [
+            "nominal" => (int)$dana_back + (int)$old_ongkos_supir
+        ];
+
+        OngkoSupir::where('id', $id_dana)->update($dana_kembali);
+
+        SealContainer::where('kontainer_id', $request->id)->delete();
+        SpkContainer::where('kontainer_id', $request->id)->delete();
 
         $container = ContainerPlanload::find($request->id);
         $container->delete();
 
-        // $update =[
-        //     "jumlah_kontainer" => count($job_id),
 
-        // ];
-        // dd($job_id);
-        // $container->update($update);
         return response()->json([
             'success'   => true
         ]);

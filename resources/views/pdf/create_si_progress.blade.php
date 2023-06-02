@@ -96,13 +96,18 @@
                     </tr>
                     @foreach ($containers as $container)
                     <tr>
-                        <td align="center" valign="top">{{$container['nomor_kontainer']}}</td>
+                        <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
                         <td colspan="2" align="center" valign="top">
-                            {{$container['seal']}}
+                            @foreach ($container['seal'] as $seal)
+                                @if ($loop->iteration < count($container['seal']))
+                                    {{ $seal->seal_kontainer }}, &ensp;
+                                @else
+                                    {{ $seal->seal_kontainer }}
+                                @endif
+                            @endforeach
                         </td>
-                        <td align="center" valign="top">{{$container['cargo']}}</td>
+                        <td align="center" valign="top">{{ $container['cargo'] }}</td>
                     </tr>
-
                     @endforeach
                     <tr>
                         <td>PORT OF LANDING</td>
@@ -129,7 +134,7 @@
                             {{ $load->pod_alih }}
                         </td>
                     </tr>
-                   
+
 
 
                 </table>
@@ -198,17 +203,36 @@
                     </tr>
                     @foreach ($containers as $container)
                     <tr>
-                        <td align="center" valign="top">{{$container['nomor_kontainer']}}</td>
-                        <td colspan="2" align="center" valign="top">{{$container['seal']}}</td>
-                        <td align="center" valign="top">{{$container['cargo']}}</td>
+                        <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
+                        <td colspan="2" align="center" valign="top">
+                            @foreach ($container['seal'] as $seal)
+                                @if ($loop->iteration < count($container['seal']))
+                                    {{ $seal->seal_kontainer }}, &ensp;
+                                @else
+                                    {{ $seal->seal_kontainer }}
+                                @endif
+                            @endforeach
+                        </td>
+                        <td align="center" valign="top">{{ $container['cargo'] }}</td>
                     </tr>
-
                     @endforeach
                     <tr>
                         <td>PORT OF LANDING</td>
                         <td>:</td>
                         <td>
                             {{ $load->pol }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>PORT OF TRANSIT</td>
+                        <td>:</td>
+                        <td>
+                            @if ($load->pot)
+                                {{ $load->pot }}
+                            @else
+                                -
+                            @endif
                         </td>
                     </tr>
                     <tr>
