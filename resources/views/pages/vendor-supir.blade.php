@@ -82,6 +82,7 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     <td>
+
                                         {{ $supir->vendors->nama_vendor }}
                                     </td>
                                     <td>

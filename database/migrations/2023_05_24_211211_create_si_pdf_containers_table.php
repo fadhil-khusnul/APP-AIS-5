@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('biaya_do_pod')->nullable();
             $table->date('tanggal_do_pod')->nullable();
             $table->string('status')->nullable();
+            $table->string('status_si')->nullable();
             $table->timestamps();
         });
     }

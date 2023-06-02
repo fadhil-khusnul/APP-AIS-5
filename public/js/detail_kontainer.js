@@ -1028,6 +1028,274 @@ function detail_update(e) {
         },
     });
 }
+function detail_disabled(e) {
+    let id = e.value;
+    console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    $.ajax({
+        url: "/detail-kontainer/" + id + "/input",
+        type: "GET",
+        success: function (response) {
+            let new_id = id;
+            console.log(new_id);
+
+            var seals = [""];
+            var spk = [""];
+            var supir = [""];
+
+            for (let i = 0; i < response.seal_containers.length; i++) {
+                seals[i] = response.seal_containers[i].seal_kontainer;
+            }
+            for (let i = 0; i < response.spks.length; i++) {
+                spk[i] = response.spks[i].spk_kontainer;
+            }
+            for (let i = 0; i < response.supirs.length; i++) {
+                supir +=   "<option value='" +
+                response.supirs[i].id +
+                "'>" +
+                response.supirs[i].nama_supir + "/" + response.supirs[i].nomor_polisi+
+                "</option>";
+            }
+            console.log(seals);
+            $("#modal-job-disabled").modal("show");
+
+            $("#size_disabled").val(response.result.size);
+            $("#type_disabled").val(response.result.type);
+            $("#nomor_kontainer_disabled").val(response.result.nomor_kontainer);
+            $("#no_container_edit").val(response.result.nomor_kontainer);
+            $("#cargo_disabled").val(response.result.cargo);
+            $("#detail_barang_disabled").val(response.result.detail_barang);
+            $("#seal_old").val(seals);
+
+            $("#seal_disabled")
+                .val(seals)
+                .select2({
+                    dropdownAutoWidth: true,
+                    // tags: true,
+                    placeholder: "Silahkan Pilih",
+                    // allowClear:true,
+                    maximumSelectionLength: 4,
+                    dropdownParent: $("#modal-job-update"),
+                })
+                .on("select2:select", function (e) {
+                    var selected_element = $(e.currentTarget);
+                    var select_val = selected_element.val();
+                    // console.log(select_val);
+
+                    // console.log(seals);
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    let token = $("#csrf").val();
+
+                    $.ajax({
+                        url: "/getSealProcessLoad",
+                        type: "post",
+                        async: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (response) {
+                            // console.log(seals);
+                            var seal = $("#seal_disabled").val();
+                            var last_seal = seal[seal.length - 1];
+                            console.log(seal, last_seal);
+                            var count_seal = response.length;
+                            var seal_already = [];
+                            for (var i = 0; i < count_seal; i++) {
+                                seal_already[i] = response[i].seal_kontainer;
+                            }
+
+                            if (seals.includes(last_seal) == false) {
+                                if (seal_already.includes(last_seal)) {
+                                    swal.fire({
+                                        title: "Seal Kontainer Sudah Dipakai",
+                                        icon: "error",
+                                        timer: 10e3,
+                                        async:false,
+                                        showConfirmButton: true,
+                                    }).then(() => {
+                                        var wanted_option = $(
+                                            '#seal_disabled option[value="' +
+                                                last_seal +
+                                                '"]'
+                                        );
+                                        console.log(wanted_option);
+
+                                        wanted_option.prop("selected", false);
+                                        // $(this).trigger("change.select2");
+                                        $("#seal_disabled").trigger("change.select2");
+                                    });
+                                }
+                            }
+                        },
+                    });
+                });
+            $("#spk_disabled")
+                .val(spk)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih",
+                    // allowClear:true,
+                    maximumSelectionLength: 4,
+                    dropdownParent: $("#modal-job-update"),
+                })
+                .on("select2:select", function (e) {
+                    var selected_element = $(e.currentTarget);
+                    var select_val = selected_element.val();
+                    // console.log(select_val);
+
+                    // console.log(seals);
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    let token = $("#csrf").val();
+
+                    $.ajax({
+                        url: "/getSpkProcessLoad",
+                        type: "post",
+                        async: false,
+                        data: {
+                            _token: token,
+                        },
+                        success: function (response) {
+                            // console.log(seals);
+                            var seal = $("#spk_disabled").val();
+                            var last_seal = seal[seal.length - 1];
+                            console.log(seal, last_seal);
+                            var count_seal = response.length;
+                            var seal_already = [];
+                            for (var i = 0; i < count_seal; i++) {
+                                seal_already[i] = response[i].spk_kontainer;
+                            }
+
+                            if (spk.includes(last_seal) == false) {
+                                if (seal_already.includes(last_seal)) {
+                                    swal.fire({
+                                        title: "SPK Kontainer Sudah Dipakai",
+                                        icon: "error",
+                                        timer: 10e3,
+                                        async:false,
+                                        showConfirmButton: true,
+                                    }).then(() => {
+                                        var wanted_option = $(
+                                            '#spk_disabled option[value="' +
+                                                last_seal +
+                                                '"]'
+                                        );
+                                        console.log(wanted_option);
+
+                                        wanted_option.prop("selected", false);
+                                        // $(this).trigger("change.select2");
+                                        $("#spk_disabled").trigger("change.select2");
+                                    });
+                                }
+                            }
+                        },
+                    });
+                });
+
+            var old_tanggal_result = moment(response.result.date_activity, 'YYYY-MM-DD').format('dddd, DD-MM-YYYY');
+            $("#date_activity_disabled").val(old_tanggal_result);
+            $("#lokasi_disabled")
+                .val(response.result.lokasi_depo)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+                });
+            $("#pengirim_disabled")
+                .val(response.result.pengirim)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Pengirim",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+            });
+            $("#penerima_disabled")
+                .val(response.result.penerima)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih penerima",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+            });
+
+
+            $("#new_id_disabled").val(response.result.id);
+            $('#nomor_polisi_disabled').html(supir).select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Supir",
+                allowClear: true,
+                dropdownParent: $("#modal-job-update"),
+            })
+            $("#driver_disabled").val(response.result.driver).select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Vendor",
+                allowClear: true,
+                dropdownParent: $("#modal-job-update"),
+            }).change(function() {
+                let vendor_id = $(this).val();
+                let token = $('#csrf').val();;
+                $.ajax({
+                    url: '/getVendor',
+                    type: 'POST',
+                    data: {
+
+                        'vendor_id' : vendor_id,
+                        '_token' : token,
+                    },
+                    success: function(result) {
+                        $('#nomor_polisi_disabled').select2({
+                            dropdownAutoWidth: true,
+                            placeholder: "Silahkan Pilih Supir",
+                            allowClear: true,
+                            dropdownParent: $("#modal-job-update"),
+                        }).html(result)
+                    }
+                });
+            })
+            $("#remark_disabled").val(response.result.remark);
+            $("#biaya_stuffing_disabled").val(response.result.biaya_stuffing);
+            $("#biaya_trucking_disabled").val(response.result.biaya_trucking);
+            $("#biaya_thc_disabled").val(response.result.biaya_thc);
+            $("#ongkos_supir_disabled").val(response.result.ongkos_supir);
+            $("#biaya_seal_disabled").val(response.result.biaya_seal);
+            $("#freight_disabled").val(response.result.freight);
+            $("#lss_disabled").val(response.result.lss);
+            $("#jenis_mobil_disabled").val(response.result.jenis_mobil);
+            $("#dana_disabled")
+                .val(response.result.dana)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Deposit Trucking",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+                });
+
+           
+        },
+    });
+}
 
 function realisasi_page(slug) {
     var slugs = slug.value;

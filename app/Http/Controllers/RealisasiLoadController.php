@@ -27,6 +27,8 @@ use App\Models\BatalMuat;
 use App\Models\SealContainer;
 use App\Models\SiPdfContainer;
 use App\Models\DetailBarangLoad;
+use App\Models\VendorMobil;
+use App\Models\Spk;
 
 class RealisasiLoadController extends Controller
 {
@@ -88,12 +90,21 @@ class RealisasiLoadController extends Controller
 
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
-            ->where('status', '!=', 'Alih-Kapal');
+            ->where('status', '!=', 'Alih-Kapal')
+            ->where('status', '!=', 'Realisasi-Alih');
         })->get();
 
         $sealsc = SealContainer::where('job_id', $id)->get();
 
         // dd($containers);
+
+        $vendors = VendorMobil::orderBy('id', 'DESC')->get();
+
+        $select_company = OrderJobPlanload::where('slug', $request->slug)->value('select_company');
+        $pelayaran_id = ShippingCompany::where('nama_company', $select_company)->value('id');
+        $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
+
+
         //
         return view('realisasi.load.realisasi-create',[
             'title' => 'Buat Load-Realisasi',
@@ -103,8 +114,8 @@ class RealisasiLoadController extends Controller
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
-            'pengirim' => $pengirim,
-            'penerima' => $penerima,
+            'pengirims' => $pengirim,
+            'penerimas' => $penerima,
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
             'seals' => $seals,
@@ -112,7 +123,9 @@ class RealisasiLoadController extends Controller
             'types' => $types,
             'danas' => $danas,
             'sealsc' => $sealsc,
-            'sealsc' => $sealsc,
+            'vendors' => $vendors,
+            'spks' => $spks,
+
 
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,

@@ -38,7 +38,6 @@ class PdfController extends Controller
      */
     public function create_si(Request $request)
     {
-        dd($request);
         $random = Str::random(15);
 
         $unique_size = array_values(array_unique($request->size));
@@ -61,10 +60,14 @@ class PdfController extends Controller
         $old_slug = $request->old_slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
         $loads = OrderJobPlanload::where('id', $old_id)->get();
+        $alihs = AlihKapal::where('kontainer_alih', $request->chek_container)->get();
 
         // dd($containers);
 
         $si_pdf =[
+            'shipper' => $request->shipper,
+            'status_si' => $request->status_si,
+            'consigne' => $request->consigne,
             'job_id' => $old_id,
             'container_id' => $random.time(),
             'path' => 'SI-'.$old_slug.'-'.$random.time(),
@@ -134,7 +137,7 @@ class PdfController extends Controller
 
         // }
 
-        dd($new_container);
+        // dd($new_container);
 
 
 
@@ -165,6 +168,8 @@ class PdfController extends Controller
             "consigne" => $request->consigne,
             "quantity" => $quantity,
             "seal_container" => $seal_container,
+            "status_si" => $request->status_si,
+
 
 
         ]);
@@ -180,7 +185,9 @@ class PdfController extends Controller
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
-            "quantity" => $quantity
+            "quantity" => $quantity,
+            "status_si" => $request->status_si,
+
 
         ]);
         $status1 = 'ON-PROGRESS';
@@ -199,6 +206,8 @@ class PdfController extends Controller
             "consigne" => $request->consigne,
             "quantity" => $quantity,
             "seal_container" => $seal_container,
+            "status_si" => $request->status_si,
+
 
 
         ]);
@@ -212,6 +221,216 @@ class PdfController extends Controller
 
 
         return response()->download($save2);
+    }
+    public function create_si_alih(Request $request)
+    {
+        $random = Str::random(15);
+
+        $id_alih = $request->chek_container;
+
+        for ($i=0; $i <count($id_alih) ; $i++) {
+
+            $sizez [$i] = ContainerPlanload::where('id', $id_alih[$i])->value('size');
+            $alihs [$i] = ContainerPlanload::where('id', $id_alih[$i])->get();
+            $seals [$i] = SealContainer::where('id', $id_alih[$i])->get();
+
+        }
+
+
+        $unique_size = array_values(array_unique($sizez));
+        $jumlah = [];
+        $quantity = [];
+        for($i = 0; $i < count($unique_size); $i++) {
+            $jumlah[$i] = 0;
+            for($j = 0; $j < count($sizez); $j++) {
+                if($unique_size[$i] == $sizez[$j]) {
+                    $jumlah[$i] += 1;
+                }
+            }
+            $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i];
+        }
+
+
+        $old_slug = $request->old_slug;
+        // dd($old_slug);
+        $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
+        $alihs = AlihKapal::where('kontainer_alih', $request->chek_container)->get();
+
+
+        $si_pdf =[
+            'shipper' => $request->shipper,
+            'status_si' => $request->status_si,
+            'consigne' => $request->consigne,
+            'job_id' => $old_id,
+            'container_id' => $random.time(),
+            'path' => 'SI-'.$old_slug.'-'.$random.time(),
+
+        ];
+
+        $sis = SiPdfContainer::create($si_pdf);
+
+        for ($i=0; $i < count($request->chek_container) ; $i++) {
+            $container = [
+                'status' => "Realisasi-Alih",
+            ];
+            $container2 = [
+                'surat_si' => $sis->id,
+                'status' => "Realisasi-Alih",
+                'slug' => $random.time(),
+            ];
+
+            OrderJobPlanload::where('id', $old_id)->update($container);
+            ContainerPlanload::where('id',$request->chek_container[$i])->update($container2);
+        }
+
+        $checked = [];
+        $containers = [];
+        $get_container = [];
+
+
+        for($i = 0; $i < count($request->chek_container); $i++) {
+            $checked[$i] =   $request->chek_container[$i];
+        }
+        // dd($checked);
+
+         for($j = 0; $j < count($checked); $j++) {
+            $containers[$j] = [];
+            $get_container[$j] = ContainerPlanload::where('id', $checked[$j])->get();
+            // dd($get_container);
+            for ($k=0; $k < count($get_container[$j]) ; $k++) {
+                $containers[$j][$k] = ContainerPlanload::where('id',$get_container[$j][$k]->id)->get();
+            }
+        }
+
+
+
+        $new_container = [];
+
+        for($i = 0; $i < count($containers); $i++) {
+            $new_container[$i] = [
+                'id' => $containers[$i][0][0]->id,
+                'job_id' => $containers[$i][0][0]->job_id,
+                'size' => $containers[$i][0][0]->size,
+                'type' => $containers[$i][0][0]->type,
+                'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
+                'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
+                'seal' => SealContainer::where('kontainer_id',$request->chek_container[$i])->value('seal_kontainer'),
+                'lokasi_depo' => $containers[$i][0][0]->lokasi_depo,
+                'cargo' => $containers[$i][0][0]->cargo,
+
+            ];
+
+
+        }
+
+        $seal_container = [];
+
+        // for ($i=0; $i <count($request->chek_container) ; $i++) {
+        //     $seal_container[$i] = SealContainer::where('kontainer_id',$request->chek_container[$i])->get();
+
+        // }
+
+        // dd($new_container);
+
+
+
+
+        $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
+
+
+        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'.pdf';
+        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-progress.pdf';
+        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
+
+
+
+
+
+
+
+
+
+        // dd($si_pdf);
+
+
+        $pdf1 = Pdf::loadview('pdf.create_si',[
+            "alihs" => $alihs,
+            "containers" => $new_container,
+            "vessel" => $old_slug,
+            "shipper" => $request->shipper,
+            "consigne" => $request->consigne,
+            "quantity" => $quantity,
+            "seal_container" => $seal_container,
+            "status_si" => $request->status_si,
+
+
+
+        ]);
+
+        $pdf1->save($save1);
+
+        //ON-PROGRESS
+
+        $pdf2 = Pdf::loadview('pdf.create_si_progress',[
+            "alihs" => $alihs,
+            "containers" => $new_container,
+            "seal_container" => $seal_container,
+            "vessel" => $old_slug,
+            "shipper" => $request->shipper,
+            "consigne" => $request->consigne,
+            "quantity" => $quantity,
+            "status_si" => $request->status_si,
+
+
+        ]);
+        $status1 = 'ON-PROGRESS';
+
+        $this->make_watermark($pdf2, $status1);
+
+        $pdf2->save($save2);
+
+
+        //DITOLAK
+        $pdf3 = Pdf::loadview('pdf.create_si_progress',[
+            "alihs" => $alihs,
+            "containers" => $new_container,
+            "vessel" => $old_slug,
+            "shipper" => $request->shipper,
+            "consigne" => $request->consigne,
+            "quantity" => $quantity,
+            "seal_container" => $seal_container,
+            "status_si" => $request->status_si,
+
+
+        ]);
+
+        $status2 = 'SI-DITOLAK';
+
+        $this->make_watermark($pdf3, $status2);
+
+        $pdf3->save($save3);
+
+
+
+        return response()->download($save2);
+    }
+
+
+    public function masukkan_bl(Request $request)
+    {
+        $pdf = SiPdfContainer::findOrFail($request->id);
+
+        $data = [
+
+            "nomor_bl" => $request->nomor_bl,
+            "tanggal_bl" => $request->tanggal_bl,
+            "status" => "BL",
+
+        ];
+
+        $pdf->update($data);
+
+
     }
 
     public function make_watermark($pdf, $status){

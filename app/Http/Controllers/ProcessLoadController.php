@@ -102,6 +102,7 @@ class ProcessLoadController extends Controller
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
+            ->where('status', '!=', 'Realisasi-Alih')
                 ->orWhereNull('status');
         })->get();
 
@@ -332,6 +333,7 @@ class ProcessLoadController extends Controller
     public function input_edit(Request $request, $id)
     {
         // dd($request);
+
 
 
         $container = ContainerPlanload::findOrFail($id);

@@ -11,7 +11,12 @@ class SupirMobil extends Model
     protected $guarded = [''];
 
 
+
     public function vendors(){
-        return $this->belongsTo(VendorMobil::class, 'vendor_id', 'id');
+        return $this->belongsTo(VendorMobil::class, 'vendor_id', 'id')->withDefault([
+            'nama_vendor' => ' ',
+
+        ]);;
     }
+
 }

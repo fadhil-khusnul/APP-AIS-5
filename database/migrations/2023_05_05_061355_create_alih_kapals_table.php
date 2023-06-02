@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('harga_alih_kapal');
             $table->string('keterangan_alih_kapal');
             $table->string('pelayaran_alih');
+            $table->string('pol_alih')->nullable();
             $table->string('pot_alih')->nullable();
             $table->string('pod_alih');
             $table->string('vesseL_alih');

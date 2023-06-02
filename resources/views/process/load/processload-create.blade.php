@@ -377,6 +377,7 @@
                                     <th class="text-center">Pilih Nomor Container</th>
                                     <th class="text-center">Biaya Batal Muat</th>
                                     <th class="text-center">Keterangan</th>
+                                    <th class="text-center"></th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_batal_muat" class="text-center">
@@ -404,6 +405,14 @@
                                         </td>
                                         <td>
                                             {{ $container->keterangan_batal }}
+                                        </td>
+
+                                        <td>
+                                            <button type="button" id="btn_detail" name="btn_detail"
+                                                class="btn btn-label-primary btn-sm text-nowrap"
+                                                value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
+                                                Kontainer <i class="fa fa-eye"></i></button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -497,7 +506,7 @@
                                             <td>
                                                 <button type="button" id="btn_detail" name="btn_detail"
                                                     class="btn btn-label-primary btn-sm text-nowrap"
-                                                    value="{{ $alih->kontainer_alih }}" onclick="detail_update(this)">Detail
+                                                    value="{{ $alih->kontainer_alih }}" onclick="detail_disabled(this)">Detail
                                                     Kontainer <i class="fa fa-eye"></i></button>
 
                                             </td>
@@ -1249,6 +1258,377 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="modal fade" id="modal-job-disabled">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form class="modal-dialog-scrollable" action="#" name="valid_job_disabled" id="valid_job_disabled">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">DETAIL KONTAINER</h5>
+                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body d-grid gap-3 px-5">
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Pengirim :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled id="pengirim_disabled" name="pengirim_disabled" class="form-select">
+                                <option selected disabled>Pilih Pengirim</option>
+                                @foreach ($pengirims as $pengirim)
+                                    <option value="{{ $pengirim->nama_costumer }}"
+                                        @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Penerima :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled id="penerima_disabled" name="penerima_disabled" class="form-select">
+                                <option selected disabled>Pilih Pengirim</option>
+                                @foreach ($penerimas as $penerima)
+                                    <option value="{{ $penerima->nama_penerima }}"
+                                        @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select disabled data-bs-toggle="tooltip" id="size_disabled" name="size_disabled" class="form-select"
+                                    @readonly(true) required>
+                                    <option disabled>Pilih Size</option>
+                                    @foreach ($sizes as $size)
+                                        <option value="{{ $size->size_container }}"
+                                            @if ($size->size_container) selected @endif>
+                                            {{ $size->size_container }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <label for="" class="col-sm-4 col-form-label">Type :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select disabled data-bs-toggle="tooltip" id="type_disabled" name="type_disabled" class="form-select"
+                                    @readonly(true) required>
+                                    <option disabled>Pilih Type</option>
+                                    @foreach ($types as $type)
+                                        <option value="{{ $type->type_container }}"
+                                            @if ($type->type_container) selected @endif>
+                                            {{ $type->type_container }}</option>
+                                    @endforeach
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                {{-- <input type="hidden" id="no_container_edit" name="no_container_edit"> --}}
+                                <input disabled required data-bs-toggle="tooltip" type="text"
+                                    class="form-control nomor_kontainer" id="nomor_kontainer_disabled" minlength="11"
+                                    maxlength="11" name="nomor_kontainer_disabled" onblur="blur_no_container_edit(this)"
+                                    required placeholder="XXXX0000000"                                     >
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input disabled data-bs-toggle="tooltip" type="text" class="form-control" id="cargo_disabled"
+                                    name="cargo_disabled" value="{{ old('cargo') }}" required>
+                            </div>
+
+
+                        </div>
+                        {{-- <div class="row">
+
+                            <label for="" class="col-sm-4 col-form-label">Detail Barang :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang_disabled" name="detail_barang_disabled"
+                                    required>{{ old('detail_barang_disabled') }}</textarea>
+                            </div>
+
+                        </div> --}}
+
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select disabled data-bs-toggle="tooltip" id="seal_disabled" multiple="multiple" name="seal_disabled"
+                                    class="form-select" placeholde="Silahkan Pilih Seal" required>
+                                    @foreach ($seals as $seal)
+                                        <option value="{{ $seal->kode_seal }}">
+                                            {{ $seal->kode_seal }}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">Tanggal Kegiatan :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input disabled data-bs-toggle="tooltip" type="text" class="form-control date_activity"
+                                    id="date_activity_disabled" name="date_activity_disabled"
+                                    placeholder="Tanggal Kegiatan..." value="" required>
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">Lokasi Pickup :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled data-bs-toggle="tooltip" id="lokasi_disabled" name="lokasi_disabled" class="form-select"
+                                required>
+                                <option selected disabled value="0">Pilih Lokasi Pickup</option>
+                                @foreach ($lokasis as $lokasi)
+                                    <option value="{{ $lokasi->nama_depo }}">
+                                        {{ $lokasi->nama_depo }}</option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled required id="driver_disabled" name="driver_disabled" class="form-select">
+                                <option selected disabled>Pilih Vendor</option>
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor->id }}"
+                                        >{{ $vendor->nama_vendor }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Nama Supir/Nomor Polisi :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled required id="nomor_polisi_disabled" name="nomor_polisi_disabled" class="form-select">
+                                <option selected disabled>Pilih Supir/Nomor polisi</option>
+                                {{-- @foreach ($supirs as $supir)
+                                        <option @if ($supir->id)
+                                            disabled
+                                        @endif  value="{{ $supir->id }}"
+                                            >{{ $supir->nama_supir }} / {{$supir->nomor_polisi}}
+                                        </option>
+
+                                @endforeach --}}
+
+                            </select>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Remark :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <textarea disabled data-bs-toggle="tooltip" class="form-control" id="remark_disabled" name="remark_disabled" required>{{ old('remark_disabled') }}</textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Stuffing :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_stuffing_disabled" name="biaya_stuffing_disabled"
+                                        placeholder="Biaya Stuffing..." value="@rupiah2(old('biaya_stuffing'))" required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Trucking :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <div class="input-group input-group-sm">
+                                <span class="input-group-text" for="">Rp.</span>
+
+                                <input disabled data-bs-toggle="tooltip"
+                                    type="text" class="form-control currency-rupiah"
+                                    id="biaya_trucking_disabled" name="biaya_trucking_disabled"
+                                    placeholder="Biaya Trucking..." value="@rupiah2(old('biaya_trucking'))" required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Ongkos Supir :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="ongkos_supir_disabled" name="ongkos_supir_disabled" placeholder="Ongkos Supir..."
+                                        value="@rupiah2(old('ongkos_supir'))" required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_seal_disabled" name="biaya_seal_disabled" placeholder="Biaya Seal..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya THC POL:<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_thc_disabled" name="biaya_thc_disabled" placeholder="Biaya THC POL..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Freight:<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="freight_disabled" name="freight_disabled" placeholder="Biaya Freight..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya LSS:<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input disabled data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="lss_disabled" name="lss_disabled" placeholder="Biaya LSS..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select disabled data-bs-toggle="tooltip" id="jenis_mobil_disabled" name="jenis_mobil_disabled"
+                                    class="form-select" required>
+                                    <option value="Mobil Sewa" @if ('Mobil Sewa') selected @endif>Mobil
+                                        Sewa</option>
+                                    <option value="Mobil Sendiri" @if ('Mobil Sendiri') selected @endif>Mobil
+                                        Sendiri</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select disabled data-bs-toggle="tooltip" required @readonly(true) id="dana_disabled"
+                                name="dana_disabled" class="form-select danas">
+                                @foreach ($danas as $dana)
+                                    <option value="{{ $dana->id }}"
+                                        @if ($dana->id) selected @endif>
+                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                @endforeach
+                            </select>
+                            </div>
+                        </div>
+
+                        @if (count($spks) > 0)
+                            <div class="row">
+                                <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
+                                <div class="col-sm-8 validation-container">
+
+                                <select disabled data-bs-toggle="tooltip" id="spk_disabled" multiple="multiple" name="spk_disabled"
+                                    class="form-select" placeholde="Silahkan Pilih SPK">
+                                    @foreach ($spks as $spk)
+                                        <option value="{{ $spk->kode_spk }}">
+                                            {{ $spk->kode_spk }}</option>
+                                    @endforeach
+
+                                </select>
+
+                                </div>
+                            </div>
+                        @endif
+
+
+                    </div>
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
