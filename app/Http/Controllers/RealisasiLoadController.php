@@ -65,6 +65,36 @@ class RealisasiLoadController extends Controller
 
         ]);
     }
+    public function index_pod()
+    {
+        //
+
+        $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
+        $containers = ContainerPlanload::all();
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
+        $select_company =  OrderJobPlanload::all()->unique('select_company');
+        $vessel =  OrderJobPlanload::all()->unique('vessel');
+
+
+        $biayas= BiayaLainnya::all();
+        $alihkapal= AlihKapal::all();
+        $batalmuat= BatalMuat::all();
+        return view('realisasi.load.realisasi-pod',[
+            'title' => 'LOAD (Realisasi-POD)',
+            'active' => 'Realisasi POD',
+            'planloads' => $planloads,
+            'containers' => $containers,
+            'containers_group' => $containers_group,
+            'select_company' => $select_company,
+            'vessel' => $vessel,
+            'biayas' => $biayas,
+            'alihkapal' => $alihkapal,
+            'batalmuat' => $batalmuat,
+
+
+
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -107,7 +137,7 @@ class RealisasiLoadController extends Controller
 
         //
         return view('realisasi.load.realisasi-create',[
-            'title' => 'Buat Load-Realisasi',
+        'title' => 'Buat Load-Realisasi',
             'active' => 'Realisasi',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
@@ -137,44 +167,109 @@ class RealisasiLoadController extends Controller
 
         ]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function create_pod(Request $request)
     {
+        $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
+
+        $activity = Stuffing::all();
+        $shipping_company = ShippingCompany::all();
+        $pol = Pelabuhan::all();
+        $pot = Pelabuhan::all();
+        $pod = Pelabuhan::all();
+        $pengirim = Pengirim::all();
+        $penerima = Penerima::all();
+        $kontainer = Container::all();
+        $lokasis = Depo::all();
+        $seals = Seal::all();
+        $sizes = Container::all();
+        $types = TypeContainer::all();
+        $danas = OngkoSupir::all();
+
+
+        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', '!=', 'Batal-Muat')
+            ->where('status', '!=', 'Alih-Kapal')
+            ->where('status', '!=', 'Realisasi-Alih');
+        })->get();
+
+        $sealsc = SealContainer::where('job_id', $id)->get();
+
+        // dd($containers);
+
+        $vendors = VendorMobil::orderBy('id', 'DESC')->get();
+
+        $select_company = OrderJobPlanload::where('slug', $request->slug)->value('select_company');
+        $pelayaran_id = ShippingCompany::where('nama_company', $select_company)->value('id');
+        $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
+
+
         //
+        return view('realisasi.load.realisasi-pod-create',[
+            'title' => 'Realisasi POD',
+            'active' => 'Realisasi POD',
+            'activity' => $activity,
+            'shippingcompany' => $shipping_company,
+            'pol' => $pol,
+            'pot' => $pot,
+            'pod' => $pod,
+            'pengirims' => $pengirim,
+            'penerimas' => $penerima,
+            'kontainers' => $kontainer,
+            'lokasis' => $lokasis,
+            'seals' => $seals,
+            'sizes' => $sizes,
+            'types' => $types,
+            'danas' => $danas,
+            'sealsc' => $sealsc,
+            'vendors' => $vendors,
+            'spks' => $spks,
+
+
+            'planload' => OrderJobPlanload::find($id),
+            'containers' => $containers,
+            'biayas' => BiayaLainnya::where('job_id', $id)->get(),
+            'alihs' => AlihKapal::where('job_id', $id)->get(),
+            'pdfs' => SiPdfContainer::where('job_id', $id)->where('status',"BL")->get(),
+            'batals' => BatalMuat::where('job_id', $id)->get(),
+            'details' => DetailBarangLoad::where('job_id', $id)->get(),
+
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RealisasiLoad $realisasiLoad)
+    public function masukkan_biaya_pod(Request $request)
     {
-        //
+        // dd($request);
+        $Container = ContainerPlanload::findOrFail($request->id);
+
+        $data = [
+
+            "thc_pod" => $request->thc_pod,
+            "lolo" => $request->lolo,
+            "dooring" => $request->dooring,
+            "demurrage" => $request->demurrage,
+            "status_container" => "POD",
+
+
+        ];
+
+        $Container->update($data);
+
+        return response()->json(['success' => true]);
+
+
+
+    }
+    public function detail_pdf($id)
+    {
+        # code...
+
+        $pdf =SiPdfContainer::find($id);
+
+        return response()->json([
+            'result' => $pdf
+        ]);
+
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(RealisasiLoad $realisasiLoad)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RealisasiLoad $realisasiLoad)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(RealisasiLoad $realisasiLoad)
-    {
-        //
-    }
 }

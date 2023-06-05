@@ -37,9 +37,6 @@ function CreateJobPlanload() {
                 required: true,
             },
 
-            POD_1: {
-                required: true,
-            },
             Penerima_1: {
                 required: true,
             },
@@ -99,7 +96,7 @@ function CreateJobPlanload() {
             let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
-            let pod = document.getElementById("POD_1").value;
+            // let pod = document.getElementById("POD_1").value;
 
 
 
@@ -123,7 +120,7 @@ function CreateJobPlanload() {
             fd.append("vessel", vessel);
             fd.append("pol", pol);
             fd.append("pot", pot);
-            fd.append("pod", pod);
+            // fd.append("pod", pod);
             fd.append("tambah", tambah);
 
             var jumlah_kontainer = [];
@@ -220,9 +217,7 @@ function UpdateteJobPlanload() {
                 required: true,
             },
 
-            POD_1: {
-                required: true,
-            },
+
             Penerima_1: {
                 required: true,
             },
@@ -284,7 +279,7 @@ function UpdateteJobPlanload() {
             let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
             let pot = document.getElementById("POT_1").value;
-            let pod = document.getElementById("POD_1").value;
+            // let pod = document.getElementById("POD_1").value;
             let old_slug = document.getElementById("old_slug").value;
 
 
@@ -307,7 +302,7 @@ function UpdateteJobPlanload() {
             fd.append("vessel_code", vessel_code);
             fd.append("pol", pol);
             fd.append("pot", pot);
-            fd.append("pod", pod);
+            // fd.append("pod", pod);
             fd.append("old_slug", old_slug);
             var table_container = document.getElementById("table_container");
             var urutan = table_container.tBodies[0].rows.length;

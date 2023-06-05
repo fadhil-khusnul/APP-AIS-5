@@ -41,6 +41,7 @@ class PdfController extends Controller
         $random = Str::random(15);
 
         $unique_size = array_values(array_unique($request->size));
+
         $jumlah = [];
         $quantity = [];
         for($i = 0; $i < count($unique_size); $i++) {
@@ -121,7 +122,7 @@ class PdfController extends Controller
                 'type' => $containers[$i][0][0]->type,
                 'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
                 'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
-                'seal' => SealContainer::where('kontainer_id',$request->chek_container[$i])->value('seal_kontainer'),
+                'seal' => SealContainer::where('kontainer_id',$request->chek_container[$i])->get('seal_kontainer'),
                 'lokasi_depo' => $containers[$i][0][0]->lokasi_depo,
                 'cargo' => $containers[$i][0][0]->cargo,
 
@@ -148,10 +149,6 @@ class PdfController extends Controller
         $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'.pdf';
         $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-progress.pdf';
         $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
-
-
-
-
 
 
 
@@ -224,21 +221,18 @@ class PdfController extends Controller
     }
     public function create_si_alih(Request $request)
     {
-        // dd($request);
         $random = Str::random(15);
 
         $id_alih = $request->chek_container;
 
-        for ($i=0; $i <count($id_alih) ; $i++) {
+        for ($i=0; $i < count($id_alih) ; $i++) {
 
             $sizez [$i] = ContainerPlanload::where('id', $id_alih[$i])->value('size');
-            $alihs [$i] = ContainerPlanload::where('id', $id_alih[$i])->get();
-            $seals [$i] = SealContainer::where('id', $id_alih[$i])->get();
 
         }
 
-
         $unique_size = array_values(array_unique($sizez));
+
         $jumlah = [];
         $quantity = [];
         for($i = 0; $i < count($unique_size); $i++) {
@@ -247,10 +241,10 @@ class PdfController extends Controller
                 if($unique_size[$i] == $sizez[$j]) {
                     $jumlah[$i] += 1;
                 }
+
             }
             $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i];
         }
-
 
         $old_slug = $request->old_slug;
         // dd($old_slug);
@@ -258,31 +252,31 @@ class PdfController extends Controller
         $alihs = AlihKapal::where('kontainer_alih', $request->chek_container)->get();
 
 
-        // $si_pdf =[
-        //     'shipper' => $request->shipper,
-        //     'status_si' => $request->status_si,
-        //     'consigne' => $request->consigne,
-        //     'job_id' => $old_id,
-        //     'container_id' => $random.time(),
-        //     'path' => 'SI-'.$old_slug.'-'.$random.time(),
+        $si_pdf =[
+            'shipper' => $request->shipper,
+            'status_si' => $request->status_si,
+            'consigne' => $request->consigne,
+            'job_id' => $old_id,
+            'container_id' => $random.time(),
+            'path' => 'SI-'.$old_slug.'-'.$random.time(),
 
-        // ];
+        ];
 
-        // $sis = SiPdfContainer::create($si_pdf);
+        $sis = SiPdfContainer::create($si_pdf);
 
-        // for ($i=0; $i < count($request->chek_container) ; $i++) {
-        //     $container = [
-        //         'status' => "Realisasi-Alih",
-        //     ];
-        //     $container2 = [
-        //         'surat_si' => $sis->id,
-        //         'status' => "Realisasi-Alih",
-        //         'slug' => $random.time(),
-        //     ];
+        for ($i=0; $i < count($request->chek_container) ; $i++) {
+            $container = [
+                'status' => "Realisasi",
+            ];
+            $container2 = [
+                'surat_si' => $sis->id,
+                'status' => "Realisasi-Alih",
+                'slug' => $random.time(),
+            ];
 
-        //     OrderJobPlanload::where('id', $old_id)->update($container);
-        //     ContainerPlanload::where('id',$request->chek_container[$i])->update($container2);
-        // }
+            OrderJobPlanload::where('id', $old_id)->update($container);
+            ContainerPlanload::where('id',$request->chek_container[$i])->update($container2);
+        }
 
         $checked = [];
         $containers = [];
@@ -420,6 +414,7 @@ class PdfController extends Controller
 
     public function masukkan_bl(Request $request)
     {
+        // dd($request);
         $pdf = SiPdfContainer::findOrFail($request->id);
 
         $data = [
@@ -539,7 +534,39 @@ class PdfController extends Controller
         return response()->json($vessel);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function delete_si(Request $request)
+    {
+
+
+        // dd($seals);
+
+        $pdf = SiPdfContainer::findOrFail($request->id);
+        $job_id = SiPdfContainer::where('id',$request->id)->value('job_id');
+        $container_id = SiPdfContainer::where('id',$request->id)->value('container_id');
+        $path = SiPdfContainer::where('id',$request->id)->value('path');
+
+        $status = [
+            "status"=> "Process-Load",
+        ];
+
+        $deletefiles = Storage::delete('public/si-container/'.$path.'.pdf');
+        Storage::delete('public/si-container/'.$path.'-ditolak.pdf');
+        Storage::delete('public/si-container/'.$path.'-progress.pdf');
+        // dd($deletefiles);
+
+
+        $job = OrderJobPlanload::where('id', $job_id)->update($status);
+        $container = ContainerPlanload::where('slug', $container_id)->update($status);
+
+        $pdf->delete();
+
+
+
+
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
 }

@@ -71,6 +71,8 @@ Route::put('/pengirim/{id}', [PengirimController::class, 'update']);
 Route::delete('/pengirim/{id}', [PengirimController::class, 'destroy']);
 
 Route::post('/add-penerima', [PenerimaController::class, 'store']);
+Route::post('/checkpenerima', [PenerimaController::class, 'checkpenerima']);
+Route::post('/checkpengirim', [PenerimaController::class, 'checkpengirim']);
 Route::get('/penerima/{id}/edit', [PenerimaController::class, 'edit']);
 Route::put('/penerima/{id}', [PenerimaController::class, 'update']);
 Route::delete('/penerima/{id}', [PenerimaController::class, 'destroy']);
@@ -162,10 +164,16 @@ Route::post('/getSpkProcessLoad', [ProcessLoadController::class, 'getSpkProcessL
 Route::post('/getNoContainer', [ProcessLoadController::class, 'getNoContainer']);
 Route::post('/getpelayaran', [ProcessLoadController::class, 'getpelayaran']);
 Route::post('/get-detail-container', [ProcessLoadController::class, 'get_detail_container']);
+// Route::post('/checkOngkosSupir', [ProcessLoadController::class, 'checkOngkosSupir']);
 
 
 Route::get('/realisasi-load', [RealisasiLoadController::class, 'index']);
+Route::get('/realisasi-pod', [RealisasiLoadController::class, 'index_pod']);
+Route::get('/detail-pdf/{id}/input', [RealisasiLoadController::class, 'detail_pdf']);
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
+Route::get('/realisasi-pod-create/{slug}', [RealisasiLoadController::class, 'create_pod']);
+Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
+
 
 
 //DISCHARGE
@@ -195,7 +203,7 @@ Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
 Route::get('/preview-si/{path}', [PdfController::class, 'preview_si']);
 Route::post('/konfirmasi-si', [PdfController::class, 'konfirmasi_si']);
-
+Route::delete('/delete-si/{id}', [PdfController::class, 'delete_si']);
 
 //ALih Kapal
 Route::get('/alih-kapal', [AlihKapalController::class, 'index']);
@@ -250,6 +258,7 @@ Route::post('/getNoContainer-trucking', [TruckingController::class, 'getNoContai
 //ONGKOS SUPIR
 Route::get('/ongkos-supir', [OngkoSupirController::class, 'index']);
 Route::post('/add-ongkos', [OngkoSupirController::class, 'store']);
+Route::post('/kontainer-dibayar', [OngkoSupirController::class, 'dibayar']);
 Route::get('/ongkos-supir/{id}/edit', [OngkoSupirController::class, 'edit']);
 Route::put('/ongkos-supir/{id}', [OngkoSupirController::class, 'update']);
 Route::delete('/ongkos-supir/{id}', [OngkoSupirController::class, 'destroy']);

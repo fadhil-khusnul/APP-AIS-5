@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penerima;
+use App\Models\Pengirim;
 use Illuminate\Http\Request;
 
 class PenerimaController extends Controller
@@ -21,6 +22,29 @@ class PenerimaController extends Controller
     public function create()
     {
         //
+    }
+
+    public function checkpenerima(Request $request) {
+        // dd($request);
+        $nama = $request->post('nama_penerima');
+        $checknama = Penerima::where('nama_penerima', $nama)->get();
+
+        if(count($checknama) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
+    }
+    public function checkpengirim(Request $request) {
+        // dd($request);
+        $nama = $request->post('nama_costumer');
+        $checknama = Pengirim::where('nama_costumer', $nama)->get();
+
+        if(count($checknama) > 0) {
+            echo json_encode(false);
+        } else {
+            echo json_encode(true);
+        }
     }
 
     /**

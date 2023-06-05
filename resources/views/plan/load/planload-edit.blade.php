@@ -134,7 +134,7 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            {{-- <div class="row mb-3">
                                 <label for="POL" class="col-sm-4 col-form-label">POD :</label>
                                 <div class="col-sm-8 validation-container">
 
@@ -146,7 +146,7 @@
                                     @endforeach
                                 </select>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 

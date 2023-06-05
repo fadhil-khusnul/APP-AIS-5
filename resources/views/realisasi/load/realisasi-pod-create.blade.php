@@ -47,7 +47,7 @@
         <form action="#" class="row row-cols-lg-12 g-3" id="valid_realisasi" name="valid_realisasi">
             <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
             <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
                 <div class="portlet">
 
                     <div class="portlet-body py-5">
@@ -116,7 +116,7 @@
 
                     <!-- END Portlet -->
                 </div>
-            </div>
+            </div> --}}
             <div class="col-md-12">
                 <div class="portlet">
 
@@ -124,7 +124,7 @@
 
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>DETAIL KONTAINER :</b></label>
+                            <label for="inputState" class="form-label"><b>KONTAINER <b class="text-danger">NON</b> ALIH-KAPAL:</b></label>
                         </div>
                         <div class="table-responsive">
 
@@ -132,162 +132,100 @@
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center"> </th>
-                                        <th class="text-center">Size</th>
-                                        <th class="text-center">Type</th>
+                                        <th class="">Input Biaya POD</th>
+                                        <th class="text-center">Detail Kontainer</th>
+
                                         <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Cargo (Nama Barang)</th>
-                                        <th class="text-center">Detail Barang</th>
-                                        <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Date Activity</th>
-                                        <th class="text-center">Lokasi Pickup</th>
-                                        <th class="text-center">Nama Driver</th>
-                                        <th class="text-center">Nomor Polisi</th>
-                                        <th class="text-center">Remark</th>
-                                        <th class="text-center">Biaya Stuffing</th>
-                                        <th class="text-center">Biaya Trucking</th>
-                                        <th class="text-center">Ongkos Supir</th>
-                                        <th class="text-center">Biaya THC</th>
-                                        <th class="text-center">Jenis Mobil</th>
+                                        <th class="text-center">Pelayaran (Shipping Company)</th>
+                                        <th class="text-center">POL</th>
+                                        <th class="text-center">POT</th>
+                                        <th class="text-center">Vessel/Voyage</th>
+                                        <th class="text-center">Code Vessel/Voyage</th>
+                                        <th class="text-center">Detail Barang Kontainer</th>
+                                        <th class="text-center">Biaya Lain Kontainer</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-center" id="tbody_container">
+                                <tbody class="" id="tbody_container">
                                     @foreach ($containers as $container)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>
-                                                @if ($container->status != 'Realisasi')
-                                                    <div class="validation-container">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check-container"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                            value="{{ $container->id }}" required autofocus>
 
-                                                    </div>
+                                            <td>
+                                                @if ($container->status_container == "POD")
+
+                                                <button class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                </button>
+
                                                 @else
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
+                                                <button class="btn btn-outline-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+
+                                                </button>
                                                 @endif
                                             </td>
 
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
+                                                <button class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="detail_kontainer(this)">
+                                                Detail Kontainer <i class="fa fa-eye"></i>
+                                                </button>
+                                            </td>
 
-                                            </td>
+
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="type[{{ $container->id }}]">{{ old('type', $container->type) }}</label>
-                                            </td>
-                                            <td>
-                                                {{-- <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text"
-                                                        class="form-control nomor_kontainer"
-                                                        id="nomor_kontainer[{{ $container->id }}]"
-                                                        name="nomor_kontainer[{{ $container->id }}]" onblur="blur_no_container(this)" required>
-                                                </div> --}}
                                                 <label disabled @readonly(true)
                                                     id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
                                             </td>
                                             <td>
-
                                                 <label disabled @readonly(true)
-                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
-
+                                                    id="select_company[{{ $container->id }}]">{{ old('select_company', $planload->select_company) }}</label>
                                             </td>
                                             <td>
-                                                    <ol type="1.">
+                                                <label disabled @readonly(true)
+                                                    id="pol[{{ $container->id }}]">{{ old('pol', $planload->pol) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pot[{{ $container->id }}]">{{ old('pot', $planload->pot) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="vessel[{{ $container->id }}]">{{ old('vessel', $planload->vessel) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="vessel_code[{{ $container->id }}]">{{ old('vessel_code', $planload->vessel_code) }}</label>
+                                            </td>
 
-
+                                            <td>
+                                                <ol type="1.">
                                                     @foreach ($details as $detail)
                                                         @if ($detail->kontainer_id == $container->id)
-                                                        <li id="detail_barang[{{ $container->id }}]">
-                                                            {{ $detail->detail_barang }}
+                                                            <li id="detail[{{ $container->id }}]">
+                                                                {{ $detail->detail_barang }}
 
-                                                        </li>
-
+                                                            </li>
                                                         @endif
-
                                                     @endforeach
-
-                                                    </ol>
-
-
-
-
-
+                                                </ol>
                                             </td>
                                             <td>
                                                 <ol type="1.">
-
-                                                    @foreach ($sealsc as $seal)
-                                                        @if ($seal->kontainer_id == $container->id)
-                                                            <li id="seal[{{ $container->id }}]">
-                                                                {{ $seal->seal_kontainer }}
+                                                    @foreach ($biayas as $biaya)
+                                                        @if ($biaya->kontainer_id == $container->id)
+                                                            <li id="biaya[{{ $container->id }}]">
+                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
 
                                                             </li>
                                                         @endif
                                                     @endforeach
                                                 </ol>
 
-
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="date_activity[{{ $container->id }}]">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</label>
-
                                             </td>
 
 
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="lokasi[{{ $container->id }}]">{{ old('lokasi', $container->lokasi_depo) }}</label>
-
-                                            </td>
 
 
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="driver[{{ $container->id }}]">{{ old('driver', $container->driver) }}</label>
 
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="nomor_polisi[{{ $container->id }}]">{{ old('nomor_polisi', $container->nomor_polisi) }}</label>
 
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="remark[{{ $container->id }}]">{{ old('remark', $container->remark) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_stuffing[{{ $container->id }}]">@rupiah($container->biaya_stuffing)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_trucking[{{ $container->id }}]">@rupiah($container->biaya_trucking)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="ongkos_supir[{{ $container->id }}]">@rupiah($container->ongkos_supir)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_thc[{{ $container->id }}]">@rupiah($container->biaya_thc)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="jenis_mobil[{{ $container->id }}]">{{ old('jenis_mobil', $container->jenis_mobil) }}</label>
-
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -296,16 +234,7 @@
                         </div>
 
                         <!-- END Form -->
-                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
 
-                            <div class="col-auto">
-                                <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
-                                    SI <i class="fa fa-print"></i></button>
-                            </div>
-
-
-
-                        </div>
 
                     </div>
                     <!-- BEGIN Portlet -->
@@ -323,22 +252,19 @@
             @if (count($alihs) > 0)
                 <div class="col-md-12">
                     <div class="portlet">
-
                         <div class="portlet-body">
-
                             <!-- BEGIN Form -->
-
                             <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>ALIH KAPAL</b></label>
+                                <label for="inputState" class="form-label"><b>KONTAINER ALIH KAPAL</b></label>
                             </div>
                             <div class="table-responsive">
 
-
                             <table id="table_alih_kapal_realisasi" class="table mb-0">
-                                <thead id="thead_alih" class="table-danger">
+                                <thead id="thead_alih" class="table-danger tex-nowrao">
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center"></th>
+                                        <th class="text-center">Input Biaya POD</th>
+                                        <th class="text-center">Detail Kontainer</th>
                                         <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Pelayaran (Shipping Company)</th>
                                         <th class="text-center">POT</th>
@@ -346,29 +272,33 @@
                                         <th class="text-center">Vessel/Voyage</th>
                                         <th class="text-center">Code Vessel/Voyage</th>
                                         <th class="text-center">Biaya Alih Kapal</th>
-                                        <th class="text-center">Keterangan</th>
-                                        <th class="text-center"></th>
+                                        <th class="text-center">Keterangan Alih Kapal</th>
+                                        <th class="text-center">Detail Barang Kontainer</th>
+                                        <th class="text-center">Biaya Lain Kontainer</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody_alih" class="text-center">
+                                <tbody id="tbody_alih" class="text-center text-nowrap">
                                     @foreach ($alihs as $alih)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
 
                                             <td>
-                                                @if ($alih->container_planloads->status != 'Realisasi-Alih')
-                                                    <div class="validation-container">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check-container1"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                            value="{{ $alih->kontainer_alih }}" required autofocus>
+                                                @if ($alih->container_planloads->status_container == "POD")
 
-                                                    </div>
+                                                <button class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                </button>
+
                                                 @else
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
+                                                <button class="btn btn-outline-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                </button>
                                                 @endif
+                                            </td>
+                                            <td>
+
+                                                    <button class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="detail_kontainer(this)">
+                                                    Detail Kontainer <i class="fa fa-eye"></i>
+                                                    </button>
+
                                             </td>
 
                                             <td>
@@ -405,11 +335,30 @@
                                                     {{ $alih->keterangan_alih_kapal }}</label>
 
                                             </td>
+
                                             <td>
-                                                <button type="button" id="btn_detail" name="btn_detail"
-                                                    class="btn btn-outline-info btn-sm text-nowrap" value="{{ $alih->kontainer_alih }}"
-                                                    onclick="detail_update(this)">Detail Kontainer <i
-                                                        class="fa fa-eye"></i></button>
+                                                <ol type="1.">
+                                                    @foreach ($details as $detail)
+                                                        @if ($detail->kontainer_id == $alih->container_planloads->id)
+                                                            <li id="detail[{{ $alih->container_planloads->id }}]">
+                                                                {{ $detail->detail_barang }}
+
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ol>
+                                            </td>
+                                            <td>
+                                                <ol type="1.">
+                                                    @foreach ($biayas as $biaya)
+                                                        @if ($biaya->kontainer_id == $alih->container_planloads->id)
+                                                            <li id="biaya[{{ $alih->container_planloads->id }}]">
+                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
+
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ol>
 
                                             </td>
 
@@ -422,14 +371,7 @@
                              </div>
 
 
-                            <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
-                                <div class="col-auto">
-                                    <button id="submit-id1" type="submit" onclick="pdf_si_alih()"
-                                        class="btn btn-info ">Cetak SI ALIH KAPAL <i class="fa fa-print"></i></button>
-                                </div>
 
-
-                            </div>
 
                         </div>
                     </div>
@@ -488,64 +430,7 @@
                     <!-- END Portlet -->
                 </div>
             @endif --}}
-            @if (count($biayas) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
 
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>Biaya Lainnya</b></label>
-                            </div>
-
-                            <table id="table_biaya" class="table mb-0">
-                                <thead id="thead_biaya" class="table-danger">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Biaya</th>
-                                        <th class="text-center">Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_biaya" class="text-center">
-
-                                    @foreach ($biayas as $biaya)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>
-                                                <label id="kontainer_biaya[{{ $loop->iteration }}]">
-                                                    {{ $biaya->container_planloads->nomor_kontainer }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="harga_biaya[{{ $loop->iteration }}]">
-                                                    @rupiah($biaya->harga_biaya)</label>
-
-                                            </td>
-                                            <td>
-                                                <label id="keterangan[{{ $loop->iteration }}]">
-                                                    {{ $biaya->keterangan }}</label>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            {{-- <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="tambah_biaya()"
-                                class="btn btn-label-danger btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div> --}}
-
-                            <!-- END Form -->
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif
 
 
             @if (count($pdfs) > 0)
@@ -564,17 +449,19 @@
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th class="">No</th>
-                                        <th class=""></th>
+                                        <th class="">SI</th>
+                                        <th class="">Input</th>
                                         <th class="">Shipper</th>
                                         <th class="">Consigne</th>
                                         <th class="">Tanggal BL</th>
                                         <th class="">Nomor BL</th>
 
-                                        <th class="">Status BL</th>
+                                        <th class="">Tanggal DO</th>
+                                        <th class="">DO FEE</th>
                                         <th class="">Jenis SI</th>
+                                        <th class=""></th>
 
 
-                                        <th class="text-end"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_alih" class="">
@@ -585,27 +472,19 @@
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td>
-
-
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
                                                     class="btn btn-outline-primary btn-sm ">Preview SI <i
                                                         class="fa fa-eye"></i></a>
-                                                @if ($pdf->status != 'BL')
-                                                    <button value="{{ $pdf->id }}" type="button"
-                                                        onclick="input_bl(this)"
-                                                        class="btn btn-outline-success btn-sm ">Input BL <i
-                                                            class="fa fa-pencil"></i></button>
 
-                                                @elseif ($pdf->status == "BL")
+                                            <td>
                                                 <button value="{{ $pdf->id }}" type="button"
-                                                    onclick="update_bl(this)"
-                                                    class="btn btn-outline-primary btn-sm ">BL <i
-                                                        class="fa fa-pencil"></i></button>
-                                                @endif
-
-
+                                                    onclick="input_bl(this)"
+                                                    class="btn btn-outline-success btn-sm ">Input DO <i
+                                                    class="fa fa-pencil"></i></button>
 
                                             </td>
+
+
                                             <td>
                                                 {{ $pdf->shipper }}
 
@@ -632,44 +511,45 @@
 
                                             </td>
                                             <td>
-                                                @if ($pdf->status == 'BL')
-                                                    <span class="badge badge-label-success"><i
-                                                            class="fa fa-check"></i></span>
+                                                @if ($pdf->tanggal_do_pod != null)
+                                                    {{ \Carbon\Carbon::parse($pdf->tanggal_do_pod)->isoFormat('dddd, DD MMMM YYYY') }}
                                                 @else
-                                                    <span class="badge badge-label-primary"><i
-                                                            class="fa fa-exclamation"></i></span>
+                                                    -
                                                 @endif
 
                                             </td>
                                             <td>
+                                                @if ($pdf->biaya_do_pod != null)
+                                                    @rupiah($pdf->biaya_do_pod)
+                                                @else
+                                                    -
+                                                @endif
+
+                                            </td>
+
+                                            <td>
 
                                                 @if ($pdf->status_si == 'Default')
-                                                    <span class="badge badge-label-success">Default</span>
+                                                    <span class="badge badge-label-danger">NON ALIH-KAPAL</span>
                                                 @else
                                                     <span class="badge badge-label-primary">Alih-Kapal</span>
                                                 @endif
                                             </td>
 
 
-
-
-                                            <td>
+                                            <td class="no-indent">
                                                 <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
                                                     class="btn btn-outline-danger btn-sm "><i
                                                         class="fa fa-trash"></i></button>
+
                                             </td>
+
+
                                         </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
-
-                            <div class="text-center mt-3">
-                                <a href="/processload-create/{{ $planload->slug }}"
-                                    class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Back to Process
-                                </a>
-                            </div>
 
 
                         </div>
@@ -687,8 +567,8 @@
 
 
     <div class="modal fade" id="modal-si">
-        <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content" action="#" id="valid_si" name="valid_si">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form class="modal-dialog-scrollable" action="#" id="valid_si" name="valid_si">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                 <div class="modal-content">
@@ -712,7 +592,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish" class="btn btn-success">Buatkan SI</button>
+                        <button type="submit" id="btnFinish" class="btn btn-primary">Buatkan SI</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -721,8 +601,8 @@
     </div>
 
     <div class="modal fade" id="modal-bl">
-        <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content" id="valid_bl" name="valid_bl">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form class="modal-dialog-scrollable" id="valid_bl" name="valid_bl">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                 <div class="modal-content">
@@ -738,14 +618,14 @@
 
                             <div class="col-sm-8 validation-container">
                                 <input class="form-control" id="nomor_bl" name="nomor_bl" type="text"
-                                    placeholder="Masukkan Nomor BL">
+                                    placeholder="Masukkan shipper">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
                             <div class="col-sm-8 validation-container">
                                 <input class="form-control date_activity" id="tanggal_bl" name="tanggal_bl" type="text"
-                                    placeholder="Masukkan Tanggal BL">
+                                    placeholder="Masukkan consigne">
                             </div>
                         </div>
 
@@ -1131,39 +1011,212 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-bl-edit">
+    <div class="modal fade" id="modal_biaya_do">
         <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content" id="valid_bl_edit" name="valid_bl_edit">
+
+            <form class="modal-content" id="valid_pod" name="valid_pod">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                 <input type="hidden" name="id_container" id="id_container">
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Masukkan Nomor dan Tanggal BL</h5>
+                        <h5 class="modal-title">Masukkan Biaya-Biaya POD</h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body d-grid gap-3 px-5">
+                    <div class="modal-body d-grid gap-3">
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">Nomor BL :</label>
+                            <label class="col-sm-4 col-form-label" for="">THC POD :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
 
-                            <div class="col-sm-8 validation-container">
-                                <input class="form-control" id="nomor_bl_edit" name="nomor_bl_edit" type="text"
-                                    placeholder="Masukkan Nomor BL">
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="thc_pod" name="thc_pod" placeholder="THC POD..."
+                                        required>
+
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
+                            <label class="col-sm-4 col-form-label" for="">Lolo :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
-                                <input class="form-control date_activity" id="tanggal_bl_edit" name="tanggal_bl_edit" type="text"
-                                    placeholder="Masukkan Tanggal BL">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="lolo" name="lolo" placeholder="Biaya Lolo..."
+                                        required>
+
+                                </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Dooring :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="dooring" name="dooring" placeholder="Biaya Dooring..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Demurrage :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="demurrage" name="demurrage" placeholder="Biaya Demurrage..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish2" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal_biaya_do_edit">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <form class="modal-content" id="valid_pod_edit" name="valid_pod_edit">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="id_container_edit" id="id_container_edit">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Masukkan Biaya-Biaya POD</h5>
+                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body d-grid gap-3">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">THC POD :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="thc_pod_edit" name="thc_pod_edit" placeholder="THC POD..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Lolo :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="lolo_edit" name="lolo_edit" placeholder="Biaya Lolo..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Dooring :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="dooring_edit" name="dooring_edit" placeholder="Biaya Dooring..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Demurrage :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="demurrage_edit" name="demurrage_edit" placeholder="Biaya Demurrage..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal_detail_barang">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <form class="modal-content" id="valid_pod" name="valid_pod">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="id_container" id="id_container">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail Barang Kontainer :</h5>
+                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body d-grid gap-3">
+
+                        <table>
+                            <tr>
+
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -1179,8 +1232,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script wsrc="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
     {{-- <script type="text/javascript" src="{{ asset('/') }}./js/processload.js"></script> --}}
-    <script type="text/javascript" src="{{ asset('/') }}./js/create_si.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/pod.js"></script>
 
     <script>
         $(document).ready(function() {

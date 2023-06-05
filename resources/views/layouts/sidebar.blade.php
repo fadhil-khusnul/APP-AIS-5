@@ -204,6 +204,7 @@
                     Request::is('planload') || Request::is('planload/*') || Request::is('planload-edit/*') ||
                     Request::is('processload') || Request::is('processload-create/*') ||
                     Request::is('realisasi-load') || Request::is('realisasi-load-create/*') || Request::is('processload-edit/*')
+                    || Request::is('realisasi-pod') || Request::is('realisasi-pod-create/*')
                      ? 'active' : ''
 
                     }}">
@@ -238,7 +239,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/realisasi-load" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-load') || Request::is('realisasi-load-create/*')
+                            <a href="/realisasi-pod" data-menu-path="/elements/advanced/carousel.html" class="menu-item-link {{ Request::is('realisasi-pod') || Request::is('realisasi-pod-create/*')
                             ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">REALISASI POD</span>

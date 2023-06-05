@@ -101,13 +101,13 @@
                                     </td>
                                 </tr>
 
-                                <tr>
+                                {{-- <tr>
                                     <td>POD (Port of Discharge)</td>
                                     <td>:</td>
                                     <td>{{ $planload->pod }}
 
                                     </td>
-                                </tr>
+                                </tr> --}}
                             </table>
 
                             <div class="col-12 text-center mt-3">
@@ -579,6 +579,24 @@
 
                             </div>
                         </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pod_container" name="pod_container" class="form-select">
+                                <option selected disabled>Pilih POD</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+
                         <div class="row">
                             <label for="email" class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
 
@@ -748,7 +766,7 @@
                                     <input data-bs-toggle="tooltip"
                                         type="text" class="form-control currency-rupiah"
                                         id="biaya_trucking" name="biaya_trucking" placeholder="Biaya Trucking..."
-                                        value="@rupiah2(old('biaya_trucking'))" required>
+                                        required onblur="validate_biaya_trucking(this)">
 
                                 </div>
                             </div>
@@ -759,12 +777,10 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-
                                     <input data-bs-toggle="tooltip"
                                         type="text" class="form-control currency-rupiah"
                                         id="ongkos_supir" name="ongkos_supir" placeholder="Ongkos Supir..."
-                                        required>
-
+                                        required onblur="validate_ongkos_supir(this)">
                                 </div>
                             </div>
                         </div>
@@ -932,6 +948,21 @@
                                 @foreach ($penerimas as $penerima)
                                     <option value="{{ $penerima->nama_penerima }}"
                                         @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pod_container_update" name="pod_container_update" class="form-select">
+                                <option selected disabled>Pilih POD</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
                                     </option>
                                 @endforeach
                             </select>
@@ -1121,7 +1152,7 @@
                                 <input data-bs-toggle="tooltip"
                                     type="text" class="form-control currency-rupiah"
                                     id="biaya_trucking_update" name="biaya_trucking_update"
-                                    placeholder="Biaya Trucking..." value="@rupiah2(old('biaya_trucking'))" required>
+                                    placeholder="Biaya Trucking..." value="@rupiah2(old('biaya_trucking'))" required onblur="validate_biaya_trucking_update(this)">
 
                                 </div>
                             </div>
@@ -1137,7 +1168,7 @@
                                     <input data-bs-toggle="tooltip"
                                         type="text" class="form-control currency-rupiah"
                                         id="ongkos_supir_update" name="ongkos_supir_update" placeholder="Ongkos Supir..."
-                                        value="@rupiah2(old('ongkos_supir'))" required>
+                                        value="@rupiah2(old('ongkos_supir'))" required onblur="validate_ongkos_supir_update(this)">
 
                                 </div>
                             </div>
@@ -1689,6 +1720,22 @@
                         </div>
 
                         <div class="row">
+                            <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pod_container_tambah" name="pod_container_tambah" class="form-select">
+                                <option selected disabled>Pilih POD</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
 
                             <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
@@ -1857,7 +1904,7 @@
                                     <input data-bs-toggle="tooltip"
                                         type="text" class="form-control currency-rupiah"
                                         id="biaya_trucking_tambah" name="biaya_trucking_tambah"
-                                        placeholder="Biaya Trucking..." required>
+                                        placeholder="Biaya Trucking..." required onblur="validate_biaya_trucking_tambah(this)">
 
                                 </div>
                             </div>
@@ -1873,7 +1920,7 @@
                                     <input data-bs-toggle="tooltip"
                                         type="text" class="form-control currency-rupiah"
                                         id="ongkos_supir_tambah" name="ongkos_supir_tambah" placeholder="Ongkos Supir..."
-                                        required>
+                                        required onblur="validate_ongkos_supir_tambah(this)">
 
                                 </div>
                             </div>
@@ -2772,11 +2819,11 @@
 
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select id="POD_1" name="POD_1" class="form-select">
+                        <select id="POD_1" name="POD_1" class="form-select">
                                 <option selected disabled>Pilih POD</option>
                                 @foreach ($pelabuhans as $pod)
                                     <option value="{{ $pod->nama_pelabuhan }}"
@@ -2786,7 +2833,7 @@
                             </select>
 
                             </div>
-                        </div>
+                        </div> --}}
 
 
 

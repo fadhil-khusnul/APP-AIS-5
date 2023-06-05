@@ -527,6 +527,126 @@ function input_bl(e) {
 
     // }
 }
+function update_bl(e) {
+    var id = e.value;
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    $.ajax({
+        url: "/detail-pdf/" + id + "/input",
+        type: "GET",
+        success: function (response) {
+            let new_id = id;
+            console.log(new_id);
+
+
+
+
+            $("#modal-bl-edit").modal("show");
+
+            $("#id_container").val(response.result.id);
+            $("#nomor_bl_edit").val(response.result.nomor_bl);
+
+            var old_tanggal_result = moment(
+                response.result.tanggal_bl,
+                "YYYY-MM-DD"
+            ).format("dddd, DD-MM-YYYY");
+            $("#tanggal_bl_edit").val(old_tanggal_result);
+
+            // $("#tanggal_bl").val(response.result.tanggal_bl);
+
+            $("#valid_bl_edit").validate({
+
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+                submitHandler: function (form) {
+                    document.getElementById("loading-wrapper").style.cursor =
+                        "wait";
+                    document
+                        .getElementById("btnFinish2")
+                        .setAttribute("disabled", true);
+
+                    var csrf = $("#csrf").val();
+                    var nomor_bl = $("#nomor_bl_edit").val();
+                    var id_container = $("#id_container").val();
+                    var tanggal_bl = $("#tanggal_bl_edit").val();
+
+                    tempDate = new Date(tanggal_bl);
+                    formattedDate = [
+                        tempDate.getFullYear(),
+                        tempDate.getMonth() + 1,
+                        tempDate.getDate(),
+                    ].join("-");
+
+                    var data = {
+                        _token: csrf,
+                        id: id_container,
+                        nomor_bl: nomor_bl,
+                        tanggal_bl: formattedDate,
+                    };
+                    // console.log(data);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/masukkan-bl",
+                        data: data,
+
+                        success: function (response) {
+                            // console.log(response);
+                            toast
+                                .fire({
+                                    icon: "success",
+                                    title: "Nomor Berhasil Dimasukkan",
+                                    timer: 2e3,
+                                })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        },
+                    });
+                },
+            });
+
+        },
+    });
+
+
+    // for (let i = 0; i < chek_container.length; i++) {
+    //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
+
+    // }
+}
 
 function approve_si(ini) {
     var swal = Swal.mixin({
@@ -1033,5 +1153,58 @@ function detail_update(e) {
                 },
             });
         },
+    });
+}
+
+
+function delete_SI(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus Dokumen SI INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/delete-si/" + deleteid,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "SI BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Container TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: true,
+            });
+        }
     });
 }

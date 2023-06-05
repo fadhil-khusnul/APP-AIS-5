@@ -30,7 +30,7 @@ class OngkoSupirController extends Controller
         //
         $vendors = VendorMobil::all();
         $supirs = SupirMobil::orderBy('id', 'DESC')->get();
-        return view('pages.vendor-supir',[
+        return view('pages.vendor.vendor-supir',[
             'title' => 'Data Vendor Mobil Truck',
             'active' => 'Vendor',
             'supirs' => $supirs,
@@ -41,13 +41,29 @@ class OngkoSupirController extends Controller
 
     public function report_load()
     {
-        $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
+        $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->get();
+        // for($i = 0; $i < count($containers); $i++) {
+        //     // $containers = [
+        //     //     'selisih': $containers[$i]->biaya_trucking - $containers[$i]->ongkos_supir - (float)$containers[$i]->dibayar
+        //     // ];
+        // }
+        // dd($containers);
+
+        $lunas_dibayar = ContainerPlanload::sum('dibayar');
+        $truck = ContainerPlanload::sum('biaya_trucking');
+        $supir = ContainerPlanload::sum('ongkos_supir');
+
+        $belum_lunas = $truck - $supir - $lunas_dibayar;
+
+
 
         return view('pages.vendor.report-load', [
 
             'title' => 'Report Mobil Truck Load',
             'active' => 'truck',
             "containers" => $containers,
+            "lunas_dibayar" => $lunas_dibayar,
+            "belum_lunas" => $belum_lunas,
 
         ]);
 
@@ -57,9 +73,21 @@ class OngkoSupirController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function dibayar(Request $request)
     {
-        //
+        // dd($request);
+        $container = ContainerPlanload::where('id', $request->id)->value('dibayar');
+        $terbayar = (float)$request->dibayar + (float)$container;
+
+        $dibayar = [
+            "dibayar" => $terbayar
+        ];
+
+        ContainerPlanload::where('id', $request->id)->update($dibayar);
+
+        return response()->json([
+            'success'   => true
+        ]);
     }
 
     /**

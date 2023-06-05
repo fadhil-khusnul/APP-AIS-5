@@ -97,7 +97,7 @@
                         </tr>
                         @foreach ($containers as $container)
                             <tr>
-                                <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
+                            <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
                                 <td colspan="2" align="center" valign="top">
                                     @foreach ($container['seal'] as $seal)
                                         @if ($loop->iteration < count($container['seal']))

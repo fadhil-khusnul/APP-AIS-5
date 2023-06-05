@@ -44,13 +44,17 @@ class ProcessLoadController extends Controller
     {
         $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->get();
         $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
+        $sizez = ContainerPlanload::orderBy('id', 'DESC')->get('size');
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
+
+
 
         // dd($containers_group);
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
 
         $biayas= BiayaLainnya::all();
+        $details= DetailBarangLoad::all();
         $sealcontainers= SealContainer::all();
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
@@ -64,6 +68,7 @@ class ProcessLoadController extends Controller
             'vessel' => $vessel,
             'biayas' => $biayas,
             'alihkapal' => $alihkapal,
+            'details' => $details,
             'batalmuat' => $batalmuat,
             'sealcontainers' => $sealcontainers,
 
@@ -87,6 +92,7 @@ class ProcessLoadController extends Controller
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
         $pod = Pelabuhan::all();
+        $pods = Pelabuhan::all();
         $pelabuhans = Pelabuhan::all();
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
@@ -141,6 +147,7 @@ class ProcessLoadController extends Controller
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
+            'pods' => $pods,
             'pelabuhans' => $pelabuhans,
             'pengirims' => $pengirim,
             'penerimas' => $penerima,
@@ -221,6 +228,9 @@ class ProcessLoadController extends Controller
             'supirs' => $supirs,
         ]);
     }
+   
+
+
     public function detail_alihkapal($id)
     {
 
@@ -262,6 +272,7 @@ class ProcessLoadController extends Controller
             'date_activity' => $request->date_activity,
             'lokasi_depo' => $request->lokasi,
             'driver' => $request->driver,
+            'pod_container' => $request->pod_container,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,
             'biaya_stuffing' =>$request->biaya_stuffing,
@@ -362,6 +373,7 @@ class ProcessLoadController extends Controller
             'cargo' => $request->cargo,
             'date_activity' => $request->date_activity,
             'lokasi_depo' => $request->lokasi,
+            'pod_container' => $request->pod_container,
             'driver' => $request->driver,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,
@@ -505,6 +517,7 @@ class ProcessLoadController extends Controller
             'cargo' => $request->cargo,
             'date_activity' => $request->date_activity,
             'lokasi_depo' => $request->lokasi,
+            'pod_container' => $request->pod_container,
             'driver' => $request->driver,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,
@@ -956,9 +969,7 @@ class ProcessLoadController extends Controller
             'vessel_code' => $request->vessel_code,
             'pol' => $request->pol,
             'pot' => $request->pot,
-            'pod' => $request->pod,
-            'pengirim' => $request->pengirim,
-            'penerima' => $request->penerima,
+
         ];
 
         $OrderJobPlanload->update($orderJob);
@@ -1310,5 +1321,9 @@ class ProcessLoadController extends Controller
         ];
         return response()->json($alih);
     }
+
+    // public function checkOngkosSupir(Request $request) {
+    //     dd($request);
+    // }
 
 }

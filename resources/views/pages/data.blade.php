@@ -1048,6 +1048,7 @@
 <div class="modal fade" id="modal-pengirim">
     <div class="modal-dialog">
         <form action="#" id="valid_pengirim" name="valid_pengirim">
+            <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
             <div class="modal-content">
                 <div class="modal-header">
@@ -1057,23 +1058,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Nama Pengirim</label>
-                        <input class="form-control" id="nama_costumer" name="nama_costumer" type="text" onblur="nama_pengirim(this)">
+                        <input class="form-control" id="nama_costumer" name="nama_costumer" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Alamat</label>
                         <input class="form-control" id="alamat" name="alamat" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Email</label>
                         <input class="form-control" id="email" name="email" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">No. Telp</label>
                         <input class="form-control" id="no_telp" name="no_telp" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">No. Rekening (Bank) </label>
                         <input class="form-control" id="rekening" name="rekening" type="text">
                         <small class="form-text">ex. 123456000 (BRI)</small>
@@ -1137,6 +1138,8 @@
 <div class="modal fade" id="modal-penerima">
     <div class="modal-dialog">
         <form action="#" id="valid_penerima" name="valid_penerima">
+            <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+
 
             <div class="modal-content">
                 <div class="modal-header">
@@ -1146,23 +1149,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Nama Penerima</label>
-                        <input class="form-control" id="nama_penerima" name="nama_penerima" type="text" onblur="onblur_nama_penerima(this)">
+                        <input class="form-control" id="nama_penerima" name="nama_penerima" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Alamat</label>
                         <input class="form-control" id="alamat_penerima" name="alamat_penerima" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">Email</label>
                         <input class="form-control" id="email_penerima" name="email_penerima" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">No. Telp</label>
                         <input class="form-control" id="no_telp_penerima" name="no_telp_penerima" type="text">
                     </div>
-                    <div>
+                    <div class="validation-container">
                         <label class="form-label" for="text">No. Rekening (Bank) </label>
                         <input class="form-control" id="rekening_penerima" name="rekening_penerima" type="text">
                         <small class="form-text">ex. 123456000 (BRI)</small>

@@ -260,7 +260,15 @@ $(function () {
                 required: true
             },
             nama_costumer: {
-                required: true
+                required: true,
+                remote: {
+                    url: "/checkpengirim",
+                    type: "post",
+                    data :{
+                        "_token": $('#csrf').val(),
+                    }
+                }
+
             },
             email: {
                 required: true
@@ -278,7 +286,8 @@ $(function () {
                 required: "Silakan Isi Alamat"
             },
             nama_costumer: {
-                required: "Silakan Isi Nama costumer"
+                required: "Silakan Isi Nama costumer",
+                remote: " Nama Pengirim Sudah Ada"
             },
             email: {
                 required: "Silakan Isi email"
@@ -348,7 +357,14 @@ $(function () {
                 required: true
             },
             nama_penerima: {
-                required: true
+                required: true,
+                remote: {
+                    url: "/checkpenerima",
+                    type: "post",
+                    data :{
+                        "_token": $('#csrf').val(),
+                    }
+                },
             },
             email_penerima: {
                 required: true
@@ -366,7 +382,8 @@ $(function () {
                 required: "Silakan Isi Alamat"
             },
             nama_penerima: {
-                required: "Silakan Isi Nama costumer"
+                required: "Silakan Isi Nama costumer",
+                remote: "Nama Penerima Sudah Ada"
             },
             email_penerima: {
                 required: "Silakan Isi email"
@@ -1008,46 +1025,46 @@ function nama_pengirim(ini) {
 
 }
 
-function onblur_nama_penerima(ini) {
-    let token = $("#csrf").val();
+// function onblur_nama_penerima(ini) {
+//     let token = $("#csrf").val();
 
-    var swal = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-label-success btn-wide mx-1",
-            denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1",
-        },
-        buttonsStyling: false,
-    });
+//     var swal = Swal.mixin({
+//         customClass: {
+//             confirmButton: "btn btn-label-success btn-wide mx-1",
+//             denyButton: "btn btn-label-secondary btn-wide mx-1",
+//             cancelButton: "btn btn-label-danger btn-wide mx-1",
+//         },
+//         buttonsStyling: false,
+//     });
 
-    $.ajax({
-            url: "/getnamapenerima",
-            type: "post",
-            data: {
-                _token: token,
-            },
-            success: function (response) {
+//     $.ajax({
+//             url: "/getnamapenerima",
+//             type: "post",
+//             data: {
+//                 _token: token,
+//             },
+//             success: function (response) {
 
-                for (let i = 0; i < response.length; i++) {
-                    if (response[i] == ini.value) {
+//                 for (let i = 0; i < response.length; i++) {
+//                     if (response[i] == ini.value) {
 
-                        swal.fire({
-                            title: "Nama Penerima Mirip Dengan Data yang Sudah Ada",
-                            text: "Silakan Cek List Tabel Penerima yang Ada",
-                            icon: "warning",
-                            timer: 10e3,
-                            showConfirmButton: true,
-                        });
-                    }
+//                         swal.fire({
+//                             title: "Nama Penerima Mirip Dengan Data yang Sudah Ada",
+//                             text: "Silakan Cek List Tabel Penerima yang Ada",
+//                             icon: "warning",
+//                             timer: 10e3,
+//                             showConfirmButton: true,
+//                         });
+//                     }
 
-                }
-
-
-            },
-        });
+//                 }
 
 
-}
+//             },
+//         });
+
+
+// }
 
 function editCompany(e) {
     var id = e.value;
