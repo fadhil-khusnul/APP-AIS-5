@@ -14,7 +14,10 @@ class Spk extends Model
         return $this->belongsTo(SpkContainer::class, 'kode_spk', 'spk_kontainer');
     }
     public function pelabuhans(){
-        return $this->belongsTo(ShippingCompany::class, 'pelayaran_id', 'id');
+        return $this->belongsTo(ShippingCompany::class, 'pelayaran_id', 'id')->withDefault([
+            'nama_company' => ' ',
+
+        ]);;
     }
 
 

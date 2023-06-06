@@ -335,7 +335,9 @@
 
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle {{
-                        Request::is('invoice-load') || Request::is('invoice-discharge') || Request::is('invoice-trucking') ? 'active' : '' }}">
+                        Request::is('invoice-load') || Request::is('invoice-discharge') || Request::is('invoice-trucking') ||
+                        Request::is('invoice-load-create/*') || Request::is('invoice-discharge-create/*') || Request::is('invoice-trucking-create/*')
+                        ? 'active' : '' }}">
                         <div class="menu-item-icon">
                             <i class="fa fa-credit-card"></i>
                         </div>
@@ -347,20 +349,20 @@
                     <!-- BEGIN Menu Submenu -->
                     <div class="menu-submenu">
                         <div class="menu-item">
-                            <a href="/invoice-load" data-menu-path="" class="menu-item-link {{ Request::is('invoice-load') ? 'active' : ''}}">
+                            <a href="/invoice-load" data-menu-path="" class="menu-item-link {{ Request::is('invoice-load') || Request::is('invoice-load-create/*') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">LOAD INV</span>
                             </a>
                         </div>
 
                         <div class="menu-item">
-                            <a href="/invoice-discharge" data-menu-path="" class="menu-item-link {{ Request::is('invoice-discharge') ? 'active' : ''}}">
+                            <a href="/invoice-discharge" data-menu-path="" class="menu-item-link {{ Request::is('invoice-discharge') || Request::is('invoice-discharge-create/*') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">DISCHARGE INV</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/invoice-trucking" data-menu-path="" class="menu-item-link {{ Request::is('invoice-trucking') ? 'active' : ''}}">
+                            <a href="/invoice-trucking" data-menu-path="" class="menu-item-link {{ Request::is('invoice-trucking') || Request::is('invoice-trucking-create/*') ? 'active' : ''}}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">TRUCKING INV</span>
                             </a>

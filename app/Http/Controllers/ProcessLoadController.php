@@ -59,7 +59,7 @@ class ProcessLoadController extends Controller
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
         return view('process.load.processload',[
-            'title' => 'Load-Process',
+            'title' => 'Process (Load)',
             'active' => 'Load',
             'planloads' => $planloads,
             'containers' => $containers,
@@ -137,7 +137,7 @@ class ProcessLoadController extends Controller
 
         //
         return view('process.load.processload-create',[
-            'title' => 'Buat Load-Process',
+            'title' => 'Process (Load)',
             'active' => 'Process',
             'activity' => $activity,
             'alihs' => $alihs,
@@ -228,7 +228,7 @@ class ProcessLoadController extends Controller
             'supirs' => $supirs,
         ]);
     }
-   
+
 
 
     public function detail_alihkapal($id)
@@ -1208,6 +1208,8 @@ class ProcessLoadController extends Controller
 
         SealContainer::where('kontainer_id', $request->id)->delete();
         SpkContainer::where('kontainer_id', $request->id)->delete();
+        DetailBarangLoad::where('kontainer_id', $request->id)->delete();
+        BiayaLainnya::where('kontainer_id', $request->id)->delete();
 
         $container = ContainerPlanload::find($request->id);
         $container->delete();

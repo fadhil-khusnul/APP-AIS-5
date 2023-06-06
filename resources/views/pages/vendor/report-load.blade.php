@@ -132,6 +132,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Status Pelunasan</th>
+                                <th></th>
                                 <th>Tanggal Kegiatan</th>
                                 <th>Veseel</th>
                                 <th>Nomor Kontainer</th>
@@ -141,8 +143,7 @@
                                 <th>Ongkos Supir</th>
                                 <th>Terbayar</th>
                                 <th>Selisih</th>
-                                <th>Status Pelunasan</th>
-                                <th></th>
+
 
                             </tr>
                         </thead>
@@ -151,6 +152,30 @@
                                 <tr>
                                     <td>
                                         {{ $loop->iteration }}
+                                    </td>
+                                    <td>
+
+                                        @if ($container->biaya_trucking == null || $container->ongkos_supir == null)
+                                            <span class="badge badge-label-primary">Belum Ada Biaya <i
+                                                    class="fa fa-exclamation"></i></span>
+                                        @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) == 0)
+                                            <span class="badge badge-label-success">Lunas <i class="fa fa-check"></i></span>
+                                        @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
+                                            <span class="badge badge-label-danger">Belum Lunas <i class="fa fa-exclamation"></i></span>
+                                        @endif
+                                    </td>
+                                    <td>
+
+                                        @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
+                                            <button value="{{ $container->id }}" type="button" onclick="bayar(this)"
+                                                class="btn btn-label-success btn-sm text-nowrap ">Bayar <i
+                                                    class="fa fa-arrow-right"></i></button>
+                                        @else
+                                            <button disabled type="button"
+                                                class="btn btn-label-secondary btn-sm text-nowrap ">Bayar <i
+                                                    class="fa fa-arrow-right"></i></button>
+                                        @endif
+
                                     </td>
                                     <td>
                                         @if ($container->date_activity != null)
@@ -208,32 +233,11 @@
                                 @if ($container->biaya_trucking != null)
                                     @rupiah(($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar))
                                     {{-- @rupiah($container->selisih) --}}
-                            </td>
-                        @else
-                            -
-                            @endif
-                            <td>
-
-                                @if ($container->status_pelunasan == 'lunas')
-                                    <span class="badge badge-label-success">Lunas <i class="fa fa-check"></i></span>
                                 @else
-                                    <span class="badge badge-label-danger">Belum Lunas <i
-                                            class="fa fa-exclamation"></i></span>
+                                -
                                 @endif
                             </td>
-                            <td>
 
-                                @if ($container->status_pelunasan != 'lunas')
-                                    <button value="{{ $container->id }}" type="button" onclick="bayar(this)"
-                                        class="btn btn-label-success btn-sm text-nowrap ">Bayar <i
-                                            class="fa fa-arrow-right"></i></button>
-                                @else
-                                    <button disabled type="button"
-                                        class="btn btn-label-secondary btn-sm text-nowrap ">Bayar <i
-                                            class="fa fa-arrow-right"></i></button>
-                                @endif
-
-                            </td>
 
 
 

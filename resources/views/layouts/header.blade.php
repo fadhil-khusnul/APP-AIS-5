@@ -13,16 +13,10 @@
                 </div>
                 <div class="header-wrap header-wrap-block justify-content-start px-3">
                     <h4 class="header-brand">{{$title}}
-                        @if ($active == "Plan")
-                        <span class="badge badge-label-warning">{{$active}}</span>
-                        @endif
-                        @if ($active == "Process")
-                        <span class="badge badge-label-success">{{$active}}</span>
-                        @endif
-                        @if ($active == "Realisasi")
-                        <span class="badge badge-label-danger">{{$active}}</span>
-                        @endif
+
+
                     </h4>
+
                 </div>
                 <div class="header-wrap hstack gap-2">
                     <button class="btn btn-flat-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-todo">
@@ -94,15 +88,11 @@
                 </div>
                 <div class="header-wrap header-wrap-block justify-content-start px-3">
                     <h4 class="header-brand">{{$title}}
-                        @if ($active == "Plan")
-                        <span class="badge badge-label-warning">{{$active}}</span>
-                        @endif
-                        @if ($active == "Process")
-                        <span class="badge badge-label-success">{{$active}}</span>
-                        @endif
-                        @if ($active == "Realisasi")
-                        <span class="badge badge-label-danger">{{$active}}</span>
-                        @endif
+                        <span class="badge">
+                            <a href="#" onclick="GoBackWithRefresh();return false;">
+                                <i class="fa fa-arrow-left"></i> Back
+                            </a>
+                        </span>
                     </h4>
                 </div>
                 <div class="header-wrap hstack gap-2">

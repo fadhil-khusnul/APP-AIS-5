@@ -19,6 +19,7 @@ use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\StuffingController;
 use App\Http\Controllers\StrippingController;
 use App\Http\Controllers\AlihKapalController;
+use App\Http\Controllers\InvoiceLoadController;
 use App\Http\Controllers\TypeContainerController;
 use App\Http\Controllers\RealisasiLoadController;
 use App\Http\Controllers\PdfController;
@@ -173,6 +174,7 @@ Route::get('/detail-pdf/{id}/input', [RealisasiLoadController::class, 'detail_pd
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
 Route::get('/realisasi-pod-create/{slug}', [RealisasiLoadController::class, 'create_pod']);
 Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
+Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fee']);
 
 
 
@@ -287,6 +289,8 @@ Route::get('/downloadcload/{slug}', [ReportController::class, 'download_cload'])
 Route::get('/container-report-load', [ReportController::class, 'report_coload']);
 Route::get('/downloadcoload/{id}', [ReportController::class, 'download_coload']);
 Route::get('/invoice-load', [ReportController::class, 'invoice']);
+Route::get('/invoice-load-create/{slug}', [ReportController::class, 'create_invoice']);
+
 Route::get('/pdfinvoice-load/{slug}', [ReportController::class, 'invoice_download']);
 
 //REPORT-DISCHARGE
@@ -309,6 +313,19 @@ Route::get('/container-report-trucking', [ReportTruckingController::class, 'repo
 Route::get('/downloadcotrucking/{id}', [ReportTruckingController::class, 'download_coload']);
 Route::get('/invoice-trucking', [ReportTruckingController::class, 'invoice']);
 Route::get('/pdfinvoice-trucking/{slug}', [ReportTruckingController::class, 'invoice_download']);
+
+//INVOICE
+
+Route::get('/invoice-load', [InvoiceLoadController::class, 'invoice']);
+Route::get('/invoice-load-create/{slug}', [InvoiceLoadController::class, 'create_invoice']);
+Route::post('/masukkan-invoice-load', [InvoiceLoadController::class, 'masukkan_invoice']);
+Route::post('/create-pdf-invoice-load', [InvoiceLoadController::class, 'pdf_invoice']);
+Route::get('/preview-invoice/{path}', [InvoiceLoadController::class, 'preview_invoice']);
+Route::delete('/delete-invoice/{id}', [InvoiceLoadController::class, 'delete_invoice']);
+
+
+
+
 
 
 

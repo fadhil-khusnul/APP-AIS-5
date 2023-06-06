@@ -10,6 +10,10 @@ function detail(e) {
         buttonsStyling: false,
     });
 
+
+
+
+
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
         type: "GET",
@@ -27,6 +31,8 @@ function detail(e) {
             }
             console.log(seals);
             $("#modal-job").modal("show");
+
+          
 
             $("#size").val(response.result.size);
             $("#type").val(response.result.type);
@@ -1845,7 +1851,7 @@ function detail_batal_muat() {
                     swal.fire({
                         icon: "success",
                         title: "Kontainer Berhasil BATAL MUATAN",
-                        showConfirmButton: true,
+                        showConfirmButton: false,
                         timer: 2e3,
                     }).then((result) => {
                         location.reload();
@@ -1915,7 +1921,7 @@ function detail_batal_muat_edit(e) {
                             swal.fire({
                                 icon: "success",
                                 title: "Isi Batal Muat Berhasil Diupdate",
-                                showConfirmButton: true,
+                                showConfirmButton: false,
                                 timer: 2e3,
                             }).then((result) => {
                                 location.reload();
@@ -1965,17 +1971,17 @@ function delete_batalDB(r) {
                         title: "Kontainer Berhasil DIKEMBALIKAN",
                         icon: "success",
                         timer: 9e3,
-                        showConfirmButton: true,
+                        showConfirmButton: false,
                     });
                     window.location.reload();
                 },
             });
         } else {
             swal.fire({
-                title: "Container TIDAK DIBATALKAN",
+                title: "Container TIDAK DIKEMBALIKAN",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: true,
+                showConfirmButton: false,
             });
         }
     });
@@ -2050,7 +2056,7 @@ function detail_alih_kapal() {
                     swal.fire({
                         icon: "success",
                         title: "Kontainer Berhasil DIALIHKAPALKAN",
-                        showConfirmButton: true,
+                        showConfirmButton: false,
                         timer: 2e3,
                     }).then((result) => {
                         location.reload();
@@ -2155,7 +2161,7 @@ function detail_alih_kapal_edit(e) {
                             swal.fire({
                                 icon: "success",
                                 title: "Isi Alih Kapal Berhasil Diupdate",
-                                showConfirmButton: true,
+                                showConfirmButton: false,
                                 timer: 2e3,
                             }).then((result) => {
                                 location.reload();
@@ -2205,17 +2211,17 @@ function delete_alihDB(r) {
                         title: "Kontainer Berhasil DIKEMBALIKAN",
                         icon: "success",
                         timer: 9e3,
-                        showConfirmButton: true,
+                        showConfirmButton: false,
                     });
                     window.location.reload();
                 },
             });
         } else {
             swal.fire({
-                title: "Container TIDAK DIALIHKAN",
+                title: "Container TIDAK Dikambalikan",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: true,
+                showConfirmButton: false,
             });
         }
     });
@@ -2360,7 +2366,7 @@ function edit_planloaad_job(e) {
                                 title: "DETAIL KAPAL DIUPDATE",
                                 icon: "success",
                                 timer: 9e3,
-                                showConfirmButton: true,
+                                showConfirmButton: false,
                             });
                             window.location.reload();
                         },
@@ -2371,7 +2377,7 @@ function edit_planloaad_job(e) {
                         text: "Silakan Cek Kembali Data Anda",
                         icon: "error",
                         timer: 10e3,
-                        showConfirmButton: true,
+                        showConfirmButton: false,
                     });
                 }
             });

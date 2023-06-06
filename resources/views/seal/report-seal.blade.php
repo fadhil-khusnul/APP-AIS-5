@@ -72,7 +72,7 @@
 
         </div>
 
-        <div class="col-md-6 col-xl-12">
+        <div class="col-md-12 col-xl-12">
 
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">

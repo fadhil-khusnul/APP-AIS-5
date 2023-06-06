@@ -50,12 +50,12 @@
             <tr>
                 <td>Kepada YTH</td>
                 <td>:</td>
-                <td>{{$load->penerima}}</td>
+                <td>{{$yth}}</td>
             </tr>
             <tr>
                 <td>KM</td>
                 <td>:</td>
-                <td>{{$load->pengirim}}</td>
+                <td>{{$km}}</td>
             </tr>
             <tr>
                 <td>Pelayaran</td>
@@ -68,9 +68,14 @@
                 <td>{{$load->pol}}</td>
             </tr>
             <tr>
-                <td>POD</td>
+                <td>POT</td>
                 <td>:</td>
-                <td>{{$load->pod}}</td>
+                <td>@if ($load->pot == null)
+                    -
+                    @else
+                    {{$load->pot}}
+                    @endif
+                </td>
             </tr>
         </table>
 
@@ -83,11 +88,12 @@
                 <tr>
                     <th>NO</th>
                     <th>PENGIRIM</th>
+                    <th>POD</th>
                     <th>KONTAINER</th>
                     <th>SIZE</th>
                     <th>KONDISI</th>
                     <th>KETERANGAN</th>
-                    <th>UNIT PRIZE</th>
+                    <th>UNIT PRICE</th>
                 </tr>
             </thead>
 
@@ -95,26 +101,23 @@
                 @foreach ($containers as $container)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$load->pengirim}}</td>
-                    <td>{{$container->nomor_kontainer}}</td>
-                    <td>{{$container->size}}</td>
-                    <td>{{$container->type}}</td>
-                    <td>{{$container->cargo}}</td>
-                    <td>@rupiah($container->ongkos_supir)</td>
+                    <td>{{$container['pengirim']}}</td>
+                    <td>{{$container['pod_container']}}</td>
+                    <td>{{$container['nomor_kontainer']}}</td>
+                    <td>{{$container['size']}}</td>
+                    <td>{{$container['kondisi_invoice']}}</td>
+                    <td>{{$container['keterangan_invoice']}}</td>
+                    <td>@rupiah($container['price_invoice'])</td>
                 </tr>
                 @endforeach
-
-
-
-
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6">TOTAL :</td>
+                    <td colspan="7">TOTAL :</td>
                     <td>@rupiah($total)</td>
                 </tr>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                     Terbilang : {{Terbilang::make($total, ' rupiah')}}
                     </td>
                 </tr>
@@ -131,7 +134,8 @@
         <table class="bank" width="100%">
             <thead>
                 <tr>
-                    <th colspan="4" style="background-color: #808080; color:white">DATA REKENING :</th>
+                    <th colspan="4"
+                    >DATA REKENING :</th>
                 </tr>
                 <tr>
                     <th>No</th>

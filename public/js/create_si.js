@@ -1200,10 +1200,10 @@ function delete_SI(r) {
             });
         } else {
             swal.fire({
-                title: "Container TIDAK DIHAPUS",
+                title: "SI TIDAK DIHAPUS",
                 icon: "error",
                 timer: 10e3,
-                showConfirmButton: true,
+                showConfirmButton: false,
             });
         }
     });

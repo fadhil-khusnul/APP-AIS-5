@@ -17,6 +17,8 @@
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
+                                    <th>Status</th>
+                                    <th></th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
@@ -24,7 +26,6 @@
                                     <th>Activity</th>
                                     <th>POL</th>
                                     <th>POT</th>
-                                    <th>POD</th>
 
 
                                     <th class="align-top"> (JUMLAH) X SIZE - TYPE - CARGO KONTAINER :</th>
@@ -34,11 +35,7 @@
                                     <th class="align-top">BIAYA LAIN KONTAINER (NOMOR KONTAINER - BIAYA - KETERANGAN) :</th>
                                     <th class="align-top">BIAYA ALIH KAPAL (NOMOR KONTAINER - BIAYA ALIH KAPAL - KETERANGAN) :</th>
                                     <th class="align-top">BIAYA BATAL MUAT (NOMOR KONTAINER - BIAYA BATAL MUAT - KETERANGAN) :</th>
-                                    <th>Status</th>
 
-
-
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,6 +45,27 @@
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
+                                        </td>
+
+                                        <td class="align-middle text-nowrap">
+                                            @if ($planload->status == 'Process-Load')
+                                            <i class="marker marker-dot text-success"></i>
+                                                {{ $planload->status }}
+                                            @endif
+                                            @if ($planload->status == 'Realisasi')
+                                            <i class="marker marker-dot text-danger"></i>
+                                                {{ $planload->status }}
+                                            @endif
+                                        </td>
+
+
+                                        <td class="text-center text-nowrap">
+                                            <a href="/realisasi-load-create/{{ $planload->slug }}"
+                                                class="btn btn-label-danger rounded-pill">Realisasi POL <i
+                                                    class="fa fa-pencil"></i>
+
+                                            </a>
+
                                         </td>
                                         <td>
                                             {{$planload->vessel}}
@@ -70,9 +88,7 @@
                                         <td>
                                             {{$planload->pot}}
                                         </td>
-                                        <td>
-                                            {{$planload->pod}}
-                                        </td>
+                                       
 
                                         <td align="top" valign="top">
                                             <ol type="1">
@@ -185,27 +201,10 @@
 
 
                                         </td>
-                                        <td class="align-middle text-nowrap">
-                                            @if ($planload->status == 'Process-Load')
-                                            <i class="marker marker-dot text-success"></i>
-                                                {{ $planload->status }}
-                                            @endif
-                                            @if ($planload->status == 'Realisasi')
-                                            <i class="marker marker-dot text-danger"></i>
-                                                {{ $planload->status }}
-                                            @endif
-                                        </td>
 
 
 
-                                        <td class="text-center text-nowrap">
-                                            <a href="/realisasi-load-create/{{ $planload->slug }}"
-                                                class="btn btn-label-danger rounded-pill">Realisasi Load <i
-                                                    class="fa fa-pencil"></i>
 
-                                            </a>
-
-                                        </td>
 
                                         {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                     class="fa fa-trash"></i></button></td> --}}

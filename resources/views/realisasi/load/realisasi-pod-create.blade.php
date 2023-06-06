@@ -6,7 +6,12 @@
             <!-- BEGIN Portlet -->
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="header-title">LOAD</h3>
+                    <h3 class="header-title">
+
+                        <a href="#" onclick="GoBackWithRefresh();return false;">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </h3>
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
@@ -22,17 +27,23 @@
                                 <span class="breadcrumb-text text-success">Process</span>
                             </a>
 
-                            <a href="/realisasi-load" class="breadcrumb-item">
+                            <a href="/realisasi-load-create/{{ $planload->slug }}" class="breadcrumb-item">
+                                <span class="breadcrumb-text text-danger">Realisasi POL</span>
+
+                            </a>
+                            <a href="/realisasi-pod" class="breadcrumb-item">
                                 @if ($active == 'Plan')
                                     <span class="breadcrumb-text text-warning">{{ $active }}</span>
                                 @endif
                                 @if ($active == 'Process')
                                     <span class="breadcrumb-text text-success">{{ $active }}</span>
                                 @endif
-                                @if ($active == 'Realisasi')
+                                @if ($active == 'Realisasi POD')
                                     <span class="breadcrumb-text text-danger">{{ $active }}</span>
                                 @endif
                             </a>
+
+
 
 
                         </div>
@@ -47,80 +58,14 @@
         <form action="#" class="row row-cols-lg-12 g-3" id="valid_realisasi" name="valid_realisasi">
             <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
             <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-            {{-- <div class="col-md-12">
-                <div class="portlet">
 
-                    <div class="portlet-body py-5">
-
-
-
-                        <div class="col-md-12 text-center mb-3">
-                            <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"> {{ $planload->vessel }} ( {{ $planload->select_company }}
-                                )</h3>
-                        </div>
-                        <div class="col-md-12 mb-3 table-responsive">
-                            <table border="0" style="margin-left: auto; margin-right:auto">
-                                <tr>
-                                    <td width="47%">Vessel/Voyage</td>
-                                    <td width="3%">:</td>
-                                    <td width="50%">{{ $planload->vessel }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Vessel Code</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->vessel_code }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Shipping Company</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->select_company }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Activity</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->activity }}</td>
-                                </tr>
-                                <tr>
-                                    <td>POL (Port of Loading)</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->pol }}</td>
-                                </tr>
-                                <tr>
-                                    <td>POT (Port of Transit)</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->pot }}</td>
-                                </tr>
-
-
-                            </table>
-                            <div class="text-center mt-3">
-                                <a href="/processload-create/{{ $planload->slug }}"
-                                    class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Back to Process
-                                </a>
-                            </div>
-
-                        </div>
-
-
-
-
-
-                        <!-- END Form -->
-
-
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            </div> --}}
             <div class="col-md-12">
                 <div class="portlet">
 
                     <div class="portlet-body">
+                        <div class="col-auto">
+
+                        </div>
 
 
                         <div class="col-md-12 text-center">
@@ -153,18 +98,18 @@
                                             <td>
                                                 @if ($container->status_container == "POD")
 
-                                                <button class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
 
                                                 @else
-                                                <button class="btn btn-outline-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-outline-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
 
                                                 </button>
                                                 @endif
                                             </td>
 
                                             <td>
-                                                <button class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="detail_kontainer(this)">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="detail_kontainer(this)">
                                                 Detail Kontainer <i class="fa fa-eye"></i>
                                                 </button>
                                             </td>
@@ -220,12 +165,6 @@
                                                 </ol>
 
                                             </td>
-
-
-
-
-
-
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -285,17 +224,17 @@
                                             <td>
                                                 @if ($alih->container_planloads->status_container == "POD")
 
-                                                <button class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
 
                                                 @else
-                                                <button class="btn btn-outline-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-outline-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
                                                 @endif
                                             </td>
                                             <td>
 
-                                                    <button class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="detail_kontainer(this)">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="detail_kontainer(this)">
                                                     Detail Kontainer <i class="fa fa-eye"></i>
                                                     </button>
 
@@ -381,55 +320,7 @@
                 </div>
             @endif
 
-            {{-- @if (count($details) > 0)
-                <div class="col-md-6">
-                    <div class="portlet">
 
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>DETAIL BARANG/KONTAINER</b></label>
-                            </div>
-
-                            <table id="table_biaya" class="table mb-0 text-center">
-                                <thead id="" class="table-danger">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nomor Kontainer</th>
-                                        <th>Detail Barang</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_biaya" class="">
-                                    @foreach ($details as $detail)
-                                        <tr>
-
-                                            <td>
-
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->container_planloads->nomor_kontainer }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->detail_barang }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-
-
-                            <!-- END Form -->
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif --}}
 
 
 
@@ -449,7 +340,7 @@
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th class="">No</th>
-                                        <th class="">SI</th>
+                                        <th class="">Preview SI</th>
                                         <th class="">Input</th>
                                         <th class="">Shipper</th>
                                         <th class="">Consigne</th>
@@ -471,16 +362,26 @@
                                             <td>
                                                 {{ $loop->iteration }}
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-outline-primary btn-sm ">Preview SI <i
+                                                    class="btn btn-outline-primary btn-icon btn-sm "><i
                                                         class="fa fa-eye"></i></a>
 
                                             <td>
-                                                <button value="{{ $pdf->id }}" type="button"
-                                                    onclick="input_bl(this)"
+                                                @if ($pdf->status == "POD")
+
+                                                <button type="button" value="{{ $pdf->id }}" type="button"
+                                                    onclick="do_fee_edit(this)"
+                                                    class="btn btn-outline-primary btn-sm ">DO <i
+                                                    class="fa fa-pencil"></i></button>
+                                                @else
+                                                <button type="button" value="{{ $pdf->id }}" type="button"
+                                                    onclick="input_biaya_do(this)"
                                                     class="btn btn-outline-success btn-sm ">Input DO <i
                                                     class="fa fa-pencil"></i></button>
+
+                                                @endif
+
 
                                             </td>
 
@@ -532,7 +433,7 @@
                                                 @if ($pdf->status_si == 'Default')
                                                     <span class="badge badge-label-danger">NON ALIH-KAPAL</span>
                                                 @else
-                                                    <span class="badge badge-label-primary">Alih-Kapal</span>
+                                                    <span class="badge badge-label-primary">ALIH-KAPAL</span>
                                                 @endif
                                             </td>
 
@@ -551,6 +452,15 @@
                                 </tbody>
                             </table>
 
+                            <div class="text-center mt-3">
+                                <a href="/realisasi-load-create/{{ $planload->slug }}"
+                                    class="btn btn-success ">
+                                    <i class="fa fa-arrow-left"></i>
+                                    Realisasi POL
+                                </a>
+                            </div>
+
+
 
                         </div>
                         <!-- BEGIN Portlet -->
@@ -566,87 +476,15 @@
     </div>
 
 
-    <div class="modal fade" id="modal-si">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <form class="modal-dialog-scrollable" action="#" id="valid_si" name="valid_si">
-                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Masukkan SHIPPER dan CONSIGNE Terlebih Dahulu</h5>
-                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="validation-container">
-                            <label class="form-label" for="text">SHIPPER</label>
-                            <input class="form-control" id="shipper" name="shipper" type="text"
-                                placeholder="Masukkan shipper">
-                        </div>
-                        <div class="validation-container">
-                            <label class="form-label" for="text">CONSIGNE</label>
-                            <input class="form-control" id="consigne" name="consigne" type="text"
-                                placeholder="Masukkan consigne">
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="btnFinish" class="btn btn-primary">Buatkan SI</button>
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-bl">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <form class="modal-dialog-scrollable" id="valid_bl" name="valid_bl">
-                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Masukkan Nomor dan Tanggal BL</h5>
-                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body d-grid gap-3 px-5">
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">Nomor BL :</label>
-
-                            <div class="col-sm-8 validation-container">
-                                <input class="form-control" id="nomor_bl" name="nomor_bl" type="text"
-                                    placeholder="Masukkan shipper">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
-                            <div class="col-sm-8 validation-container">
-                                <input class="form-control date_activity" id="tanggal_bl" name="tanggal_bl" type="text"
-                                    placeholder="Masukkan consigne">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Masukkan Nomor BL</button>
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-job-update">
+    <div class="modal fade portlet-drag-container" id="modal-job-update">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_job_update" id="valid_job_update">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                 <input type="hidden" name="new_id_update" id="new_id_update">
 
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header portlet-header-handle">
                         <h5 class="modal-title">DETAIL KONTAINER</h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
@@ -1182,7 +1020,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish2" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -1190,33 +1028,96 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_detail_barang">
+    <div class="modal fade" id="modal_do_fee_si">
         <div class="modal-dialog modal-dialog-centered">
 
-            <form class="modal-content" id="valid_pod" name="valid_pod">
+            <form class="modal-content" id="valid_do_fee" name="valid_do_fee">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-                <input type="hidden" name="id_container" id="id_container">
+                <input type="hidden" name="id_si" id="id_si">
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Detail Barang Kontainer :</h5>
+                        <h5 class="modal-title">Masukkan Biaya DO POD</h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">DO FEE :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
 
-                        <table>
-                            <tr>
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_do_pod" name="biaya_do_pod" placeholder="Nominal DO FEE.."
+                                        required>
 
-                            </tr>
-                        </table>
-
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">Tanggal DO</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required class="form-control date_activity" id="tanggal_do_pod" name="tanggal_do_pod" type="text"
+                                    placeholder="Masukkan Tanggal DO">
+                            </div>
+                        </div>
 
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish3" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_do_fee_si_edit">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <form class="modal-content" id="valid_do_fee_edit" name="valid_do_fee_edit">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="id_si_edit" id="id_si_edit">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Masukkan Biaya DO POD</h5>
+                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body d-grid gap-3">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">DO FEE :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_do_pod_edit" name="biaya_do_pod_edit" placeholder="Nominal DO FEE.."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">Tanggal DO</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required class="form-control date_activity" id="tanggal_do_pod_edit" name="tanggal_do_pod_edit" type="text"
+                                    placeholder="Masukkan Tanggal DO">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnFinish4" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -1229,9 +1130,12 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script wsrc="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    {{-- <script type="text/javascript" src="{{ asset('/') }}./js/processload.js"></script> --}}
+
+
+
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+
     <script type="text/javascript" src="{{ asset('/') }}./js/pod.js"></script>
 
     <script>
@@ -1257,6 +1161,22 @@
                     $("#submit-id1").attr("disabled", "disabled");
                 }
             });
+
+            $(".modal-dialog").draggable({
+                handle: ".modal-header",
+            });
+
         });
+
+        $('.modal>.modal-dialog').draggable({
+                cursor: 'move',
+                handle: '.modal-header, .modal-footer'
+        });
+        $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+        $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
+
+
+
+
     </script>
 @endsection

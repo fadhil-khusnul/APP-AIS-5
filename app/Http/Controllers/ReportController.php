@@ -2,30 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use PDF;
-use App\Models\PlanLoad;
-use App\Models\AlihKapal;
-use App\Models\BatalMuat;
-use App\Models\Stuffing;
-use App\Models\ShippingCompany;
-use App\Models\Pelabuhan;
-use App\Models\Pengirim;
-use App\Models\Penerima;
-use App\Models\Container;
+use Carbon\Carbon;
+use App\Models\Spk;
 use App\Models\Depo;
 use App\Models\Seal;
-use App\Models\BiayaLainnya;
-use Illuminate\Support\Str;
+use App\Models\Penerima;
+use App\Models\Pengirim;
+use App\Models\PlanLoad;
+use App\Models\Stuffing;
+use App\Models\AlihKapal;
+use App\Models\BatalMuat;
+use App\Models\Container;
+use App\Models\Pelabuhan;
+use App\Models\OngkoSupir;
 use App\Models\ProcessLoad;
+use App\Models\VendorMobil;
+use Illuminate\Support\Str;
+use App\Models\BiayaLainnya;
+use App\Models\RekeningBank;
+use Illuminate\Http\Request;
+use App\Models\PlanDischarge;
+use App\Models\SealContainer;
+use App\Models\TypeContainer;
+
+use App\Models\SiPdfContainer;
+use App\Models\ShippingCompany;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
-use App\Models\PlanDischarge;
-use App\Models\RekeningBank;
+use App\Http\Controllers\Controller;
 use App\Models\PlanDischargeContainer;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
-
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class ReportController extends Controller
@@ -203,25 +211,7 @@ class ReportController extends Controller
 
     }
 
-    public function invoice(Request $request){
-
-        $report = 'LOAD';
-        $loads = OrderJobPlanload::orderBy('id', 'DESC')->Where('status', 'Realisasi')->get();
-        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
-        $containers = ContainerPlanload::orderBy('id', 'DESC')->where('status', 'Realisasi')->get();
-
-        return view('invoice.pages.load', [
-
-            'title'=> 'INVOICE LOAD',
-            'active' => 'load',
-            'loads' => $loads,
-            'containers' => $containers,
-            'report' => $report,
-            'containers_group' => $containers_group,
-
-
-        ]);
-    }
+   
 
 
     public function invoice_download(Request $request)

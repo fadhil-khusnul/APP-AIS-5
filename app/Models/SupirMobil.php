@@ -15,8 +15,7 @@ class SupirMobil extends Model
     public function vendors(){
         return $this->belongsTo(VendorMobil::class, 'vendor_id', 'id')->withDefault([
             'nama_vendor' => ' ',
-
-        ]);;
+        ]);
     }
 
 }

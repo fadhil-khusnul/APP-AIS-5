@@ -33,7 +33,7 @@ class PlanLoadController extends Controller
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
 
         return view('plan.load.planload', [
-            'title' => 'Load-Plan',
+            'title' => 'Plan (Load)',
             'active' => 'Load',
             'planloads' => $planloads,
             'vessel' => $vessel,
@@ -58,7 +58,7 @@ class PlanLoadController extends Controller
         $kontainer = Container::all();
         // dd($activity);
         return view('plan.load.planload-create', [
-            'title' => 'Buat Load-Plan',
+            'title' => 'Plan (Load)',
             'activity' => $activity,
             'active' => 'Plan',
             'shippingcompany' => $shipping_company,

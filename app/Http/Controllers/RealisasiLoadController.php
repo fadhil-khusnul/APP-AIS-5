@@ -50,7 +50,7 @@ class RealisasiLoadController extends Controller
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
         return view('realisasi.load.realisasi',[
-            'title' => 'Load-Realisasi',
+            'title' => 'Realisasi (Load)',
             'active' => 'Realisasi',
             'planloads' => $planloads,
             'containers' => $containers,
@@ -137,8 +137,8 @@ class RealisasiLoadController extends Controller
 
         //
         return view('realisasi.load.realisasi-create',[
-        'title' => 'Buat Load-Realisasi',
-            'active' => 'Realisasi',
+            'title' => 'Realisasi-POL (Load)',
+            'active' => 'Realisasi POL',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
@@ -189,8 +189,14 @@ class RealisasiLoadController extends Controller
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
-            ->where('status', '!=', 'Realisasi-Alih');
+            ->where('status', '!=', 'Realisasi-Alih')
+            ->where('status', 'Realisasi');
         })->get();
+        $pdfs = SiPdfContainer::where('job_id', $id)->where(function($query) {
+            $query->where('status', 'BL')
+            ->orWhere('status','POD');
+        })->get();
+
 
         $sealsc = SealContainer::where('job_id', $id)->get();
 
@@ -205,7 +211,7 @@ class RealisasiLoadController extends Controller
 
         //
         return view('realisasi.load.realisasi-pod-create',[
-            'title' => 'Realisasi POD',
+            'title' => 'Realisasi POD (Load)',
             'active' => 'Realisasi POD',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
@@ -229,7 +235,7 @@ class RealisasiLoadController extends Controller
             'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->get(),
-            'pdfs' => SiPdfContainer::where('job_id', $id)->where('status',"BL")->get(),
+            'pdfs' => $pdfs,
             'batals' => BatalMuat::where('job_id', $id)->get(),
             'details' => DetailBarangLoad::where('job_id', $id)->get(),
 
@@ -253,6 +259,28 @@ class RealisasiLoadController extends Controller
         ];
 
         $Container->update($data);
+
+        return response()->json(['success' => true]);
+
+
+
+    }
+    public function masukkan_do_fee(Request $request)
+    {
+        // dd($request);
+        $pdf = SiPdfContainer::findOrFail($request->id);
+
+        $data = [
+
+            "biaya_do_pod" => $request->biaya_do_pod,
+            "tanggal_do_pod" => $request->tanggal_do_pod,
+            "status" => "POD",
+
+
+
+        ];
+
+        $pdf->update($data);
 
         return response()->json(['success' => true]);
 

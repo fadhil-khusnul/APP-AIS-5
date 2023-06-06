@@ -6,7 +6,12 @@
             <!-- BEGIN Portlet -->
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="header-title">LOAD</h3>
+
+                    <h3 class="header-title">
+                    <a href="#" onclick="GoBackWithRefresh();return false;">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    </h3>
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
@@ -29,7 +34,7 @@
                                 @if ($active == 'Process')
                                     <span class="breadcrumb-text text-success">{{ $active }}</span>
                                 @endif
-                                @if ($active == 'Realisasi')
+                                @if ($active == 'Realisasi POL')
                                     <span class="breadcrumb-text text-danger">{{ $active }}</span>
                                 @endif
                             </a>
@@ -133,6 +138,7 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center"> </th>
+                                        <th class="text-center">POD</th>
                                         <th class="text-center">Size</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
@@ -149,6 +155,7 @@
                                         <th class="text-center">Ongkos Supir</th>
                                         <th class="text-center">Biaya THC</th>
                                         <th class="text-center">Jenis Mobil</th>
+                                        <th class="text-center">Biaya Lain Mobil</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
@@ -173,6 +180,11 @@
 
                                             <td>
                                                 <label disabled @readonly(true)
+                                                    id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
+
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
                                                     id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
 
                                             </td>
@@ -181,12 +193,7 @@
                                                     id="type[{{ $container->id }}]">{{ old('type', $container->type) }}</label>
                                             </td>
                                             <td>
-                                                {{-- <div class="validation-container">
-                                                    <input data-bs-toggle="tooltip" type="text"
-                                                        class="form-control nomor_kontainer"
-                                                        id="nomor_kontainer[{{ $container->id }}]"
-                                                        name="nomor_kontainer[{{ $container->id }}]" onblur="blur_no_container(this)" required>
-                                                </div> --}}
+
                                                 <label disabled @readonly(true)
                                                     id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
                                             </td>
@@ -212,10 +219,6 @@
                                                     @endforeach
 
                                                     </ol>
-
-
-
-
 
                                             </td>
                                             <td>
@@ -286,6 +289,19 @@
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="jenis_mobil[{{ $container->id }}]">{{ old('jenis_mobil', $container->jenis_mobil) }}</label>
+
+                                            </td>
+                                            <td>
+                                                <ol type="1.">
+                                                    @foreach ($biayas as $biaya)
+                                                        @if ($biaya->kontainer_id == $container->id)
+                                                            <li id="biaya[{{ $container->id }}]">
+                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
+
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ol>
 
                                             </td>
                                         </tr>
@@ -439,113 +455,8 @@
                 </div>
             @endif
 
-            {{-- @if (count($details) > 0)
-                <div class="col-md-6">
-                    <div class="portlet">
-
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>DETAIL BARANG/KONTAINER</b></label>
-                            </div>
-
-                            <table id="table_biaya" class="table mb-0 text-center">
-                                <thead id="" class="table-danger">
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nomor Kontainer</th>
-                                        <th>Detail Barang</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_biaya" class="">
-                                    @foreach ($details as $detail)
-                                        <tr>
-
-                                            <td>
-
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->container_planloads->nomor_kontainer }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->detail_barang }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
 
 
-                            <!-- END Form -->
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif --}}
-            @if (count($biayas) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
-
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>Biaya Lainnya</b></label>
-                            </div>
-
-                            <table id="table_biaya" class="table mb-0">
-                                <thead id="thead_biaya" class="table-danger">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Biaya</th>
-                                        <th class="text-center">Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_biaya" class="text-center">
-
-                                    @foreach ($biayas as $biaya)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>
-                                                <label id="kontainer_biaya[{{ $loop->iteration }}]">
-                                                    {{ $biaya->container_planloads->nomor_kontainer }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="harga_biaya[{{ $loop->iteration }}]">
-                                                    @rupiah($biaya->harga_biaya)</label>
-
-                                            </td>
-                                            <td>
-                                                <label id="keterangan[{{ $loop->iteration }}]">
-                                                    {{ $biaya->keterangan }}</label>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            {{-- <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="tambah_biaya()"
-                                class="btn btn-label-danger btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div> --}}
-
-                            <!-- END Form -->
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif
 
 
             @if (count($pdfs) > 0)
@@ -564,14 +475,16 @@
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th class="">No</th>
-                                        <th class=""></th>
+                                        <th class="">Preview</th>
+                                        <th class="">Input</th>
+                                        <th class="">Status Approve</th>
+                                        <th class="">Status BL</th>
+                                        <th class="">Jenis SI</th>
                                         <th class="">Shipper</th>
                                         <th class="">Consigne</th>
                                         <th class="">Tanggal BL</th>
                                         <th class="">Nomor BL</th>
 
-                                        <th class="">Status BL</th>
-                                        <th class="">Jenis SI</th>
 
 
                                         <th class="text-end"></th>
@@ -584,19 +497,28 @@
                                             <td>
                                                 {{ $loop->iteration }}
                                             </td>
-                                            <td>
+
+                                            <td class="text-nowrap">
 
 
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
                                                     class="btn btn-outline-primary btn-sm ">Preview SI <i
                                                         class="fa fa-eye"></i></a>
-                                                @if ($pdf->status != 'BL')
+
+
+
+                                            </td>
+                                            <td class="text-nowrap">
+
+
+
+                                                @if ($pdf->nomor_bl == null && $pdf->status_approve == "Disetujui")
                                                     <button value="{{ $pdf->id }}" type="button"
                                                         onclick="input_bl(this)"
                                                         class="btn btn-outline-success btn-sm ">Input BL <i
                                                             class="fa fa-pencil"></i></button>
 
-                                                @elseif ($pdf->status == "BL")
+                                                @elseif ($pdf->nomor_bl != null)
                                                 <button value="{{ $pdf->id }}" type="button"
                                                     onclick="update_bl(this)"
                                                     class="btn btn-outline-primary btn-sm ">BL <i
@@ -606,6 +528,39 @@
 
 
                                             </td>
+
+                                            <td>
+                                                @if ($pdf->status_approve == 'Disetujui')
+                                                    <span class="badge badge-label-success">Approve <i
+                                                            class="fa fa-check"></i></span>
+                                                @elseif ($pdf->status_approve == 'Ditolak')
+                                                    <span class="badge badge-label-danger">Reject <i
+                                                            class="fa fa-times"></i></span>
+                                                @elseif ($pdf->status_approve == null)
+                                                    <span class="badge badge-label-primary"><i
+                                                            class="fa fa-exclamation"></i></span>
+                                                @endif
+
+                                            </td>
+                                            <td>
+                                                @if ($pdf->nomor_bl != null)
+                                                    <span class="badge badge-label-success">Done <i
+                                                            class="fa fa-check"></i></span>
+                                                @else
+                                                    <span class="badge badge-label-primary"><i
+                                                            class="fa fa-exclamation"></i></span>
+                                                @endif
+
+                                            </td>
+                                            <td>
+
+                                                @if ($pdf->status_si == 'Default')
+                                                    <span class="badge badge-label-danger">NON ALIH-KAPAL </span>
+                                                @else
+                                                    <span class="badge badge-label-primary">ALIH-KAPAL</span>
+                                                @endif
+                                            </td>
+
                                             <td>
                                                 {{ $pdf->shipper }}
 
@@ -631,24 +586,7 @@
                                                 @endif
 
                                             </td>
-                                            <td>
-                                                @if ($pdf->status == 'BL')
-                                                    <span class="badge badge-label-success"><i
-                                                            class="fa fa-check"></i></span>
-                                                @else
-                                                    <span class="badge badge-label-primary"><i
-                                                            class="fa fa-exclamation"></i></span>
-                                                @endif
 
-                                            </td>
-                                            <td>
-
-                                                @if ($pdf->status_si == 'Default')
-                                                    <span class="badge badge-label-success">Default</span>
-                                                @else
-                                                    <span class="badge badge-label-primary">Alih-Kapal</span>
-                                                @endif
-                                            </td>
 
 
 
@@ -664,10 +602,12 @@
                                 </tbody>
                             </table>
 
+
+
                             <div class="text-center mt-3">
-                                <a href="/processload-create/{{ $planload->slug }}"
-                                    class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Back to Process
+                                <a href="/realisasi-pod-create/{{ $planload->slug }}"
+                                    class="btn btn-success ">
+                                    Realisasi POD <i class="fa fa-arrow-right"></i>
                                 </a>
                             </div>
 
@@ -698,16 +638,20 @@
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="validation-container">
-                            <label class="form-label" for="text">SHIPPER</label>
-                            <input class="form-control" id="shipper" name="shipper" type="text"
+                    <div class="modal-body d-grid gap-3 px-5">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">SHIPPER :</label>
+                            <div class="col-sm-8 validation-container">
+                            <input required class="form-control" id="shipper" name="shipper" type="text"
                                 placeholder="Masukkan shipper">
+                            </div>
                         </div>
-                        <div class="validation-container">
-                            <label class="form-label" for="text">CONSIGNE</label>
-                            <input class="form-control" id="consigne" name="consigne" type="text"
-                                placeholder="Masukkan consigne">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">CONSIGNE</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required class="form-control" id="consigne" name="consigne" type="text"
+                                    placeholder="Masukkan consigne">
+                            </div>
                         </div>
 
                     </div>
@@ -737,14 +681,14 @@
                             <label class="col-sm-4 col-form-label" for="text">Nomor BL :</label>
 
                             <div class="col-sm-8 validation-container">
-                                <input class="form-control" id="nomor_bl" name="nomor_bl" type="text"
+                                <input required class="form-control" id="nomor_bl" name="nomor_bl" type="text"
                                     placeholder="Masukkan Nomor BL">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
                             <div class="col-sm-8 validation-container">
-                                <input class="form-control date_activity" id="tanggal_bl" name="tanggal_bl" type="text"
+                                <input required class="form-control date_activity" id="tanggal_bl" name="tanggal_bl" type="text"
                                     placeholder="Masukkan Tanggal BL">
                             </div>
                         </div>
@@ -1149,14 +1093,14 @@
                             <label class="col-sm-4 col-form-label" for="text">Nomor BL :</label>
 
                             <div class="col-sm-8 validation-container">
-                                <input class="form-control" id="nomor_bl_edit" name="nomor_bl_edit" type="text"
+                                <input required class="form-control" id="nomor_bl_edit" name="nomor_bl_edit" type="text"
                                     placeholder="Masukkan Nomor BL">
                             </div>
                         </div>
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
                             <div class="col-sm-8 validation-container">
-                                <input class="form-control date_activity" id="tanggal_bl_edit" name="tanggal_bl_edit" type="text"
+                                <input required class="form-control date_activity" id="tanggal_bl_edit" name="tanggal_bl_edit" type="text"
                                     placeholder="Masukkan Tanggal BL">
                             </div>
                         </div>
@@ -1176,9 +1120,10 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script wsrc="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    {{-- <script type="text/javascript" src="{{ asset('/') }}./js/processload.js"></script> --}}
+
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+
     <script type="text/javascript" src="{{ asset('/') }}./js/create_si.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
@@ -1206,5 +1151,14 @@
                 }
             });
         });
+
+
+        $('.modal>.modal-dialog').draggable({
+                cursor: 'move',
+                handle: '.modal-header, .modal-footer'
+        });
+        $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+        $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
+
     </script>
 @endsection

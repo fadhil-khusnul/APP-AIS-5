@@ -62,6 +62,8 @@ function biaya_do(e) {
                     element.closest(".validation-container").append(error);
                 },
                 submitHandler: function (form) {
+                    document.getElementById('loading-wrapper').style.cursor = "wait";
+                    document.getElementById('btnFinish1').setAttribute('disabled', true);
 
 
                     var csrf = $("#csrf").val();
@@ -181,6 +183,8 @@ function edit_biaya_do(e) {
                     element.closest(".validation-container").append(error);
                 },
                 submitHandler: function (form) {
+                    document.getElementById('loading-wrapper').style.cursor = "wait";
+                    document.getElementById('btnFinish2').setAttribute('disabled', true);
 
 
                     var csrf = $("#csrf").val();
@@ -620,5 +624,310 @@ function detail_kontainer(e) {
                 },
             });
         },
+    });
+}
+
+function input_biaya_do(e) {
+    var id = e.value;
+    console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    $.ajax({
+        url: "/detail-pdf/" + id + "/input",
+        type: "GET",
+        success: function (response) {
+            swal.fire({
+                title: " Masukkkan DO FEE untuk Nomor BL ini "+response.result.nomor_bl+" ?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Iya",
+                cancelButtonText: "Tidak",
+            }).then((willCreate) => {
+                if (willCreate.isConfirmed) {
+                        let new_id = id;
+                        console.log(new_id);
+                    $("#modal_do_fee_si").modal("show");
+
+                    $("#id_si").val(response.result.id);
+
+                    // var old_tanggal_result = moment(
+                    //     response.result.tanggal_do_pod,
+                    //     "YYYY-MM-DD"
+                    // ).format("dddd, DD-MM-YYYY");
+                    // $("#tanggal_do_pod").val(old_tanggal_result);
+
+
+
+
+                    $("#valid_do_fee").validate({
+
+
+                        highlight: function highlight(element, errorClass, validClass) {
+                            $(element).addClass("is-invalid");
+                            $(element).removeClass("is-valid");
+                        },
+                        unhighlight: function unhighlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).removeClass("is-invalid");
+                        },
+                        errorPlacement: function errorPlacement(error, element) {
+                            error.addClass("invalid-feedback");
+                            element.closest(".validation-container").append(error);
+                        },
+                        submitHandler: function (form) {
+                            document.getElementById('loading-wrapper').style.cursor = "wait";
+                            document.getElementById('btnFinish3').setAttribute('disabled', true);
+
+
+                            var csrf = $("#csrf").val();
+                            var id_si = $("#id_si").val();
+                            var biaya_do_pod = $("#biaya_do_pod").val().replace(/\./g, "");
+                            var tanggal_do_pod = $("#tanggal_do_pod").val();
+
+                        tempDate = new Date(tanggal_do_pod);
+                        formattedDate = [
+                            tempDate.getFullYear(),
+                            tempDate.getMonth() + 1,
+                            tempDate.getDate(),
+                        ].join("-");
+
+
+
+                            var data = {
+                                _token: csrf,
+                                id: id_si,
+                                biaya_do_pod: biaya_do_pod,
+                                tanggal_do_pod: formattedDate,
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/masukkan-do-fee",
+                                data: data,
+
+                                success: function (response) {
+                                    // console.log(response);
+                                    toast
+                                        .fire({
+                                            icon: "success",
+                                            title: "DO FEE Berhasil Dimasukkan",
+                                            timer: 2e3,
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                },
+                            });
+                        },
+                    });
+
+                }
+
+                else {
+                    toast.fire({
+                        title: "DO FEE Tidak dimasukkan",
+                        icon: "error",
+                        timer: 2e3,
+                    });
+                }
+
+            });
+        }
+    });
+
+    // for (let i = 0; i < chek_container.length; i++) {
+    //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
+
+    // }
+}
+function do_fee_edit(e) {
+    var id = e.value;
+    console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    $.ajax({
+        url: "/detail-pdf/" + id + "/input",
+        type: "GET",
+        success: function (response) {
+
+            let new_id = id;
+            console.log(new_id);
+            $("#modal_do_fee_si_edit").modal("show");
+
+            $("#id_si_edit").val(response.result.id);
+            $("#biaya_do_pod_edit").val(response.result.biaya_do_pod);
+            var old_tanggal_result = moment(
+                response.result.tanggal_do_pod,
+                "YYYY-MM-DD"
+            ).format("dddd, DD-MM-YYYY");
+            $("#tanggal_do_pod_edit").val(old_tanggal_result);
+
+            $("#valid_do_fee_edit").validate({
+
+
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+                submitHandler: function (form) {
+
+                    document.getElementById('loading-wrapper').style.cursor = "wait";
+                    document.getElementById('btnFinish4').setAttribute('disabled', true);
+
+
+                    var csrf = $("#csrf").val();
+                    var id_si_edit = $("#id_si_edit").val();
+                    var biaya_do_pod = $("#biaya_do_pod_edit").val().replace(/\./g, "");
+                    var tanggal_do_pod = $("#tanggal_do_pod_edit").val();
+
+                    tempDate = new Date(tanggal_do_pod);
+                    formattedDate = [
+                        tempDate.getFullYear(),
+                        tempDate.getMonth() + 1,
+                        tempDate.getDate(),
+                    ].join("-");
+
+
+
+                    var data = {
+                        _token: csrf,
+                        id: id_si_edit,
+                        biaya_do_pod: biaya_do_pod,
+                        tanggal_do_pod: formattedDate,
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/masukkan-do-fee",
+                        data: data,
+
+                        success: function (response) {
+                            // console.log(response);
+                            toast
+                                .fire({
+                                    icon: "success",
+                                    title: "DO FEE Berhasil Diedit",
+                                    timer: 2e3,
+                                })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        },
+                    });
+                },
+            });
+
+
+        }
+    });
+
+    // for (let i = 0; i < chek_container.length; i++) {
+    //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
+
+    // }
+}
+
+
+function delete_SI(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus Dokumen SI INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/delete-si/" + deleteid,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "SI BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "SI TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
     });
 }

@@ -6,7 +6,12 @@
             <!-- BEGIN Portlet -->
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="header-title">Activity</h3>
+                    <h3 class="header-title">
+
+                        <a type="button" href="#" onclick="GoBackWithRefresh();return false;">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </h3>
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
@@ -16,11 +21,9 @@
                                 <div class="breadcrumb-icon">
                                     <i class="text-primary fa fa-clone"></i>
                                 </div>
-                                <span class="breadcrumb-text text-primary">Activity</span>
-                            </a>
-                            <a href="/processload" class="breadcrumb-item">
                                 <span class="breadcrumb-text text-primary">Load</span>
                             </a>
+
 
                             <a href="/processload" class="breadcrumb-item">
                                 <span class="breadcrumb-text text-success">Process</span>
@@ -220,7 +223,7 @@
                         @if ($planload->status == 'Process-Load' || $planload->status == 'Realisasi')
                             <div class="col-12 text-end mr-3">
                                 <button value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
-                                    class="btn btn-primary">Realisasi Load <i class="fa fa-arrow-right"></i></button>
+                                    class="btn btn-success">Realisasi POL <i class="fa fa-arrow-right"></i></button>
                             </div>
                         @endif
 
@@ -2819,21 +2822,7 @@
 
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                        <select id="POD_1" name="POD_1" class="form-select">
-                                <option selected disabled>Pilih POD</option>
-                                @foreach ($pelabuhans as $pod)
-                                    <option value="{{ $pod->nama_pelabuhan }}"
-                                        @if ($pod->nama_pelabuhan == $planload->pod) selected @endif>{{ $pod->area_code }} -
-                                        {{ $pod->nama_pelabuhan }}</option>
-                                @endforeach
-                            </select>
-
-                            </div>
-                        </div> --}}
+                      
 
 
 
@@ -2851,18 +2840,39 @@
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    {{-- <script type="text/javascript" src="{{ asset('/') }}./js/processload.js"></script> --}}
+
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+
+    {{-- <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script> --}}
+
     <script type="text/javascript" src="{{ asset('/') }}./js/detail_kontainer.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
-    <script>
+    <script type="text/javascript" >
         $(document).ready(function() {
             $('input, select, .date_activity').blur(function() {
                 var $txt = $(this).val();
                 $(this).attr('data-bs-original-title', $txt);
             })
-        })
+
+            // $('.modal-content').resizable({
+            //     minHeight: 300,
+            //     minWidth: 300
+            // });
+
+
+
+        });
+
+        $('.modal>.modal-dialog').draggable({
+                cursor: 'move',
+                handle: '.modal-header, .modal-footer'
+        });
+        $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+        $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
+
+
     </script>
 @endsection

@@ -16,7 +16,7 @@
                                 <div class="breadcrumb-icon">
                                     <i class="text-danger fa fa-clone"></i>
                                 </div>
-                                <span class="breadcrumb-text text-danger">Realisasi</span>
+                                <span class="breadcrumb-text text-danger">Invoice</span>
                             </a>
                             <a href="/realisasi-load-create/{{$planload->slug}}" class="breadcrumb-item">
                                 <span class="breadcrumb-text text-danger">Realisasi-Load</span>
@@ -79,7 +79,7 @@
                                     </div>
 
 
-                                    <div class="col-auto text-center mt-3 mb-5">
+                                    <div class="col-auto text-center mt-3 mb-2">
                                         {{-- <input type="hidden" id="container_id{{$loop->iteration}}" name="container_id" value="{{$pdf->container_id}}"> --}}
                                         <button type="button" value="{{$pdf->container_id}}" onclick="approve_si(this)" class="btn btn-success ">Approve SI <i
                                                 class="fa fa-check"></i></button>
@@ -88,9 +88,15 @@
 
                                     </div>
 
+                                    <div class="col-auto text-center mt-3 mb-5">
+                                        <a type="button" href="#" onclick="GoBackWithRefresh();return false;"><i class="fa fa-arrow-left"></i> Back</a>
+
+                                    </div>
+
 
 
                                 </div>
+
 
 
 

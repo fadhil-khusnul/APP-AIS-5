@@ -233,4 +233,33 @@ h3 {
 
 }
 
+.bank thead tr:first-child {
+    background-color: #00ad4c;
+    color: #ffffff;
+    text-align: center;
+    font-size: 11px;
+
+
+}
+.bank thead tr:nth-child(2) {
+    background-color: #00ad4c;
+    color: #ffffff;
+    text-align: center;
+    font-size: 8px;
+
+
+}
+.bank tbody tr:nth-child(even){
+    background-color: #aed8a7aa;
+    font-size: 8px;
+
+
+}
+.bank tbody tr {
+    color: #0c341d;
+    font-size: 8px;
+
+
+}
+
 

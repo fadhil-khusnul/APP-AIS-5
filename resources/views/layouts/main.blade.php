@@ -8,13 +8,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&amp;family=Roboto+Mono&amp;display=swap"
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&amp;family=Roboto+Mono&amp;display=swap"
         rel="stylesheet">
     <link href="{{ asset('/') }}./assets/build/styles/ltr-core.css" rel="stylesheet">
     <link href="{{ asset('/') }}./assets/build/styles/ltr-vendor.css" rel="stylesheet">
     <link href="{{ asset('/') }}./assets/images/icon.png" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ asset('/') }}./assets/build/scripts/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
 
     <title>{{$title}} | AIS-ONLINE</title>
 
@@ -59,6 +62,7 @@
     <!-- END Float Button -->
     <!-- BEGIN Offcanvas -->
     <!-- END Offcanvas -->
+   
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/mandatory.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/core.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
@@ -85,6 +89,7 @@
 
 
     <script type="text/javascript" src="{{ asset('/') }}./js/data.js"></script>
+
 
 
 
