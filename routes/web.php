@@ -130,6 +130,7 @@ Route::post('/detail-kontainer-tambah', [ProcessLoadController::class, 'input_ta
 Route::delete('/container-delete/{id}', [ProcessLoadController::class, 'destroy']);
 Route::post('/detailbarang-kontainer', [ProcessLoadController::class, 'detailbarang']);
 Route::post('/biayalain-kontainer', [ProcessLoadController::class, 'biayalain']);
+Route::post('/cetak-packing-list-load', [ProcessLoadController::class, 'cetak_detail']);
 Route::delete('/biayalainnya-delete/{id}', [ProcessLoadController::class, 'destroy_biaya']);
 Route::delete('/detailbarang-delete/{id}', [ProcessLoadController::class, 'destroy_detailbarang']);
 Route::get('/biayalainnya-edit/{id}', [ProcessLoadController::class, 'biayalain_edit']);
@@ -261,6 +262,8 @@ Route::post('/getNoContainer-trucking', [TruckingController::class, 'getNoContai
 Route::get('/ongkos-supir', [OngkoSupirController::class, 'index']);
 Route::post('/add-ongkos', [OngkoSupirController::class, 'store']);
 Route::post('/kontainer-dibayar', [OngkoSupirController::class, 'dibayar']);
+Route::post('/get-selisih-load', [OngkoSupirController::class, 'selisih']);
+
 Route::get('/ongkos-supir/{id}/edit', [OngkoSupirController::class, 'edit']);
 Route::put('/ongkos-supir/{id}', [OngkoSupirController::class, 'update']);
 Route::delete('/ongkos-supir/{id}', [OngkoSupirController::class, 'destroy']);

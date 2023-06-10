@@ -127,6 +127,7 @@ class SealController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
 
         $seals = [];
 
@@ -138,6 +139,7 @@ class SealController extends Controller
                 'start_seal' => $request->start_seal[$i],
                 'touch_seal' => $request->touch_seal[$i],
                 'kode_seal' => $request->kode_seal[$i],
+                'harga_seal' => $request->harga_seal[$i],
                 'status' => 'input',
             ];
 

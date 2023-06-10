@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('size');
             $table->string('type');
             $table->string('cargo');
+            $table->string('pot_container')->nullable();
+            $table->string('vessel_pot')->nullable();
+            $table->string('kode_vessel_pot')->nullable();
             $table->string('pengirim')->nullable();
             $table->string('penerima')->nullable();
             $table->integer('jumlah_kontainer')->nullable();
@@ -47,6 +50,7 @@ return new class extends Migration
             $table->string('invoice')->nullable();
             $table->string('slug')->nullable();
             $table->string('status')->nullable();
+            $table->string('status_bayar')->nullable();
             $table->timestamps();
         });
     }

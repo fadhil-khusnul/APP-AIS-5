@@ -18,7 +18,7 @@ class OngkoSupirController extends Controller
     {
         //
         $danas = OngkoSupir::orderBy('id', 'DESC')->get();
-        return view('pages.ongkos-supir',[
+        return view('pages.ongkos-supir', [
             'title' => 'Data Ongkos Supir',
             'active' => 'ongkos',
             'danas' => $danas,
@@ -30,7 +30,7 @@ class OngkoSupirController extends Controller
         //
         $vendors = VendorMobil::all();
         $supirs = SupirMobil::orderBy('id', 'DESC')->get();
-        return view('pages.vendor.vendor-supir',[
+        return view('pages.vendor.vendor-supir', [
             'title' => 'Data Vendor Mobil Truck',
             'active' => 'Vendor',
             'supirs' => $supirs,
@@ -41,13 +41,8 @@ class OngkoSupirController extends Controller
 
     public function report_load()
     {
-        $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->get();
-        // for($i = 0; $i < count($containers); $i++) {
-        //     // $containers = [
-        //     //     'selisih': $containers[$i]->biaya_trucking - $containers[$i]->ongkos_supir - (float)$containers[$i]->dibayar
-        //     // ];
-        // }
-        // dd($containers);
+        $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->whereNotNull('biaya_trucking')->get();
+
 
         $lunas_dibayar = ContainerPlanload::sum('dibayar');
         $truck = ContainerPlanload::sum('biaya_trucking');
@@ -66,24 +61,65 @@ class OngkoSupirController extends Controller
             "belum_lunas" => $belum_lunas,
 
         ]);
-
     }
 
 
     /**
      * Show the form for creating a new resource.
      */
+
+    public function selisih(Request $request)
+    {
+        $tabel_kontainer = [];
+        for ($i = 0; $i < count($request->id); $i++) {
+            $tabel_kontainer[$i] = ContainerPlanload::find($request->id[$i]);
+        }
+
+        $selisih = [];
+        for ($i = 0; $i < count($tabel_kontainer); $i++) {
+            $selisih[$i] = $tabel_kontainer[$i]->biaya_trucking - $tabel_kontainer[$i]->ongkos_supir - (float)$tabel_kontainer[$i]->dibayar;
+        }
+
+        $total_selisih = 0;
+        for ($i = 0; $i < count($selisih); $i++) {
+            $total_selisih += $selisih[$i];
+        }
+
+        return response()->json($total_selisih);
+    }
+
     public function dibayar(Request $request)
     {
-        // dd($request);
-        $container = ContainerPlanload::where('id', $request->id)->value('dibayar');
-        $terbayar = (float)$request->dibayar + (float)$container;
+        $container = [];
+        for ($i = 0; $i < count($request->id); $i++) {
+            $container[$i] = ContainerPlanLoad::find($request->id[$i]);
+        }
 
-        $dibayar = [
-            "dibayar" => $terbayar
-        ];
+        $selisih = [];
+        for ($i = 0; $i < count($container); $i++) {
+            $selisih[$i] = $container[$i]->biaya_trucking - $container[$i]->ongkos_supir - (float)$container[$i]->dibayar;
+        }
 
-        ContainerPlanload::where('id', $request->id)->update($dibayar);
+        $total_selisih = (float)$request->selisih;
+        for ($i = 0; $i < count($selisih); $i++) {
+            $total_selisih -= $selisih[$i];
+            if ($total_selisih > 0) {
+                $terbayar = (float)$container[$i]->dibayar + $selisih[$i];
+                $dibayar = [
+                    "dibayar" => $terbayar
+                ];
+
+                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+            } else {
+                $terbayar = (float)$container[$i]->dibayar + $selisih[$i] + $total_selisih;
+                $dibayar = [
+                    "dibayar" => $terbayar
+                ];
+
+                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+                break;
+            }
+        }
 
         return response()->json([
             'success'   => true
@@ -99,7 +135,7 @@ class OngkoSupirController extends Controller
         $data = [
 
             'pj' => $request->pj,
-            'nominal' => str_replace('.','', $request->nominal),
+            'nominal' => str_replace('.', '', $request->nominal),
 
         ];
 
@@ -195,8 +231,8 @@ class OngkoSupirController extends Controller
         $danas = OngkoSupir::findOrFail($id);
 
         $data = [
-            "pj" =>$request->pj,
-            'nominal' => str_replace('.','', $request->nominal),
+            "pj" => $request->pj,
+            'nominal' => str_replace('.', '', $request->nominal),
         ];
 
         $danas->update($data);

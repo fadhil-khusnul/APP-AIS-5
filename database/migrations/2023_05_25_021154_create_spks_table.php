@@ -17,6 +17,7 @@ return new class extends Migration
             $table->double('start_spk');
             $table->double('touch_spk')->nullable();
             $table->string('status')->nullable();
+            $table->double('harga_spk')->nullable();
             $table->text('kode_spk');
             $table->timestamps();
         });

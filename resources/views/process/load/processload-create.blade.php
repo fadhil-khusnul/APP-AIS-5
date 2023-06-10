@@ -42,7 +42,7 @@
         <form action="#" class="row row-cols-lg-12 g-3" id="valid_processload" name="valid_processload">
             <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
             <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="portlet">
 
                     <div class="portlet-body">
@@ -61,19 +61,20 @@
                                     <td width="45%">Vessel/Voyage</td>
                                     <td width="5%">:</td>
                                     <td width="">
-                                        {{ $planload->vessel }}
+                                        <label for="" id="nama_kapal">{{ $planload->vessel }}</label>
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Vessel Code</td>
                                     <td>:</td>
-                                    <td><label for="">{{ $planload->vessel_code }}</label>
+                                    <td><label for="" id="kode_kapal">{{ $planload->vessel_code }}</label>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Shipping Company</td>
                                     <td>:</td>
-                                    <td> <label for="">{{ $planload->select_company }}</label>
+                                    <td> <label for="" id="">{{ $planload->select_company }}</label>
 
                                     </td>
                                 </tr>
@@ -115,7 +116,7 @@
 
                             <div class="col-12 text-center mt-3">
                                 <button value="{{ $planload->id }}" type="button" onclick="edit_planloaad_job(this)"
-                                    class="btn btn-label-primary">Edit Detail Kapal Load <i
+                                    class="btn btn-outline-primary">Edit Detail Kapal Load <i
                                         class="fa fa-pencil"></i></button>
                             </div>
 
@@ -138,7 +139,7 @@
 
             <!-- END Portlet -->
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="portlet">
 
                     <div class="portlet-body">
@@ -146,12 +147,13 @@
                         <!-- BEGIN Form -->
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>DETAIL KONTAINER :</b></label>
+                            <label for="inputState" class="form-label"><b>INPUT KONTAINER :</b></label>
                         </div>
                         <div class="table-responsive">
 
 
-                            <table id="table_biaya" class="table mb-0">
+
+                            <table id="table_biaya1" class="table mb-0">
                                 <thead id="" class="table-success">
                                     <tr>
                                         <th class="text-center"></th>
@@ -206,26 +208,22 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                    <tr>
 
-                                    </tr>
 
                                 </tbody>
                             </table>
-
                         </div>
 
-                        <div class="mb-5 mt-5">
+
+                        <div class="mb-5 mt-5 text-center">
                             <button id="detail_kontainer" type="button" onclick="detail_tambah()"
-                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                                class="btn btn-outline-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                                @if ($planload->status == 'Process-Load' || $planload->status == 'Realisasi')
+                                <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
+                                class="btn btn-success">Realisasi POL <i class="fa fa-arrow-right"></i></button>
+                                @endif
                         </div>
 
-                        @if ($planload->status == 'Process-Load' || $planload->status == 'Realisasi')
-                            <div class="col-12 text-end mr-3">
-                                <button value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
-                                    class="btn btn-success">Realisasi POL <i class="fa fa-arrow-right"></i></button>
-                            </div>
-                        @endif
 
 
                         <!-- END Form -->
@@ -234,6 +232,209 @@
                 <!-- BEGIN Portlet -->
 
                 <!-- END Portlet -->
+            </div>
+
+            <div class="col-md-12">
+                <div class="portlet">
+                    <div class="portlet-body">
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
+                        </div>
+                        <div class="table-responsive">
+
+                            <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize">
+                                <thead class="table">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Status</th>
+                                        <th>Tgl. Kegiatan</th>
+                                        <th>Pengirim</th>
+                                        <th>Penerima</th>
+                                        <th>POD</th>
+                                        <th>POT</th>
+                                        <th>VESEEL POT</th>
+                                        <th>Size/Type Container</th>
+                                        <th>Nomor Container</th>
+                                        <th>Cargo</th>
+                                        <th>Seal</th>
+                                        <th>Lokasi Pickup</th>
+                                        <th>Nama Supir/Nomor Polisi</th>
+                                        <th>Vendor Truck</th>
+                                        <th>Jenis Mobil</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($containers_info as $container)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if ($container->status == "Alih-Kapal" || $container->status == "Realisasi-Alih" )
+                                            <span class=" badge badge-label-primary">Alih-Kapal</span>
+                                            @elseif ($container->status == "Batal-Muat")
+                                            <span class=" badge badge-label-danger">Batal-Muat</span>
+                                            @else
+                                            <span class=" badge badge-label-success">Normal</span>
+                                            @endif
+                                            {{ $container->iteration }}
+
+
+                                        </td>
+
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                                        </td>
+                                        <td>{{$container->pengirim}}</td>
+                                        <td>{{$container->penerima}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>{{$container->nomor_kontainer}}</td>
+                                        <td>{{$container->cargo}}</td>
+                                        <td>
+                                            @if ($sealsc->count() == 1)
+                                                @foreach ($sealsc as $seal)
+                                                @if ($seal->kontainer_id == $container->id)
+                                                        {{ $seal->seal_kontainer }}
+
+                                                @endif
+                                                @endforeach
+                                            @else
+                                            <ol type="1.">
+
+                                                @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id == $container->id)
+                                                        <li id="seal[{{ $container->id }}]">
+                                                            {{ $seal->seal_kontainer }}
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ol>
+                                            @endif
+                                        </td>
+                                        <td>{{$container->lokasi_depo}}</td>
+
+                                        <td>
+                                            @if ($container->nomor_polisi != null)
+                                                {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
+
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($container->nomor_polisi != null)
+                                                {{ $container->mobils->vendors->nama_vendor }}
+
+                                            @endif
+                                        </td>
+                                        <td>{{$container->jenis_mobil}}
+                                        </td>
+                                    </tr>
+
+
+                                    @endforeach
+                                </tbody>
+
+                            </table>
+
+
+                            </div>
+
+                            <div class="table-responsive mt-5">
+
+
+                                <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize">
+                                    <thead class="table">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Container</th>
+                                            <th>Size/Type</th>
+                                            <th>Biaya Stuffing</th>
+                                            <th>SPK</th>
+                                            <th>Biaya Trucking</th>
+                                            <th>Ongkos Supir</th>
+                                            <th>Biaya Seal</th>
+                                            <th>Biaya THC POL</th>
+                                            <th>Biaya Freight</th>
+                                            <th>Biaya LSS</th>
+                                            <th>Biaya Lain-Lain</th>
+                                            <th>Biaya Alih Kapal</th>
+                                            <th>Biaya Batal Muat</th>
+                                            <th>Jenis Mobil</th>
+                                            <th>Deposit Trucking</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($containers_info as $container)
+                                    <tr>
+
+                                        <td>
+                                            {{$loop->iteration}}
+                                        </td>
+                                        <td>{{$container->nomor_kontainer}}</td>
+                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>@rupiah($container->biaya_stuffing)</td>
+                                        <td>@rupiah($container->biaya_stuffing)</td>
+                                        <td>@rupiah($container->biaya_trucking)</td>
+                                        <td>@rupiah($container->ongkos_supir)</td>
+                                        <td>@rupiah($container->biaya_seal)</td>
+                                        <td>@rupiah($container->biaya_thc)</td>
+                                        <td>@rupiah($container->freight)</td>
+                                        <td>@rupiah($container->lss)</td>
+                                        <td>@if ($biayas->count() == 1)
+                                            @foreach ($biayas as $biaya)
+                                            @if ($biaya->kontainer_id == $container->id)
+                                                    @rupiah($biaya->harga_biaya)
+
+                                            @endif
+                                            @endforeach
+                                            @else
+                                            <ol type="1.">
+
+                                                @foreach ($biayas as $biaya)
+                                                    @if ($biaya->kontainer_id == $container->id)
+                                                        <li id="biaya[{{ $container->id }}]">
+                                                            @rupiah($biaya->harga_biaya)
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ol>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($container->harga_alih != null)
+
+                                            @rupiah($container->alihs->harga_alih_kapal)
+                                            @endif
+
+                                        </td>
+
+                                        <td>@rupiah($container->harga_batal)</td>
+                                        <td>{{$container->jenis_mobil}}</td>
+                                        <td>@if ($container->dana != null)
+                                            {{$container->danas->pj}}
+                                            @endif
+                                        </td>
+
+
+
+                                    </tr>
+
+
+
+
+
+
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -248,46 +449,50 @@
                             <label for="inputState" class="form-label"><b>DETAIL BARANG/KONTAINER</b></label>
                         </div>
 
-                        <table id="table_biaya" class="table mb-0">
-                            <thead id="" class="table-success">
-                                <tr>
-                                    <th></th>
-                                    <th>No</th>
-                                    <th>Nomor Kontainer</th>
-                                    <th>Detail Barang</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_biaya" class="">
-                                @foreach ($details as $detail)
+                        <div class="table-responsive">
+                            <table id="table_biaya2" class="table mb-0">
+                                <thead id="" class="table-success">
                                     <tr>
-                                        <td class="text-center">
-                                            <button id="delete_detail" name="delete_detail"
-                                                class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $detail->id }}" onclick="delete_detailbarangDB(this)"
-                                                @readonly(true)><i class="fa fa-trash"></i></button>
-                                            <button id="edit_detail" name="edit_detail"
-                                                class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $detail->id }}" onclick="detail_barang_edit(this)"
-                                                @readonly(true)><i class="fa fa-pencil"></i></button>
-                                        </td>
-                                        <td>
-
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td>
-                                            {{ $detail->container_planloads->nomor_kontainer }}
-                                        </td>
-                                        <td>
-                                            {{ $detail->detail_barang }}
-                                        </td>
+                                        <th></th>
+                                        <th>No</th>
+                                        <th>Nomor Kontainer</th>
+                                        <th>Detail Barang</th>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody  class="">
+                                    @foreach ($details as $detail)
+                                        <tr>
+                                            <td class="text-center">
+                                                <button id="delete_detail" name="delete_detail"
+                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
+                                                    value="{{ $detail->id }}" onclick="delete_detailbarangDB(this)"
+                                                    @readonly(true)><i class="fa fa-trash"></i></button>
+                                                <button id="edit_detail" name="edit_detail"
+                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
+                                                    value="{{ $detail->id }}" onclick="detail_barang_edit(this)"
+                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
+                                            </td>
+                                            <td>
 
-                            </tbody>
-                        </table>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $detail->container_planloads->nomor_kontainer }}
+                                            </td>
+                                            <td>
+                                                {{ $detail->detail_barang }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="detail_barang()"
                                 class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
+                            <button style="float: right" id="add_biaya" type="button" onclick="cetak_packing()"
+                                    class="btn btn-label-primary">Cetak List <i class="fa fa-print"></i></button>
                         </div>
 
                         <!-- END Form -->
@@ -308,7 +513,10 @@
                             <label for="inputState" class="form-label"><b>BIAYA LAIN KONTAINER (JIKA ADA)</b></label>
                         </div>
 
-                        <table id="table_biaya" class="table mb-0">
+                        <div class="table-responsive">
+
+
+                        <table id="table_biaya3" class="table mb-0">
                             <thead id="" class="table-success">
                                 <tr>
                                     <th></th>
@@ -349,6 +557,8 @@
 
                             </tbody>
                         </table>
+                        </div>
+
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="detail_biaya_lain()"
                                 class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
@@ -372,57 +582,62 @@
                             <label for="inputState" class="form-label"><b>CONTAINER BATAL MUAT (JIKA ADA)</b></label>
                         </div>
 
-                        <table id="table_batal_muat" class="table mb-0">
-                            <thead id="thead_batal_muat" class="table-success">
-                                <tr>
-                                    <th class="text-center"></th>
-                                    <th class="text-center">No</th>
-                                    <th class="text-center">Pilih Nomor Container</th>
-                                    <th class="text-center">Biaya Batal Muat</th>
-                                    <th class="text-center">Keterangan</th>
-                                    <th class="text-center"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_batal_muat" class="text-center">
-                                @foreach ($container_batal as $container)
+                        <div class="table-responsive">
+
+
+                            <table id="table_batal_muat" class="table mb-0">
+                                <thead id="thead_batal_muat" class="table-success">
                                     <tr>
-                                        <td class="text-center">
-                                            <button id="delete_batal" name="delete_batal"
-                                                class="btn btn-label-info btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $container->id }}" onclick="delete_batalDB(this)"
-                                                @readonly(true)><i class="fa fa-refresh"></i></button>
-                                            <button id="edit_batal" name="edit_batal"
-                                                class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $container->id }}" onclick="detail_batal_muat_edit(this)"
-                                                @readonly(true)><i class="fa fa-pencil"></i></button>
-                                        </td>
-                                        <td>
-
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td>
-                                            {{ $container->nomor_kontainer }}
-                                        </td>
-                                        <td>
-                                            @rupiah($container->harga_batal)
-                                        </td>
-                                        <td>
-                                            {{ $container->keterangan_batal }}
-                                        </td>
-
-                                        <td>
-                                            <button type="button" id="btn_detail" name="btn_detail"
-                                                class="btn btn-label-primary btn-sm text-nowrap"
-                                                value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
-                                                Kontainer <i class="fa fa-eye"></i></button>
-
-                                        </td>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Pilih Nomor Container</th>
+                                        <th class="text-center">Biaya Batal Muat</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center"></th>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody id="tbody_batal_muat" class="text-center">
+                                    @foreach ($container_batal as $container)
+                                        <tr>
+                                            <td class="text-center">
+                                                <button id="delete_batal" name="delete_batal"
+                                                    class="btn btn-label-info btn-icon btn-circle btn-sm" type="button"
+                                                    value="{{ $container->id }}" onclick="delete_batalDB(this)"
+                                                    @readonly(true)><i class="fa fa-refresh"></i></button>
+                                                <button id="edit_batal" name="edit_batal"
+                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
+                                                    value="{{ $container->id }}" onclick="detail_batal_muat_edit(this)"
+                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
+                                            </td>
+                                            <td>
+
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
+                                                {{ $container->nomor_kontainer }}
+                                            </td>
+                                            <td>
+                                                @rupiah($container->harga_batal)
+                                            </td>
+                                            <td>
+                                                {{ $container->keterangan_batal }}
+                                            </td>
+
+                                            <td>
+                                                <button type="button" id="btn_detail" name="btn_detail"
+                                                    class="btn btn-label-primary btn-sm text-nowrap"
+                                                    value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
+                                                    Kontainer <i class="fa fa-eye"></i></button>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+
+                        </div>
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="detail_batal_muat()"
                                 class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
@@ -448,7 +663,7 @@
                         </div>
                         <div class="table-responsive">
 
-                            <table id="table_alih_kapal" class="table table-responsive mb-0 tabel-fiks">
+                            <table id="table_alih_kapal" class="table mb-0">
                                 <thead id="thead_alih" class="table-success text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
@@ -708,14 +923,14 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Pilih Supir :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select required id="driver" name="driver" class="form-select">
-                                <option selected disabled>Pilih Vendor</option>
+                                <option selected disabled>(Nama/Nomor Polisi)</option>
                                 @foreach ($vendors as $vendor)
                                     <option value="{{ $vendor->id }}"
-                                        @if ($vendor->nama_vendor == $planload->vendor) selected @endif>{{ $vendor->nama_vendor }}
+                                        >{{ $vendor->nama_supir }}/{{$vendor->nomor_polisi}}
                                     </option>
                                 @endforeach
                             </select>
@@ -723,11 +938,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Nama Supir/Nomor Polisi :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select required id="nomor_polisi" name="nomor_polisi" class="form-select">
-                                <option selected disabled>Pilih Supir/Nomor polisi</option>
+                            <select disabled id="nomor_polisi" name="nomor_polisi" class="form-select">
+                                {{-- <option selected disabled>Pilih Supir/Nomor polisi</option> --}}
 
                             </select>
 
@@ -1047,7 +1262,7 @@
 
                                 <select data-bs-toggle="tooltip" id="seal_update" multiple="multiple" name="seal_update"
                                     class="form-select" placeholde="Silahkan Pilih Seal" required>
-                                    @foreach ($seals as $seal)
+                                    @foreach ($seals_edit as $seal)
                                         <option value="{{ $seal->kode_seal }}">
                                             {{ $seal->kode_seal }}</option>
                                     @endforeach
@@ -1085,34 +1300,32 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Pilih Supir :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select required id="driver_update" name="driver_update" class="form-select">
-                                <option selected disabled>Pilih Vendor</option>
+                                <option selected disabled>(Nama/Nomor Polisi)</option>
                                 @foreach ($vendors as $vendor)
-                                    <option value="{{ $vendor->id }}"
-                                        >{{ $vendor->nama_vendor }}
-                                    </option>
+                                <option value="{{ $vendor->id }}"
+                                    >{{ $vendor->nama_supir }}/{{$vendor->nomor_polisi}}
+                                </option>
                                 @endforeach
                             </select>
 
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Nama Supir/Nomor Polisi :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select required id="nomor_polisi_update" name="nomor_polisi_update" class="form-select">
-                                <option selected disabled>Pilih Supir/Nomor polisi</option>
-                                {{-- @foreach ($supirs as $supir)
-                                        <option @if ($supir->id)
-                                            disabled
-                                        @endif  value="{{ $supir->id }}"
-                                            >{{ $supir->nama_supir }} / {{$supir->nomor_polisi}}
-                                        </option>
+                            <select disabled required id="nomor_polisi_update" name="nomor_polisi_update" class="form-select">
 
-                                @endforeach --}}
+                                @foreach ($vendors2 as $vendor)
+                                <option value="{{ $vendor->id }}"
+                                    >{{ $vendor->nama_vendor }}
+                                </option>
+                                @endforeach
+
 
                             </select>
 
@@ -1460,14 +1673,14 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Pilih Supir :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select disabled required id="driver_disabled" name="driver_disabled" class="form-select">
-                                <option selected disabled>Pilih Vendor</option>
+                                <option selected disabled>(Nama Supir/Nomor Polisi)</option>
                                 @foreach ($vendors as $vendor)
                                     <option value="{{ $vendor->id }}"
-                                        >{{ $vendor->nama_vendor }}
+                                        >{{ $vendor->nama_supir }}/{{$vendor->nomor_polisi}}
                                     </option>
                                 @endforeach
                             </select>
@@ -1475,19 +1688,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Nama Supir/Nomor Polisi :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select disabled required id="nomor_polisi_disabled" name="nomor_polisi_disabled" class="form-select">
-                                <option selected disabled>Pilih Supir/Nomor polisi</option>
-                                {{-- @foreach ($supirs as $supir)
-                                        <option @if ($supir->id)
-                                            disabled
-                                        @endif  value="{{ $supir->id }}"
-                                            >{{ $supir->nama_supir }} / {{$supir->nomor_polisi}}
-                                        </option>
-
-                                @endforeach --}}
+                                @foreach ($vendors2 as $vendor)
+                                <option value="{{ $vendor->id }}"
+                                    >{{ $vendor->nama_vendor }}
+                                </option>
+                                @endforeach
 
                             </select>
 
@@ -1848,14 +2057,14 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Pilih Supir :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                             <select required id="driver_tambah" name="driver_tambah" class="form-select">
-                                <option selected disabled>Pilih Vendor</option>
+                                <option selected disabled>Pilih Supir (Nama/Nomor Polisi)</option>
                                 @foreach ($vendors as $vendor)
                                     <option value="{{ $vendor->id }}"
-                                        >{{ $vendor->nama_vendor }}
+                                        >{{ $vendor->nama_supir }}/{{$vendor->nomor_polisi}}
                                     </option>
                                 @endforeach
                             </select>
@@ -1863,11 +2072,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">Nama Supir/Nomor Polisi :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">Vendor Truck :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select required id="nomor_polisi_tambah" name="nomor_polisi_tambah" class="form-select">
-                                <option selected disabled>Pilih Supir/Nomor polisi</option>
+                            <select disabled required id="nomor_polisi_tambah" name="nomor_polisi_tambah" class="form-select">
 
                             </select>
 
@@ -2822,7 +3030,7 @@
 
                             </div>
                         </div>
-                      
+
 
 
 
@@ -2843,6 +3051,8 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
+
 
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script> --}}

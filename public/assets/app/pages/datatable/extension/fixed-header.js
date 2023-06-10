@@ -1,5 +1,10 @@
 "use strict";$(function(){var offset=$(window).width()>=1025?$("#sticky-header-desktop").height():$("#sticky-header-mobile").height();
 
+
+
+
+
+
 $("#shipping").DataTable({
     responsive:true,
     fixedHeader:
@@ -9,7 +14,7 @@ $("#shipping").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -39,7 +44,7 @@ $("#data_vendor").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -71,7 +76,7 @@ $("#depo").DataTable({
         headerOffset:
         offset
     },
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -103,7 +108,7 @@ $("#pol").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -133,7 +138,7 @@ $("#pengirim_tabel").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -164,7 +169,7 @@ $("#penerima_tabel").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -196,7 +201,7 @@ $("#biaya").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -252,7 +257,7 @@ $("#trucking").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -282,7 +287,7 @@ $("#table-container").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -321,7 +326,7 @@ $("#kegiatan-stripping").DataTable({
         offset
     },
 
-    dom: 'Bfrtip',
+    dom: 'Bfrltip',
     buttons:[
     {
         extend:"excel",
@@ -419,6 +424,21 @@ var spk = $("#input-seal").DataTable({
         headerOffset:
         offset
     }
+});
+$("#vendor_bayar_Load").DataTable({
+    responsive:true,
+    paging:false,
+    fixedHeader:
+    {
+        header:true,
+        headerOffset:
+        offset
+    },
+    deferRender: true,
+    scrollCollapse: true,
+    scrollY: 300,
+    // scroller: true,
+
 });
 
 $('#filter_pelayaran').on("change", function(event) {

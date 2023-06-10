@@ -17,6 +17,7 @@ return new class extends Migration
             $table->double('start_seal');
             $table->double('touch_seal')->nullable();
             $table->string('status')->nullable();
+            $table->double('harga_seal')->nullable();
             $table->text('kode_seal');
             $table->string('keterangan_damage')->nullable();
 

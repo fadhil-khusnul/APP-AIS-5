@@ -30,13 +30,13 @@
 
 
                                     <th class="align-top"> JUMLAH KONTAINER :</th>
-                                    <th class="align-top">SEAL/KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
+                                    {{-- <th class="align-top">SEAL/KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
                                     <th class="align-top">DETAIL/KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK) :</th>
                                     <th class="align-top">DETAIL CARGO/KONTAINER (NOMOR KONTAINER - ISI DETAIL) :</th>
                                     <th class="align-top">BIAYA/KONTAINER (NOMOR KONTAINER - BIAYA STUFFING - BIAYA TRUCKING - ONGKOS SUPIR - THC) :</th>
                                     <th class="align-top">BIAYA LAIN/KONTAINER (NOMOR KONTAINER - BIAYA - KETERANGAN) :</th>
                                     <th class="align-top">BIAYA ALIH KAPAL/KONTAINER (NOMOR KONTAINER - BIAYA ALIH KAPAL - KETERANGAN) :</th>
-                                    <th class="align-top">BIAYA BATAL MUAT/KONTAINER (NOMOR KONTAINER - BIAYA BATAL MUAT - KETERANGAN) :</th>
+                                    <th class="align-top">BIAYA BATAL MUAT/KONTAINER (NOMOR KONTAINER - BIAYA BATAL MUAT - KETERANGAN) :</th> --}}
 
 
                                 </tr>
@@ -97,13 +97,9 @@
                                                 {{$containers->where("job_id", $planload->id)->count()}} Kontainer
                                             </b>
 
-        
-
-
-
-
                                         </td>
-                                        <td align="top" valign="top">
+                                        
+                                        {{-- <td align="top" valign="top">
                                             <ol type="1">
                                                 @foreach ($containers as $container)
                                                     @if ($planload->id == $container->job_id)
@@ -228,7 +224,7 @@
                                             @endif
 
 
-                                        </td>
+                                        </td> --}}
 
 
 

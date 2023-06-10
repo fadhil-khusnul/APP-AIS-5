@@ -23,7 +23,16 @@ class ContainerPlanload extends Model
     }
     public function mobils()
     {
-        return $this->belongsTo(SupirMobil::class, 'nomor_polisi', 'id');
+        return $this->belongsTo(SupirMobil::class, 'driver', 'id');
     }
+    public function alihs()
+    {
+        return $this->belongsTo(AlihKapal::class, 'harga_alih', 'id');
+    }
+    public function danas()
+    {
+        return $this->belongsTo(OngkoSupir::class, 'dana', 'id');
+    }
+
 
 }

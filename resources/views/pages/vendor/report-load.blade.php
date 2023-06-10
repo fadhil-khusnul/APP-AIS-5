@@ -2,9 +2,7 @@
 
 @section('content')
     <div class="row">
-
-
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <div class="portlet">
                 <div class="portlet-body">
                     <!-- BEGIN Widget -->
@@ -116,7 +114,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
 
         <div class="col-md-12 col-xl-12">
@@ -128,12 +126,12 @@
                 <div class="portlet-body">
                     <hr>
                     <!-- BEGIN Datatable -->
-                    <table id="input-seal" class="table table-bordered table-striped table-hover autosize">
+                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Status Pelunasan</th>
                                 <th></th>
+                                <th>Status Pelunasan</th>
                                 <th>Tanggal Kegiatan</th>
                                 <th>Veseel</th>
                                 <th>Nomor Kontainer</th>
@@ -155,16 +153,31 @@
                                     </td>
                                     <td>
 
-                                        @if ($container->biaya_trucking == null || $container->ongkos_supir == null)
-                                            <span class="badge badge-label-primary">Belum Ada Biaya <i
-                                                    class="fa fa-exclamation"></i></span>
-                                        @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) == 0)
+                                        @if ($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar == 0)
+                                            <input readonly disabled checked type="checkbox"
+                                                class="form-check-input"
+                                                id="kontainer_check[{{ $loop->iteration }}]">
+                                        @elseif ($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar > 0)
+                                        <div class="validation-container">
+                                            <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                class="form-check-input check-container1"
+                                                id="kontainer_check[{{ $loop->iteration }}]" name="letter"
+                                                value="{{ $container->id }}" required autofocus>
+
+                                        </div>
+
+                                        @endif
+                                    </td>
+
+                                    <td>
+
+                                        @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) == 0)
                                             <span class="badge badge-label-success">Lunas <i class="fa fa-check"></i></span>
                                         @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
                                             <span class="badge badge-label-danger">Belum Lunas <i class="fa fa-exclamation"></i></span>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
 
                                         @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
                                             <button value="{{ $container->id }}" type="button" onclick="bayar(this)"
@@ -176,7 +189,7 @@
                                                     class="fa fa-arrow-right"></i></button>
                                         @endif
 
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         @if ($container->date_activity != null)
                                             {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
@@ -251,6 +264,12 @@
                     </table>
                     <!-- END Datatable -->
                 </div>
+
+                <div class="mb-5 mt-5 col-md-12 text-center">
+
+                    <button id="add_biaya" type="button" onclick="bayar()"
+                        class="btn btn-label-success">Bayar <i class="fa fa-arro-right"></i></button>
+                </div>
             </div>
 
             <!-- END Portlet -->
@@ -295,13 +314,7 @@
                         </div>
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Selisih : <label id="selisih" class="currency-rupiah"> </label></label>
-
-
-
                         </div>
-
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
@@ -312,8 +325,35 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/vendor_truck.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+
+            var check = $(".check-container1");
+
+            $("#add_biaya").attr("disabled", "disabled");
+            check.click(function() {
+                if ($(this).is(":checked")) {
+                    $("#add_biaya").removeAttr("disabled");
+                } else {
+                    $("#add_biaya").attr("disabled", "disabled");
+                }
+            });
+        });
+
+
+        $('.modal>.modal-dialog').draggable({
+                cursor: 'move',
+                handle: '.modal-header, .modal-footer'
+        });
+        $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+        $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
+
+    </script>
 @endsection

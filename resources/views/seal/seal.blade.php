@@ -19,6 +19,14 @@
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                             </div>
                         </div>
+                        <div class="col-md-12">
+
+                                <div class="validation-container">
+                                        <label for="" class="form-label">Harga per Seal (Rp.) :</label>
+                                        <input id="harga_seal" name="harga_seal" type="text" value="0" class="form-control currency-rupiah" required><span
+                                            class="col-md-6 form-control">
+                                </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="text-center">
 
@@ -31,6 +39,7 @@
                             {{-- <label for="" class="form-label">Tanggal & Bulan</label>
                         <input type="text" class="form-control" id="bulan_seal" name="bulan_seal"> --}}
                         </div>
+
                         <div class="col-md-6" style="margin-left: auto; margin-right:auto;">
                             <div class="text-center">
                                 <div class="validation-container">
@@ -74,6 +83,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Kode Seal</th>
+                                <th>Harga Seal</th>
                                 {{-- <th>Tahun</th> --}}
                                 <th>Aksi</th>
                             </tr>
@@ -86,6 +96,9 @@
                                     </td>
                                     <td>
                                         {{ $seal->kode_seal }}
+                                    </td>
+                                    <td>
+                                        @rupiah($seal->harga_seal)
                                     </td>
                                     {{-- <td>
                                         {{ $seal-> }}

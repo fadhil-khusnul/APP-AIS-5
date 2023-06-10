@@ -1,6 +1,6 @@
 function detail(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success btn-wide mx-1",
@@ -9,10 +9,6 @@ function detail(e) {
         },
         buttonsStyling: false,
     });
-
-
-
-
 
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
@@ -29,10 +25,8 @@ function detail(e) {
             for (let i = 0; i < response.spks.length; i++) {
                 spk[i] = response.spks[i].spk_kontainer;
             }
-            console.log(seals);
+            // console.log(seals);
             $("#modal-job").modal("show");
-
-          
 
             $("#size").val(response.result.size);
             $("#type").val(response.result.type);
@@ -71,8 +65,9 @@ function detail(e) {
                         },
                         success: function (response) {
                             var seal = $("#seal").val();
+                            console.log(seal, response);
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
+                            // console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -193,7 +188,7 @@ function detail(e) {
                 .val(response.result.driver)
                 .select2({
                     dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih Vendor",
+                    placeholder: "Silahkan Pilih Supir",
                     allowClear: true,
                     dropdownParent: $("#modal-job"),
                 })
@@ -211,7 +206,7 @@ function detail(e) {
                             $("#nomor_polisi")
                                 .select2({
                                     dropdownAutoWidth: true,
-                                    placeholder: "Silahkan Pilih Supir",
+                                    // placeholder: "Silahkan Pilih Supir",
                                     allowClear: true,
                                     dropdownParent: $("#modal-job"),
                                 })
@@ -737,16 +732,14 @@ function detail_update(e) {
             for (let i = 0; i < response.spks.length; i++) {
                 spk[i] = response.spks[i].spk_kontainer;
             }
-            for (let i = 0; i < response.supirs.length; i++) {
-                supir +=
-                    "<option value='" +
-                    response.supirs[i].id +
-                    "'>" +
-                    response.supirs[i].nama_supir +
-                    "/" +
-                    response.supirs[i].nomor_polisi +
-                    "</option>";
-            }
+            // for (let i = 0; i < response.supirs.length; i++) {
+            //     supir +=
+            //         "<option value='" +
+            //         response.supirs[i].id +
+            //         "'>" +
+            //         response.supirs[i].nama_vendor +
+            //         "</option>";
+            // }
             console.log(seals);
             $("#modal-job-update").modal("show");
 
@@ -942,7 +935,7 @@ function detail_update(e) {
 
             $("#new_id_update").val(response.result.id);
             $("#nomor_polisi_update")
-                .html(supir)
+                .val(response.result.nomor_polisi)
                 .select2({
                     dropdownAutoWidth: true,
                     placeholder: "Silahkan Pilih Supir",
@@ -2704,3 +2697,99 @@ function validate_biaya_trucking_tambah(ini) {
         }
     }
 }
+
+
+function cetak_packing() {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    var table_biaya2 = $('#table_biaya2 >tbody >tr').length;
+
+    console.log(table_biaya2);
+
+
+    swal.fire({
+        title: " Ingin Mencetak Packing List?",
+        text: "Silahkan Periksa Semua Data yang ada Sebelum Mencetak.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (table_biaya2 > 0) {
+
+            if (willCreate.isConfirmed ) {
+
+                var token = $("#csrf").val();
+                var old_slug = $("#old_slug").val();
+
+                var data = {
+                    _token: token,
+                    old_slug: old_slug,
+
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/cetak-packing-list-load",
+                    data: data,
+                    xhrFields: {
+                        responseType: "blob",
+                    },
+                    success: function (response) {
+                        // console.log(response);
+                        toast.fire({
+                            icon: "success",
+                            title: "Packing List Didownload",
+                        });
+                        var blob = new Blob([response]);
+                        var link = document.createElement("a");
+                        link.href =
+                            window.URL.createObjectURL(blob);
+                        link.download =
+                            "" + old_slug + ".pdf";
+                        link.click();
+
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 10);
+                    },
+                });
+
+            }
+        }
+        else {
+            swal.fire({
+                title: "LIST Tidak Dicetak",
+                // text: "Data Batal Dihapus",
+                icon: "error",
+                timer: 2e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+
+
+
+
+
+}
+

@@ -73,6 +73,7 @@ function Tambah_Seal() {
             var start_seal = document.getElementById("start_seal").value;
             start_seal = parseInt(start_seal);
             var touch_seal = document.getElementById("touch_seal").value;
+            var harga_seal = $("#harga_seal").val().replace(/\./g, "");
             touch_seal = parseInt(touch_seal);
             var token = $("#csrf").val();
 
@@ -80,6 +81,7 @@ function Tambah_Seal() {
             var data_code = [];
             var data_start_seal = [];
             var data_touch_seal = [];
+            var data_harga_seal = [];
             let fd = new FormData();
             var result;
 
@@ -105,6 +107,8 @@ function Tambah_Seal() {
                         fd.append("start_seal[]", data_start_seal[i]);
                         data_touch_seal[i] = touch_seal;
                         fd.append("touch_seal[]", data_touch_seal[i]);
+                        data_harga_seal[i] = harga_seal;
+                        fd.append("harga_seal[]", data_harga_seal[i]);
                     }
                 },
             });

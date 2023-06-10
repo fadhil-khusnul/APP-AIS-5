@@ -222,17 +222,27 @@
 
                                             </td>
                                             <td>
+                                                @if ($sealsc->count() == 1)
+                                                    @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id == $container->id)
+                                                            {{ $seal->seal_kontainer }}
+
+                                                    @endif
+                                                    @endforeach
+                                                @elseif($sealsc->count() == 0)
+                                                -
+                                                @else
                                                 <ol type="1.">
 
                                                     @foreach ($sealsc as $seal)
                                                         @if ($seal->kontainer_id == $container->id)
                                                             <li id="seal[{{ $container->id }}]">
                                                                 {{ $seal->seal_kontainer }}
-
                                                             </li>
                                                         @endif
                                                     @endforeach
                                                 </ol>
+                                                @endif
 
 
 
@@ -555,7 +565,7 @@
                                             <td>
 
                                                 @if ($pdf->status_si == 'Default')
-                                                    <span class="badge badge-label-danger">NON ALIH-KAPAL </span>
+                                                    <span class="badge badge-label-success">NON ALIH-KAPAL </span>
                                                 @else
                                                     <span class="badge badge-label-primary">ALIH-KAPAL</span>
                                                 @endif
