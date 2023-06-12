@@ -31,7 +31,10 @@ class ContainerPlanload extends Model
     }
     public function danas()
     {
-        return $this->belongsTo(OngkoSupir::class, 'dana', 'id');
+        return $this->belongsTo(OngkoSupir::class, 'dana', 'id')->withDefault([
+            'pj' => ' ',
+
+        ]);
     }
 
 

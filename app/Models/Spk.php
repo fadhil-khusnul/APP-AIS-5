@@ -17,7 +17,7 @@ class Spk extends Model
         return $this->belongsTo(ShippingCompany::class, 'pelayaran_id', 'id')->withDefault([
             'nama_company' => ' ',
 
-        ]);;
+        ]);
     }
 
 

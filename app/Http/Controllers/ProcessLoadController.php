@@ -1394,8 +1394,12 @@ class ProcessLoadController extends Controller
         return response()->json($alih);
     }
 
-    // public function checkOngkosSupir(Request $request) {
-    //     dd($request);
-    // }
+    public function getSealKontainer(Request $request) {
+        $seal = $request->seal;
+
+        $harga_seal = Seal::where('kode_seal', $seal)->value('harga_seal');
+
+        return response()->json($harga_seal);
+    }
 
 }

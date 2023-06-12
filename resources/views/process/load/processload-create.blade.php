@@ -1010,7 +1010,7 @@
                                     <span class="input-group-text" for="">Rp.</span>
 
                                     <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
+                                        type="text" class="form-control currency-rupiah "
                                         id="biaya_seal" name="biaya_seal" placeholder="Biaya Seal..."
                                         required>
 

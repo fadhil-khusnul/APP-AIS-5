@@ -65,7 +65,7 @@ function detail(e) {
                         },
                         success: function (response) {
                             var seal = $("#seal").val();
-                            console.log(seal, response);
+                            // console.log(seal, response);
                             var last_seal = seal[seal.length - 1];
                             // console.log(seal, last_seal);
                             var count_seal = response.length;
@@ -86,12 +86,82 @@ function detail(e) {
                                             last_seal +
                                             '"]'
                                     );
-                                    console.log(wanted_option);
-
                                     wanted_option.prop("selected", false);
                                     $("#seal").trigger("change.select2");
                                 });
+                            } else {
+                                $.ajax({
+                                    url: "/getSealKontainer",
+                                    type: "post",
+                                    data: {
+                                        _token: token,
+                                        seal: last_seal,
+                                    },
+                                    success: function (response) {
+                                        var harga_seal = document
+                                            .getElementById("biaya_seal")
+                                            .value.replace(/\./g, "");
+                                        harga_seal = parseFloat(harga_seal);
+
+                                        if (isNaN(harga_seal)) {
+                                            harga_seal = 0;
+                                        }
+
+                                        var harga_seal_now =
+                                            harga_seal + response;
+                                        $("#biaya_seal").val(harga_seal_now);
+                                    },
+                                });
                             }
+                        },
+                    });
+                });
+            $("#seal")
+                .val(seals)
+                .select2({
+                    dropdownAutoWidth: true,
+                    // tags: true,
+                    placeholder: "Silahkan Pilih Seal",
+                    // allowClear:true,
+                    maximumSelectionLength: 4,
+                    dropdownParent: $("#modal-job"),
+                })
+                .on("select2:unselect", function (e) {
+                    // var seal = $("#seal").val();
+                    // console.log(seal);
+                    // var last_seal = seal[seal.length - 1];
+
+                    var selected_element = $(e.currentTarget);
+                    var select_val = selected_element.val();
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    let token = $("#csrf").val();
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    $.ajax({
+                        url: "/getSealKontainer",
+                        type: "post",
+                        data: {
+                            _token: token,
+                            seal: element.value,
+                        },
+                        success: function (response) {
+                            var harga_seal = document
+                                .getElementById("biaya_seal")
+                                .value.replace(/\./g, "");
+                            harga_seal = parseFloat(harga_seal);
+
+                            if (isNaN(harga_seal)) {
+                                harga_seal = 0;
+                            }
+
+                            var harga_seal_now = harga_seal - response;
+                            $("#biaya_seal").val(harga_seal_now);
                         },
                     });
                 });
@@ -295,7 +365,7 @@ function detail(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var new_id = document.getElementById("new_id").value;
-                    console.log(new_id);
+                    // console.log(new_id);
                     var token = $("#csrf").val();
 
                     let date_activity =
@@ -487,7 +557,7 @@ function detail_tambah() {
                 success: function (response) {
                     var seal = $("#spk_tambah").val();
                     var last_seal = seal[seal.length - 1];
-                    console.log(seal, last_seal);
+                    // console.log(seal, last_seal);
                     var count_seal = response.length;
                     var seal_already = [];
                     for (var i = 0; i < count_seal; i++) {
@@ -504,7 +574,7 @@ function detail_tambah() {
                             var wanted_option = $(
                                 '#spk_tambah option[value="' + last_seal + '"]'
                             );
-                            console.log(wanted_option);
+                            // console.log(wanted_option);
 
                             wanted_option.prop("selected", false);
                             $("#spk_tambah").trigger("change.select2");
@@ -547,7 +617,7 @@ function detail_tambah() {
                 success: function (response) {
                     var seal = $("#seal_tambah").val();
                     var last_seal = seal[seal.length - 1];
-                    console.log(seal, last_seal);
+                    // console.log(seal, last_seal);
                     var count_seal = response.length;
                     var seal_already = [];
                     for (var i = 0; i < count_seal; i++) {
@@ -565,12 +635,81 @@ function detail_tambah() {
                             var wanted_option = $(
                                 '#seal_tambah option[value="' + last_seal + '"]'
                             );
-                            console.log(wanted_option);
 
                             wanted_option.prop("selected", false);
                             $("#seal_tambah").trigger("change.select2");
                         });
+                    } else {
+                        $.ajax({
+                            url: "/getSealKontainer",
+                            type: "post",
+                            data: {
+                                _token: token,
+                                seal: last_seal,
+                            },
+                            success: function (response) {
+                                var harga_seal = document
+                                    .getElementById("biaya_seal_tambah")
+                                    .value.replace(/\./g, "");
+                                harga_seal = parseFloat(harga_seal);
+
+                                if (isNaN(harga_seal)) {
+                                    harga_seal = 0;
+                                }
+
+                                var harga_seal_now = harga_seal + response;
+                                $("#biaya_seal_tambah").val(harga_seal_now);
+                            },
+                        });
                     }
+                },
+            });
+        });
+    $("#seal_tambah")
+        .select2({
+            dropdownAutoWidth: true,
+            // tags: true,
+            placeholder: "Silahkan Pilih Seal",
+            // allowClear:true,
+            maximumSelectionLength: 4,
+            dropdownParent: $("#modal-job-tambah"),
+        })
+        .on("select2:unselect", function (e) {
+            // var seal = $("#seal").val();
+            // console.log(seal);
+            // var last_seal = seal[seal.length - 1];
+
+            var selected_element = $(e.currentTarget);
+            var select_val = selected_element.val();
+
+            var element = e.params.data.element;
+            var $element = $(element);
+
+            let token = $("#csrf").val();
+
+            $element.detach();
+            $(this).append($element);
+            $(this).trigger("change");
+
+            $.ajax({
+                url: "/getSealKontainer",
+                type: "post",
+                data: {
+                    _token: token,
+                    seal: element.value,
+                },
+                success: function (response) {
+                    var harga_seal = document
+                        .getElementById("biaya_seal_tambah")
+                        .value.replace(/\./g, "");
+                    harga_seal = parseFloat(harga_seal);
+
+                    if (isNaN(harga_seal)) {
+                        harga_seal = 0;
+                    }
+
+                    var harga_seal_now = harga_seal - response;
+                    $("#biaya_seal_tambah").val(harga_seal_now);
                 },
             });
         });
@@ -705,7 +844,7 @@ function detail_tambah() {
 }
 function detail_update(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success btn-wide mx-1",
@@ -720,7 +859,7 @@ function detail_update(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            console.log(new_id);
+            // console.log(new_id);
 
             var seals = [""];
             var spk = [""];
@@ -740,7 +879,6 @@ function detail_update(e) {
             //         response.supirs[i].nama_vendor +
             //         "</option>";
             // }
-            console.log(seals);
             $("#modal-job-update").modal("show");
 
             $("#size_update").val(response.result.size);
@@ -798,7 +936,6 @@ function detail_update(e) {
                             // console.log(seals);
                             var seal = $("#seal_update").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -819,16 +956,90 @@ function detail_update(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
-
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
                                         $("#seal_update").trigger(
                                             "change.select2"
                                         );
                                     });
+                                } else {
+                                    $.ajax({
+                                        url: "/getSealKontainer",
+                                        type: "post",
+                                        data: {
+                                            _token: token,
+                                            seal: last_seal,
+                                        },
+                                        success: function (response) {
+                                            var harga_seal = document
+                                                .getElementById(
+                                                    "biaya_seal_update"
+                                                )
+                                                .value.replace(/\./g, "");
+                                            harga_seal = parseFloat(harga_seal);
+
+                                            if (isNaN(harga_seal)) {
+                                                harga_seal = 0;
+                                            }
+
+                                            var harga_seal_now =
+                                                harga_seal + response;
+                                            $("#biaya_seal_update").val(
+                                                harga_seal_now
+                                            );
+                                        },
+                                    });
                                 }
                             }
+                        },
+                    });
+                });
+            $("#seal_update")
+                .val(seals)
+                .select2({
+                    dropdownAutoWidth: true,
+                    // tags: true,
+                    placeholder: "Silahkan Pilih Seal",
+                    // allowClear:true,
+                    maximumSelectionLength: 4,
+                    dropdownParent: $("#modal-job-update"),
+                })
+                .on("select2:unselect", function (e) {
+                    // var seal = $("#seal").val();
+                    // console.log(seal);
+                    // var last_seal = seal[seal.length - 1];
+
+                    var selected_element = $(e.currentTarget);
+                    var select_val = selected_element.val();
+
+                    var element = e.params.data.element;
+                    var $element = $(element);
+
+                    let token = $("#csrf").val();
+
+                    $element.detach();
+                    $(this).append($element);
+                    $(this).trigger("change");
+
+                    $.ajax({
+                        url: "/getSealKontainer",
+                        type: "post",
+                        data: {
+                            _token: token,
+                            seal: element.value,
+                        },
+                        success: function (response) {
+                            var harga_seal = document
+                                .getElementById("biaya_seal_update")
+                                .value.replace(/\./g, "");
+                            harga_seal = parseFloat(harga_seal);
+
+                            if (isNaN(harga_seal)) {
+                                harga_seal = 0;
+                            }
+
+                            var harga_seal_now = harga_seal - response;
+                            $("#biaya_seal_update").val(harga_seal_now);
                         },
                     });
                 });
@@ -868,7 +1079,7 @@ function detail_update(e) {
                             // console.log(seals);
                             var seal = $("#spk_update").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
+                            // console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -889,7 +1100,7 @@ function detail_update(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
+                                        // console.log(wanted_option);
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
@@ -1023,8 +1234,8 @@ function detail_update(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var new_id = document.getElementById("new_id_update").value;
-                    console.log(new_id);
-                    console.log(id);
+                    // console.log(new_id);
+                    // console.log(id);
                     var token = $("#csrf").val();
 
                     let date_activity = document.getElementById(
@@ -1034,7 +1245,7 @@ function detail_update(e) {
                     var formattedDate;
 
                     tempDate = new Date(date_activity);
-                    console.log(tempDate);
+                    // console.log(tempDate);
                     formattedDate = [
                         tempDate.getFullYear(),
                         tempDate.getMonth() + 1,
@@ -1106,7 +1317,7 @@ function detail_update(e) {
 }
 function detail_disabled(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success btn-wide mx-1",
@@ -1121,7 +1332,7 @@ function detail_disabled(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            console.log(new_id);
+            // console.log(new_id);
 
             var seals = [""];
             var spk = [""];
@@ -1143,7 +1354,7 @@ function detail_disabled(e) {
                     response.supirs[i].nomor_polisi +
                     "</option>";
             }
-            console.log(seals);
+            // console.log(seals);
             $("#modal-job-disabled").modal("show");
 
             $("#size_disabled").val(response.result.size);
@@ -1191,7 +1402,7 @@ function detail_disabled(e) {
                             // console.log(seals);
                             var seal = $("#seal_disabled").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
+                            // console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -1212,7 +1423,7 @@ function detail_disabled(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
+                                        // console.log(wanted_option);
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
@@ -1261,7 +1472,7 @@ function detail_disabled(e) {
                             // console.log(seals);
                             var seal = $("#spk_disabled").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
+                            // console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -1282,7 +1493,7 @@ function detail_disabled(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
+                                        // console.log(wanted_option);
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
@@ -1389,7 +1600,7 @@ function detail_disabled(e) {
 function realisasi_page(slug) {
     var slugs = slug.value;
 
-    console.log(slugs);
+    // console.log(slugs);
 
     var swal = Swal.mixin({
         customClass: {
@@ -1484,7 +1695,7 @@ function detail_biaya_lain() {
 }
 function detail_biaya_lain_edit(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
 
     $.ajax({
         url: "/biayalainnya-edit/" + id,
@@ -1525,7 +1736,7 @@ function detail_biaya_lain_edit(e) {
                     ).value;
                     var id_lama_biaya =
                         document.getElementById("id_lama_biaya").value;
-                    console.log(id_lama_biaya);
+                    // console.log(id_lama_biaya);
                     var token = $("#csrf").val();
 
                     var data = {
@@ -1672,7 +1883,7 @@ function detail_barang() {
 
 function detail_barang_edit(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
 
     $.ajax({
         url: "/detailbarang-edit/" + id,
@@ -1712,7 +1923,7 @@ function detail_barang_edit(e) {
                     ).value;
                     var id_lama_detail =
                         document.getElementById("id_lama_detail").value;
-                    console.log(id_lama_detail);
+                    // console.log(id_lama_detail);
                     var token = $("#csrf").val();
 
                     var data = {
@@ -1857,7 +2068,7 @@ function detail_batal_muat() {
 
 function detail_batal_muat_edit(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
 
     $.ajax({
         url: "/batalmuat-edit/" + id,
@@ -1892,7 +2103,7 @@ function detail_batal_muat_edit(e) {
                 submitHandler: function (form) {
                     var id_lama_batal =
                         document.getElementById("id_lama_batal").value;
-                    console.log(id_lama_biaya);
+                    // console.log(id_lama_biaya);
                     var token = $("#csrf").val();
 
                     var data = {
@@ -2062,7 +2273,7 @@ function detail_alih_kapal() {
 
 function detail_alih_kapal_edit(e) {
     let id = e.value;
-    console.log(id);
+    // console.log(id);
 
     $.ajax({
         url: "/alihkapal-edit/" + id,
@@ -2071,7 +2282,7 @@ function detail_alih_kapal_edit(e) {
             $("#modal_alih_kapal_edit").modal("show");
 
             $("#id_lama_alih").val(response.result.id);
-            console.log(response.result.kontainer_alih);
+            // console.log(response.result.kontainer_alih);
             $("#kontainer_alih_edit")
                 .val(response.result.kontainer_alih)
                 .is(":selected");
@@ -2128,7 +2339,7 @@ function detail_alih_kapal_edit(e) {
                 submitHandler: function (form) {
                     var id_lama_alih =
                         document.getElementById("id_lama_alih").value;
-                    console.log(id_lama_biaya);
+                    // console.log(id_lama_biaya);
                     var token = $("#csrf").val();
 
                     var data = {
@@ -2315,7 +2526,7 @@ function edit_planloaad_job(e) {
             // let pengirim = document.getElementById("Pengirim_1").value;
             // let penerima = document.getElementById("Penerima_1").value;
 
-            console.log(id);
+            // console.log(id);
 
             var tempDate;
             var formattedDate;
@@ -2489,7 +2700,7 @@ function change_container() {
         success: function (response) {
             var seal = $("#seal").val();
             var last_seal = seal[seal.length - 1];
-            console.log(seal, last_seal);
+            // console.log(seal, last_seal);
             var count_seal = response.length;
             var seal_already = [];
             for (var i = 0; i < count_seal; i++) {
@@ -2507,7 +2718,7 @@ function change_container() {
                     var wanted_option = $(
                         '#seal option[value="' + last_seal + '"]'
                     );
-                    console.log(wanted_option);
+                    // console.log(wanted_option);
 
                     wanted_option.prop("selected", false);
                     $("#seal").trigger("change.select2");
@@ -2576,12 +2787,14 @@ function char(ini, evt) {
 function validate_ongkos_supir(ini) {
     var ongkos_supir = ini.value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
-    var biaya_trucking = document.getElementById("biaya_trucking").value.replace(/\./g, "");
+    var biaya_trucking = document
+        .getElementById("biaya_trucking")
+        .value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
-    if(biaya_trucking > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (biaya_trucking > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -2597,12 +2810,14 @@ function validate_ongkos_supir(ini) {
 function validate_ongkos_supir_update(ini) {
     var ongkos_supir = ini.value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
-    var biaya_trucking = document.getElementById("biaya_trucking_update").value.replace(/\./g, "");
+    var biaya_trucking = document
+        .getElementById("biaya_trucking_update")
+        .value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
-    if(biaya_trucking > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (biaya_trucking > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -2618,12 +2833,14 @@ function validate_ongkos_supir_update(ini) {
 function validate_ongkos_supir_tambah(ini) {
     var ongkos_supir = ini.value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
-    var biaya_trucking = document.getElementById("biaya_trucking_tambah").value.replace(/\./g, "");
+    var biaya_trucking = document
+        .getElementById("biaya_trucking_tambah")
+        .value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
-    if(biaya_trucking > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (biaya_trucking > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -2640,12 +2857,14 @@ function validate_ongkos_supir_tambah(ini) {
 function validate_biaya_trucking(ini) {
     var biaya_trucking = ini.value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
-    var ongkos_supir = document.getElementById("ongkos_supir").value.replace(/\./g, "");
+    var ongkos_supir = document
+        .getElementById("ongkos_supir")
+        .value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
-    if(ongkos_supir > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (ongkos_supir > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",
@@ -2660,12 +2879,14 @@ function validate_biaya_trucking(ini) {
 function validate_biaya_trucking_update(ini) {
     var biaya_trucking = ini.value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
-    var ongkos_supir = document.getElementById("ongkos_supir_update").value.replace(/\./g, "");
+    var ongkos_supir = document
+        .getElementById("ongkos_supir_update")
+        .value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
-    if(ongkos_supir > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (ongkos_supir > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",
@@ -2680,12 +2901,14 @@ function validate_biaya_trucking_update(ini) {
 function validate_biaya_trucking_tambah(ini) {
     var biaya_trucking = ini.value.replace(/\./g, "");
     biaya_trucking = parseFloat(biaya_trucking);
-    var ongkos_supir = document.getElementById("ongkos_supir_tambah").value.replace(/\./g, "");
+    var ongkos_supir = document
+        .getElementById("ongkos_supir_tambah")
+        .value.replace(/\./g, "");
     ongkos_supir = parseFloat(ongkos_supir);
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
-    if(ongkos_supir > 0) {
-        if(ongkos_supir > biaya_trucking) {
+    if (ongkos_supir > 0) {
+        if (ongkos_supir > biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",
@@ -2697,7 +2920,6 @@ function validate_biaya_trucking_tambah(ini) {
         }
     }
 }
-
 
 function cetak_packing() {
     var swal = Swal.mixin({
@@ -2721,10 +2943,9 @@ function cetak_packing() {
         },
     });
 
-    var table_biaya2 = $('#table_biaya2 >tbody >tr').length;
+    var table_biaya2 = $("#table_biaya2 >tbody >tr").length;
 
-    console.log(table_biaya2);
-
+    // console.log(table_biaya2);
 
     swal.fire({
         title: " Ingin Mencetak Packing List?",
@@ -2735,16 +2956,13 @@ function cetak_packing() {
         cancelButtonText: "Tidak",
     }).then((willCreate) => {
         if (table_biaya2 > 0) {
-
-            if (willCreate.isConfirmed ) {
-
+            if (willCreate.isConfirmed) {
                 var token = $("#csrf").val();
                 var old_slug = $("#old_slug").val();
 
                 var data = {
                     _token: token,
                     old_slug: old_slug,
-
                 };
 
                 $.ajax({
@@ -2762,10 +2980,8 @@ function cetak_packing() {
                         });
                         var blob = new Blob([response]);
                         var link = document.createElement("a");
-                        link.href =
-                            window.URL.createObjectURL(blob);
-                        link.download =
-                            "" + old_slug + ".pdf";
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "" + old_slug + ".pdf";
                         link.click();
 
                         // setTimeout(function () {
@@ -2773,10 +2989,8 @@ function cetak_packing() {
                         // }, 10);
                     },
                 });
-
             }
-        }
-        else {
+        } else {
             swal.fire({
                 title: "LIST Tidak Dicetak",
                 // text: "Data Batal Dihapus",
@@ -2786,10 +3000,4 @@ function cetak_packing() {
             });
         }
     });
-
-
-
-
-
 }
-

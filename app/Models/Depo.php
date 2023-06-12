@@ -11,4 +11,13 @@ class Depo extends Model
 
     protected $guarded = [''];
 
+
+    public function pelabuhans(){
+        return $this->belongsTo(ShippingCompany::class, 'vendor_id', 'id')->withDefault([
+            'nama_company' => ' ',
+        ]);
+    }
+
+
+
 }

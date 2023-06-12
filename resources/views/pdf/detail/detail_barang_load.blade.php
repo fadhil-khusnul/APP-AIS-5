@@ -118,9 +118,6 @@
 
         @endforeach
 
-
-
-
         <table class="bank" width="100%" style="margin-top: 50px !important">
             <thead>
                 <tr>
