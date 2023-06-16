@@ -69,12 +69,12 @@
                                 <tr>
                                     <td width="47%">Vessel/Voyage</td>
                                     <td width="3%">:</td>
-                                    <td width="50%">{{ $planload->vessel }}</td>
+                                    <td width="50%" id="nama_kapal">{{ $planload->vessel }}</td>
                                 </tr>
                                 <tr>
                                     <td>Vessel Code</td>
                                     <td>:</td>
-                                    <td>{{ $planload->vessel_code }}</td>
+                                    <td id="kode_kapal">{{ $planload->vessel_code }}</td>
                                 </tr>
                                 <tr>
                                     <td>Shipping Company</td>
@@ -128,34 +128,25 @@
                     <div class="portlet-body">
 
 
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center py-4">
                             <label for="inputState" class="form-label"><b>DETAIL KONTAINER :</b></label>
                         </div>
                         <div class="table-responsive">
 
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered mb-0">
+                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0" style="width: 100% !important">
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center"> </th>
                                         <th class="text-center">POD</th>
+                                        <th class="text-center">Pengirim</th>
+                                        <th class="text-center">Penerima</th>
                                         <th class="text-center">Size</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Cargo (Nama Barang)</th>
-                                        <th class="text-center">Detail Barang</th>
                                         <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Date Activity</th>
-                                        <th class="text-center">Lokasi Pickup</th>
-                                        <th class="text-center">Nama Driver</th>
-                                        <th class="text-center">Nomor Polisi</th>
-                                        <th class="text-center">Remark</th>
-                                        <th class="text-center">Biaya Stuffing</th>
-                                        <th class="text-center">Biaya Trucking</th>
-                                        <th class="text-center">Ongkos Supir</th>
-                                        <th class="text-center">Biaya THC</th>
-                                        <th class="text-center">Jenis Mobil</th>
-                                        <th class="text-center">Biaya Lain Mobil</th>
+                                        <th class="text-center">Cargo (Nama Barang)</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
@@ -167,7 +158,7 @@
                                                     <div class="validation-container">
                                                         <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                             class="form-check-input check-container"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter"
+                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
                                                             value="{{ $container->id }}" required autofocus>
 
                                                     </div>
@@ -183,6 +174,18 @@
                                                     id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
 
                                             </td>
+
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pengirim[{{ $container->id }}]">{{ old('pengirim', $container->pengirim) }}</label>
+
+                                            </td>
+
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
+
+                                            </td>
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
@@ -196,30 +199,6 @@
 
                                                 <label disabled @readonly(true)
                                                     id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
-                                            </td>
-                                            <td>
-
-                                                <label disabled @readonly(true)
-                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
-
-                                            </td>
-                                            <td>
-                                                    <ol type="1.">
-
-
-                                                    @foreach ($details as $detail)
-                                                        @if ($detail->kontainer_id == $container->id)
-                                                        <li id="detail_barang[{{ $container->id }}]">
-                                                            {{ $detail->detail_barang }}
-
-                                                        </li>
-
-                                                        @endif
-
-                                                    @endforeach
-
-                                                    </ol>
-
                                             </td>
                                             <td>
                                                 @if ($sealsc->count() == 1)
@@ -248,72 +227,12 @@
 
                                             </td>
                                             <td>
+
                                                 <label disabled @readonly(true)
-                                                    id="date_activity[{{ $container->id }}]">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</label>
+                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
 
                                             </td>
 
-
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="lokasi[{{ $container->id }}]">{{ old('lokasi', $container->lokasi_depo) }}</label>
-
-                                            </td>
-
-
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="driver[{{ $container->id }}]">{{ old('driver', $container->driver) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="nomor_polisi[{{ $container->id }}]">{{ old('nomor_polisi', $container->nomor_polisi) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="remark[{{ $container->id }}]">{{ old('remark', $container->remark) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_stuffing[{{ $container->id }}]">@rupiah($container->biaya_stuffing)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_trucking[{{ $container->id }}]">@rupiah($container->biaya_trucking)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="ongkos_supir[{{ $container->id }}]">@rupiah($container->ongkos_supir)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_thc[{{ $container->id }}]">@rupiah($container->biaya_thc)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="jenis_mobil[{{ $container->id }}]">{{ old('jenis_mobil', $container->jenis_mobil) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <ol type="1.">
-                                                    @foreach ($biayas as $biaya)
-                                                        @if ($biaya->kontainer_id == $container->id)
-                                                            <li id="biaya[{{ $container->id }}]">
-                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -326,7 +245,7 @@
 
                             <div class="col-auto">
                                 <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
-                                    SI <i class="fa fa-print"></i></button>
+                                    SI <i class="fa fa-print"></i></button> <label for="" class="text-primary" style="margin-left: 20px"><b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                             </div>
 
 
@@ -339,6 +258,492 @@
                     <!-- END Portlet -->
                 </div>
             </div>
+            @if (count($alihs) > 0)
+            <div class="col-md-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><b>ALIH KAPAL</b></label>
+                        </div>
+                        <div class="table-responsive">
+
+
+                        <table id="table_alih_kapal_realisasi" class="table mb-0">
+                            <thead id="thead_alih" class="table-danger">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Nomor Kontainer</th>
+                                    <th class="text-center">Pelayaran (Shipping Company)</th>
+                                    <th class="text-center">POT</th>
+                                    <th class="text-center">POD</th>
+                                    <th class="text-center">Vessel/Voyage</th>
+                                    <th class="text-center">Code Vessel/Voyage</th>
+                                    <th class="text-center">Biaya Alih Kapal</th>
+                                    <th class="text-center">Keterangan</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_alih" class="text-center">
+                                @foreach ($alihs as $alih)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+
+                                        <td>
+                                            @if ($alih->container_planloads->status != 'Realisasi-Alih')
+                                                <div class="validation-container">
+                                                    <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                        class="form-check-input check-container1"
+                                                        id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
+                                                        value="{{ $alih->kontainer_alih }}" required autofocus>
+
+                                                </div>
+                                            @else
+                                                <input readonly disabled checked type="checkbox"
+                                                    class="form-check-input"
+                                                    id="kontainer_check[{{ $loop->iteration }}]">
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            <label id="kontainer_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->container_planloads->nomor_kontainer }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="pelayaran_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->pelayaran_alih }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="pot_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->pot_alih }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="pod_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->pod_alih }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="vesseL_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->vesseL_alih }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="code_vesseL_alih[{{ $loop->iteration }}]">
+                                                {{ $alih->code_vesseL_alih }}</label>
+                                        </td>
+                                        <td>
+                                            <label id="harga_alih_kapal[{{ $loop->iteration }}]">
+                                                @rupiah($alih->harga_alih_kapal)</label>
+
+                                        </td>
+                                        <td>
+                                            <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
+                                                {{ $alih->keterangan_alih_kapal }}</label>
+
+                                        </td>
+                                        <td>
+                                            <button type="button" id="btn_detail" name="btn_detail"
+                                                class="btn btn-outline-info btn-sm text-nowrap" value="{{ $alih->kontainer_alih }}"
+                                                onclick="detail_update(this)">Detail Kontainer <i
+                                                    class="fa fa-eye"></i></button>
+
+                                        </td>
+
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+
+                         </div>
+
+
+                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
+                            <div class="col-auto">
+                                <button id="submit-id1" type="submit" onclick="pdf_si_alih()"
+                                    class="btn btn-info ">Cetak SI ALIH KAPAL <i class="fa fa-print"></i></button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+        @endif
+
+
+
+
+
+        @if (count($pdfs) > 0)
+            <div class="col-md-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
+                        </div>
+
+                        <table id="tabel_si" class="table mb-0">
+                            <thead id="thead_alih" class="table-danger">
+                                <tr>
+                                    <th class="">No</th>
+                                    <th class="">Preview</th>
+                                    <th class="">Input</th>
+                                    <th class="">Status Approve</th>
+                                    <th class="">Status BL</th>
+                                    <th class="">Jenis SI</th>
+                                    <th class="">Shipper</th>
+                                    <th class="">Consigne</th>
+                                    <th class="">Tanggal BL</th>
+                                    <th class="">Nomor BL</th>
+
+
+
+                                    <th class="text-end"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_alih" class="">
+                                @foreach ($pdfs as $pdf)
+                                    <tr>
+
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+
+                                        <td class="text-nowrap">
+
+
+                                            <a type="button" href="/preview-si/{{ $pdf->path }}"
+                                                class="btn btn-outline-primary btn-sm ">Preview SI <i
+                                                    class="fa fa-eye"></i></a>
+
+
+
+                                        </td>
+                                        <td class="text-nowrap">
+
+
+
+                                            @if ($pdf->nomor_bl == null && $pdf->status_approve == "Disetujui")
+                                                <button value="{{ $pdf->id }}" type="button"
+                                                    onclick="input_bl(this)"
+                                                    class="btn btn-outline-success btn-sm ">Input BL <i
+                                                        class="fa fa-pencil"></i></button>
+
+                                            @elseif ($pdf->nomor_bl != null)
+                                            <button value="{{ $pdf->id }}" type="button"
+                                                onclick="update_bl(this)"
+                                                class="btn btn-outline-primary btn-sm ">BL <i
+                                                    class="fa fa-pencil"></i></button>
+                                            @endif
+
+
+
+                                        </td>
+
+                                        <td>
+                                            @if ($pdf->status_approve == 'Disetujui')
+                                                <span class="badge badge-label-success">Approve <i
+                                                        class="fa fa-check"></i></span>
+                                            @elseif ($pdf->status_approve == 'Ditolak')
+                                                <span class="badge badge-label-danger">Reject <i
+                                                        class="fa fa-times"></i></span>
+                                            @elseif ($pdf->status_approve == null)
+                                                <span class="badge badge-label-primary"><i
+                                                        class="fa fa-exclamation"></i></span>
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            @if ($pdf->nomor_bl != null)
+                                                <span class="badge badge-label-success">Done <i
+                                                        class="fa fa-check"></i></span>
+                                            @else
+                                                <span class="badge badge-label-primary"><i
+                                                        class="fa fa-exclamation"></i></span>
+                                            @endif
+
+                                        </td>
+                                        <td>
+
+                                            @if ($pdf->status_si == 'Default')
+                                                <span class="badge badge-label-success">NON ALIH-KAPAL </span>
+                                            @else
+                                                <span class="badge badge-label-primary">ALIH-KAPAL</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            {{ $pdf->shipper }}
+
+                                        </td>
+                                        <td>
+                                            {{ $pdf->consigne }}
+
+                                        </td>
+
+                                        <td>
+                                            @if ($pdf->tanggal_bl != null)
+                                                {{ \Carbon\Carbon::parse($pdf->tanggal_bl)->isoFormat('dddd, DD MMMM YYYY') }}
+                                            @else
+                                                -
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            @if ($pdf->nomor_bl != null)
+                                                {{ $pdf->nomor_bl }}
+                                            @else
+                                                -
+                                            @endif
+
+                                        </td>
+
+
+
+
+
+                                        <td>
+                                            <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
+                                                class="btn btn-outline-danger btn-sm "><i
+                                                    class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+
+
+
+                        <div class="text-center mt-3">
+                            <a href="/realisasi-pod-create/{{ $planload->slug }}"
+                                class="btn btn-success ">
+                                Realisasi POD <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+
+
+                    </div>
+                    <!-- BEGIN Portlet -->
+
+                    <!-- END Portlet -->
+                </div>
+            </div>
+        @endif
+
+            <div class="col-md-12 col-xl-12">
+                <div class="portlet">
+                    <div class="portlet-body">
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
+                        </div>
+                        <div class="table-responsive">
+
+                            <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
+                                <thead class="table">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Status</th>
+                                        <th>Tgl. Kegiatan</th>
+                                        <th>Pengirim</th>
+                                        <th>Penerima</th>
+                                        <th>POD</th>
+                                        <th>POT</th>
+                                        <th>VESEEL POT</th>
+                                        <th>Size/Type Container</th>
+                                        <th>Nomor Container</th>
+                                        <th>Cargo</th>
+                                        <th>Seal</th>
+                                        <th>Lokasi Pickup</th>
+                                        <th>Nama Supir/Nomor Polisi</th>
+                                        <th>Vendor Truck</th>
+                                        <th>Jenis Mobil</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($containers as $container)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            @if ($container->status == "Alih-Kapal" || $container->status == "Realisasi-Alih" )
+                                            <span class=" badge badge-label-primary">Alih-Kapal</span>
+                                            @elseif ($container->status == "Batal-Muat")
+                                            <span class=" badge badge-label-danger">Batal-Muat</span>
+                                            @else
+                                            <span class=" badge badge-label-success">Normal</span>
+                                            @endif
+                                            {{ $container->iteration }}
+
+
+                                        </td>
+
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                                        </td>
+                                        <td>{{$container->pengirim}}</td>
+                                        <td>{{$container->penerima}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>{{$container->nomor_kontainer}}</td>
+                                        <td>{{$container->cargo}}</td>
+                                        <td>
+                                            @if ($sealsc->count() == 1)
+                                                @foreach ($sealsc as $seal)
+                                                @if ($seal->kontainer_id == $container->id)
+                                                        {{ $seal->seal_kontainer }}
+
+                                                @endif
+                                                @endforeach
+                                            @else
+                                            <ol type="1.">
+
+                                                @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id == $container->id)
+                                                        <li id="seal[{{ $container->id }}]">
+                                                            {{ $seal->seal_kontainer }}
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ol>
+                                            @endif
+                                        </td>
+                                        <td>{{$container->lokasi_depo}}</td>
+
+                                        <td>
+                                            @if ($container->nomor_polisi != null)
+                                                {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
+
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($container->nomor_polisi != null)
+                                                {{ $container->mobils->vendors->nama_vendor }}
+
+                                            @endif
+                                        </td>
+                                        <td>{{$container->jenis_mobil}}
+                                        </td>
+                                    </tr>
+
+
+                                    @endforeach
+                                </tbody>
+
+                            </table>
+
+
+                            </div>
+
+                            <div class="table-responsive mt-5">
+
+
+                                <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
+                                    <thead class="table">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Container</th>
+                                            <th>Size/Type</th>
+                                            <th>Biaya Stuffing</th>
+                                            <th>SPK</th>
+                                            <th>Biaya Trucking</th>
+                                            <th>Ongkos Supir</th>
+                                            <th>Biaya Seal</th>
+                                            <th>Biaya THC POL</th>
+                                            <th>Biaya Freight</th>
+                                            <th>Biaya LSS</th>
+                                            <th>Biaya Lain-Lain</th>
+                                            <th>Biaya Alih Kapal</th>
+                                            <th>Biaya Batal Muat</th>
+                                            <th>Jenis Mobil</th>
+                                            <th>Deposit Trucking</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($containers as $container)
+                                    <tr>
+
+                                        <td>
+                                            {{$loop->iteration}}
+                                        </td>
+                                        <td>{{$container->nomor_kontainer}}</td>
+                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>@rupiah($container->biaya_stuffing)</td>
+                                        <td>@rupiah($container->biaya_stuffing)</td>
+                                        <td>@rupiah($container->biaya_trucking)</td>
+                                        <td>@rupiah($container->ongkos_supir)</td>
+                                        <td>@rupiah($container->biaya_seal)</td>
+                                        <td>@rupiah($container->biaya_thc)</td>
+                                        <td>@rupiah($container->freight)</td>
+                                        <td>@rupiah($container->lss)</td>
+                                        <td>@if ($biayas->count() == 1)
+                                            @foreach ($biayas as $biaya)
+                                            @if ($biaya->kontainer_id == $container->id)
+                                                    @rupiah($biaya->harga_biaya)
+
+                                            @endif
+                                            @endforeach
+                                            @else
+                                            <ol type="1.">
+
+                                                @foreach ($biayas as $biaya)
+                                                    @if ($biaya->kontainer_id == $container->id)
+                                                        <li id="biaya[{{ $container->id }}]">
+                                                            @rupiah($biaya->harga_biaya)
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ol>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($container->harga_alih != null)
+
+                                            @rupiah($container->alihs->harga_alih_kapal)
+                                            @endif
+
+                                        </td>
+
+                                        <td>@rupiah($container->harga_batal)</td>
+                                        <td>{{$container->jenis_mobil}}</td>
+                                        <td>@if ($container->dana != null)
+                                            {{$container->danas->pj}}
+                                            @endif
+                                        </td>
+
+
+
+                                    </tr>
+
+
+
+
+
+
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -346,289 +751,7 @@
             <!-- BEGIN Portlet -->
 
             <!-- END Portlet -->
-            @if (count($alihs) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
 
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>ALIH KAPAL</b></label>
-                            </div>
-                            <div class="table-responsive">
-
-
-                            <table id="table_alih_kapal_realisasi" class="table mb-0">
-                                <thead id="thead_alih" class="table-danger">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center"></th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Pelayaran (Shipping Company)</th>
-                                        <th class="text-center">POT</th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">Vessel/Voyage</th>
-                                        <th class="text-center">Code Vessel/Voyage</th>
-                                        <th class="text-center">Biaya Alih Kapal</th>
-                                        <th class="text-center">Keterangan</th>
-                                        <th class="text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="text-center">
-                                    @foreach ($alihs as $alih)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-
-                                            <td>
-                                                @if ($alih->container_planloads->status != 'Realisasi-Alih')
-                                                    <div class="validation-container">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check-container1"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                            value="{{ $alih->kontainer_alih }}" required autofocus>
-
-                                                    </div>
-                                                @else
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
-                                                @endif
-                                            </td>
-
-                                            <td>
-                                                <label id="kontainer_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->container_planloads->nomor_kontainer }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pelayaran_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pelayaran_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pot_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pot_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pod_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pod_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="vesseL_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->vesseL_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="code_vesseL_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->code_vesseL_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="harga_alih_kapal[{{ $loop->iteration }}]">
-                                                    @rupiah($alih->harga_alih_kapal)</label>
-
-                                            </td>
-                                            <td>
-                                                <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
-                                                    {{ $alih->keterangan_alih_kapal }}</label>
-
-                                            </td>
-                                            <td>
-                                                <button type="button" id="btn_detail" name="btn_detail"
-                                                    class="btn btn-outline-info btn-sm text-nowrap" value="{{ $alih->kontainer_alih }}"
-                                                    onclick="detail_update(this)">Detail Kontainer <i
-                                                        class="fa fa-eye"></i></button>
-
-                                            </td>
-
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-
-                             </div>
-
-
-                            <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
-                                <div class="col-auto">
-                                    <button id="submit-id1" type="submit" onclick="pdf_si_alih()"
-                                        class="btn btn-info ">Cetak SI ALIH KAPAL <i class="fa fa-print"></i></button>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif
-
-
-
-
-
-            @if (count($pdfs) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
-
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
-                            </div>
-
-                            <table id="tabel_si" class="table mb-0">
-                                <thead id="thead_alih" class="table-danger">
-                                    <tr>
-                                        <th class="">No</th>
-                                        <th class="">Preview</th>
-                                        <th class="">Input</th>
-                                        <th class="">Status Approve</th>
-                                        <th class="">Status BL</th>
-                                        <th class="">Jenis SI</th>
-                                        <th class="">Shipper</th>
-                                        <th class="">Consigne</th>
-                                        <th class="">Tanggal BL</th>
-                                        <th class="">Nomor BL</th>
-
-
-
-                                        <th class="text-end"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="">
-                                    @foreach ($pdfs as $pdf)
-                                        <tr>
-
-                                            <td>
-                                                {{ $loop->iteration }}
-                                            </td>
-
-                                            <td class="text-nowrap">
-
-
-                                                <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-outline-primary btn-sm ">Preview SI <i
-                                                        class="fa fa-eye"></i></a>
-
-
-
-                                            </td>
-                                            <td class="text-nowrap">
-
-
-
-                                                @if ($pdf->nomor_bl == null && $pdf->status_approve == "Disetujui")
-                                                    <button value="{{ $pdf->id }}" type="button"
-                                                        onclick="input_bl(this)"
-                                                        class="btn btn-outline-success btn-sm ">Input BL <i
-                                                            class="fa fa-pencil"></i></button>
-
-                                                @elseif ($pdf->nomor_bl != null)
-                                                <button value="{{ $pdf->id }}" type="button"
-                                                    onclick="update_bl(this)"
-                                                    class="btn btn-outline-primary btn-sm ">BL <i
-                                                        class="fa fa-pencil"></i></button>
-                                                @endif
-
-
-
-                                            </td>
-
-                                            <td>
-                                                @if ($pdf->status_approve == 'Disetujui')
-                                                    <span class="badge badge-label-success">Approve <i
-                                                            class="fa fa-check"></i></span>
-                                                @elseif ($pdf->status_approve == 'Ditolak')
-                                                    <span class="badge badge-label-danger">Reject <i
-                                                            class="fa fa-times"></i></span>
-                                                @elseif ($pdf->status_approve == null)
-                                                    <span class="badge badge-label-primary"><i
-                                                            class="fa fa-exclamation"></i></span>
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                @if ($pdf->nomor_bl != null)
-                                                    <span class="badge badge-label-success">Done <i
-                                                            class="fa fa-check"></i></span>
-                                                @else
-                                                    <span class="badge badge-label-primary"><i
-                                                            class="fa fa-exclamation"></i></span>
-                                                @endif
-
-                                            </td>
-                                            <td>
-
-                                                @if ($pdf->status_si == 'Default')
-                                                    <span class="badge badge-label-success">NON ALIH-KAPAL </span>
-                                                @else
-                                                    <span class="badge badge-label-primary">ALIH-KAPAL</span>
-                                                @endif
-                                            </td>
-
-                                            <td>
-                                                {{ $pdf->shipper }}
-
-                                            </td>
-                                            <td>
-                                                {{ $pdf->consigne }}
-
-                                            </td>
-
-                                            <td>
-                                                @if ($pdf->tanggal_bl != null)
-                                                    {{ \Carbon\Carbon::parse($pdf->tanggal_bl)->isoFormat('dddd, DD MMMM YYYY') }}
-                                                @else
-                                                    -
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                @if ($pdf->nomor_bl != null)
-                                                    {{ $pdf->nomor_bl }}
-                                                @else
-                                                    -
-                                                @endif
-
-                                            </td>
-
-
-
-
-
-                                            <td>
-                                                <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                    class="btn btn-outline-danger btn-sm "><i
-                                                        class="fa fa-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-
-
-
-                            <div class="text-center mt-3">
-                                <a href="/realisasi-pod-create/{{ $planload->slug }}"
-                                    class="btn btn-success ">
-                                    Realisasi POD <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </div>
-
-
-                        </div>
-                        <!-- BEGIN Portlet -->
-
-                        <!-- END Portlet -->
-                    </div>
-                </div>
-            @endif
 
 
 
@@ -1133,8 +1256,10 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
 
-    <script type="text/javascript" src="{{ asset('/') }}./js/create_si.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
@@ -1151,6 +1276,13 @@
             });
 
             var check = $(".check-container1");
+            var ids = []
+
+
+
+
+
+
 
             $("#submit-id1").attr("disabled", "disabled");
             check.click(function() {
@@ -1171,4 +1303,6 @@
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
 
     </script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/create_si.js"></script>
+
 @endsection

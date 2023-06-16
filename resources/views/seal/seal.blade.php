@@ -144,9 +144,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="validation-container">
-                        <label class="form-label" for="area_code">KODE SEAL :</label>
-                        <input class="form-control" id="kode_seal_edit" name="kode_seal_edit" type="text">
+                    <div class="row">
+
+                        <label class="col-sm-4 form-label" for="area_code">KODE SEAL :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input class="form-control" id="kode_seal_edit" name="kode_seal_edit" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <label class="col-sm-4 form-label" for="area_code">HARGA SEAL :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input required class="form-control currency-rupiah" id="harga_seal_edit" name="harga_seal_edit" type="text">
+                        </div>
                     </div>
 
 

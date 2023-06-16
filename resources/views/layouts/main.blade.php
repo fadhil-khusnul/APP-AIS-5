@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="{{Config::get('app.locale')}}" dir="ltr" data-theme="light">
 
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -62,7 +62,7 @@
     <!-- END Float Button -->
     <!-- BEGIN Offcanvas -->
     <!-- END Offcanvas -->
-   
+
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/mandatory.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/core.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
@@ -79,6 +79,7 @@
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/search-panes.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/typeahead.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/datepicker.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/daterangepicker.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/select2.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/touchspin.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/inputmask.js"></script>

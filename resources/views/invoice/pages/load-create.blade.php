@@ -138,24 +138,17 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Input</th>
                                         <th class="text-center"> </th>
+                                        <th class="text-center">UNIT PRICE</th>
+                                        <th class="text-center">KONDISI</th>
+                                        <th class="text-center">KETERANGAN</th>
                                         <th class="text-center">POD</th>
-                                        <th class="text-center">Size</th>
-                                        <th class="text-center">Type</th>
+                                        <th class="text-center">Pengirim</th>
+                                        <th class="text-center">Penerima</th>
+                                        <th class="text-center">Size/Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Cargo (Nama Barang)</th>
-                                        <th class="text-center">Detail Barang</th>
                                         <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Date Activity</th>
-                                        <th class="text-center">Lokasi Pickup</th>
-                                        <th class="text-center">Nama Driver</th>
-                                        <th class="text-center">Nomor Polisi</th>
-                                        <th class="text-center">Remark</th>
-                                        <th class="text-center">Biaya Stuffing</th>
-                                        <th class="text-center">Biaya Trucking</th>
-                                        <th class="text-center">Ongkos Supir</th>
-                                        <th class="text-center">Biaya THC</th>
-                                        <th class="text-center">Jenis Mobil</th>
-                                        <th class="text-center">Biaya Lainnya</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="text-center" id="tbody_container">
@@ -196,6 +189,11 @@
                                                 @endif
                                             </td>
 
+                                            <td>@rupiah($container->price_invoice)</td>
+                                            <td>{{$container->kondisi_invoice}}</td>
+                                            <td>{{$container->keterangan_invoice}}</td>
+
+
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
@@ -203,13 +201,20 @@
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
-                                                    id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
+                                                    id="pengirim[{{ $container->id }}]">{{ old('pengirim', $container->pengirim) }}</label>
 
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
-                                                    id="type[{{ $container->id }}]">{{ old('type', $container->type) }}</label>
+                                                    id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
+
                                             </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $container->id }}]">{{ $container->size }}/{{$container->type}} </label>
+
+                                            </td>
+
                                             <td>
 
                                                 <label disabled @readonly(true)
@@ -221,23 +226,7 @@
                                                     id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
 
                                             </td>
-                                            <td>
-                                                <ol type="1.">
-
-
-                                                    @foreach ($details as $detail)
-                                                        @if ($detail->kontainer_id == $container->id)
-                                                            <li id="detail_barang[{{ $container->id }}]">
-                                                                {{ $detail->detail_barang }}
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-
-                                                </ol>
-
-                                            </td>
-                                            <td>
+                                             <td>
                                                 <ol type="1.">
 
                                                     @foreach ($sealsc as $seal)
@@ -253,73 +242,7 @@
 
 
                                             </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="date_activity[{{ $container->id }}]">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</label>
 
-                                            </td>
-
-
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="lokasi[{{ $container->id }}]">{{ old('lokasi', $container->lokasi_depo) }}</label>
-
-                                            </td>
-
-
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="driver[{{ $container->id }}]">{{ old('driver', $container->driver) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="nomor_polisi[{{ $container->id }}]">{{ old('nomor_polisi', $container->nomor_polisi) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="remark[{{ $container->id }}]">{{ old('remark', $container->remark) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_stuffing[{{ $container->id }}]">@rupiah($container->biaya_stuffing)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_trucking[{{ $container->id }}]">@rupiah($container->biaya_trucking)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="ongkos_supir[{{ $container->id }}]">@rupiah($container->ongkos_supir)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="biaya_thc[{{ $container->id }}]">@rupiah($container->biaya_thc)</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="jenis_mobil[{{ $container->id }}]">{{ old('jenis_mobil', $container->jenis_mobil) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <ol type="1.">
-                                                    @foreach ($biayas as $biaya)
-                                                        @if ($biaya->kontainer_id == $container->id)
-                                                            <li id="biaya[{{ $container->id }}]">
-                                                                @rupiah($biaya->harga_biaya) ({{ $biaya->keterangan }})
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -640,9 +563,13 @@
 
                                 <select data-bs-toggle="tooltip" id="kondisi_invoice" name="kondisi_invoice"
                                     class="form-select" required>
-                                    <option value="DP" @if ('DP') selected @endif>DP
+
+
+                                    <option value="DP" @if ('DP') selected @endif>Door to Port
                                     </option>
-                                    <option value="DD" @if ('DD') selected @endif>DD
+                                    <option value="DC" @if ('DC') selected @endif>Door to Cy
+                                    </option>
+                                    <option value="DD" @if ('DD') selected @endif>Door to Door
                                     </option>
                                 </select>
 
@@ -750,7 +677,7 @@
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">Kepada YTH. :</label>
+                            <label class="col-sm-4 col-form-label" for="text">Ditagihkan ke :</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control" id="yth" name="yth" type="text"
                                     placeholder="Masukkan Kepda YTH....">
@@ -760,7 +687,43 @@
                             <label class="col-sm-4 col-form-label" for="text">KM :</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control" id="km" name="km" type="text"
-                                    placeholder="Masukkan KM">
+                                placeholder="Masukkan KM">
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <label class="col-sm-4 col-form-label" for="text">PPN :</label>
+
+                            <div class="col-4 form-check g-3">
+                                <label class="form-check-label px-3" for="ppn2">
+                                    <input class="form-check-input" type="radio" name="ppn" id="ppn"> Yes
+
+                                </label>
+								<label class="form-check-label px-4" for="flexRadioDefault2">
+                                    <input class="form-check-input" type="radio" name="ppn" id="ppn" checked> No
+
+                                </label>
+                            </div>
+                            {{-- <div class="col-4">
+                                <input class="form-control col-4" id="value_ppn" name="value_ppn" type="text"
+                                placeholder="Masukkan PPN">
+                            </div> --}}
+                        </div>
+                        <div class="row g-2">
+                            <label class="col-sm-4 col-form-label" for="text">METERAI :</label>
+
+                            <div class="col-4 form-check g-3">
+                                <label class="form-check-label px-3" for="ppn2">
+                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="yes" onclick="document.getElementById('value_materai').disabled = false;"> Yes
+
+                                </label>
+								<label class="form-check-label px-4" for="flexRadioDefault2">
+                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="no" checked onclick="document.getElementById('value_materai').disabled = true;"> No
+
+                                </label>
+                            </div>
+                            <div class="col-4">
+                                <input class="form-control col-4 currency-rupiah" id="value_materai" name="value_materai" type="text"
+                                placeholder="ex (10.000)">
                             </div>
                         </div>
 
@@ -808,6 +771,16 @@
                     $("#submit-id1").attr("disabled", "disabled");
                 }
             });
+
+            // var radiom = $("#materai")
+            $("#value_materai").attr("disabled", "disabled");
+            // radiom.click(function() {
+            //     if ($(this).val() == "no") {
+            //         $("#value_materai").attr("disabled", "disabled");
+            //     } else{
+            //         $("#value_materai").removeAttr("disabled");
+            //     }
+            // });
         });
 
         $('.modal>.modal-dialog').draggable({

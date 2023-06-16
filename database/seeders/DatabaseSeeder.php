@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\PPN;
 use App\Models\Seal;
+use Illuminate\Database\Seeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -37,6 +38,9 @@ class DatabaseSeeder extends Seeder
             SupirMobilSeeder::class,
             TypeContainerSeeder::class,
 
+        ]);
+        PPN::create([
+            'ppn' => 11,
         ]);
 
         // Seal::factory(10)->create();

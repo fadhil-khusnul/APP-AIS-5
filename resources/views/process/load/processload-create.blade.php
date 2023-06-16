@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12 col-xl-12">
             <!-- BEGIN Portlet -->
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
@@ -42,7 +42,7 @@
         <form action="#" class="row row-cols-lg-12 g-3" id="valid_processload" name="valid_processload">
             <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
             <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-            <div class="col-md-12">
+            <div class="col-md-12 col-xl-12">
                 <div class="portlet">
 
                     <div class="portlet-body">
@@ -139,10 +139,11 @@
 
             <!-- END Portlet -->
 
-            <div class="col-md-12">
+            <div class="col-md-12 col-xl-12">
                 <div class="portlet">
 
                     <div class="portlet-body">
+                        <hr>
 
                         <!-- BEGIN Form -->
 
@@ -153,7 +154,7 @@
 
 
 
-                            <table id="table_biaya1" class="table mb-0">
+                            <table id="table_biaya1" class="table table-bordered table-hover autosize" style="width: 100% !important">
                                 <thead id="" class="table-success">
                                     <tr>
                                         <th class="text-center"></th>
@@ -234,7 +235,7 @@
                 <!-- END Portlet -->
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12 col-xl-12">
                 <div class="portlet">
                     <div class="portlet-body">
 
@@ -243,7 +244,7 @@
                         </div>
                         <div class="table-responsive">
 
-                            <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize">
+                            <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
                                 <thead class="table">
                                     <tr>
                                         <th>No</th>
@@ -344,14 +345,14 @@
                             <div class="table-responsive mt-5">
 
 
-                                <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize">
+                                <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
                                     <thead class="table">
                                         <tr>
                                             <th>No</th>
                                             <th>Container</th>
                                             <th>Size/Type</th>
-                                            <th>Biaya Stuffing</th>
                                             <th>SPK</th>
+                                            <th>Biaya Stuffing</th>
                                             <th>Biaya Trucking</th>
                                             <th>Ongkos Supir</th>
                                             <th>Biaya Seal</th>
@@ -376,7 +377,7 @@
                                         </td>
                                         <td>{{$container->nomor_kontainer}}</td>
                                         <td>{{$container->size}}/{{$container->type}}</td>
-                                        <td>@rupiah($container->biaya_stuffing)</td>
+                                        <td>{{$container->spk}}</td>
                                         <td>@rupiah($container->biaya_stuffing)</td>
                                         <td>@rupiah($container->biaya_trucking)</td>
                                         <td>@rupiah($container->ongkos_supir)</td>
@@ -450,7 +451,7 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table id="table_biaya2" class="table mb-0">
+                            <table id="table_biaya2" class="table mb-0" style="width: 100% !important">
                                 <thead id="" class="table-success">
                                     <tr>
                                         <th></th>
@@ -516,7 +517,7 @@
                         <div class="table-responsive">
 
 
-                        <table id="table_biaya3" class="table mb-0">
+                        <table id="table_biaya3" class="table mb-0" style="width: 100% !important">
                             <thead id="" class="table-success">
                                 <tr>
                                     <th></th>
@@ -585,7 +586,7 @@
                         <div class="table-responsive">
 
 
-                            <table id="table_batal_muat" class="table mb-0">
+                            <table id="table_batal_muat" class="table mb-0" style="width: 100% !important">
                                 <thead id="thead_batal_muat" class="table-success">
                                     <tr>
                                         <th class="text-center"></th>
@@ -663,7 +664,7 @@
                         </div>
                         <div class="table-responsive">
 
-                            <table id="table_alih_kapal" class="table mb-0">
+                            <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
                                 <thead id="thead_alih" class="table-success text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
@@ -879,21 +880,6 @@
 
                         </div> --}}
 
-                        <div class="row">
-                            <input type="hidden" name="seal_old" id="seal_old">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                            <select data-bs-toggle="tooltip" id="seal" multiple="multiple" name="seal"
-                                class="form-select" placeholde="Silahkan Pilih Seal" required>
-                                @foreach ($seals as $seal)
-                                    <option value="{{ $seal->kode_seal }}">
-                                        {{ $seal->kode_seal }}</option>
-                                @endforeach
-
-                            </select>
-
-                            </div>
-                        </div>
 
                         <div class="row ">
                             <label for="" class="col-sm-4 col-form-label">Tanggal Kegiatan :<span class="text-danger">*</span></label>
@@ -958,6 +944,82 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="jenis_mobil" name="jenis_mobil" class="form-select"
+                                    required>
+                                    <option value="Mobil Sewa" @if ('Mobil Sewa') selected @endif>Mobil Sewa
+                                    </option>
+                                    <option value="Mobil Sendiri" @if ('Mobil Sendiri') selected @endif>Mobil
+                                        Sendiri</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select data-bs-toggle="tooltip" required @readonly(true) id="dana" name="dana"
+                                class="form-select danas">
+                                @foreach ($danas as $dana)
+                                    <option value="{{ $dana->id }}" @if ($dana->id) selected @endif>
+                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                @endforeach
+                            </select>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" name="seal_old" id="seal_old">
+                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                            <select data-bs-toggle="tooltip" id="seal" multiple="multiple" name="seal"
+                                class="form-select" placeholde="Silahkan Pilih Seal" required>
+                                @foreach ($seals as $seal)
+                                    <option value="{{ $seal->kode_seal }}">
+                                        {{ $seal->kode_seal }}</option>
+                                @endforeach
+
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah "
+                                        id="biaya_seal" name="biaya_seal" placeholder="Biaya Seal..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+                        @if (count($spks) > 0)
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">SPK-Container : </label>
+                            <div class="col-sm-8 validation-container">
+                            <select data-bs-toggle="tooltip" id="spk" name="spk"
+                                class="form-select" placeholde="Silahkan Pilih SPK" placeholder = "Pilih SPK">
+                                @foreach ($spks as $spk)
+                                    <option value="{{ $spk->kode_spk }}">
+                                        {{ $spk->kode_spk }}</option>
+                                @endforeach
+
+                            </select>
+
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya Stuffing :<span
@@ -968,7 +1030,7 @@
                                 <input data-bs-toggle="tooltip"
                                     type="text" class="form-control currency-rupiah"
                                     id="biaya_stuffing" name="biaya_stuffing" placeholder="Biaya Stuffing..."
-                                    value="@rupiah2(old('biaya_stuffing'))" required>
+                                    required>
 
                                 </div>
                             </div>
@@ -1002,21 +1064,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah "
-                                        id="biaya_seal" name="biaya_seal" placeholder="Biaya Seal..."
-                                        required>
-
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya THC POL :<span
@@ -1067,52 +1115,9 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <select data-bs-toggle="tooltip" id="jenis_mobil" name="jenis_mobil" class="form-select"
-                                    required>
-                                    <option value="Mobil Sewa" @if ('Mobil Sewa') selected @endif>Mobil Sewa
-                                    </option>
-                                    <option value="Mobil Sendiri" @if ('Mobil Sendiri') selected @endif>Mobil
-                                        Sendiri</option>
-                                </select>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                            <select data-bs-toggle="tooltip" required @readonly(true) id="dana" name="dana"
-                                class="form-select danas">
-                                @foreach ($danas as $dana)
-                                    <option value="{{ $dana->id }}" @if ($dana->id) selected @endif>
-                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
-                                @endforeach
-                            </select>
 
 
-                            </div>
-                        </div>
 
-                        @if (count($spks) > 0)
-                            <div class="row">
-                                <label class="col-sm-4 col-form-label">SPK-Container : </label>
-                                <div class="col-sm-8 validation-container">
-                                <select data-bs-toggle="tooltip" id="spk" multiple="multiple" name="spk"
-                                    class="form-select" placeholde="Silahkan Pilih SPK" placeholder = "Pilih SPK">
-                                    @foreach ($spks as $spk)
-                                        <option value="{{ $spk->kode_spk }}">
-                                            {{ $spk->kode_spk }}</option>
-                                    @endforeach
-
-                                </select>
-
-                                </div>
-                            </div>
-                        @endif
 
 
                     </div>
@@ -1245,32 +1250,8 @@
 
 
                         </div>
-                        {{-- <div class="row">
 
-                            <label for="" class="col-sm-4 col-form-label">Detail Barang :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
 
-                                <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang_update" name="detail_barang_update"
-                                    required>{{ old('detail_barang_update') }}</textarea>
-                            </div>
-
-                        </div> --}}
-
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <select data-bs-toggle="tooltip" id="seal_update" multiple="multiple" name="seal_update"
-                                    class="form-select" placeholde="Silahkan Pilih Seal" required>
-                                    @foreach ($seals_edit as $seal)
-                                        <option value="{{ $seal->kode_seal }}">
-                                            {{ $seal->kode_seal }}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
-                        </div>
 
                         <div class="row ">
                             <label for="" class="col-sm-4 col-form-label">Tanggal Kegiatan :<span class="text-danger">*</span></label>
@@ -1341,6 +1322,84 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="jenis_mobil_update" name="jenis_mobil_update"
+                                    class="form-select" required>
+                                    <option value="Mobil Sewa" @if ('Mobil Sewa') selected @endif>Mobil
+                                        Sewa</option>
+                                    <option value="Mobil Sendiri" @if ('Mobil Sendiri') selected @endif>Mobil
+                                        Sendiri</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" id="old_dana" name="old_dana">
+                            <input type="hidden" id="old_ongkos_supir" name="old_ongkos_supir">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select data-bs-toggle="tooltip" required @readonly(true) id="dana_update"
+                                name="dana_update" class="form-select danas">
+
+                                @foreach ($danas as $dana)
+                                    <option value="{{ $dana->id }}"
+                                        @if ($dana->id) selected @endif>
+                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                @endforeach
+                            </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="seal_update" multiple="multiple" name="seal_update"
+                                    class="form-select" placeholde="Silahkan Pilih Seal" required>
+                                    @foreach ($seals_edit as $seal)
+                                        <option value="{{ $seal->kode_seal }}">
+                                            {{ $seal->kode_seal }}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_seal_update" name="biaya_seal_update" placeholder="Biaya Seal..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+                        @if (count($spks) > 0)
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select data-bs-toggle="tooltip" id="spk_update" name="spk_update"
+                                class="form-select" placeholde="Silahkan Pilih SPK">
+                                @foreach ($spks_edit as $spk)
+                                    <option value="{{ $spk->kode_spk }}">
+                                        {{ $spk->kode_spk }}</option>
+                                @endforeach
+
+                            </select>
+
+                            </div>
+                        </div>
+                        @endif
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya Stuffing :<span
@@ -1389,21 +1448,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="biaya_seal_update" name="biaya_seal_update" placeholder="Biaya Seal..."
-                                        required>
-
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya THC POL:<span
@@ -1454,55 +1499,9 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
 
-                                <select data-bs-toggle="tooltip" id="jenis_mobil_update" name="jenis_mobil_update"
-                                    class="form-select" required>
-                                    <option value="Mobil Sewa" @if ('Mobil Sewa') selected @endif>Mobil
-                                        Sewa</option>
-                                    <option value="Mobil Sendiri" @if ('Mobil Sendiri') selected @endif>Mobil
-                                        Sendiri</option>
-                                </select>
 
-                            </div>
-                        </div>
-                        <div class="row">
-                            <input type="hidden" id="old_dana" name="old_dana">
-                            <input type="hidden" id="old_ongkos_supir" name="old_ongkos_supir">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
 
-                            <select data-bs-toggle="tooltip" required @readonly(true) id="dana_update"
-                                name="dana_update" class="form-select danas">
-
-                                @foreach ($danas as $dana)
-                                    <option value="{{ $dana->id }}"
-                                        @if ($dana->id) selected @endif>
-                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
-                                @endforeach
-                            </select>
-                            </div>
-                        </div>
-
-                        @if (count($spks) > 0)
-                            <div class="row">
-                                <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
-                                <div class="col-sm-8 validation-container">
-
-                                <select data-bs-toggle="tooltip" id="spk_update" multiple="multiple" name="spk_update"
-                                    class="form-select" placeholde="Silahkan Pilih SPK">
-                                    @foreach ($spks as $spk)
-                                        <option value="{{ $spk->kode_spk }}">
-                                            {{ $spk->kode_spk }}</option>
-                                    @endforeach
-
-                                </select>
-
-                                </div>
-                            </div>
-                        @endif
 
 
                     </div>
@@ -2012,20 +2011,7 @@
 
                         </div> --}}
 
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
 
-                                <select data-bs-toggle="tooltip" id="seal_tambah" multiple="multiple" name="seal_tambah"
-                                    class="form-select seals" placeholde="Silahkan Pilih Seal" required>
-                                    @foreach ($seals as $seal)
-                                        <option value="{{ $seal->kode_seal }}">
-                                            {{ $seal->kode_seal }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
 
                         <div class="row">
                             <label for="" class="col-sm-4 col-form-label">Tanggal Kegiatan :<span class="text-danger">*</span></label>
@@ -2089,6 +2075,83 @@
 
                             </div>
                         </div>
+                        <div class="row">
+
+                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="jenis_mobil_tambah" name="jenis_mobil_tambah"
+                                    class="form-select" required>
+                                    <option disabled selected>Pilih Jenis Mobil</option>
+                                    <option value="Mobil Sewa">Mobil Sewa</option>
+                                    <option value="Mobil Sendiri">Mobil Sendiri</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select data-bs-toggle="tooltip" @readonly(true) id="dana_tambah" name="dana_tambah"
+                                class="form-select danas" required>
+                                <option disabled selected>Pilih Deposit Trucking</option>
+                                @foreach ($danas as $dana)
+                                    <option value="{{ $dana->id }}">
+                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="seal_tambah" multiple="multiple" name="seal_tambah"
+                                    class="form-select seals" placeholde="Silahkan Pilih Seal" required>
+                                    @foreach ($seals as $seal)
+                                        <option value="{{ $seal->kode_seal }}">
+                                            {{ $seal->kode_seal }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="biaya_seal_tambah" name="biaya_seal_tambah" placeholder="Biaya Seal..."
+                                        required>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (count($spks) > 0)
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select data-bs-toggle="tooltip" id="spk_tambah" name="spk_tambah"
+                                class="form-select" placeholde="Silahkan Pilih SPK">
+                                @foreach ($spks as $spk)
+                                    <option value="{{ $spk->kode_spk }}">
+                                        {{ $spk->kode_spk }}</option>
+                                @endforeach
+
+                            </select>
+                            </div>
+                        </div>
+                        @endif
+
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya Stuffing :<span
@@ -2136,21 +2199,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="biaya_seal_tambah" name="biaya_seal_tambah" placeholder="Biaya Seal..."
-                                        required>
-
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya THC POL :<span
@@ -2202,51 +2251,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
 
-                            <label for="" class="col-sm-4 col-form-label">Pilih Jenis Mobil :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <select data-bs-toggle="tooltip" id="jenis_mobil_tambah" name="jenis_mobil_tambah"
-                                    class="form-select" required>
-                                    <option disabled selected>Pilih Jenis Mobil</option>
-                                    <option value="Mobil Sewa">Mobil Sewa</option>
-                                    <option value="Mobil Sendiri">Mobil Sendiri</option>
-                                </select>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Deposit Trucking :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                            <select data-bs-toggle="tooltip" @readonly(true) id="dana_tambah" name="dana_tambah"
-                                class="form-select danas" required>
-                                <option disabled selected>Pilih Deposit Trucking</option>
-                                @foreach ($danas as $dana)
-                                    <option value="{{ $dana->id }}">
-                                        {{ $dana->pj }} - @rupiah($dana->nominal)</option>
-                                @endforeach
-                            </select>
-
-                            </div>
-                        </div>
-                        @if (count($spks) > 0)
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
-                            <div class="col-sm-8 validation-container">
-
-                            <select data-bs-toggle="tooltip" id="spk_tambah" multiple="multiple" name="spk_tambah"
-                                class="form-select" placeholde="Silahkan Pilih SPK">
-                                @foreach ($spks as $spk)
-                                    <option value="{{ $spk->kode_spk }}">
-                                        {{ $spk->kode_spk }}</option>
-                                @endforeach
-
-                            </select>
-                            </div>
-                        </div>
-                    @endif
 
                     </div>
                     <div class="modal-footer">
@@ -2416,10 +2421,10 @@
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body d-grid gap-3 px-5">
+                    <div class="modal-body d-grid gap-3 px-5" style="margin-left: 30px">
                         <div class="row">
                             <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
+                            <div class="col-sm-6 validation-container">
 
 
                                 <select data-bs-toggle="tooltip" id="kontainer_detail" name="kontainer_detail"
@@ -2433,17 +2438,24 @@
 
                             </div>
                         </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Detail Barang:<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
+                        <div id="div_detail" class="row">
+                            <div id="body_detail[1]" class="row row-cols g-3">
+                                <label id="label_detail" name="label_detail" class="col-sm-4 col-form-label">Detail Barang Ke-1 :<span class="text-danger">*</span></label>
+                                <div id="div_textarea" name="div_textarea" class="col-sm-6 validation-container d-grid gap-3">
+                                    <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang[1]" name="detail_barang" required></textarea>
+                                </div>
+                                <div id="div_button" name="div_button" class="col-sm-2 py-4">
+                                    <a id="delete_detail[1]" name="delete_detail" class="btn btn-sm btn-label-danger btn-icon" onclick="delete_detail(this)"><i class="fa fa-trash"></i></a>
+                                </div>
 
-                                <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang" name="detail_barang" required></textarea>
                             </div>
 
                         </div>
-
                     </div>
                     <div class="modal-footer">
+                        <a id="tambah_barang" type="button" onclick="tambah_barang()"
+                        class="btn btn-label-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
+
                         <button type="submit" class="btn btn-success">Simpan Detail Barang/Kontainer</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
@@ -2484,7 +2496,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Detail Barang:<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label" id="label_detail">Detail Barang:<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang_edit" name="detail_barang_edit" required></textarea>

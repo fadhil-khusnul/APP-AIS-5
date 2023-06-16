@@ -197,7 +197,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16],
+            columns: [1, 3, 4, 5, 6, 7, 8],
             cascadePanes: false,
             viewTotal: true,
 
@@ -215,7 +215,7 @@
 
 
             },
-            targets: [1, 3, 4, 6, 7, 8, 10, 16],
+            targets: [1, 3, 4, 5, 6, 7],
         }],
     });
     $("#realisasipod").DataTable({
@@ -227,7 +227,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [3, 5, 6, 7, 8],
+            columns: [1, 3, 4, 5, 6, 7, 8],
             cascadePanes: false,
             viewTotal: true,
 
@@ -245,7 +245,7 @@
 
 
             },
-            targets: [3, 5, 6, 7, 8],
+            targets: [1, 3, 4, 5, 6, 7],
         }],
     });
 

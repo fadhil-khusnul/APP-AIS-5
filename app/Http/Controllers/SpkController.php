@@ -53,17 +53,12 @@ class SpkController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request);
-        $request->validate([
-
-            'kode_spk' => 'required',
-
-        ]);
 
         $Spk = Spk::findOrFail($id);
 
         $data = [
             "kode_spk" =>$request->kode_spk,
+            "harga_spk" =>$request->harga_spk,
             "pelayaran_id" =>$request->select_company,
         ];
         $Spk->update($data);
@@ -94,6 +89,7 @@ class SpkController extends Controller
                 'code' => $request->code[$i],
                 'start_spk' => $request->start_spk[$i],
                 'touch_spk' => $request->touch_spk[$i],
+                'harga_spk' => $request->harga_spk[$i],
                 'kode_spk' => $request->kode_spk[$i],
                 'pelayaran_id' => $request->select_company[$i],
                 'status' => 'input',

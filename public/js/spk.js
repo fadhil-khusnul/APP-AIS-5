@@ -75,6 +75,8 @@ function Tambah_SPK() {
             start_spk = parseInt(start_spk);
             var touch_spk = document.getElementById("touch_spk").value;
             var select_company = document.getElementById("select_company").value;
+            var harga_spk = $("#harga_spk").val().replace(/\./g, "");
+
             touch_spk = parseInt(touch_spk);
             var token = $("#csrf").val();
 
@@ -82,6 +84,7 @@ function Tambah_SPK() {
             var data_code = [];
             var data_start_spk = [];
             var data_touch_spk = [];
+            var data_harga_spk = [];
             var data_select = [];
             let fd = new FormData();
             var result;
@@ -108,6 +111,8 @@ function Tambah_SPK() {
                         fd.append("start_spk[]", data_start_spk[i]);
                         data_touch_spk[i] = touch_spk;
                         fd.append("touch_spk[]", data_touch_spk[i]);
+                        data_harga_spk[i] = harga_spk;
+                        fd.append("harga_spk[]", data_harga_spk[i]);
                         data_select[i] = select_company;
                         fd.append("select_company[]", data_select[i]);
                     }
@@ -192,6 +197,7 @@ function editspk(e) {
             $('#modal-spk-edit').modal('show');
 
             $('#kode_spk_edit').val(response.result.kode_spk);
+            $('#harga_spk_edit').val(response.result.harga_spk);
             $('#select_company_edit').val(response.result.pelayaran_id);
 
             $('#valid_spk_edit').validate({
@@ -232,6 +238,7 @@ function editspk(e) {
                         data: {
                             "_token": token,
                             kode_spk: $('#kode_spk_edit').val(),
+                            harga_spk: $('#harga_spk_edit').val().replace(/\./g, ""),
                             select_company: $('#select_company_edit').val(),
                         },
                         success: function (response) {

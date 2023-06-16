@@ -13,7 +13,7 @@
 
                     <form class="row g-3" id="valid_seal" name="valid_seal">
                         <div class="col-md-12">
-                            <div class="validation-container">
+                        <div class="validation-container">
                                 <label for="company" class="form-label">Pilih Shipping Company (Pelayaran)</label>
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Pelayaran</option>
@@ -28,6 +28,14 @@
                                 <label for="" class="form-label">Kode</label>
                                 <input type="text" class="form-control" id="kode_spk" name="kode_spk" required>
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+
+                            <div class="validation-container">
+                                    <label for="" class="form-label">Harga per SPK (Rp.) :</label>
+                                    <input id="harga_spk" name="harga_spk" type="text" value="0" class="form-control currency-rupiah" required><span
+                                        class="col-md-6 form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -95,6 +103,7 @@
                                 <th>No</th>
                                 <th>Nama Shipping Company (Pelayaran)</th>
                                 <th>Kode SPK</th>
+                                <th>Harga SPK</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -109,6 +118,9 @@
                                     </td>
                                     <td>
                                         {{ $spk->kode_spk }}
+                                    </td>
+                                    <td>
+                                        @rupiah($spk->harga_spk)
                                     </td>
                                     {{-- <td>
                                         {{ $spk-> }}
@@ -156,19 +168,34 @@
                 </div>
                 <div class="modal-body">
 
-                    <div class="validation-container">
-                        <label for="company" class="form-label">Pilih Shipping Company (Pelayaran)</label>
-                        <select id="select_company_edit" name="select_company_edit" class="form-select">
-                            <option selected disabled>Pilih Pelayaran</option>
-                            @foreach ($pelayarans as $shippingcompany)
-                                <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
-                            @endforeach
-                        </select>
+                    <div class="row">
+
+                        <label for="company" class="col-sm-4 form-label">Pilih Shipping Company (Pelayaran)</label>
+                        <div class="col-sm-8 validation-container">
+                            <select id="select_company_edit" name="select_company_edit" class="form-select">
+                                <option selected disabled>Pilih Pelayaran</option>
+                                @foreach ($pelayarans as $shippingcompany)
+                                    <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="validation-container">
-                        <label class="form-label" for="area_code">KODE SPK :</label>
-                        <input class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
+                    <div class="row">
+
+
+                        <label class="col-sm-4 form-label" for="area_code">KODE SPK :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <label class="col-sm-4 form-label" for="area_code">HARGA SPK :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input required class="form-control currency-rupiah" id="harga_spk_edit" name="harga_spk_edit" type="text">
+                        </div>
                     </div>
 
 

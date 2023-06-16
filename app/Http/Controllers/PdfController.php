@@ -38,16 +38,24 @@ class PdfController extends Controller
      */
     public function create_si(Request $request)
     {
+        // dd($request);
         $random = Str::random(15);
+        $id_container = $request->chek_container;
 
-        $unique_size = array_values(array_unique($request->size));
+        for ($i=0; $i < count($id_container) ; $i++) {
+
+            $sizez [$i] = ContainerPlanload::where('id', $id_container[$i])->value('size');
+
+        }
+
+        $unique_size = array_values(array_unique($sizez));
 
         $jumlah = [];
         $quantity = [];
         for($i = 0; $i < count($unique_size); $i++) {
             $jumlah[$i] = 0;
-            for($j = 0; $j < count($request->size); $j++) {
-                if($unique_size[$i] == $request->size[$j]) {
+            for($j = 0; $j < count($sizez); $j++) {
+                if($unique_size[$i] == $sizez[$j]) {
                     $jumlah[$i] += 1;
                 }
             }

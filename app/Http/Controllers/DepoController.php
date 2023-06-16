@@ -34,6 +34,7 @@ class DepoController extends Controller
         $validatedData = $request->validate([
 
             'nama_depo' => 'required',
+            'pelayaran_id' => 'required',
 
         ]);
         Depo::create($validatedData);
@@ -66,16 +67,13 @@ class DepoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
 
-            'nama_depo' => 'required',
-
-        ]);
 
         $depo = Depo::findOrFail($id);
 
         $data = [
             "nama_depo" =>$request->nama_depo,
+            "pelayaran_id" =>$request->pelayaran_id,
         ];
         $depo->update($data);
         return response()->json(['success' => true]);

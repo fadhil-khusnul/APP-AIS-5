@@ -311,6 +311,7 @@ function editseal(e) {
             $('#modal-seal-edit').modal('show');
 
             $('#kode_seal_edit').val(response.result.kode_seal);
+            $('#harga_seal_edit').val(response.result.harga_seal);
 
             $('#valid_pelabuhan_edit').validate({
                 rules: {
@@ -350,6 +351,7 @@ function editseal(e) {
                         data: {
                             "_token": token,
                             kode_seal: $('#kode_seal_edit').val(),
+                            harga_seal: $('#harga_seal_edit').val().replace(/\./g, ""),
                         },
                         success: function (response) {
                             swal.fire({

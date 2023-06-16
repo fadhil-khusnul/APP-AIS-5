@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Company (PT)</th>
+                            <th>Nama Company/Pelayaran (PT)</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -84,6 +84,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Nama Pelayaran</th>
                             <th>Nama DEPO</th>
                             <th>Aksi</th>
                         </tr>
@@ -93,6 +94,9 @@
                         <tr>
                             <td>
                                 {{$loop->iteration}}
+                            </td>
+                            <td>
+                                {{$depo->pelabuhans->nama_company}}
                             </td>
                             <td>
                                 {{$depo->nama_depo}}
@@ -711,6 +715,36 @@
         </div>
 
     </div>
+    <div class="col-md-4">
+
+        <div class="portlet">
+            <div class="portlet-header portlet-header-bordered">
+                <h3 class="portlet-title">DATA PPN </h3>
+            </div>
+            <div class="portlet-body">
+
+
+                <div class="widget8">
+                    <div class="widget8-content">
+                        <div class="avatar avatar-label-success avatar-circle widget8-avatar">
+                            <div class="avatar-display">
+                                <i class="fa fa-percent"></i>
+                            </div>
+                        </div>
+
+                        <h4 class="widget8-highlight">{{ str_replace('.',',', $ppn->ppn)}} %</h4>
+
+                        <button value="{{$ppn->id}}" onclick="ppn_modal(this)" type="button" class="btn btn-primary btn-sm btn-icon"><i class="fa fa-pencil"></i></button>
+                    </div>
+                </div>
+
+                <!-- BEGIN Datatable -->
+
+                <!-- END Datatable -->
+            </div>
+        </div>
+
+    </div>
 </div>
 
 
@@ -761,6 +795,37 @@
                 <div>
                     <label class="form-label" for="email">Nama Company</label>
                     <input class="form-control" id="nama_company_edit" name="nama_company_edit" type="text">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+        </form>
+
+    </div>
+</div>
+<div class="modal fade" id="modal_ppn">
+    <div class="modal-dialog">
+        <form action="#" name="valid_company_edit" id="valid_company_edit">
+            <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+            <input type="hidden" name="old_id_company" id="old_id_company">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Data PPN</h5>
+                <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label class="form-label" for="email">Nilai PPN</label>
+                    <input class="form-control" id="nilai_ppn" name="nilai_ppn" type="text">
                 </div>
 
             </div>
@@ -847,10 +912,25 @@
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div>
-                        <label class="form-label" for="text">Nama Depo</label>
-                        <input class="form-control" id="nama_depo" name="nama_depo" type="text">
+                <div class="modal-body d-grid gap-3 px-5">
+
+                    <div class="row">
+
+                        <label for="company" class="col-sm-4 form-label">Pilih Pelayaran :</label>
+                        <div class="col-sm-8 validation-container">
+                            <select required id="pelayaran_id_tambah" name="pelayaran_id_tambah" class="form-select">
+                                <option  selected disabled>Pilih Pelayaran</option>
+                                @foreach ($pelayarans as $shippingcompany)
+                                    <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 form-label" for="text">Nama Depo :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input class="form-control" id="nama_depo" name="nama_depo" type="text">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -875,10 +955,26 @@
                     <i class="fa fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <div>
-                    <label class="form-label" for="nama_depo">Nama Depo</label>
+            <div class="modal-body d-grid gap-3 px-5">
+
+                <div class="row">
+
+                    <label for="company" class="col-sm-4 form-label">Pilih Pelayaran :</label>
+                    <div class="col-sm-8 validation-container">
+                        <select required id="pelayaran_id_edit" name="pelayaran_id_edit" class="form-select">
+                            <option  selected disabled>Pilih Pelayaran</option>
+                            @foreach ($pelayarans as $shippingcompany)
+                                <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-4 form-label" for="nama_depo">Nama Depo</label>
+                    <div class="col-sm-8 validation-container">
                     <input class="form-control" id="nama_depo_edit" name="nama_depo_edit" type="text">
+                    </div>
                 </div>
 
             </div>

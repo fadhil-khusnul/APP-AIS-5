@@ -161,12 +161,14 @@ $(function () {
         submitHandler: function (form) {
 
             var nama_depo = $("#nama_depo").val();
+            var pelayaran_id_tambah = $("#pelayaran_id_tambah").val();
             var token = $('#csrf').val();
 
 
             var data = {
                 "_token": token,
-                "nama_depo": nama_depo
+                "nama_depo": nama_depo,
+                "pelayaran_id": pelayaran_id_tambah
             }
 
             $.ajax({
@@ -1139,6 +1141,78 @@ function editCompany(e) {
         }
     });
 }
+function ppn_modal(e) {
+    var id = e.value;
+    console.log(id);
+
+
+    $.ajax({
+        url: '/ppn-edit',
+        type: 'GET',
+        success: function (response) {
+            $('#modal_ppn').modal('show');
+
+            $('#nilai_ppn').val(response.result.nama_company);
+
+            $('#valid_company_edit').validate({
+                rules: {
+
+                    nama_company_edit: {
+                        required: true
+                    },
+
+                },
+                messages: {
+
+                    nama_company_edit: {
+                        required: "Silakan Isi Nama Company"
+                    },
+
+                },
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var token = $('#csrf').val();
+                    var oldid = $('#old_id_company').val();
+
+                    $.ajax({
+                        url: 'company/' + oldid,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            nama_company: $('#nama_company_edit').val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Data Company Berhasil Diedit",
+                                showConfirmButton: false,
+                                timer: 2e3,
+
+                            })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+
+        }
+    });
+}
 function editVendor(e) {
     var id = e.value;
     console.log(id);
@@ -1226,6 +1300,7 @@ function editDepo(e) {
             $('#modal-depo-edit').modal('show');
 
             $('#nama_depo_edit').val(response.result.nama_depo);
+            $('#pelayaran_id_edit').val(response.result.pelayaran_id);
             $('#old_id_depo').val(response.result.id);
 
 
@@ -1268,6 +1343,7 @@ function editDepo(e) {
                         data: {
                             "_token": token,
                             nama_depo: $('#nama_depo_edit').val(),
+                            pelayaran_id: $('#pelayaran_id_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({

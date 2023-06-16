@@ -50,6 +50,7 @@ class SealController extends Controller
 
         $data = [
             "kode_seal" =>$request->kode_seal,
+            "harga_seal" =>$request->harga_seal,
         ];
         $seal->update($data);
         return response()->json(['success' => true]);

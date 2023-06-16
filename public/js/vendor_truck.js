@@ -1,5 +1,74 @@
+
+
+
+
+
+function filter_date(val){
+    console.log(val.value);
+
+    min = $("#daterangepicker_vendor").val();
+    var min_new = moment(min,"DD/MM/YYYY").lang("id").format("dddd, DD-MM-YYYY");
+
+    console.log(min_new);
+
+    max = $("#daterangepicker_vendor").val();
+
+    date = tabelvendor.columns(3);
+    console.log(date);
+
+    console.log(min, max);
+
+    if(
+        (min === null && max === null) ||
+        (min === null && date <= max) ||
+        (min <= date && max === null) ||
+        (min <= date && date <= max)
+    )
+    {
+        tabelvendor.draw();
+    }
+
+    else {
+
+        tabelvendor.columns(3).search('').draw();
+    }
+
+
+}
+
+
+function filter_vendor(val) {
+    var vendor = []
+
+    vendor = $("#pilih_vendor").val();
+    // regex = '^' + vendor ;
+    console.log(vendor);
+
+    if (vendor == null) {
+
+        tabelvendor.columns(6).search('').draw();
+    }
+    else{
+
+        tabelvendor.columns(6).search(vendor.join('|'), true, false, true).draw();
+    }
+
+};
+function filter_status(val) {
+    var status = val.value;
+    console.log(status);
+    if (status == null) {
+
+        tabelvendor.columns(2).search('').draw();
+    }
+    else{
+
+        tabelvendor.columns(2).search(status).draw();
+    }
+
+};
+
 function bayar() {
-    // console.log(id);
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
@@ -28,7 +97,20 @@ function bayar() {
         confirmButtonText: "Iya",
         cancelButtonText: "Tidak",
     }).then((willCreate) => {
+        // var search = "";
+
+        // tabelvendor.search(search).draw();
         if (willCreate.isConfirmed) {
+
+            var ids = []
+
+            var rowcollection =  tabelvendor.$(".check-container1:checked", {"page": "all"});
+            rowcollection.each(function (index, elem) {
+                ids.push($(elem).val());
+            });
+
+            console.log(ids);
+
             var id_container = $(".check-container1:checked")
                 .map(function () {
                     return this.value;
@@ -42,7 +124,7 @@ function bayar() {
                 type: "POST",
                 data: {
                     _token: csrf,
-                    id: id_container,
+                    id: ids,
                 },
                 success: function (response) {
                     // let new_id = id;
@@ -55,10 +137,13 @@ function bayar() {
                     // var dibayar = response.result.dibayar;
 
                     var Selisih = response;
+
                     $("#old_selisih").val(Selisih);
                     Selisih = tandaPemisahTitik(Selisih);
 
                     $("#selisih").html("Rp. " + Selisih);
+
+
 
                     console.log(id_container);
                     $("#modal_biaya_do").modal("show");

@@ -121,12 +121,66 @@
 
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="portlet-title">Tabel {{ $title }}</h3>
+                    <h3 class="portlet-title text-center">Tabel {{ $title }}</h3>
                 </div>
                 <div class="portlet-body">
                     <hr>
+
+
+
+                    <div class="row row-cols-lg-auto py-5 g-3">
+                        <label for="" class="col-form-label">Filter Tabel :</label>
+                        {{-- <div class="col-sm-5 col-lg-4">
+                            <input class="form-control" type="text" id="daterangepicker_vendor">
+                        </div> --}}
+
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="mb-2">
+                                <!-- BEGIN Input Group -->
+                                <div class="input-group input-daterange">
+                                    <input type="text" id="min" class="form-control" placeholder="From">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </span>
+                                    <input type="text" id="max" class="form-control" placeholder="To">
+                                </div>
+                                <!-- END Input Group -->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+                        <div class="col-6">
+                            <select id="pilih_status" name="pilih_status" class="form-select" onchange="filter_status(this)">
+                                <option selected disabled>Pilih Status Bayar</option>
+                                <option value="Belum Lunas">Belum Lunas</option>
+                                <option value="Sudah Lunas">Sudah Lunas</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div style="" class="">
+                            <button id="add_biaya" type="button" onclick="bayar()"
+                            class="btn btn-success">Bayar <i class="fa fa-arrow-right"></i></button>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
                     <!-- BEGIN Datatable -->
-                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize">
+                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -141,8 +195,6 @@
                                 <th>Ongkos Supir</th>
                                 <th>Terbayar</th>
                                 <th>Selisih</th>
-
-
                             </tr>
                         </thead>
                         <tbody>
@@ -172,24 +224,12 @@
                                     <td>
 
                                         @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) == 0)
-                                            <span class="badge badge-label-success">Lunas <i class="fa fa-check"></i></span>
+                                            <i class="marker marker-dot text-success"></i> Sudah Lunas
                                         @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
-                                            <span class="badge badge-label-danger">Belum Lunas <i class="fa fa-exclamation"></i></span>
+                                            <i class="marker marker-dot text-danger"></i>Belum Lunas
                                         @endif
                                     </td>
-                                    {{-- <td>
 
-                                        @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
-                                            <button value="{{ $container->id }}" type="button" onclick="bayar(this)"
-                                                class="btn btn-label-success btn-sm text-nowrap ">Bayar <i
-                                                    class="fa fa-arrow-right"></i></button>
-                                        @else
-                                            <button disabled type="button"
-                                                class="btn btn-label-secondary btn-sm text-nowrap ">Bayar <i
-                                                    class="fa fa-arrow-right"></i></button>
-                                        @endif
-
-                                    </td> --}}
                                     <td>
                                         @if ($container->date_activity != null)
                                             {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
@@ -224,10 +264,10 @@
                                     <td>
                                         @if ($container->biaya_trucking != null)
                                             @rupiah($container->biaya_trucking)
+                                            @else
+                                                -
+                                        @endif
                                     </td>
-                                @else
-                                    -
-                            @endif
                             <td>
                                 @if ($container->biaya_trucking != null)
                                     @rupiah($container->ongkos_supir)
@@ -250,13 +290,6 @@
                                 -
                                 @endif
                             </td>
-
-
-
-
-
-
-
                             </tr>
                             @endforeach
 
@@ -265,11 +298,7 @@
                     <!-- END Datatable -->
                 </div>
 
-                <div class="mb-5 mt-5 col-md-12 text-center">
 
-                    <button id="add_biaya" type="button" onclick="bayar()"
-                        class="btn btn-label-success">Bayar <i class="fa fa-arro-right"></i></button>
-                </div>
             </div>
 
             <!-- END Portlet -->
@@ -328,10 +357,35 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/vendor_truck.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+
 
     <script>
+
+            var minEl = $('#min');
+            var maxEl = $('#max');
+
+            // Custom range filtering function
+            $.fn.DataTable.ext.search.push(function (settings, data, dataIndex) {
+                var min = parseInt(minEl.val(), 10);
+                console.log(settings);
+                var max = parseInt(maxEl.val(), 10);
+                var age = parseFloat(data[3]) || 0; // use data for the age column
+
+                if (
+                    (isNaN(min) && isNaN(max)) ||
+                    (isNaN(min) && age <= max) ||
+                    (min <= age && isNaN(max)) ||
+                    (min <= age && age <= max)
+                ) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            // console.log($.fn.dataTable.ext.search);
         $(document).ready(function() {
 
 
@@ -345,7 +399,35 @@
                     $("#add_biaya").attr("disabled", "disabled");
                 }
             });
+            var tabelvendor = $("#vendor_bayar_Load").DataTable({
+                responsive:true,
+                paging:true,
+                fixedHeader:
+                {
+                    header:true,
+
+                },
+                pageLength : 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+
+                // scroller: true,
+
+            });
+
+
+            minEl.on('input', function () {
+                tabelvendor.draw();
+            });
+            maxEl.on('input', function () {
+                tabelvendor.draw();
+            });
         });
+
+
+
+
+
+
 
 
         $('.modal>.modal-dialog').draggable({
@@ -356,4 +438,6 @@
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
 
     </script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/vendor_truck.js"></script>
+
 @endsection

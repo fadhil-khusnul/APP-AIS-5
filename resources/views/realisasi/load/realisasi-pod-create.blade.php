@@ -78,16 +78,13 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="">Input Biaya POD</th>
-                                        <th class="text-center">Detail Kontainer</th>
-
+                                        <th class="text-center">POD</th>
+                                        <th class="text-center">Pengirim</th>
+                                        <th class="text-center">Penerima</th>
+                                        <th class="text-center">Size/Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Pelayaran (Shipping Company)</th>
-                                        <th class="text-center">POL</th>
-                                        <th class="text-center">POT</th>
-                                        <th class="text-center">Vessel/Voyage</th>
-                                        <th class="text-center">Code Vessel/Voyage</th>
-                                        <th class="text-center">Detail Barang Kontainer</th>
-                                        <th class="text-center">Biaya Lain Kontainer</th>
+                                        <th class="text-center">Seal-Container</th>
+                                        <th class="text-center">Cargo (Nama Barang)</th>
                                     </tr>
                                 </thead>
                                 <tbody class="" id="tbody_container">
@@ -108,63 +105,62 @@
                                                 @endif
                                             </td>
 
+
+
                                             <td>
-                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="detail_kontainer(this)">
-                                                Detail Kontainer <i class="fa fa-eye"></i>
-                                                </button>
+                                                <label disabled @readonly(true)
+                                                    id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
                                             </td>
-
-
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pengirim[{{ $container->id }}]">{{ old('pengirim', $container->pengirim) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $container->id }}]">{{ $container->size }}/{{$container->type}}</label>
+                                            </td>
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
                                             </td>
                                             <td>
-                                                <label disabled @readonly(true)
-                                                    id="select_company[{{ $container->id }}]">{{ old('select_company', $planload->select_company) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pol[{{ $container->id }}]">{{ old('pol', $planload->pol) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pot[{{ $container->id }}]">{{ old('pot', $planload->pot) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="vessel[{{ $container->id }}]">{{ old('vessel', $planload->vessel) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="vessel_code[{{ $container->id }}]">{{ old('vessel_code', $planload->vessel_code) }}</label>
-                                            </td>
+                                                @if ($sealsc->count() == 1)
+                                                    @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id == $container->id)
+                                                            {{ $seal->seal_kontainer }}
 
-                                            <td>
+                                                    @endif
+                                                    @endforeach
+                                                @elseif($sealsc->count() == 0)
+                                                -
+                                                @else
                                                 <ol type="1.">
-                                                    @foreach ($details as $detail)
-                                                        @if ($detail->kontainer_id == $container->id)
-                                                            <li id="detail[{{ $container->id }}]">
-                                                                {{ $detail->detail_barang }}
 
+                                                    @foreach ($sealsc as $seal)
+                                                        @if ($seal->kontainer_id == $container->id)
+                                                            <li id="seal[{{ $container->id }}]">
+                                                                {{ $seal->seal_kontainer }}
                                                             </li>
                                                         @endif
                                                     @endforeach
                                                 </ol>
+                                                @endif
+
+
+
                                             </td>
                                             <td>
-                                                <ol type="1.">
-                                                    @foreach ($biayas as $biaya)
-                                                        @if ($biaya->kontainer_id == $container->id)
-                                                            <li id="biaya[{{ $container->id }}]">
-                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
 
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
+                                                <label disabled @readonly(true)
+                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
 
                                             </td>
+
+
                                         </tr>
                                     @endforeach
                                 </tbody>

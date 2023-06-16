@@ -21,11 +21,21 @@ $("#penerima_1").select2
 
 
 });
-$("#filter_pelayaran").select2
+$("#filter_pelayaran, #pilih_status").select2
 ({
     dir:direction,
     dropdownAutoWidth:true,
     placeholder:"Silahkan Pilih Pelayaran",
+    allowClear:true
+
+
+
+});
+$("#pilih_vendor").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih Vendor",
     allowClear:true
 
 

@@ -378,19 +378,17 @@ $('#filter_vessel').on("change", function(event) {
 //     }
 // });
 
-$("#realisasiload_create").DataTable({
-    responsive:true,
-    "paging": false,
-    "info": false,
-    "searching": false,
-    "scroll" :false,
-    fixedHeader: {
-        header:true,
-        headerOffset:
-        offset
-    },
+// $("#realisasiload_create").DataTable({
+//     responsive:true,
+//     pageLength : 2,
+//     lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+//     fixedHeader: {
+//         header:true,
+//         headerOffset:
+//         offset
+//     },
 
-});
+// });
 $("#table_alih_kapal_realisasi").DataTable({
     responsive:true,
     "paging": false,
@@ -425,21 +423,7 @@ var spk = $("#input-seal").DataTable({
         offset
     }
 });
-$("#vendor_bayar_Load").DataTable({
-    responsive:true,
-    paging:false,
-    fixedHeader:
-    {
-        header:true,
-        headerOffset:
-        offset
-    },
-    deferRender: true,
-    scrollCollapse: true,
-    scrollY: 300,
-    // scroller: true,
 
-});
 
 $('#filter_pelayaran').on("change", function(event) {
     var pelayaran = $('#filter_pelayaran').val();

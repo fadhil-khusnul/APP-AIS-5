@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\ShippingCompany;
+use App\Models\PPN;
 use App\Models\Depo;
-use App\Models\Pelabuhan;
-use App\Models\Pengirim;
-use App\Models\Penerima;
 use App\Models\Biaya;
+use App\Models\Penerima;
+use App\Models\Pengirim;
+use App\Models\Stuffing;
 use App\Models\Trucking;
 use App\Models\Container;
-use App\Models\Stuffing;
+use App\Models\Pelabuhan;
 use App\Models\Stripping;
-use App\Models\TypeContainer;
 use App\Models\VendorMobil;
 use App\Models\RekeningBank;
+use Illuminate\Http\Request;
+use App\Models\TypeContainer;
+use App\Models\ShippingCompany;
 
 
 class DataController extends Controller
@@ -27,6 +28,7 @@ class DataController extends Controller
     {
 
         $companies = ShippingCompany::orderBy('id', 'DESC')->get();
+        $pelayarans = ShippingCompany::orderBy('id', 'DESC')->get();
         $depos = Depo::orderBy('id', 'DESC')->get();
         $pelabuhans = Pelabuhan::orderBy('id', 'DESC')->get();
         $pengirims = Pengirim::orderBy('id', 'DESC')->get();
@@ -38,12 +40,17 @@ class DataController extends Controller
         $strippings = Stripping::orderBy('id', 'DESC')->get();
         $vendors = VendorMobil::orderBy('id', 'DESC')->get();
 
+        $ppn = PPN::select('ppn', 'id')->first();
+
+
         $danas = RekeningBank::orderBy('id', 'DESC')->get();
 
         return view('pages.data',[
             'title' => 'Data',
             'active' => 'Data',
             'companies' => $companies,
+            'ppn' => $ppn,
+            'pelayarans' => $pelayarans,
             'depos' => $depos,
             'pelabuhans' => $pelabuhans,
             'pengirims' => $pengirims,

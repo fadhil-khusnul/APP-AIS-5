@@ -89,7 +89,7 @@
                                     </div>
 
                                     <div class="col-auto text-center mt-3 mb-5">
-                                        <a type="button" href="#" onclick="GoBackWithRefresh();return false;"><i class="fa fa-arrow-left"></i> Back</a>
+                                        <a type="button" href="/realisasi-load-create/{{$planload->slug}}"><i class="fa fa-arrow-left"></i> Back</a>
 
                                     </div>
 

@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('type');
             $table->string('cargo');
             $table->string('pot_container')->nullable();
+            $table->string('pot_container')->nullable();
             $table->string('vessel_pot')->nullable();
             $table->string('kode_vessel_pot')->nullable();
             $table->string('pengirim')->nullable();
             $table->string('penerima')->nullable();
             $table->integer('jumlah_kontainer')->nullable();
             $table->string('nomor_kontainer')->nullable();
-            $table->string('seal')->nullable();
+            $table->string('spk')->nullable();
             $table->date('date_activity')->nullable();
             $table->string('lokasi_depo')->nullable();
             $table->string('driver')->nullable();

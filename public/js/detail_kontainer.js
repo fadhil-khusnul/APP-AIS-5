@@ -17,14 +17,14 @@ function detail(e) {
             let new_id = id;
 
             var seals = [""];
-            var spk = [""];
+            var spk = response.spks;
 
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
-            for (let i = 0; i < response.spks.length; i++) {
-                spk[i] = response.spks[i].spk_kontainer;
-            }
+            // for (let i = 0; i < response.spks.length; i++) {
+            //     spk[i] = response.spks[i].spk_kontainer;
+            // }
             // console.log(seals);
             $("#modal-job").modal("show");
 
@@ -174,52 +174,23 @@ function detail(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
                 })
-                .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
+                .change(function () {
+                    var select_val = $(this).val();
+                    console.log(select_val);
                     let token = $("#csrf").val();
-
                     $.ajax({
-                        url: "/getSpkProcessLoad",
+                        url: "/getSpkKontainer",
                         type: "post",
-                        async: false,
                         data: {
                             _token: token,
+                            spk: select_val,
                         },
                         success: function (response) {
-                            var seal = $("#spk").val();
-                            var last_seal = seal[seal.length - 1];
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].spk_kontainer;
-                            }
-
-                            if (seal_already.includes(last_seal)) {
-                                swal.fire({
-                                    title: "SPK Kontainer Sudah Dipakai",
-                                    icon: "error",
-                                    timer: 10e3,
-                                    showConfirmButton: true,
-                                }).then(() => {
-                                    var wanted_option = $(
-                                        '#spk option[value="' + last_seal + '"]'
-                                    );
-                                    wanted_option.prop("selected", false);
-                                    $("#spk").trigger("change.select2");
-                                });
-                            }
+                            $("#biaya_stuffing").val(response);
                         },
                     });
                 });
+
             $("#date_activity").val(response.result.date_activity);
             $("#lokasi")
                 .val(response.result.lokasi_depo)
@@ -534,52 +505,23 @@ function detail_tambah() {
             maximumSelectionLength: 4,
             dropdownParent: $("#modal-job-tambah"),
         })
-        .on("select2:select", function (e) {
-            var selected_element = $(e.currentTarget);
-            var select_val = selected_element.val();
+        .change(function () {
+            var select_val = $(this).val();
 
-            var element = e.params.data.element;
-            var $element = $(element);
-
-            $element.detach();
-            $(this).append($element);
-            $(this).trigger("change");
+            console.log(select_val);
 
             let token = $("#csrf").val();
 
             $.ajax({
-                url: "/getSpkProcessLoad",
+                url: "/getSpkKontainer",
                 type: "post",
-                async: false,
                 data: {
                     _token: token,
+                    spk: select_val,
                 },
                 success: function (response) {
-                    var seal = $("#spk_tambah").val();
-                    var last_seal = seal[seal.length - 1];
-                    // console.log(seal, last_seal);
-                    var count_seal = response.length;
-                    var seal_already = [];
-                    for (var i = 0; i < count_seal; i++) {
-                        seal_already[i] = response[i].spk_kontainer;
-                    }
-
-                    if (seal_already.includes(last_seal)) {
-                        swal.fire({
-                            title: "SPK Kontainer Sudah Dipakai",
-                            icon: "error",
-                            timer: 10e3,
-                            showConfirmButton: true,
-                        }).then(() => {
-                            var wanted_option = $(
-                                '#spk_tambah option[value="' + last_seal + '"]'
-                            );
-                            // console.log(wanted_option);
-
-                            wanted_option.prop("selected", false);
-                            $("#spk_tambah").trigger("change.select2");
-                        });
-                    }
+                    console.log(response);
+                    $("#biaya_stuffing_tambah").val(response);
                 },
             });
         });
@@ -861,16 +803,20 @@ function detail_update(e) {
             let new_id = id;
             // console.log(new_id);
 
+            console.log(response);
+
             var seals = [""];
-            var spk = [""];
+            var spk = response.spks;
+
+            console.log(spk);
             var supir = [""];
 
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
-            for (let i = 0; i < response.spks.length; i++) {
-                spk[i] = response.spks[i].spk_kontainer;
-            }
+            // for (let i = 0; i < response.spks.length; i++) {
+            //     spk[i] = response.spks[i].spk_kontainer;
+            // }
             // for (let i = 0; i < response.supirs.length; i++) {
             //     supir +=
             //         "<option value='" +
@@ -1053,62 +999,42 @@ function detail_update(e) {
                     dropdownParent: $("#modal-job-update"),
                 })
                 .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
+                    var select_val = $(this).val();
 
                     let token = $("#csrf").val();
-
                     $.ajax({
-                        url: "/getSpkProcessLoad",
-                        type: "post",
+                        url: "/getSpkProcess",
                         async: false,
+                        type: "post",
                         data: {
                             _token: token,
+                            spk: select_val,
                         },
                         success: function (response) {
-                            // console.log(seals);
-                            var seal = $("#spk_update").val();
-                            var last_seal = seal[seal.length - 1];
-                            // console.log(seal, last_seal);
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].spk_kontainer;
-                            }
-
-                            if (spk.includes(last_seal) == false) {
-                                if (seal_already.includes(last_seal)) {
-                                    swal.fire({
-                                        title: "SPK Kontainer Sudah Dipakai",
-                                        icon: "error",
-                                        timer: 10e3,
-                                        async: false,
-                                        showConfirmButton: true,
-                                    }).then(() => {
-                                        var wanted_option = $(
-                                            '#spk_update option[value="' +
-                                                last_seal +
-                                                '"]'
+                            if (response == "Container") {
+                                swal.fire({
+                                    title: "SPK Kontainer Sudah Dipakai",
+                                    icon: "error",
+                                    timer: 10e3,
+                                    showConfirmButton: true,
+                                }).then(() => {
+                                    $('#spk_update').val(null).trigger('change')
+                                    $("#biaya_stuffing_update").val(null);
+                                });
+                            } else {
+                                $.ajax({
+                                    url: "/getSpkKontainer",
+                                    type: "post",
+                                    data: {
+                                        _token: token,
+                                        spk: select_val,
+                                    },
+                                    success: function (response) {
+                                        $("#biaya_stuffing_update").val(
+                                            response
                                         );
-                                        // console.log(wanted_option);
-
-                                        wanted_option.prop("selected", false);
-                                        // $(this).trigger("change.select2");
-                                        $("#spk_update").trigger(
-                                            "change.select2"
-                                        );
-                                    });
-                                }
+                                    },
+                                });
                             }
                         },
                     });
@@ -1335,15 +1261,15 @@ function detail_disabled(e) {
             // console.log(new_id);
 
             var seals = [""];
-            var spk = [""];
+            var spk = response.spks;
             var supir = [""];
 
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
-            for (let i = 0; i < response.spks.length; i++) {
-                spk[i] = response.spks[i].spk_kontainer;
-            }
+            // for (let i = 0; i < response.spks.length; i++) {
+            //     spk[i] = response.spks[i].spk_kontainer;
+            // }
             for (let i = 0; i < response.supirs.length; i++) {
                 supir +=
                     "<option value='" +
@@ -1854,6 +1780,12 @@ function detail_barang() {
         // console.log();
         submitHandler: function (form) {
             var token = $("#csrf").val();
+            console.log(urutan_detail);
+
+            for (let i = 0; i < array.length; i++) {
+                const element = array[i];
+
+            }
 
             var data = {
                 _token: token,
@@ -3001,3 +2933,99 @@ function cetak_packing() {
         }
     });
 }
+
+var urutan_detail = 1;
+
+function tambah_barang() {
+    urutan_detail++;
+
+    var div1 = document.getElementById("div_detail");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols g-3");
+    div2.setAttribute("id", "body_detail[" + urutan_detail + "]");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "col-sm-4 col-form-label");
+    label.setAttribute("id", "label_detail");
+    label.setAttribute("name", "label_detail");
+    var span = document.createElement("span");
+    span.setAttribute("class", "text-danger");
+    span.innerHTML = "*";
+    label.append(span);
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+    div3.setAttribute("id", "div_textarea");
+    div3.setAttribute("name", "div_textarea");
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("data-bs-toggle", "tooltip");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("id", "detail_barang[" + urutan_detail + "]");
+    textarea.setAttribute("name", "detail_barang");
+    textarea.setAttribute("required", true);
+    div3.append(textarea);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("class", "col-sm-2 py-4");
+    div4.setAttribute("id", "div_button");
+    div4.setAttribute("name", "div_button");
+    var button = document.createElement("a");
+    button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    button.setAttribute("id", "delete_detail[" + urutan_detail +"]");
+    button.setAttribute("name", "delete_detail");
+    button.setAttribute("onclick", "delete_detail(this)");
+    icon = document.createElement("i");
+    icon.setAttribute("class", "fa fa-trash");
+    button.append(icon);
+    div4.append(button);
+
+    div2.append(label);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+
+    reindex_detail();
+}
+
+function reindex_detail() {
+    const ids = document.querySelectorAll(
+        "#label_detail"
+    );
+    ids.forEach((e, i) => {
+        e.innerHTML = "Detail Barang Ke-"+ (i + 1) + " :";
+    });
+}
+
+function delete_detail(ini) {
+    var urutan_delete = ini.parentNode.parentNode;
+    urutan_delete.remove();
+    urutan_detail--;
+
+    var label = document.querySelectorAll("#label_detail");
+
+    for(var i = 0; i < label.length; i++) {
+        label[i].innerHTML = "Detail Barang Ke-" + urutan_detail + " :";
+    }
+
+    var div1 = document.querySelectorAll("#div_textarea textarea");
+
+    for(var i = 0; i < div1.length; i++) {
+        div1[i].id = "detail_barang[" + (i + 1) + "]";
+    }
+
+    var div2 = document.querySelectorAll("#div_button button");
+
+    for(var i = 0; i < div2.length; i++) {
+        div2[i].id = "delete_detail[" + (i + 1) + "]";
+    }
+
+    if(urutan_detail == 0) {
+        tambah_barang();
+    }
+
+    reindex_detail();
+}
+
+

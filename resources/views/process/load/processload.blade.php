@@ -65,7 +65,7 @@
                                         </td>
                                         <td class="text-center text-nowrap">
                                             <a href="/processload-create/{{ $planload->slug }}"
-                                                class="btn btn-label-success btn-sm rounded-pill">Process Load <i
+                                                class="btn btn-success btn-sm rounded-pill">Process Load <i
                                                     class="fa fa-pencil"></i>
                                             </a>
 
@@ -98,7 +98,7 @@
                                             </b>
 
                                         </td>
-                                        
+
                                         {{-- <td align="top" valign="top">
                                             <ol type="1">
                                                 @foreach ($containers as $container)

@@ -13,7 +13,7 @@ class Depo extends Model
 
 
     public function pelabuhans(){
-        return $this->belongsTo(ShippingCompany::class, 'vendor_id', 'id')->withDefault([
+        return $this->belongsTo(ShippingCompany::class, 'pelayaran_id', 'id')->withDefault([
             'nama_company' => ' ',
         ]);
     }

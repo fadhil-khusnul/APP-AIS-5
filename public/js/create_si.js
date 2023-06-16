@@ -1,3 +1,13 @@
+var tabelvendor = $("#realisasiload_create").DataTable({
+    responsive:true,
+    pageLength : 5,
+    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    fixedHeader: {
+        header:true,
+    },
+    // scroller: true,
+
+});
 function pdf_si() {
     var swal = Swal.mixin({
         customClass: {
@@ -51,11 +61,18 @@ function pdf_si() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            var chek_container = $(".check-container:checked")
-                .map(function () {
-                    return this.value;
-                })
-                .get();
+            // var chek_container = $(".check-container:checked")
+            //     .map(function () {
+            //         return this.value;
+            //     })
+            //     .get();
+
+            var chek_container = []
+
+            var rowcollection =  tabelvendor.$(".check-container:checked", {"page": "all"});
+            rowcollection.each(function (index, elem) {
+                chek_container.push($(elem).val());
+            });
 
             var old_slug = $("#old_slug").val();
 
@@ -124,45 +141,45 @@ function pdf_si() {
                                 .append(error);
                         },
                         submitHandler: function (form) {
-                            // document.getElementById('loading-wrapper').style.cursor = "wait";
-                            // document.getElementById('btnFinish').setAttribute('disabled', true);
+                            document.getElementById('loading-wrapper').style.cursor = "wait";
+                            document.getElementById('btnFinish').setAttribute('disabled', true);
                             var shipper = $("#shipper").val();
                             var consigne = $("#consigne").val();
                             // var slug_container = $('#slug_container').val();
 
-                            var size = [];
-                            var type = [];
-                            var nomor_kontainer = [];
-                            var cargo = [];
-                            var seal = [];
-                            for (var i = 0; i < chek_container.length; i++) {
-                                size[i] = document.getElementById(
-                                    "size[" + chek_container[i] + "]"
-                                ).innerText;
-                                type[i] = document.getElementById(
-                                    "type[" + chek_container[i] + "]"
-                                ).innerText;
-                                nomor_kontainer[i] = document.getElementById(
-                                    "nomor_kontainer[" + chek_container[i] + "]"
-                                ).innerText;
-                                cargo[i] = document.getElementById(
-                                    "cargo[" + chek_container[i] + "]"
-                                ).innerText;
-                                seal[i] = document.getElementById(
-                                    "seal[" + chek_container[i] + "]"
-                                ).innerText;
-                            }
+                            // var size = [];
+                            // var type = [];
+                            // var nomor_kontainer = [];
+                            // var cargo = [];
+                            // var seal = [];
+                            // for (var i = 0; i < chek_container.length; i++) {
+                            //     size[i] = document.getElementById(
+                            //         "size[" + chek_container[i] + "]"
+                            //     ).innerText;
+                            //     type[i] = document.getElementById(
+                            //         "type[" + chek_container[i] + "]"
+                            //     ).innerText;
+                            //     nomor_kontainer[i] = document.getElementById(
+                            //         "nomor_kontainer[" + chek_container[i] + "]"
+                            //     ).innerText;
+                            //     cargo[i] = document.getElementById(
+                            //         "cargo[" + chek_container[i] + "]"
+                            //     ).innerText;
+                            //     seal[i] = document.getElementById(
+                            //         "seal[" + chek_container[i] + "]"
+                            //     ).innerText;
+                            // }
                             var data = {
                                 _token: token,
                                 chek_container: chek_container,
                                 old_slug: old_slug,
                                 shipper: shipper,
                                 consigne: consigne,
-                                type: type,
-                                size: size,
-                                nomor_kontainer: nomor_kontainer,
-                                cargo: cargo,
-                                seal: seal,
+                                // type: type,
+                                // size: size,
+                                // nomor_kontainer: nomor_kontainer,
+                                // cargo: cargo,
+                                // seal: seal,
                                 status_si: "Default",
                             };
                             // console.log(data);
@@ -402,6 +419,7 @@ function pdf_si_alih() {
         },
     });
 }
+
 function input_bl(e) {
     var id = e.value;
     var swal = Swal.mixin({
@@ -1207,4 +1225,19 @@ function delete_SI(r) {
             });
         }
     });
+}
+
+function countCheck() {
+    // var search = "";
+
+    // tabelvendor.search(search).draw();
+    // var count = $('input[name="letter"]:checked').length;
+
+    var ids = []
+
+    var rowcollection =  tabelvendor.$('input[name="letter"]:checked', {"page": "all"});
+    rowcollection.each(function (index, elem) {
+        ids.push($(elem).val());
+    });
+    document.getElementById("nomor").innerHTML = ids.length;
 }

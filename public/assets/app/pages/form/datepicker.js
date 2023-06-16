@@ -90,6 +90,13 @@ $(function () {
     $(".input-daterange").datepicker({
         orientation: direction,
         todayHighlight: true,
+        format: "DD, dd-MM-yyyy",
+        todayBtn: "linked",
+        language:"id",
+        locale:"id",
+        clearBtn: true,
+        todayHighlight: true,
+
     });
     $("#datepicker-7").datepicker({
         orientation: direction,

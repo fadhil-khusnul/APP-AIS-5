@@ -98,13 +98,14 @@ class ProcessLoadController extends Controller
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
-        $lokasis = Depo::all();
+        $lokasis = Depo::where('pelayaran_id', $pelayaran_id)->get();
         $danas = OngkoSupir::all();
         $sizes = Container::all();
         $types = TypeContainer::all();
         $seals = Seal::where('status', 'input')->get();
         $seals_edit = Seal::where('status', 'input')->orWhere('status', 'Container')->get();
-        $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
+        $spks = Spk::where('pelayaran_id', $pelayaran_id)->where('status', 'input')->get();
+        $spks_edit = Spk::where('pelayaran_id', $pelayaran_id)->where('status', 'input')->orWhere('status', 'Container')->get();
         $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
 
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
@@ -149,6 +150,7 @@ class ProcessLoadController extends Controller
             'activity' => $activity,
             'alihs' => $alihs,
             'spks' => $spks,
+            'spks_edit' => $spks_edit,
             'sealsc' => $sealsc,
             'seals_edit' => $seals_edit,
             'shippingcompany' => $shipping_company,
@@ -227,7 +229,7 @@ class ProcessLoadController extends Controller
 
         $container = ContainerPlanload::find($id);
         $seal_containers = SealContainer::where("kontainer_id", $id)->get();
-        $spks = SpkContainer::where("kontainer_id", $id)->get();
+        $spks = ContainerPlanload::where("id", $id)->value('spk');
         $driver = ContainerPlanload::where('id', $id)->value('nomor_polisi');
         $supirs = VendorMobil::where("id", $driver)->get();
 
@@ -298,6 +300,7 @@ class ProcessLoadController extends Controller
             'detail_barang' => $request->detail_barang,
             'tahun' => (int)$request->tahun,
             'dana' => $request->dana,
+            'spk' => $request->spk,
             'status' => $status,
         ];
         $planload->update($load);
@@ -334,27 +337,11 @@ class ProcessLoadController extends Controller
         OngkoSupir::where("id", $request->dana)->update($update_dana);
 
         if ($request->spk != null){
-            SpkContainer::where('kontainer_id', $id)->delete();
-            for ($i=0; $i <count($request->spk) ; $i++) {
+            $data2 = [
+                "status" => "Container",
 
-                $spk = [
-                    "job_id" => $request->job_id,
-                    "kontainer_id" => $id,
-                    "spk_kontainer" => $request->spk[$i],
-                ];
-
-                SpkContainer::create($spk);
-            }
-
-            for ($i=0; $i <count($request->spk) ; $i++) {
-
-                $data2 = [
-                    "status" => "Container",
-
-                ];
-
-                Spk::where("kode_spk", $request->spk[$i])->update($data2);
-            }
+            ];
+            Spk::where("kode_spk", $request->spk)->update($data2);
         }
 
         return response()->json(['success' => true]);
@@ -400,6 +387,7 @@ class ProcessLoadController extends Controller
             'detail_barang' => $request->detail_barang,
             'tahun' => (int)$request->tahun,
             'dana' => $request->dana,
+            'spk' => $request->spk,
             'status' => $status,
         ];
 
@@ -463,34 +451,21 @@ class ProcessLoadController extends Controller
 
             SpkContainer::where('kontainer_id', $id)->delete();
 
-            for ($i=0; $i <count($request->spk) ; $i++) {
 
-                $spk = [
-                    "job_id" => $request->job_id,
-                    "kontainer_id" => $id,
-                    "spk_kontainer" => $request->spk[$i],
-                ];
+            $data4 = [
+                "status" => "input",
 
-                SpkContainer::create($spk);
-            }
-            for ($i=0; $i <count($request->spk_old) ; $i++) {
+            ];
+            Spk::where("kode_spk", $request->spk_old)->update($data4);
 
-                $data4 = [
-                    "status" => "input",
 
-                ];
-                Spk::where("kode_spk", $request->spk_old[$i])->update($data4);
-            }
 
-            for ($i=0; $i <count($request->spk) ; $i++) {
+            $data3 = [
+                "status" => "Container",
 
-                $data3 = [
-                    "status" => "Container",
+            ];
 
-                ];
-
-                Spk::where("kode_spk", $request->spk[$i])->update($data3);
-            }
+            Spk::where("kode_spk", $request->spk)->update($data3);
 
 
     }
@@ -543,7 +518,7 @@ class ProcessLoadController extends Controller
             'jenis_mobil' => $request->jenis_mobil,
             'detail_barang' => $request->detail_barang,
             'tahun' => (int)$request->tahun,
-            'dana' => $request->dana,
+            'spk' => $request->spk,
             "status" => "Process-Load",
             // 'slug' => $request->nomor_kontainer.'-'.$request->seal.'-'.time(),
 
@@ -581,26 +556,12 @@ class ProcessLoadController extends Controller
         }
         if($request->spk != null){
 
-            for ($i=0; $i <count($request->spk) ; $i++) {
-
-                $spk = [
-                    "job_id" => $request->job_id,
-                    "kontainer_id" => $id->id,
-                    "spk_kontainer" => $request->spk[$i],
-                ];
-
-                SpkContainer::create($spk);
-            }
-
-            for ($i=0; $i <count($request->spk) ; $i++) {
-
                 $data2 = [
                     "status" => "Container",
 
                 ];
 
-                Spk::where("kode_spk", $request->spk[$i])->update($data2);
-            }
+                Spk::where("kode_spk", $request->spk)->update($data2);
 
         }
 
@@ -1400,6 +1361,21 @@ class ProcessLoadController extends Controller
         $harga_seal = Seal::where('kode_seal', $seal)->value('harga_seal');
 
         return response()->json($harga_seal);
+    }
+    public function getSpkKontainer(Request $request) {
+        $spk = $request->spk;
+
+        $harga_spk = Spk::where('kode_spk', $spk)->value('harga_spk');
+
+        return response()->json($harga_spk);
+    }
+
+    public function getSpkProcess(Request $request) {
+        $spk = $request->spk;
+
+        $check_spk = Spk::where('kode_spk', $spk)->value('status');
+
+        return response()->json($check_spk);
     }
 
 }

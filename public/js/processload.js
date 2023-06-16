@@ -1502,7 +1502,7 @@ function tambah_kontainer() {
     input10.setAttribute("class", "form-control");
     input10.setAttribute("type", "text");
     input10.setAttribute("required", true);
-    input10.setAttribute("placeholder", "Ongkos Supir");
+    input10.setAttribute("plaPceholder", "Ongkos Supir");
     input10.setAttribute("onkeydown", "return numbersonly(this, event);");
     input10.setAttribute("onkeyup", "javascript:tandaPemisahTitik(this);");
     input10.setAttribute("id", "ongkos_supir[" + urutan1 + "]");

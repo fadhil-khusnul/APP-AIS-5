@@ -43,6 +43,10 @@ class OngkoSupirController extends Controller
     {
         $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->whereNotNull('biaya_trucking')->get();
 
+        $vendors = VendorMobil::all();
+
+
+
 
         $lunas_dibayar = ContainerPlanload::sum('dibayar');
         $truck = ContainerPlanload::sum('biaya_trucking');
@@ -57,6 +61,7 @@ class OngkoSupirController extends Controller
             'title' => 'Report Mobil Truck Load',
             'active' => 'truck',
             "containers" => $containers,
+            "vendors" => $vendors,
             "lunas_dibayar" => $lunas_dibayar,
             "belum_lunas" => $belum_lunas,
 
