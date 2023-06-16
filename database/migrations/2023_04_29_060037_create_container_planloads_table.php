@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('penerima')->nullable();
             $table->integer('jumlah_kontainer')->nullable();
             $table->string('nomor_kontainer')->nullable();
-            $table->string('spk')->nullable();
+            $table->string('seal')->nullable();
             $table->date('date_activity')->nullable();
             $table->string('lokasi_depo')->nullable();
             $table->string('driver')->nullable();

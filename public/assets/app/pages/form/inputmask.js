@@ -41,8 +41,20 @@
 
 
     });
+    $(".ppn").inputmask({
+        mask: "99[,99]",
+        greedy: false,
+        definitions: {
+          '*': {
+            validator: "[0-9]"
+          }
+        },
+        rightAlign: true
 
-    
+
+    });
+
+
 
 
     });

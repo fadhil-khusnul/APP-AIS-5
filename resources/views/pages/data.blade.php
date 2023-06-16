@@ -715,7 +715,7 @@
         </div>
 
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
 
         <div class="portlet">
             <div class="portlet-header portlet-header-bordered">
@@ -734,7 +734,7 @@
 
                         <h4 class="widget8-highlight">{{ str_replace('.',',', $ppn->ppn)}} %</h4>
 
-                        <button value="{{$ppn->id}}" onclick="ppn_modal(this)" type="button" class="btn btn-primary btn-sm btn-icon"><i class="fa fa-pencil"></i></button>
+                        <button value="{{$ppn->id}}" onclick="ppn_modal(this)" type="button" class="btn btn-label-info btn-sm btn-icon btn-circle"><i class="fa fa-pencil"></i></button>
                     </div>
                 </div>
 
@@ -810,9 +810,8 @@
 </div>
 <div class="modal fade" id="modal_ppn">
     <div class="modal-dialog">
-        <form action="#" name="valid_company_edit" id="valid_company_edit">
+        <form action="#" name="valid_ppn" id="valid_ppn">
             <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-            <input type="hidden" name="old_id_company" id="old_id_company">
 
 
         <div class="modal-content">
@@ -825,7 +824,7 @@
             <div class="modal-body">
                 <div>
                     <label class="form-label" for="email">Nilai PPN</label>
-                    <input class="form-control" id="nilai_ppn" name="nilai_ppn" type="text">
+                    <input required class="form-control ppn" id="nilai_ppn" name="nilai_ppn" type="text">
                 </div>
 
             </div>

@@ -456,32 +456,41 @@
                                     <tr>
                                         <th></th>
                                         <th>No</th>
+                                        <th>Pengirim</th>
+                                        <th>Size/Type</th>
                                         <th>Nomor Kontainer</th>
-                                        <th>Detail Barang</th>
+                                        <th>POD</th>
+                                        <th>Deskripsi</th>
                                     </tr>
                                 </thead>
                                 <tbody  class="">
-                                    @foreach ($details as $detail)
+                                    @foreach ($containers_barang as $container)
                                         <tr>
                                             <td class="text-center">
                                                 <button id="delete_detail" name="delete_detail"
                                                     class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $detail->id }}" onclick="delete_detailbarangDB(this)"
+                                                    value="{{ $container['id'] }}" onclick="delete_detailbarangDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
                                                 <button id="edit_detail" name="edit_detail"
                                                     class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $detail->id }}" onclick="detail_barang_edit(this)"
+                                                    value="{{ $container['id'] }}" onclick="detail_barang_edit(this)"
                                                     @readonly(true)><i class="fa fa-pencil"></i></button>
                                             </td>
-                                            <td>
-
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->container_planloads->nomor_kontainer }}
-                                            </td>
-                                            <td>
-                                                {{ $detail->detail_barang }}
+                                            <td align="center">{{$loop->iteration}}.</td>
+                                            <td>{{$container['pengirim']}}</td>
+                                            <td>{{$container['size']}}/{{$container['type']}}</td>
+                                            <td>{{$container['nomor_kontainer']}}</td>
+                                            <td>{{$container['pod_container']}}</td>
+                                            <td class="text-nowrap">
+                                                <ol type="1.">
+                                                @foreach ($details as $detail)
+                                                    @if ($detail->kontainer_id == $container['id'])
+                                                    <li>
+                                                        {{ $detail->detail_barang }}
+                                                    </li>
+                                                    @endif
+                                                @endforeach
+                                                </ol>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -2430,7 +2439,7 @@
                                 <select data-bs-toggle="tooltip" id="kontainer_detail" name="kontainer_detail"
                                     class="form-select" @readonly(true) required>
                                     <option selected disabled>Pilih Kontainer</option>
-                                    @foreach ($select_batal_edit as $container)
+                                    @foreach ($select_barang as $container)
                                         <option value="{{ $container->id }}">
                                             {{ $container->nomor_kontainer }}</option>
                                     @endforeach
@@ -2442,10 +2451,10 @@
                             <div id="body_detail[1]" class="row row-cols g-3">
                                 <label id="label_detail" name="label_detail" class="col-sm-4 col-form-label">Detail Barang Ke-1 :<span class="text-danger">*</span></label>
                                 <div id="div_textarea" name="div_textarea" class="col-sm-6 validation-container d-grid gap-3">
-                                    <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang[1]" name="detail_barang" required></textarea>
+                                    <textarea style="margin-left: 10px" data-bs-toggle="tooltip" class="form-control" id="detail_barang[1]" name="detail_barang" required></textarea>
                                 </div>
                                 <div id="div_button" name="div_button" class="col-sm-2 py-4">
-                                    <a id="delete_detail[1]" name="delete_detail" class="btn btn-sm btn-label-danger btn-icon" onclick="delete_detail(this)"><i class="fa fa-trash"></i></a>
+                                    <a style="margin-left: 10px" id="delete_detail[1]" name="delete_detail" class="btn btn-sm btn-label-danger btn-icon" onclick="delete_detail(this)"><i class="fa fa-trash"></i></a>
                                 </div>
 
                             </div>
@@ -2453,8 +2462,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a id="tambah_barang" type="button" onclick="tambah_barang()"
-                        class="btn btn-label-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
+                        <a id="tambah_barang" type="button" onclick="edit_tambah_barang()"
+                        class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
 
                         <button type="submit" class="btn btn-success">Simpan Detail Barang/Kontainer</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
@@ -2469,7 +2478,6 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_detail_barang_edit" id="valid_detail_barang_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-                <input type="hidden" name="id_lama_detail" id="id_lama_detail">
                 <input type="hidden" name="old_id_container_detail" id="old_id_container_detail">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -2482,9 +2490,7 @@
                         <div class="row">
                             <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
-
-
-                                <select data-bs-toggle="tooltip" id="kontainer_detail_edit" name="kontainer_detail_edit"
+                                <select disabled data-bs-toggle="tooltip" id="kontainer_detail_edit" name="kontainer_detail_edit"
                                     class="form-select" @readonly(true) required>
                                     <option selected disabled>Pilih Kontainer</option>
                                     @foreach ($select_batal_edit as $container)
@@ -2492,20 +2498,30 @@
                                             {{ $container->nomor_kontainer }}</option>
                                     @endforeach
                                 </select>
-
                             </div>
                         </div>
-                        <div class="row">
+                        <div id="edit_div_detail" class="row">
+                            {{-- <div id="body_detail[1]" class="row row-cols g-3">
+                                <label id="label_detail" name="label_detail" class="col-sm-4 col-form-label">Detail Barang Ke-1 :<span class="text-danger">*</span></label>
+                                <div id="div_textarea" name="div_textarea" class="col-sm-6 validation-container d-grid gap-3">
+                                    <textarea style="margin-left: 10px" data-bs-toggle="tooltip" class="form-control" id="detail_barang[1]" name="detail_barang" required></textarea>
+                                </div>
+                                <div id="div_button" name="div_button" class="col-sm-2 py-4">
+                                    <a style="margin-left: 10px" id="delete_detail[1]" name="delete_detail" class="btn btn-sm btn-label-danger btn-icon" onclick="delete_detail(this)"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </div> --}}
+
+                        </div>
+                        {{-- <div class="row">
                             <label for="" class="col-sm-4 col-form-label" id="label_detail">Detail Barang:<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
-
                                 <textarea data-bs-toggle="tooltip" class="form-control" id="detail_barang_edit" name="detail_barang_edit" required></textarea>
                             </div>
-
-                        </div>
-
+                        </div> --}}
                     </div>
                     <div class="modal-footer">
+                        <a id="tambah_barang" type="button" onclick="edit_tambah_barang()"
+                        class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
                         <button type="submit" class="btn btn-success">Simpan Detail Barang/Kontainer</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>

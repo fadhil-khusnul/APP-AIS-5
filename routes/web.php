@@ -43,6 +43,8 @@ use App\Http\Controllers\ReportTruckingController;
 //DATA
 Route::get('/', [DataController::class, 'index']);
 Route::get('/data', [DataController::class, 'index']);
+Route::get('/ppn-edit/{id}', [DataController::class, 'ppn_edit']);
+Route::put('/ppn-update', [DataController::class, 'ppn_update']);
 
 Route::post('/shipping-company', [ShippingController::class, 'store']);
 Route::get('/company/{id}/edit', [ShippingController::class, 'edit']);
@@ -78,8 +80,6 @@ Route::get('/penerima/{id}/edit', [PenerimaController::class, 'edit']);
 Route::put('/penerima/{id}', [PenerimaController::class, 'update']);
 Route::delete('/penerima/{id}', [PenerimaController::class, 'destroy']);
 Route::post('/getnamapenerima', [PenerimaController::class, 'getnamapenerima']);
-
-
 
 Route::post('/add-biaya', [BiayaController::class, 'store']);
 Route::get('/biaya/{id}/edit', [BiayaController::class, 'edit']);

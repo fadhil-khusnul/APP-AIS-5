@@ -784,6 +784,7 @@ function detail_tambah() {
         },
     });
 }
+
 function detail_update(e) {
     let id = e.value;
     // console.log(id);
@@ -1011,14 +1012,16 @@ function detail_update(e) {
                             spk: select_val,
                         },
                         success: function (response) {
-                            if (response == "Container") {
+                            if (response == "Container" && select_val != spk) {
                                 swal.fire({
                                     title: "SPK Kontainer Sudah Dipakai",
                                     icon: "error",
                                     timer: 10e3,
                                     showConfirmButton: true,
                                 }).then(() => {
-                                    $('#spk_update').val(null).trigger('change')
+                                    $("#spk_update")
+                                        .val(null)
+                                        .trigger("change");
                                     $("#biaya_stuffing_update").val(null);
                                 });
                             } else {
@@ -1782,16 +1785,19 @@ function detail_barang() {
             var token = $("#csrf").val();
             console.log(urutan_detail);
 
-            for (let i = 0; i < array.length; i++) {
-                const element = array[i];
+            var detail_barang = [];
 
+            for (let i = 0; i < urutan_detail; i++) {
+                detail_barang[i] = document.getElementById(
+                    "detail_barang[" + (i + 1) + "]"
+                ).value;
             }
 
             var data = {
                 _token: token,
                 job_id: $("#job_id").val(),
                 kontainer_id: $("#kontainer_detail").val(),
-                detail_barang: $("#detail_barang").val(),
+                detail_barang: detail_barang,
             };
 
             $.ajax({
@@ -1812,6 +1818,7 @@ function detail_barang() {
         },
     });
 }
+var edit_urutan_detail = 0;
 
 function detail_barang_edit(e) {
     let id = e.value;
@@ -1822,13 +1829,88 @@ function detail_barang_edit(e) {
         type: "GET",
         success: function (response) {
             $("#modal_detail_barang_edit").modal("show");
-
-            $("#id_lama_detail").val(response.result.id);
-            $("#old_id_container_detail").val(response.result.kontainer_id);
+            document.getElementById("edit_div_detail").innerHTML = "";
+            console.log(response);
+            $("#old_id_container_detail").val(response.result[0].kontainer_id);
             $("#kontainer_detail_edit")
-                .val(response.result.kontainer_id)
+                .val(response.result[0].kontainer_id)
                 .is(":selected");
-            $("#detail_barang_edit").val(response.result.detail_barang);
+            console.log(response.result[0].kontainer_id, id);
+
+            edit_urutan_detail = response.result.length;
+            console.log(edit_urutan_detail);
+
+            var div1 = document.getElementById("edit_div_detail");
+
+
+            for (var i = 0; i < edit_urutan_detail; i++) {
+                var div2 = document.createElement("div");
+                div2.setAttribute("class", "row row-cols g-3");
+                div2.setAttribute("id", "edit_body_detail[" + (i + 1) + "]");
+
+                var label = document.createElement("label");
+                label.setAttribute("class", "col-sm-4 col-form-label");
+                label.setAttribute("id", "edit_label_detail");
+                label.setAttribute("name", "edit_label_detail");
+
+                var div3 = document.createElement("div");
+                div3.setAttribute(
+                    "class",
+                    "col-sm-6 validation-container d-grid gap-3"
+                );
+                div3.setAttribute("id", "edit_div_textarea");
+                div3.setAttribute("name", "edit_div_textarea");
+                var textarea = document.createElement("textarea");
+                textarea.setAttribute("data-bs-toggle", "tooltip");
+                textarea.setAttribute("class", "form-control");
+                textarea.setAttribute(
+                    "id",
+                    "edit_detail_barang[" + (i + 1) + "]"
+                );
+                textarea.setAttribute("name", "edit_detail_barang");
+                textarea.setAttribute("style", "margin-left: 10px");
+                textarea.setAttribute("required", true);
+                div3.append(textarea);
+
+                var div4 = document.createElement("div");
+                div4.setAttribute("class", "col-sm-2 py-4");
+                div4.setAttribute("id", "edit_div_button");
+                div4.setAttribute("name", "edit_div_button");
+                var button = document.createElement("a");
+                button.setAttribute(
+                    "class",
+                    "btn btn-sm btn-label-danger btn-icon"
+                );
+                button.setAttribute(
+                    "id",
+                    "edit_delete_detail[" + (i + 1) + "]"
+                );
+                button.setAttribute("name", "edit_delete_detail");
+                button.setAttribute("style", "margin-left: 10px;");
+                button.setAttribute("onclick", "edit_delete_detail(this)");
+                icon = document.createElement("i");
+                icon.setAttribute("class", "fa fa-trash");
+                button.append(icon);
+                div4.append(button);
+
+                div2.append(label);
+                div2.append(div3);
+                div2.append(div4);
+
+                div1.appendChild(div2);
+
+                reindex_edit_detail();
+            }
+
+            for(var i = 0; i < edit_urutan_detail; i++) {
+                document.getElementById("edit_detail_barang[" + (i + 1) + "]").value = response.result[i].detail_barang;
+            }
+
+
+            // reindex_detail();
+
+            // var div2 = document.createElement("div");
+            // $("#detail_barang_edit").val(response.result.detail_barang);
 
             $("#valid_detail_barang_edit").validate({
                 highlight: function highlight(element, errorClass, validClass) {
@@ -1853,8 +1935,15 @@ function detail_barang_edit(e) {
                     var old_id_container_detail = document.getElementById(
                         "old_id_container_detail"
                     ).value;
-                    var id_lama_detail =
-                        document.getElementById("id_lama_detail").value;
+
+                    var detail_barang = [];
+
+                    for (let i = 0; i < edit_urutan_detail; i++) {
+                        detail_barang[i] = document.getElementById(
+                            "edit_detail_barang[" + (i + 1) + "]"
+                        ).value;
+                    }
+
                     // console.log(id_lama_detail);
                     var token = $("#csrf").val();
 
@@ -1863,11 +1952,11 @@ function detail_barang_edit(e) {
                         job_id: $("#job_id").val(),
                         kontainer_id: $("#kontainer_detail_edit").val(),
                         old_id_container_detail: old_id_container_detail,
-                        detail_barang: $("#detail_barang_edit").val(),
+                        detail_barang: detail_barang,
                     };
 
                     $.ajax({
-                        url: "/detailbarang-update/" + id_lama_detail,
+                        url: "/detailbarang-update/" + old_id_container_detail,
                         type: "PUT",
                         data: data,
                         success: function (response) {
@@ -2949,10 +3038,6 @@ function tambah_barang() {
     label.setAttribute("class", "col-sm-4 col-form-label");
     label.setAttribute("id", "label_detail");
     label.setAttribute("name", "label_detail");
-    var span = document.createElement("span");
-    span.setAttribute("class", "text-danger");
-    span.innerHTML = "*";
-    label.append(span);
 
     var div3 = document.createElement("div");
     div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
@@ -2963,6 +3048,7 @@ function tambah_barang() {
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "detail_barang[" + urutan_detail + "]");
     textarea.setAttribute("name", "detail_barang");
+    textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);
     div3.append(textarea);
 
@@ -2972,8 +3058,9 @@ function tambah_barang() {
     div4.setAttribute("name", "div_button");
     var button = document.createElement("a");
     button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
-    button.setAttribute("id", "delete_detail[" + urutan_detail +"]");
+    button.setAttribute("id", "delete_detail[" + urutan_detail + "]");
     button.setAttribute("name", "delete_detail");
+    button.setAttribute("style", "margin-left: 10px;");
     button.setAttribute("onclick", "delete_detail(this)");
     icon = document.createElement("i");
     icon.setAttribute("class", "fa fa-trash");
@@ -2989,12 +3076,75 @@ function tambah_barang() {
     reindex_detail();
 }
 
+function edit_tambah_barang() {
+    console.log(edit_urutan_detail);
+    edit_urutan_detail++;
+
+    var div1 = document.getElementById("edit_div_detail");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols g-3");
+    div2.setAttribute("id", "edit_body_detail[" + edit_urutan_detail + "]");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "col-sm-4 col-form-label");
+    label.setAttribute("id", "edit_label_detail");
+    label.setAttribute("name", "edit_label_detail");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+    div3.setAttribute("id", "edit_div_textarea");
+    div3.setAttribute("name", "edit_div_textarea");
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("data-bs-toggle", "tooltip");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("id", "edit_detail_barang[" + edit_urutan_detail + "]");
+    textarea.setAttribute("name", "edit_detail_barang");
+    textarea.setAttribute("style", "margin-left: 10px");
+    textarea.setAttribute("required", true);
+    div3.append(textarea);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("class", "col-sm-2 py-4");
+    div4.setAttribute("id", "edit_div_button");
+    div4.setAttribute("name", "edit_div_button");
+    var button = document.createElement("a");
+    button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    button.setAttribute("id", "edit_delete_detail[" + edit_urutan_detail + "]");
+    button.setAttribute("name", "edit_delete_detail");
+    button.setAttribute("style", "margin-left: 10px;");
+    button.setAttribute("onclick", "edit_delete_detail(this)");
+    icon = document.createElement("i");
+    icon.setAttribute("class", "fa fa-trash");
+    button.append(icon);
+    div4.append(button);
+
+    div2.append(label);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+
+    reindex_edit_detail();
+}
+
 function reindex_detail() {
-    const ids = document.querySelectorAll(
-        "#label_detail"
-    );
+    const ids = document.querySelectorAll("#label_detail");
     ids.forEach((e, i) => {
-        e.innerHTML = "Detail Barang Ke-"+ (i + 1) + " :";
+        e.innerHTML =
+            "Detail Barang Ke-" +
+            (i + 1) +
+            " :<span class='text-danger'>*</span>";
+    });
+}
+
+function reindex_edit_detail() {
+    const ids = document.querySelectorAll("#edit_label_detail");
+    ids.forEach((e, i) => {
+        e.innerHTML =
+            "Detail Barang Ke-" +
+            (i + 1) +
+            " :<span class='text-danger'>*</span>";
     });
 }
 
@@ -3005,27 +3155,55 @@ function delete_detail(ini) {
 
     var label = document.querySelectorAll("#label_detail");
 
-    for(var i = 0; i < label.length; i++) {
+    for (var i = 0; i < label.length; i++) {
         label[i].innerHTML = "Detail Barang Ke-" + urutan_detail + " :";
     }
 
     var div1 = document.querySelectorAll("#div_textarea textarea");
 
-    for(var i = 0; i < div1.length; i++) {
+    for (var i = 0; i < div1.length; i++) {
         div1[i].id = "detail_barang[" + (i + 1) + "]";
     }
 
     var div2 = document.querySelectorAll("#div_button button");
 
-    for(var i = 0; i < div2.length; i++) {
+    for (var i = 0; i < div2.length; i++) {
         div2[i].id = "delete_detail[" + (i + 1) + "]";
     }
 
-    if(urutan_detail == 0) {
+    if (urutan_detail == 0) {
         tambah_barang();
     }
 
     reindex_detail();
 }
 
+function edit_delete_detail(ini) {
+    var urutan_delete = ini.parentNode.parentNode;
+    urutan_delete.remove();
+    edit_urutan_detail--;
 
+    var label = document.querySelectorAll("#edit_label_detail");
+
+    for (var i = 0; i < label.length; i++) {
+        label[i].innerHTML = "Detail Barang Ke-" + urutan_detail + " :";
+    }
+
+    var div1 = document.querySelectorAll("#edit_div_textarea textarea");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "edit_detail_barang[" + (i + 1) + "]";
+    }
+
+    var div2 = document.querySelectorAll("#edit_div_button button");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "edit_delete_detail[" + (i + 1) + "]";
+    }
+
+    if (edit_urutan_detail == 0) {
+        edit_tambah_barang();
+    }
+
+    reindex_edit_detail();
+}

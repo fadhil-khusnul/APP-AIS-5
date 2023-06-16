@@ -29,7 +29,7 @@
                                     <th>POT</th>
 
 
-                                    <th class="align-top"> JUMLAH KONTAINER :</th>
+                                    <th class="align-top"> Jumlah Kontainer :</th>
                                     {{-- <th class="align-top">SEAL/KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
                                     <th class="align-top">DETAIL/KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK) :</th>
                                     <th class="align-top">DETAIL CARGO/KONTAINER (NOMOR KONTAINER - ISI DETAIL) :</th>

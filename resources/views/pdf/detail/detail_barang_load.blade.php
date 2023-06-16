@@ -106,7 +106,7 @@
                             @endif
                         @endforeach
                         </ol>
-                </td>
+                    </td>
 
                 </tr>
                 @endforeach

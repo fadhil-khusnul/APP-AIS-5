@@ -15,7 +15,7 @@
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
-                        <table id="summaryloadreport" class="align-top table mb-0 table-bordered table-striped table-hover  autosize">
+                        <table id="tabelinvoice" class="align-top table mb-0 table-bordered table-striped table-hover  autosize">
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
@@ -27,10 +27,7 @@
                                     <th>Activity</th>
                                     <th>POL</th>
                                     <th>POT</th>
-
-
-
-
+                                    <th>Jumlah Kontainer</th>
                                 </tr>
                             </thead>
 
@@ -81,8 +78,15 @@
                                         {{$planload->pot}}
                                     </td>
 
+                                    <td align="top" valign="top">
+                                        <b>
+                                            {{$containers->where("job_id", $planload->id)->count()}} Kontainer
+                                        </b>
 
-                                  
+                                    </td>
+
+
+
 
                                 </tr>
                                 @endforeach

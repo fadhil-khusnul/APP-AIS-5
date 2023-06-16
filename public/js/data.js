@@ -1147,14 +1147,14 @@ function ppn_modal(e) {
 
 
     $.ajax({
-        url: '/ppn-edit',
+        url: '/ppn-edit/'+id,
         type: 'GET',
         success: function (response) {
             $('#modal_ppn').modal('show');
 
-            $('#nilai_ppn').val(response.result.nama_company);
+            $('#nilai_ppn').val(response.result.ppn);
 
-            $('#valid_company_edit').validate({
+            $('#valid_ppn').validate({
                 rules: {
 
                     nama_company_edit: {
@@ -1163,7 +1163,6 @@ function ppn_modal(e) {
 
                 },
                 messages: {
-
                     nama_company_edit: {
                         required: "Silakan Isi Nama Company"
                     },
@@ -1185,19 +1184,19 @@ function ppn_modal(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
-                    var oldid = $('#old_id_company').val();
 
                     $.ajax({
-                        url: 'company/' + oldid,
+                        url: '/ppn-update',
                         type: 'PUT',
                         data: {
                             "_token": token,
-                            nama_company: $('#nama_company_edit').val(),
+                            ppn: $('#nilai_ppn').val().replace(/\,/g, "."),
+                            id: id,
                         },
                         success: function (response) {
                             swal.fire({
                                 icon: "success",
-                                title: "Data Company Berhasil Diedit",
+                                title: "Nilai PPN Berhasil Diedit",
                                 showConfirmButton: false,
                                 timer: 2e3,
 

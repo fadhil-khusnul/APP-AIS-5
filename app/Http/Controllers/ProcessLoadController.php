@@ -125,6 +125,7 @@ class ProcessLoadController extends Controller
         })->get();
 
         $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->get();
+        $select_barang = ContainerPlanload::where('job_id', $id)->whereNull('status_barang')->whereNotNull('status')->get();
         // dd($containers);
 
         $containers_alih = ContainerPlanload::where('job_id', $id)->where(function($query) {
@@ -142,6 +143,34 @@ class ProcessLoadController extends Controller
         $supirs = SupirMobil::orderBy('id', 'DESC')->get();
         $sealsc = SealContainer::where('job_id', $id)->get();
 
+        $kontainer_id = DetailBarangLoad::where("job_id", $id)->distinct()->get('kontainer_id');
+
+        $containers_barang = [];
+        $new_container = [];
+        if ($kontainer_id != null) {
+            for ($i=0; $i <count($kontainer_id) ; $i++) {
+                $containers_barang[$i] = ContainerPlanload::where('id', $kontainer_id[$i]->kontainer_id)->get();
+            }
+
+
+            for($i = 0; $i < count($containers_barang); $i++) {
+                $new_container[$i] = [
+                    'id' => $containers_barang[$i][0]->id,
+                    'job_id' => $containers_barang[$i][0]->job_id,
+                    'size' => $containers_barang[$i][0]->size,
+                    'type' => $containers_barang[$i][0]->type,
+                    'nomor_kontainer' => $containers_barang[$i][0]->nomor_kontainer,
+                    'pengirim' => $containers_barang[$i][0]->pengirim,
+                    'pod_container' => $containers_barang[$i][0]->pod_container,
+
+                ];
+
+            }
+        }
+
+
+
+
 
         //
         return view('process.load.processload-create',[
@@ -152,9 +181,11 @@ class ProcessLoadController extends Controller
             'spks' => $spks,
             'spks_edit' => $spks_edit,
             'sealsc' => $sealsc,
+            'select_barang' => $select_barang,
             'seals_edit' => $seals_edit,
             'shippingcompany' => $shipping_company,
             'shipping_companys' => $shipping_companys,
+            'containers_barang' => $new_container,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
@@ -670,26 +701,22 @@ class ProcessLoadController extends Controller
 //DETAIL BARANG
     public function detailbarang(Request $request)
     {
-        // dd($request);
+        $container = ContainerPlanload::findOrFail($request->kontainer_id);
 
-        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
-
-        // $update_container = [
-        //     'status' => "Biaya-Lainnya",
-        // ];
-
-        // $container->update($update_container);
-
-
-        $data = [
-            'job_id' => $request->job_id,
-            'kontainer_id' => $request->kontainer_id,
-            'detail_barang' => $request->detail_barang,
-
-
+        $update_container = [
+            'status_barang' => "done",
         ];
 
-        DetailBarangLoad::create($data);
+        $container->update($update_container);
+
+        for($i = 0; $i < count($request->detail_barang); $i++) {
+            $data = [
+                'job_id' => $request->job_id,
+                'kontainer_id' => $request->kontainer_id,
+                'detail_barang' => $request->detail_barang[$i],
+            ];
+            DetailBarangLoad::create($data);
+        }
 
         return response()->json(['success' => true]);
     }
@@ -697,7 +724,8 @@ class ProcessLoadController extends Controller
     public function detailbarang_edit($id)
     {
 
-        $detail = DetailBarangLoad::find($id);
+        $detail = DetailBarangLoad::where('kontainer_id', $id)->get();
+        // dd($detail);
 
         return response()->json([
             'result' => $detail,
@@ -706,49 +734,23 @@ class ProcessLoadController extends Controller
 
     public function detailbarang_update(Request $request, $id)
     {
-        // dd($request);
+        DetailBarangLoad::where('kontainer_id', $id)->delete();
 
-        // $container_old = ContainerPlanload::findOrFail($request->old_id_container_biaya);
-
-        // $update_container_old = [
-        //     'status' => "Process-Load",
-        // ];
-
-        // $container_old->update($update_container_old);
-
-
-        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
-
-        // $update_container = [
-        //     'status' => "Biaya-Lainnya",
-        // ];
-
-        // $container->update($update_container);
-
-
-
-        $details = DetailBarangLoad::findOrFail($id);
-        $data = [
-            'job_id' => $request->job_id,
-            'kontainer_id' => $request->kontainer_id,
-            'detail_barang' => $request->detail_barang,
-
-
-        ];
-
-        $details->update($data);
+        for($i = 0; $i < count($request->detail_barang); $i++) {
+            $data = [
+                'job_id' => $request->job_id,
+                'kontainer_id' => $id,
+                'detail_barang' => $request->detail_barang[$i],
+            ];
+            DetailBarangLoad::create($data);
+        }
+        // dd($data);
 
         return response()->json(['success' => true]);
     }
     public function destroy_detailbarang(Request $request)
     {
-
-
-
-        $id_detail = DetailBarangLoad::find($request->id);
-
-
-        $id_detail->delete();
+        DetailBarangLoad::where('kontainer_id', $request->id)->delete();
 
 
         return response()->json([

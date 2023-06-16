@@ -66,12 +66,36 @@ class DataController extends Controller
         ]);
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function ppn_edit(Request $request, $id)
     {
-        //
+        $ppn = PPN::find($id);
+
+        return response()->json([
+            'result' => $ppn,
+        ]);
+
+    }
+    public function ppn_update(Request $request)
+    {
+        // dd($request);
+        $ppn = PPN::find($request->id);
+
+
+        $data = [
+            "ppn" => $request->ppn,
+        ];
+
+        $ppn->update($data);
+
+        return response()->json([
+            'success' => true,
+        ]);
+
     }
 
     /**
