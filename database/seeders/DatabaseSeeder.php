@@ -37,10 +37,8 @@ class DatabaseSeeder extends Seeder
             VendorMobilSeeder::class,
             SupirMobilSeeder::class,
             TypeContainerSeeder::class,
+            PPNSeeder::class,
 
-        ]);
-        PPN::create([
-            'ppn' => 11,
         ]);
 
         // Seal::factory(10)->create();
