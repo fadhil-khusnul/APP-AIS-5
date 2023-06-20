@@ -2574,7 +2574,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a id="tambah_barang" type="button" onclick="edit_tambah_barang()"
+                        <a id="tambah_barang" type="button" onclick="tambah_barang()"
                         class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
 
                         <button type="submit" class="btn btn-success">Simpan Detail Barang/Kontainer</button>
@@ -2632,7 +2632,7 @@
                         </div> --}}
                     </div>
                     <div class="modal-footer">
-                        <a id="tambah_barang" type="button" onclick="edit_tambah_barang()"
+                        <a id="edit_tambah_barang" type="button" onclick="edit_tambah_barang()"
                         class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
                         <button type="submit" class="btn btn-success">Simpan Detail Barang/Kontainer</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>

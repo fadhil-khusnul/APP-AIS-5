@@ -382,7 +382,7 @@ class ProcessLoadController extends Controller
     }
     public function input_edit(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
 
 
 

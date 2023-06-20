@@ -139,6 +139,7 @@ function filter_date() {
     var date_min = new Date($("#min").val());
     var seconds_min = Math.round(date_min.getTime() / 1000);
     var date_max = new Date($("#max").val());
+    console.log(date_max, date_min);
     var seconds_max = Math.round(date_max.getTime() / 1000);
 
     var tanggal = tabelvendor.$("input[name='date']", { page: "all" });

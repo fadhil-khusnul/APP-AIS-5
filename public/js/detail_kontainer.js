@@ -1062,7 +1062,7 @@ function detail_update(e) {
             var old_tanggal_result = moment(
                 response.result.date_activity,
                 "YYYY-MM-DD"
-            ).format("dddd, DD-MM-YYYY");
+            ).format("dddd, DD MMMM YYYY");
             $("#date_activity_update").val(old_tanggal_result);
             $("#lokasi_update")
                 .val(response.result.lokasi_depo)
@@ -1191,7 +1191,7 @@ function detail_update(e) {
 
                     console.log(date_activity);
 
-                    tempDate = new Date(date_activity).toISOString().slice(0, 10);
+                    tempDate = new Date(date_activity);
                     console.log(tempDate);
                     formattedDate = [
                         tempDate.getFullYear(),
