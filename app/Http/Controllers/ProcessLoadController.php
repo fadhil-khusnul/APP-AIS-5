@@ -317,6 +317,9 @@ class ProcessLoadController extends Controller
             'lokasi_depo' => $request->lokasi,
             'driver' => $request->driver,
             'pod_container' => $request->pod_container,
+            'pot_container' => $request->pot_container,
+            'vessel_pot' => $request->vessel_pot,
+            'kode_vessel_pot' => $request->kode_vessel_pot,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,
             'biaya_stuffing' =>$request->biaya_stuffing,
@@ -379,7 +382,7 @@ class ProcessLoadController extends Controller
     }
     public function input_edit(Request $request, $id)
     {
-        // dd($request->old_dana);
+        dd($request);
 
 
 
@@ -403,6 +406,9 @@ class ProcessLoadController extends Controller
             'date_activity' => $request->date_activity,
             'lokasi_depo' => $request->lokasi,
             'pod_container' => $request->pod_container,
+            'pot_container' => $request->pot_container,
+            'vessel_pot' => $request->vessel_pot,
+            'kode_vessel_pot' => $request->kode_vessel_pot,
             'driver' => $request->driver,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,
@@ -535,6 +541,9 @@ class ProcessLoadController extends Controller
             'date_activity' => $request->date_activity,
             'lokasi_depo' => $request->lokasi,
             'pod_container' => $request->pod_container,
+            'pot_container' => $request->pot_container,
+            'vessel_pot' => $request->vessel_pot,
+            'kode_vessel_pot' => $request->kode_vessel_pot,
             'driver' => $request->driver,
             'nomor_polisi' => $request->nomor_polisi,
             'remark' => $request->remark,

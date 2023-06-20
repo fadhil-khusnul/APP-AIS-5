@@ -37,7 +37,7 @@
     </header>
 
     <main>
-        <h3>NO INV: AISLOG/0001/IX/2022/M</h3>
+        <h3>{{$nomor_invoice}}</h3>
 
         @foreach ($loads as $load)
 
@@ -107,11 +107,21 @@
                     <td>{{$container['size']}}</td>
                     <td>{{$container['kondisi_invoice']}}</td>
                     <td>{{$container['keterangan_invoice']}}</td>
-                    <td>@rupiah($container['price_invoice'])</td>
+                    <td align="right">@rupiah($container['price_invoice'])</td>
                 </tr>
                 @endforeach
+
+
             </tbody>
             <tfoot>
+                <tr>
+                    <td colspan="7">PPN ({{$persen_ppn}}%):</td>
+                    <td>@rupiah($ppn)</td>
+                </tr>
+                <tr>
+                    <td colspan="7">MATERAI :</td>
+                    <td>@rupiah($materai)</td>
+                </tr>
                 <tr>
                     <td colspan="7">TOTAL :</td>
                     <td>@rupiah($total)</td>
@@ -155,8 +165,6 @@
                     <td>{{$rekening->atas_nama}}</td>
                 </tr>
                 @endforeach
-
-
             </tbody>
         </table>
     </main>

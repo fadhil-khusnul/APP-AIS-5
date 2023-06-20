@@ -90,7 +90,7 @@ $(function () {
     $(".input-daterange").datepicker({
         orientation: direction,
         todayHighlight: true,
-        format: "DD, dd-MM-yyyy",
+        format: "DD, dd MM yyyy",
         todayBtn: "linked",
         language:"id",
         locale:"id",
@@ -117,10 +117,7 @@ $(function () {
         orientation: direction,
         calendarWeeks: true,
     });
-    $(".input-daterange").datepicker({
-        orientation: direction,
-        todayHighlight: true,
-    });
+
     $("#datepicker-7").datepicker({ orientation: direction, language: "ru" });
     $("#datepicker-8").datepicker({
         orientation: direction,

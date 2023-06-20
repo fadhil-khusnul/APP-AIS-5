@@ -1,72 +1,210 @@
+var tabelvendor = $("#vendor_bayar_Load").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
 
+    // scroller: true,
+});
 
+// var start_date;
+// var end_date;
+// var DateFilterFunction = function (oSettings, aData, iDataIndex) {
+//     console.log("starr4", start_date, aData, end_date);
+//     var dateStart = parseDateValue(start_date);
+//     var dateEnd = parseDateValue(end_date);
 
+//     var evalDate = parseDateValue(aData[3]);
 
+//     console.log("evaldate", evalDate, dateEnd, dateStart);
+//     if (
+//         (isNaN(dateStart) && isNaN(dateEnd)) ||
+//         (isNaN(dateStart) && evalDate <= dateEnd) ||
+//         (dateStart <= evalDate && isNaN(dateEnd)) ||
+//         (dateStart <= evalDate && evalDate <= dateEnd)
+//     ) {
+//         return true;
+//     }
+//     return false;
+// };
 
-function filter_date(val){
-    console.log(val.value);
+// // fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+// function parseDateValue(rawDate) {
+//     console.log("rawdate", rawDate);
+//     var dateArray = rawDate.split("/");
+//     console.log(dateArray);
+//     var parsedDate = new Date(
+//         dateArray[2],
+//         parseInt(dateArray[1]) - 1,
+//         dateArray[0]
+//     ); // -1 because months are from 0 to 11
+//     return parsedDate;
+// }
 
-    min = $("#daterangepicker_vendor").val();
-    var min_new = moment(min,"DD/MM/YYYY").lang("id").format("dddd, DD-MM-YYYY");
+// $("#filter_date")
+//     .daterangepicker({
+//         locale: {
+//             format: "dddd, DD MMMM YYYY",
+//             applyLabel: "Apply",
+//             cancelLabel: "Cancel",
+//             fromLabel: "from",
+//             toLabel: "to",
+//             weekLabel: "M",
+//             autoUpdateInput: false,
+//             daysOfWeek: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+//             monthNames: [
+//                 "Jan",
+//                 "Feb",
+//                 "Маret",
+//                 "Аpril",
+//                 "Мei",
+//                 "Juni",
+//                 "Juli",
+//                 "Agu",
+//                 "Sep",
+//                 "Okt",
+//                 "Nov",
+//                 "Des",
+//             ],
+//             weekStart: 1,
+//             autoUpdateInput: false,
+//         },
+//     })
+//     .on("apply.daterangepicker", function (ev, picker) {
+//         $(this).val(
+//             picker.startDate.format("dddd, DD MMMM YYYY") +
+//                 " - " +
+//                 picker.endDate.format("dddd, DD MMMM YYYY")
+//         );
+//         start_date = picker.startDate.format("dddd, DD MMMM YYYY");
+//         end_date = picker.endDate.format("dddd, DD MMMM YYYY");
+//         console.log("start_date, end_date", start_date, end_date);
+//         console.log("datee", DateFilterFunction);
+//         $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+//         tabelvendor.draw();
+//     });
 
-    console.log(min_new);
+// $("#filter_date").on("cancel.daterangepicker", function (ev, picker) {
+//     $(this).val("");
+//     start_date = "";
+//     end_date = "";
+//     $.fn.dataTable.ext.search.splice(
+//         $.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1)
+//     );
+//     tabelvendor.draw();
+// });
 
-    max = $("#daterangepicker_vendor").val();
+// var minDate, maxDate;
 
-    date = tabelvendor.columns(3);
-    console.log(date);
+// // Custom filtering function which will search data in column four between two values
+// $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+//     var min = minDate.val();
+//     var max = maxDate.val();
+//     var date = new Date(data[4]);
 
-    console.log(min, max);
+//     if (
+//         (min === null && max === null) ||
+//         (min === null && date <= max) ||
+//         (min <= date && max === null) ||
+//         (min <= date && date <= max)
+//     ) {
+//         return true;
+//     }
+//     return false;
+// });
 
-    if(
-        (min === null && max === null) ||
-        (min === null && date <= max) ||
-        (min <= date && max === null) ||
-        (min <= date && date <= max)
-    )
-    {
-        tabelvendor.draw();
+//     // Create date inputs
+//     minDate = new DateTime($("#min"), {
+//         format: "dddd, DD MMMM YYYY",
+//     });
+//     maxDate = new DateTime($("#max"), {
+//         format: "dddd, DD MMMM YYYY",
+//     });
+
+//     // DataTables initialisation
+//     // var table = $("#example").DataTable();
+
+//     // Refilter the table
+//     $("#min, #max").on("change", function () {
+//         tabelvendor.draw();
+//     });
+
+function filter_date() {
+    var date_min = new Date($("#min").val());
+    var seconds_min = Math.round(date_min.getTime() / 1000);
+    var date_max = new Date($("#max").val());
+    var seconds_max = Math.round(date_max.getTime() / 1000);
+
+    var tanggal = tabelvendor.$("input[name='date']", { page: "all" });
+
+    var date = [];
+    var seconds = [];
+
+    for (var i = 0; i < tanggal.length; i++) {
+        date[i] = new Date(tanggal[i].value);
+        seconds[i] = Math.round(date[i].getTime() / 1000);
     }
 
-    else {
-
-        tabelvendor.columns(3).search('').draw();
+    var search = [];
+    for (var i = 0; i < seconds.length; i++) {
+        if (seconds[i] < seconds_min || seconds[i] > seconds_max) {
+            search[i] = 0;
+        } else {
+            search[i] = 1;
+        }
     }
 
+    var tanggal_date = [];
+    for (var i = 0; i < search.length; i++) {
+        if (search[i] == 1) {
+            tanggal_date[i] = tanggal[i].value;
+        }
+    }
+    tanggal_date = tanggal_date.filter(function (el) {
+        return el != null;
+    });
 
+    if (tanggal_date.length == 0) {
+        tabelvendor.columns(3).search(null).draw();
+    } else {
+        tabelvendor
+            .columns(3)
+            .search(tanggal_date.join("|"), true, false, true)
+            .draw();
+    }
 }
 
-
 function filter_vendor(val) {
-    var vendor = []
+    var vendor = [];
 
     vendor = $("#pilih_vendor").val();
     // regex = '^' + vendor ;
     console.log(vendor);
 
     if (vendor == null) {
-
-        tabelvendor.columns(6).search('').draw();
+        tabelvendor.columns(6).search("").draw();
+    } else {
+        tabelvendor
+            .columns(6)
+            .search(vendor.join("|"), true, false, true)
+            .draw();
     }
-    else{
-
-        tabelvendor.columns(6).search(vendor.join('|'), true, false, true).draw();
-    }
-
-};
+}
 function filter_status(val) {
     var status = val.value;
     console.log(status);
     if (status == null) {
-
-        tabelvendor.columns(2).search('').draw();
-    }
-    else{
-
+        tabelvendor.columns(2).search("").draw();
+    } else {
         tabelvendor.columns(2).search(status).draw();
     }
-
-};
+}
 
 function bayar() {
     var swal = Swal.mixin({
@@ -101,15 +239,14 @@ function bayar() {
 
         // tabelvendor.search(search).draw();
         if (willCreate.isConfirmed) {
+            var ids = [];
 
-            var ids = []
-
-            var rowcollection =  tabelvendor.$(".check-container1:checked", {"page": "all"});
+            var rowcollection = tabelvendor.$(".check-container1:checked", {
+                page: "all",
+            });
             rowcollection.each(function (index, elem) {
                 ids.push($(elem).val());
             });
-
-            console.log(ids);
 
             var id_container = $(".check-container1:checked")
                 .map(function () {
@@ -142,8 +279,6 @@ function bayar() {
                     Selisih = tandaPemisahTitik(Selisih);
 
                     $("#selisih").html("Rp. " + Selisih);
-
-
 
                     console.log(id_container);
                     $("#modal_biaya_do").modal("show");

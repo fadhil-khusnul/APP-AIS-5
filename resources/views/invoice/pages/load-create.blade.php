@@ -427,24 +427,73 @@
 
                             <!-- BEGIN Form -->
 
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
+                            <div class="row row-cols-lg-auto py-5 g-3">
+                                <label for="" class="col-form-label">Filter Tabel :</label>
+                                {{-- <div class="col-sm-5 col-lg-4">
+                                    <input class="form-control" type="text" id="daterangepicker_vendor">
+                                </div> --}}
+
+                                <div class="col-sm-5 col-lg-4">
+                                    <div class="mb-2">
+                                        <!-- BEGIN Input Group -->
+                                        <div class="input-group input-daterange">
+                                            <input type="text" id="min" class="form-control" placeholder="From">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-ellipsis-h"></i>
+                                            </span>
+                                            <input type="text" id="max" class="form-control" placeholder="To">
+                                        </div>
+                                        <!-- END Input Group -->
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
+                                        @foreach ($vendors as $vendor)
+                                            <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                                <div class="col-6">
+                                    <select id="pilih_status" name="pilih_status" class="form-select" onchange="filter_status(this)">
+                                        <option selected disabled>Pilih Status Bayar</option>
+                                        <option value="Belum Lunas">Belum Lunas</option>
+                                        <option value="Sudah Lunas">Sudah Lunas</option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div style="" class="">
+                                    <button id="add_total" type="button" onclick="bayar()"
+                                    class="btn btn-success">Bayar <i class="fa fa-arrow-right"></i></button>
+                                </div>
+
+
                             </div>
+
+                            <div class="col-md-12 text-center">
+                                <label for="inputState" class="form-label"><b>INVOICE</b></label>
+                            </div>
+
+                            <div class="table-responsive">
+
 
                             <table id="tabel_si" class="table mb-0">
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
-                                        <th class="">No</th>
-                                        <th class="">Preview</th>
-                                        <th class="">Input</th>
-                                        <th class="">Jenis Invoice</th>
-                                        <th class="">Tanggal Invoice</th>
-                                        <th class="">Nomor Invoice</th>
-                                        <th class="">YTH</th>
-                                        <th class="">KM</th>
-
-
-
+                                        <th>No</th>
+                                        <th>Preview</th>
+                                        <th></th>
+                                        <th>Jenis Invoice</th>
+                                        <th>Tanggal Invoice</th>
+                                        <th>Nomor Invoice</th>
+                                        <th>YTH</th>
+                                        <th>KM</th>
+                                        <th>TOTAL</th>
+                                        <th>TERBAYAR</th>
+                                        <th>SELISIH</th>
                                         <th class="text-end"></th>
                                     </tr>
                                 </thead>
@@ -466,14 +515,20 @@
                                             </td>
                                             <td class="text-nowrap">
 
-                                                <button type="button" value="{{ $pdf->id }}" type="button"
-                                                    onclick="input_invoice(this)"
-                                                    class="btn btn-outline-success btn-sm text-nowrap ">Input <i
-                                                        class="fa fa-pencil"></i></button>
+                                                @if ($pdf->total - $pdf->terbayar == 0)
+                                                <input readonly disabled checked type="checkbox"
+                                                    class="form-check-input"
+                                                    id="kontainer_check[{{ $loop->iteration }}]">
+                                                @elseif ($pdf->total - $pdf->terbayar > 0)
+                                                <div class="validation-container">
+                                                    <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                        class="form-check-input check-container2"
+                                                        id="kontainer_check[{{ $loop->iteration }}]" name="letter"
+                                                        value="{{ $pdf->id }}" required autofocus>
 
+                                                </div>
 
-
-
+                                                @endif
 
                                             </td>
 
@@ -481,7 +536,7 @@
                                             <td>
 
                                                 @if ($pdf->status == 'Default')
-                                                    <span class="badge badge-label-danger">NON ALIH-KAPAL </span>
+                                                    <span class="badge badge-label-success">NORMAL</span>
                                                 @else
                                                     <span class="badge badge-label-primary">ALIH-KAPAL</span>
                                                 @endif
@@ -495,11 +550,28 @@
 
                                             </td>
                                             <td>
+                                                {{ $pdf->nomor_invoice }}
+
+                                            </td>
+
+                                            <td>
                                                 {{ $pdf->yth }}
 
                                             </td>
                                             <td>
                                                 {{ $pdf->km }}
+
+                                            </td>
+                                            <td>
+                                                @rupiah($pdf->total)
+
+                                            </td>
+                                            <td>
+                                                @rupiah($pdf->terbayar)
+
+                                            </td>
+                                            <td>
+                                                @rupiah($pdf->total - $pdf->terbayar)
 
                                             </td>
 
@@ -513,6 +585,8 @@
 
                                 </tbody>
                             </table>
+                            </div>
+
 
                         </div>
                         <!-- BEGIN Portlet -->
@@ -694,12 +768,12 @@
                             <label class="col-sm-4 col-form-label" for="text">PPN :</label>
 
                             <div class="col-4 form-check g-3">
-                                <label class="form-check-label px-3" for="ppn2">
-                                    <input class="form-check-input" type="radio" name="ppn" id="ppn"> Yes
+                                <label class="form-check-label px-3" for="ppn">
+                                    <input class="form-check-input" type="radio" name="ppn" value="1" id="ppn"> Yes
 
                                 </label>
-								<label class="form-check-label px-4" for="flexRadioDefault2">
-                                    <input class="form-check-input" type="radio" name="ppn" id="ppn" checked> No
+								<label class="form-check-label px-4" for="ppn">
+                                    <input class="form-check-input" type="radio" name="ppn" value="0" id="ppn" checked> No
 
                                 </label>
                             </div>
@@ -713,11 +787,11 @@
 
                             <div class="col-4 form-check g-3">
                                 <label class="form-check-label px-3" for="ppn2">
-                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="yes" onclick="document.getElementById('value_materai').disabled = false;"> Yes
+                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="1" onclick="document.getElementById('value_materai').disabled = false;"> Yes
 
                                 </label>
 								<label class="form-check-label px-4" for="flexRadioDefault2">
-                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="no" checked onclick="document.getElementById('value_materai').disabled = true;"> No
+                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="0" checked onclick="document.getElementById('value_materai').disabled = true;"> No
 
                                 </label>
                             </div>
@@ -737,6 +811,51 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal_total">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <form class="modal-content" id="valid_total" name="valid_total">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="id_container" id="id_container">
+                <input type="hidden" name="old_terbayar" id="old_terbayar">
+                <input type="hidden" name="old_selisih" id="old_selisih">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Masukkan Nominal Invoice Yang Ingin Dibayar</h5>
+                        <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body d-grid gap-3">
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Nominal :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+
+                                    <input data-bs-toggle="tooltip"
+                                        type="text" class="form-control currency-rupiah"
+                                        id="terbayar" name="terbayar" placeholder="Nominal..."
+                                        required onblur="blur_terbayar(this)">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-6 col-form-label" for="">Total Selisih : <label id="selisih" class="currency-rupiah"> </label></label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 
 
@@ -745,7 +864,9 @@
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
 
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/invoice.js"></script>
+
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
@@ -771,6 +892,18 @@
                     $("#submit-id1").attr("disabled", "disabled");
                 }
             });
+
+            var check2 = $(".check-container2");
+
+            $("#add_total").attr("disabled", "disabled");
+            check2.click(function() {
+                if ($(this).is(":checked")) {
+                    $("#add_total").removeAttr("disabled");
+                } else {
+                    $("#add_total").attr("disabled", "disabled");
+                }
+            });
+
 
             // var radiom = $("#materai")
             $("#value_materai").attr("disabled", "disabled");

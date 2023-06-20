@@ -366,6 +366,9 @@ function detail(e) {
                             date_activity: formattedDate,
                             lokasi: $("#lokasi").val(),
                             pod_container: $("#pod_container").val(),
+                            pot_container: $("#pot_container").val(),
+                            vessel_pot: $("#vessel_pot").val(),
+                            kode_vessel_pot: $("#kode_vessel_pot").val(),
                             penerima: $("#penerima").val(),
                             pengirim: $("#pengirim").val(),
                             driver: $("#driver").val(),
@@ -746,6 +749,9 @@ function detail_tambah() {
                 date_activity: formattedDate,
                 lokasi: $("#lokasi_tambah").val(),
                 pod_container: $("#pod_container_tambah").val(),
+                pot_container: $("#pot_container_tambah").val(),
+                kode_vessel_pot: $("#kode_vessel_pot_tambah").val(),
+                vessel_pot: $("#vessel_pot_tambah").val(),
                 driver: $("#driver_tambah").val(),
                 nomor_polisi: $("#nomor_polisi_tambah").val(),
                 remark: $("#remark_tambah").val(),
@@ -829,8 +835,18 @@ function detail_update(e) {
             $("#modal-job-update").modal("show");
 
             $("#size_update").val(response.result.size);
+            $("#kode_vessel_pot_update").val(response.result.kode_vessel_pot);
+            $("#vessel_pot_update").val(response.result.vessel_pot);
             $("#pod_container_update")
                 .val(response.result.pod_container)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job-update"),
+                });
+            $("#pot_container_update")
+                .val(response.result.pot_container)
                 .select2({
                     dropdownAutoWidth: true,
                     placeholder: "Silahkan Pilih",
@@ -1173,13 +1189,17 @@ function detail_update(e) {
                     var tempDate;
                     var formattedDate;
 
-                    tempDate = new Date(date_activity);
-                    // console.log(tempDate);
+                    console.log(date_activity);
+
+                    tempDate = new Date(date_activity).toISOString().slice(0, 10);
+                    console.log(tempDate);
                     formattedDate = [
                         tempDate.getFullYear(),
                         tempDate.getMonth() + 1,
                         tempDate.getDate(),
                     ].join("-");
+
+                    console.log(formattedDate);
 
                     $.ajax({
                         url: "/detail-kontainer-edit/" + new_id,
@@ -1198,6 +1218,9 @@ function detail_update(e) {
                             date_activity: formattedDate,
                             lokasi: $("#lokasi_update").val(),
                             pod_container: $("#pod_container_update").val(),
+                            pot_container: $("#pot_container_update").val(),
+                            vessel_pot: $("#vessel_pot_update").val(),
+                            kode_vessel_pot: $("#kode_vessel_pot_update").val(),
                             penerima: $("#penerima_update").val(),
                             pengirim: $("#pengirim_update").val(),
                             driver: $("#driver_update").val(),

@@ -210,7 +210,25 @@ h3 {
 
 
 }
-.striped tfoot tr:nth-child(2){
+.striped tfoot tr:nth-child(2) {
+    background-color: #ffffff;
+    color: #102b5d;
+    font-weight: bold;
+    text-align: right;
+    font-size: 14px;
+
+
+}
+.striped tfoot tr:nth-child(3) {
+    background-color: #ffffff;
+    color: #102b5d;
+    font-weight: bold;
+    text-align: right;
+    font-size: 14px;
+
+
+}
+.striped tfoot tr:nth-child(4){
     background-color: #b4c6e6;
     color: #102b5d;
     font-style: italic;

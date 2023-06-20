@@ -477,7 +477,7 @@
                                         <td>
 
                                             @if ($pdf->status_si == 'Default')
-                                                <span class="badge badge-label-success">NON ALIH-KAPAL </span>
+                                                <span class="badge badge-label-success">NORMAL </span>
                                             @else
                                                 <span class="badge badge-label-primary">ALIH-KAPAL</span>
                                             @endif

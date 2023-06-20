@@ -56,34 +56,35 @@ $(function () {
             ],
         },
     });
-    $("#daterangepicker_vendor").daterangepicker({
-        locale: {
-            separator: " - ",
-            format:"dddd, DD MMMM YYYY",
-            applyLabel: "Apply",
-            cancelLabel: "Cancel",
-            fromLabel: "from",
-            toLabel: "to",
-            weekLabel: "M",
-            autoUpdateInput: false,
-            daysOfWeek: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
-            monthNames: [
-                "Jan",
-                "Feb",
-                "Маret",
-                "Аpril",
-                "Мei",
-                "Juni",
-                "Juli",
-                "Agu",
-                "Sep",
-                "Okt",
-                "Nov",
-                "Des",
-            ],
-            weekStart: 1,
+    // $(".daterangepicker_filter").daterangepicker({
+    //     locale: {
+    //         // format:"dddd, DD MMMM YYYY",
+    //         applyLabel: "Apply",
+    //         cancelLabel: "Cancel",
+    //         fromLabel: "from",
+    //         toLabel: "to",
+    //         weekLabel: "M",
+    //         autoUpdateInput: false,
+    //         daysOfWeek: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+    //         monthNames: [
+    //             "Jan",
+    //             "Feb",
+    //             "Маret",
+    //             "Аpril",
+    //             "Мei",
+    //             "Juni",
+    //             "Juli",
+    //             "Agu",
+    //             "Sep",
+    //             "Okt",
+    //             "Nov",
+    //             "Des",
+    //         ],
+    //         weekStart: 1,
+    //         autoUpdateInput: false
 
 
-        },
-    });
+
+    //     },
+    // });
 });

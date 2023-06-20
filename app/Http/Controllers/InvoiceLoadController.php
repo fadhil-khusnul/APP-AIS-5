@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PPN;
 use App\Models\Spk;
 use App\Models\Depo;
 use App\Models\Seal;
@@ -30,6 +31,7 @@ use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 
 class InvoiceLoadController extends Controller
 {
@@ -154,6 +156,7 @@ class InvoiceLoadController extends Controller
 
     public function pdf_invoice(Request $request)
     {
+        // dd($request);
         $random = Str::random(15);
         $old_slug = $request->old_slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
@@ -164,6 +167,9 @@ class InvoiceLoadController extends Controller
             'yth' => $request->yth,
             'km' => $request->km,
             'status' => $request->status,
+            'nomor_invoice' => $request->nomor_invoice,
+            'tahun_invoice' => $request->tahun,
+            'tanggal_invoice' => $request->tanggal,
             'job_id' => $old_id,
             'container_id' => $random.time(),
             'path' => 'Invoice-'.$old_slug.'-'.$random.time(),
@@ -210,7 +216,25 @@ class InvoiceLoadController extends Controller
 
         $new_container = [];
 
+        // dd($request->ppn);
+
+        if((int)$request->ppn == 0) {
+            $ppn = 0;
+        } else {
+            $ppn = PPN::first()->value('ppn');
+        }
+
+        // dd($ppn);
+
+        if((int)$request->materai == 0) {
+            $materai = 0;
+        } else {
+            $materai = $request->value_materai;
+        }
+
+        $total = 0;
         for($i = 0; $i < count($containers); $i++) {
+            $total += (Float)$containers[$i][0][0]->price_invoice;
             $new_container[$i] = [
                 'id' => $containers[$i][0][0]->id,
                 'job_id' => $containers[$i][0][0]->job_id,
@@ -221,14 +245,19 @@ class InvoiceLoadController extends Controller
                 'kondisi_invoice' => $containers[$i][0][0]->kondisi_invoice,
                 'keterangan_invoice' => $containers[$i][0][0]->keterangan_invoice,
                 'price_invoice' => $containers[$i][0][0]->price_invoice,
-
             ];
-
-
         }
+
+        $total_with_ppn_materai = $total + round($total * ((Float)$ppn / (Float)100)) + (Float)$materai;
         // dd($new_container[0]['price_invoice']);
 
-        $total = 100000;
+        $total_invoice = [
+            "total" => $total_with_ppn_materai,
+        ];
+
+        InvoiceLoad::find($sis->id)->update($total_invoice);
+
+
 
         $rekenings = RekeningBank::orderBy('id', 'DESC')->get();
 
@@ -242,15 +271,15 @@ class InvoiceLoadController extends Controller
             "loads" => $loads,
             "containers" => $new_container,
             "yth" => $request->yth,
+            "nomor_invoice" => $request->nomor_invoice,
             "km" => $request->km,
             "report" => "MUATAN",
             "status" => $request->status,
             'rekenings' => $rekenings,
-            'total' => $total,
-
-
-
-
+            'ppn' => round($total * ((Float)$ppn / (Float)100)),
+            'persen_ppn' => $ppn,
+            'materai' => $materai,
+            'total' => $total_with_ppn_materai,
         ]);
 
         $pdf1->save($save1);
@@ -300,4 +329,98 @@ class InvoiceLoadController extends Controller
         ]);
 
     }
+
+    public function getPod(Request $request){
+        $pod = [];
+
+        for($i = 0; $i < count($request->pod); $i++) {
+            $pod[$i] = ContainerPlanLoad::where('id', $request->pod[$i])->value('pod_container');
+        }
+
+        $pod = array_unique($pod);
+
+        return response()->json($pod);
+    }
+
+    public function getInvoice(Request $request){
+        // dd($request);
+        $old_slug = $request->old_slug;
+
+        $invoice_tahun = InvoiceLoad::where('tahun_invoice', $request->tahun)->get();
+
+        $sum_invoice_tahun = count($invoice_tahun) + 1;
+
+        $order_job = OrderJobPlanLoad::where('slug', $old_slug)->get();
+
+        $pol_area_code = Pelabuhan::where('nama_pelabuhan', $order_job[0]->pol)->value('area_code');
+        $vessel = $order_job[0]->vessel;
+        $pod_area_code = Pelabuhan::where('nama_pelabuhan', $request->pod)->value('area_code');
+
+        return response()->json([
+            'pol' => $pol_area_code,
+            'vessel' => $vessel,
+            'pod' => $pod_area_code,
+            'jumlah' => $sum_invoice_tahun
+        ]);
+
+    }
+
+    public function selisih(Request $request)
+    {
+        $tabel_kontainer = [];
+        for ($i = 0; $i < count($request->id); $i++) {
+            $tabel_kontainer[$i] = InvoiceLoad::find($request->id[$i]);
+        }
+
+        $selisih = [];
+        for ($i = 0; $i < count($tabel_kontainer); $i++) {
+            $selisih[$i] = $tabel_kontainer[$i]->total - $tabel_kontainer[$i]->terbayar;
+        }
+
+        $total_selisih = 0;
+        for ($i = 0; $i < count($selisih); $i++) {
+            $total_selisih += $selisih[$i];
+        }
+
+        return response()->json($total_selisih);
+    }
+
+    public function dibayar(Request $request) {
+        // dd(count($request->id));
+        $container = [];
+        for ($i = 0; $i < count($request->id); $i++) {
+            $container[$i] = InvoiceLoad::find($request->id[$i]);
+        }
+
+        $selisih = [];
+        for ($i = 0; $i < count($container); $i++) {
+            $selisih[$i] = $container[$i]->total - (float)$container[$i]->terbayar;
+        }
+
+        $total_selisih = (float)$request->selisih;
+        for ($i = 0; $i < count($selisih); $i++) {
+            $total_selisih -= $selisih[$i];
+            if ($total_selisih > 0) {
+                $terbayar = (float)$container[$i]->terbayar + $selisih[$i];
+                $dibayar = [
+                    "terbayar" => $terbayar
+                ];
+
+                InvoiceLoad::where('id', $request->id[$i])->update($dibayar);
+            } else {
+                $terbayar = (float)$container[$i]->terbayar + $selisih[$i] + $total_selisih;
+                $dibayar = [
+                    "terbayar" => $terbayar
+                ];
+
+                InvoiceLoad::where('id', $request->id[$i])->update($dibayar);
+                break;
+            }
+        }
+
+        return response()->json([
+            'success'   => true
+        ]);
+    }
+
 }

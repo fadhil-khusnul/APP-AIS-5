@@ -326,6 +326,10 @@ Route::get('/invoice-load', [InvoiceLoadController::class, 'invoice']);
 Route::get('/invoice-load-create/{slug}', [InvoiceLoadController::class, 'create_invoice']);
 Route::post('/masukkan-invoice-load', [InvoiceLoadController::class, 'masukkan_invoice']);
 Route::post('/create-pdf-invoice-load', [InvoiceLoadController::class, 'pdf_invoice']);
+Route::post('/get-total-invoice-load', [InvoiceLoadController::class, 'selisih']);
+Route::post('/getPod', [InvoiceLoadController::class, 'getPod']);
+Route::post('/getInvoice', [InvoiceLoadController::class, 'getInvoice']);
+Route::post('/kontainer-dibayar-ii', [InvoiceLoadController::class, 'dibayar']);
 Route::get('/preview-invoice/{path}', [InvoiceLoadController::class, 'preview_invoice']);
 Route::delete('/delete-invoice/{id}', [InvoiceLoadController::class, 'delete_invoice']);
 

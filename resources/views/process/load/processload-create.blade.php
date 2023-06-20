@@ -289,8 +289,8 @@
                                         <td>{{$container->pengirim}}</td>
                                         <td>{{$container->penerima}}</td>
                                         <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->pod_container}}</td>
+                                        <td>{{$container->pot_container}}</td>
+                                        <td>{{$container->vessel_pot}}</td>
                                         <td>{{$container->size}}/{{$container->type}}</td>
                                         <td>{{$container->nomor_kontainer}}</td>
                                         <td>{{$container->cargo}}</td>
@@ -812,7 +812,7 @@
                             <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select id="pod_container" name="pod_container" class="form-select">
+                            <select required id="pod_container" name="pod_container" class="form-select">
                                 <option selected disabled>Pilih POD</option>
                                 @foreach ($pods as $pod)
                                     <option value="{{ $pod->nama_pelabuhan }}"
@@ -823,6 +823,42 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">POT :</label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pot_container" name="pot_container" class="form-select">
+                                <option selected disabled>Pilih POT</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="vessel_pot"
+                                    name="vessel_pot" value="{{ old('vessel_pot') }}">
+                            </div>
+
+
+                        </div>
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">KODE VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Kode Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="kode_vessel_pot"
+                                    name="kode_vessel_pot" value="{{ old('kode_vessel_pot') }}">
+                            </div>
+
+
+                        </div>
 
 
                         <div class="row">
@@ -830,7 +866,7 @@
 
                             <div class="col-sm-8 validation-container">
 
-                                <select data-bs-toggle="tooltip" id="size" name="size" class="form-select"
+                                <select required data-bs-toggle="tooltip" id="size" name="size" class="form-select"
                                     @readonly(true) required>
                                     <option disabled>Pilih Size</option>
                                     @foreach ($sizes as $size)
@@ -847,7 +883,7 @@
                             <label for="" class="col-sm-4 col-form-label">Type :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                                <select data-bs-toggle="tooltip" id="type" name="type" class="form-select"
+                                <select required  data-bs-toggle="tooltip" id="type" name="type" class="form-select"
                                     @readonly(true) required>
                                     <option disabled>Pilih Type</option>
                                     @foreach ($types as $type)
@@ -875,7 +911,7 @@
                             <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                                <input data-bs-toggle="tooltip" type="text" class="form-control" id="cargo"
+                                <input required data-bs-toggle="tooltip" type="text" class="form-control" id="cargo"
                                     name="cargo" value="{{ old('cargo') }}" required>
                             </div>
 
@@ -906,7 +942,7 @@
                             <label for="" class="col-sm-4 col-form-label">Lokasi Pickup :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                            <select data-bs-toggle="tooltip" id="lokasi" name="lokasi" class="form-select" required>
+                            <select required data-bs-toggle="tooltip" id="lokasi" name="lokasi" class="form-select" required>
                                 <option selected disabled value="0">Pilih Lokasi Pickup</option>
                                 @foreach ($lokasis as $lokasi)
                                     <option value="{{ $lokasi->nama_depo }}">
@@ -1201,6 +1237,45 @@
 
                             </div>
                         </div>
+
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">POT :</label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pot_container_update" name="pot_container_update" class="form-select">
+                                <option selected disabled>Pilih POT</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="vessel_pot_update"
+                                    name="vessel_pot_update" value="{{ old('vessel_pot_update') }}">
+                            </div>
+
+
+                        </div>
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">KODE VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Kode Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="kode_vessel_pot_update"
+                                    name="kode_vessel_pot_update" value="{{ old('kode_vessel_pot_update') }}">
+                            </div>
+
+
+                        </div>
+
                         <div class="row">
                             <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
@@ -1953,6 +2028,43 @@
                             </select>
 
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">POT :</label>
+                            <div class="col-sm-8 validation-container">
+
+                            <select id="pot_container_tambah" name="pot_container_tambah" class="form-select">
+                                <option selected disabled>Pilih POT</option>
+                                @foreach ($pods as $pod)
+                                    <option value="{{ $pod->nama_pelabuhan }}"
+                                        >{{ $pod->nama_pelabuhan }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="vessel_pot_tambah"
+                                    name="vessel_pot_tambah" value="{{ old('vessel_pot_tambah') }}">
+                            </div>
+
+
+                        </div>
+                        <div class="row ">
+                            <label for="" class="col-sm-4 col-form-label">KODE VESSEL POT : </span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input placeholder="Kode Vessel POT" data-bs-toggle="tooltip" type="text" class="form-control" id="kode_vessel_pot_tambah"
+                                    name="kode_vessel_pot_tambah" value="{{ old('kode_vessel_pot_tambah') }}">
+                            </div>
+
+
                         </div>
 
                         <div class="row">

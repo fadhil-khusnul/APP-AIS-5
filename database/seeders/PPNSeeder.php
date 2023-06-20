@@ -10,7 +10,8 @@ use App\Models\PPN;
 class PPNSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the da
+     * tabase seeds.
      */
     public function run(): void
     {
