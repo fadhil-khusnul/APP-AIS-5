@@ -817,7 +817,7 @@ class ProcessLoadController extends Controller
 
 
         ]);
-        $pdf1->setPaper('A4', 'landscape');
+        // $pdf1->setPaper('A4', 'landscape');
         $pdf1->save($save);
 
 
