@@ -9,6 +9,8 @@ var vessel_code = $("#kode_kapal").html()
 console.log(vessel);
     $("#table_informasi1").DataTable({
         responsive:true,
+        stateSave: true,
+
         fixedHeader:
         {
             header:true,
@@ -50,6 +52,8 @@ console.log(vessel);
     });
     $("#table_informasi2").DataTable({
         responsive:true,
+        stateSave: true,
+
         fixedHeader:
         {
             header:true,
@@ -92,6 +96,7 @@ console.log(vessel);
 
     $("#table_biaya1").DataTable({
         responsive:true,
+        stateSave: true,
 
         pageLength : 5,
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
@@ -100,6 +105,8 @@ console.log(vessel);
     });
     $("#table_biaya2").DataTable({
         responsive:true,
+        stateSave: true,
+
 
         pageLength : 5,
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
@@ -108,6 +115,8 @@ console.log(vessel);
     });
     $("#table_biaya3").DataTable({
         responsive:true,
+        stateSave: true,
+
 
         pageLength : 5,
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
@@ -116,6 +125,8 @@ console.log(vessel);
     });
     $("#table_batal_muat").DataTable({
         responsive:true,
+        stateSave: true,
+
 
         pageLength : 5,
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
@@ -124,6 +135,8 @@ console.log(vessel);
     });
     $("#table_alih_kapal").DataTable({
         responsive:true,
+        stateSave: true,
+
 
         pageLength : 5,
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],

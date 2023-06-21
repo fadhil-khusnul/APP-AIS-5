@@ -2399,10 +2399,10 @@
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                    <div class="modal-body d-grid gap-3 px-5">
+                    <div class="modal-body d-grid gap-3 px-5" style="margin-left: 30px">
                         <div class="row">
                             <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
+                            <div class="col-sm-6 validation-container">
 
 
                                 <select data-bs-toggle="tooltip" id="kontainer_biaya" name="kontainer_biaya"
@@ -2418,8 +2418,8 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Biaya :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
+                            <label class="col-sm-4 col-form-label" for="">Total Biaya :<span class="text-danger">*</span></label>
+                            <div class="col-sm-6 validation-container">
 
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
@@ -2432,21 +2432,30 @@
                             </div>
                         </div>
 
-
-
-
-
-                        <div class="row">
+                        <div id="div_biaya" class="row">
+                            <div id="body_biaya[1]" class="row row-cols g-3">
+                                <label id="label_biaya" name="label_biaya" class="col-sm-4 col-form-label">Keterangan Biaya Ke-1 :<span class="text-danger">*</span></label>
+                                <div id="div_textarea_biaya" name="div_textarea_biaya" class="col-sm-6 validation-container d-grid gap-3">
+                                    <textarea style="margin-left: 10px" data-bs-toggle="tooltip" class="form-control" id="keterangan_biaya[1]" name="keterangan_biaya" placeholder="ex. (Rp. 10.000 untuk kebutuhan kontainer)" required></textarea>
+                                </div>
+                                <div id="div_button_biaya" name="div_button_biaya" class="col-sm-2 py-4">
+                                    <a style="margin-left: 10px" id="hapus_biaya[1]" name="hapus_biaya" class="btn btn-sm btn-label-danger btn-icon" onclick="hapus_biaya(this)"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- <div class="row">
                             <label for="" class="col-sm-4 col-form-label">Keterangan Biaya :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan" name="keterangan" required>{{ old('keterangan') }}</textarea>
                             </div>
 
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="modal-footer">
+                        <a id="tambah_biaya" type="button" onclick="tambah_keterangan_biaya()"
+                        class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
                         <button type="submit" class="btn btn-success">Masukkan Ke Biaya Lainnya</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>

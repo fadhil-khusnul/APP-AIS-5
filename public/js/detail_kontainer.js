@@ -3230,3 +3230,97 @@ function edit_delete_detail(ini) {
 
     reindex_edit_detail();
 }
+
+var urutan_biaya = 1;
+
+function tambah_keterangan_biaya() {
+    urutan_biaya++;
+
+    var div1 = document.getElementById("div_biaya");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols g-3");
+    div2.setAttribute("id", "body_biaya[" + urutan_biaya + "]");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "col-sm-4 col-form-label");
+    label.setAttribute("id", "label_biaya");
+    label.setAttribute("name", "label_biaya");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+    div3.setAttribute("id", "div_textarea_biaya");
+    div3.setAttribute("name", "div_textarea_biaya");
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("data-bs-toggle", "tooltip");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("id", "keterangan_biaya[" + urutan_biaya + "]");
+    textarea.setAttribute("name", "keterangan_biaya");
+    textarea.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
+    textarea.setAttribute("style", "margin-left: 10px");
+    textarea.setAttribute("required", true);
+    div3.append(textarea);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("class", "col-sm-2 py-4");
+    div4.setAttribute("id", "div_button_biaya");
+    div4.setAttribute("name", "div_button_biaya");
+    var button = document.createElement("a");
+    button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    button.setAttribute("id", "hapus_biaya[" + urutan_biaya + "]");
+    button.setAttribute("name", "hapus_biaya");
+    button.setAttribute("style", "margin-left: 10px;");
+    button.setAttribute("onclick", "hapus_biaya(this)");
+    icon = document.createElement("i");
+    icon.setAttribute("class", "fa fa-trash");
+    button.append(icon);
+    div4.append(button);
+
+    div2.append(label);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+
+    reindex_biaya();
+}
+
+function reindex_biaya() {
+    const ids = document.querySelectorAll("#label_biaya");
+    ids.forEach((e, i) => {
+        e.innerHTML =
+            "Keterangan Biaya Ke-" +
+            (i + 1) +
+            " :<span class='text-danger'>*</span>";
+    });
+}
+
+function hapus_biaya(ini) {
+    var urutan_delete_biaya = ini.parentNode.parentNode;
+    urutan_delete_biaya.remove();
+    urutan_biaya--;
+
+    var label = document.querySelectorAll("#label_biaya");
+
+    for (var i = 0; i < label.length; i++) {
+        label[i].innerHTML = "Keterangan Biaya Ke-" + urutan_biaya + " :";
+    }
+
+    var div1 = document.querySelectorAll("#div_textarea_biaya textarea");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "keterangan_biaya[" + (i + 1) + "]";
+    }
+
+    var div2 = document.querySelectorAll("#div_button_biaya button");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "hapus_biaya[" + (i + 1) + "]";
+    }
+
+    if (urutan_biaya == 0) {
+        tambah_keterangan_biaya();
+    }
+
+    reindex_biaya();
+}
