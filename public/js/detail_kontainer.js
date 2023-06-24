@@ -1618,13 +1618,22 @@ function detail_biaya_lain() {
         // console.log();
         submitHandler: function (form) {
             var token = $("#csrf").val();
+            // console.log(urutan_detail);
+
+            var keterangan_biaya = [];
+
+            for (let i = 0; i < urutan_biaya; i++) {
+                keterangan_biaya[i] = document.getElementById(
+                    "keterangan_biaya[" + (i + 1) + "]"
+                ).value;
+            }
 
             var data = {
                 _token: token,
                 job_id: $("#job_id").val(),
-                kontainer_biaya: $("#kontainer_biaya").val(),
                 harga_biaya: $("#harga_biaya").val().replace(/\./g, ""),
-                keterangan: $("#keterangan").val(),
+                kontainer_id: $("#kontainer_biaya").val(),
+                keterangan_biaya: keterangan_biaya,
             };
 
             $.ajax({
@@ -1642,9 +1651,37 @@ function detail_biaya_lain() {
                     });
                 },
             });
+            // var token = $("#csrf").val();
+
+            // var data = {
+            //     _token: token,
+            //     job_id: $("#job_id").val(),
+            //     kontainer_biaya: $("#kontainer_biaya").val(),
+            //     harga_biaya: $("#harga_biaya").val().replace(/\./g, ""),
+            //     keterangan: $("#keterangan").val(),
+            // };
+
+            // $.ajax({
+            //     url: "/biayalain-kontainer",
+            //     type: "POST",
+            //     data: data,
+            //     success: function (response) {
+            //         swal.fire({
+            //             icon: "success",
+            //             title: "Biaya Lain Berhasil Dimasukkan",
+            //             showConfirmButton: false,
+            //             timer: 2e3,
+            //         }).then((result) => {
+            //             location.reload();
+            //         });
+            //     },
+            // });
         },
     });
 }
+
+var edit_urutan_biaya = 0;
+
 function detail_biaya_lain_edit(e) {
     let id = e.value;
     // console.log(id);
@@ -1653,15 +1690,83 @@ function detail_biaya_lain_edit(e) {
         url: "/biayalainnya-edit/" + id,
         type: "GET",
         success: function (response) {
+            console.log(response);
             $("#modal_biaya_lainnya_edit").modal("show");
+            document.getElementById("edit_div_biaya").innerHTML = "";
 
-            $("#id_lama_biaya").val(response.result.id);
-            $("#old_id_container_biaya").val(response.result.kontainer_id);
+            $("#old_id_container_biaya").val(response.result[0].kontainer_id);
             $("#kontainer_biaya_edit")
-                .val(response.result.kontainer_id)
+                .val(response.result[0].kontainer_id)
                 .is(":selected");
-            $("#harga_biaya_edit").val(response.result.harga_biaya);
-            $("#keterangan_edit").val(response.result.keterangan);
+            $("#harga_biaya_edit").val(response.total_biaya);
+
+            edit_urutan_biaya = response.result.length;
+
+            var div1 = document.getElementById("edit_div_biaya");
+
+            for (var i = 0; i < edit_urutan_biaya; i++) {
+                var div2 = document.createElement("div");
+                div2.setAttribute("class", "row row-cols g-3");
+                div2.setAttribute("id", "edit_body_biaya[" + (i + 1) + "]");
+
+                var label = document.createElement("label");
+                label.setAttribute("class", "col-sm-4 col-form-label");
+                label.setAttribute("id", "edit_label_biaya");
+                label.setAttribute("name", "edit_label_biaya");
+
+                var div3 = document.createElement("div");
+                div3.setAttribute(
+                    "class",
+                    "col-sm-6 validation-container d-grid gap-3"
+                );
+                div3.setAttribute("id", "edit_div_textarea_biaya");
+                div3.setAttribute("name", "edit_div_textarea_biaya");
+                var textarea = document.createElement("textarea");
+                textarea.setAttribute("data-bs-toggle", "tooltip");
+                textarea.setAttribute("class", "form-control");
+                textarea.setAttribute(
+                    "id",
+                    "edit_keterangan_biaya[" + (i + 1) + "]"
+                );
+                textarea.setAttribute("name", "edit_keterangan_biaya");
+                textarea.setAttribute("style", "margin-left: 10px");
+                textarea.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
+                textarea.setAttribute("required", true);
+                div3.append(textarea);
+
+                var div4 = document.createElement("div");
+                div4.setAttribute("class", "col-sm-2 py-4");
+                div4.setAttribute("id", "edit_div_button_biaya");
+                div4.setAttribute("name", "edit_div_button_biaya");
+                var button = document.createElement("a");
+                button.setAttribute(
+                    "class",
+                    "btn btn-sm btn-label-danger btn-icon"
+                );
+                button.setAttribute(
+                    "id",
+                    "edit_hapus_biaya[" + (i + 1) + "]"
+                );
+                button.setAttribute("name", "edit_hapus_biaya");
+                button.setAttribute("style", "margin-left: 10px;");
+                button.setAttribute("onclick", "edit_hapus_biaya(this)");
+                icon = document.createElement("i");
+                icon.setAttribute("class", "fa fa-trash");
+                button.append(icon);
+                div4.append(button);
+
+                div2.append(label);
+                div2.append(div3);
+                div2.append(div4);
+
+                div1.appendChild(div2);
+
+                reindex_edit_keterangan_biaya();
+            }
+
+            for(var i = 0; i < edit_urutan_biaya; i++) {
+                document.getElementById("edit_keterangan_biaya[" + (i + 1) + "]").value = response.result[i].keterangan;
+            }
 
             $("#valid_biaya_lainnya_edit").validate({
                 highlight: function highlight(element, errorClass, validClass) {
@@ -1689,6 +1794,16 @@ function detail_biaya_lain_edit(e) {
                     var id_lama_biaya =
                         document.getElementById("id_lama_biaya").value;
                     // console.log(id_lama_biaya);
+
+                    var keterangan_biaya = [];
+
+                    console.log(edit_urutan_biaya);
+                    for (let i = 0; i < edit_urutan_biaya; i++) {
+                        keterangan_biaya[i] = document.getElementById(
+                            "edit_keterangan_biaya[" + (i + 1) + "]"
+                        ).value;
+                    }
+                    console.log(keterangan_biaya);
                     var token = $("#csrf").val();
 
                     var data = {
@@ -1699,11 +1814,11 @@ function detail_biaya_lain_edit(e) {
                         harga_biaya: $("#harga_biaya_edit")
                             .val()
                             .replace(/\./g, ""),
-                        keterangan: $("#keterangan_edit").val(),
+                        keterangan: keterangan_biaya,
                     };
 
                     $.ajax({
-                        url: "/biayalainnya-update/" + id_lama_biaya,
+                        url: "/biayalainnya-update/" + old_id_container_biaya,
                         type: "PUT",
                         data: data,
                         success: function (response) {
@@ -3285,8 +3400,70 @@ function tambah_keterangan_biaya() {
     reindex_biaya();
 }
 
+function edit_tambah_biaya() {
+    edit_urutan_biaya++;
+
+    var div1 = document.getElementById("edit_div_biaya");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols g-3");
+    div2.setAttribute("id", "edit_body_biaya[" + edit_urutan_biaya + "]");
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "col-sm-4 col-form-label");
+    label.setAttribute("id", "edit_label_biaya");
+    label.setAttribute("name", "edit_label_biaya");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+    div3.setAttribute("id", "edit_div_textarea_biaya");
+    div3.setAttribute("name", "edit_div_textarea_biaya");
+    var textarea = document.createElement("textarea");
+    textarea.setAttribute("data-bs-toggle", "tooltip");
+    textarea.setAttribute("class", "form-control");
+    textarea.setAttribute("id", "edit_keterangan_biaya[" + edit_urutan_biaya + "]");
+    textarea.setAttribute("name", "edit_keterangan_biaya");
+    textarea.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
+    textarea.setAttribute("style", "margin-left: 10px");
+    textarea.setAttribute("required", true);
+    div3.append(textarea);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("class", "col-sm-2 py-4");
+    div4.setAttribute("id", "edit_div_button_biaya");
+    div4.setAttribute("name", "edit_div_button_biaya");
+    var button = document.createElement("a");
+    button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    button.setAttribute("id", "edit_hapus_biaya[" + edit_urutan_biaya + "]");
+    button.setAttribute("name", "edit_hapus_biaya");
+    button.setAttribute("style", "margin-left: 10px;");
+    button.setAttribute("onclick", "edit_hapus_biaya(this)");
+    icon = document.createElement("i");
+    icon.setAttribute("class", "fa fa-trash");
+    button.append(icon);
+    div4.append(button);
+
+    div2.append(label);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+
+    reindex_edit_keterangan_biaya();
+}
+
 function reindex_biaya() {
     const ids = document.querySelectorAll("#label_biaya");
+    ids.forEach((e, i) => {
+        e.innerHTML =
+            "Keterangan Biaya Ke-" +
+            (i + 1) +
+            " :<span class='text-danger'>*</span>";
+    });
+}
+
+function reindex_edit_keterangan_biaya() {
+    const ids = document.querySelectorAll("#edit_label_biaya");
     ids.forEach((e, i) => {
         e.innerHTML =
             "Keterangan Biaya Ke-" +
@@ -3323,4 +3500,34 @@ function hapus_biaya(ini) {
     }
 
     reindex_biaya();
+}
+
+function edit_hapus_biaya(ini) {
+    var edit_urutan_delete_biaya = ini.parentNode.parentNode;
+    edit_urutan_delete_biaya.remove();
+    edit_urutan_biaya--;
+
+    var label = document.querySelectorAll("#edit_label_biaya");
+
+    for (var i = 0; i < label.length; i++) {
+        label[i].innerHTML = "Keterangan Biaya Ke-" + edit_urutan_biaya + " :";
+    }
+
+    var div1 = document.querySelectorAll("#edit_div_textarea_biaya textarea");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "edit_keterangan_biaya[" + (i + 1) + "]";
+    }
+
+    var div2 = document.querySelectorAll("#edit_div_button_biaya button");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "edit_hapus_biaya[" + (i + 1) + "]";
+    }
+
+    if (edit_urutan_biaya == 0) {
+        edit_tambah_biaya();
+    }
+
+    reindex_edit_keterangan_biaya();
 }

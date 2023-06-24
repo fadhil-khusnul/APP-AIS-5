@@ -531,36 +531,51 @@
                                 <tr>
                                     <th></th>
                                     <th>No</th>
+                                    <th>Pengirim</th>
+                                    <th>Size/Type</th>
                                     <th>Nomor Kontainer</th>
-                                    <th>Biaya</th>
-                                    <th>Keterangan</th>
+                                    <th>POD</th>
+                                    <th>Total Biaya Lainnya</th>
+                                    <th>Keterangan Biaya</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_biaya" class="">
-                                @foreach ($biayas as $biaya)
+                                @foreach ($new_container_biaya as $biaya)
                                     <tr>
                                         <td class="text-center">
                                             <button id="delete_biaya" name="delete_biaya"
                                                 class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $biaya->id }}" onclick="delete_laiannyaDB(this)"
+                                                value="{{ $biaya['id'] }}" onclick="delete_laiannyaDB(this)"
                                                 @readonly(true)><i class="fa fa-trash"></i></button>
                                             <button id="edit_biaya" name="edit_biaya"
                                                 class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $biaya->id }}" onclick="detail_biaya_lain_edit(this)"
+                                                value="{{ $biaya['id'] }}" onclick="detail_biaya_lain_edit(this)"
                                                 @readonly(true)><i class="fa fa-pencil"></i></button>
                                         </td>
-                                        <td>
+                                        <td align="center">
 
                                             {{ $loop->iteration }}
                                         </td>
                                         <td>
-                                            {{ $biaya->container_planloads->nomor_kontainer }}
+                                            {{ $biaya['pengirim'] }}
                                         </td>
+                                        <td>{{$biaya['size']}}/{{$biaya['type']}}</td>
+                                        <td>{{$biaya['nomor_kontainer']}}</td>
+                                        <td>{{$biaya['pod_container']}}</td>
+
                                         <td>
-                                            @rupiah($biaya->harga_biaya)
+                                            @rupiah($biaya['total_biaya_lain'])
                                         </td>
-                                        <td>
-                                            {{ $biaya->keterangan }}
+                                        <td class="text-nowrap">
+                                            <ol type="1.">
+                                            @foreach ($biayas as $b)
+                                                @if ($b->kontainer_id == $biaya['id'])
+                                                <li>
+                                                    {{ $b->keterangan }}
+                                                </li>
+                                                @endif
+                                            @endforeach
+                                            </ol>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -2512,22 +2527,14 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Keterangan Biaya :<span class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_edit" name="keterangan_edit" required>{{ old('keterangan') }}</textarea>
-                            </div>
+                        <div id="edit_div_biaya" class="row">
 
                         </div>
 
                     </div>
                     <div class="modal-footer">
+                        <a id="edit_tambah_biaya" type="button" onclick="edit_tambah_biaya()"
+                        class="btn btn-success btn-icon " style="margin-left: 0px; margin-right:auto;"> <i class="fa fa-plus"></i></a>
                         <button type="submit" class="btn btn-success">Edit Biaya Lainnya</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>

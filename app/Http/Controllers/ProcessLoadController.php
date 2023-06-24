@@ -167,6 +167,30 @@ class ProcessLoadController extends Controller
 
             }
         }
+        $id_biaya = BiayaLainnya::where("job_id", $id)->distinct()->get('kontainer_id');
+        $containers_biaya = [];
+        $new_container_biaya = [];
+        if ($id_biaya != null) {
+            for ($i=0; $i <count($id_biaya) ; $i++) {
+                $containers_biaya[$i] = ContainerPlanload::where('id', $id_biaya[$i]->kontainer_id)->get();
+            }
+
+
+            for($i = 0; $i < count($containers_biaya); $i++) {
+                $new_container_biaya[$i] = [
+                    'id' => $containers_biaya[$i][0]->id,
+                    'job_id' => $containers_biaya[$i][0]->job_id,
+                    'size' => $containers_biaya[$i][0]->size,
+                    'type' => $containers_biaya[$i][0]->type,
+                    'nomor_kontainer' => $containers_biaya[$i][0]->nomor_kontainer,
+                    'total_biaya_lain' => $containers_biaya[$i][0]->total_biaya_lain,
+                    'pengirim' => $containers_biaya[$i][0]->pengirim,
+                    'pod_container' => $containers_biaya[$i][0]->pod_container,
+
+                ];
+
+            }
+        }
 
 
 
@@ -186,6 +210,7 @@ class ProcessLoadController extends Controller
             'shippingcompany' => $shipping_company,
             'shipping_companys' => $shipping_companys,
             'containers_barang' => $new_container,
+            'new_container_biaya' => $new_container_biaya,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
@@ -612,27 +637,23 @@ class ProcessLoadController extends Controller
 //BIAYA-LAINNYA
     public function biayalain(Request $request)
     {
-        // dd($request);
+        $container = ContainerPlanload::findOrFail($request->kontainer_id);
 
-        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
-
-        // $update_container = [
-        //     'status' => "Biaya-Lainnya",
-        // ];
-
-        // $container->update($update_container);
-
-
-        $data = [
-            'job_id' => $request->job_id,
-            'kontainer_id' => $request->kontainer_biaya,
-            'harga_biaya' => $request->harga_biaya,
-            'keterangan' => $request->keterangan,
-
-
+        $update_container = [
+            'total_biaya_lain' => $request->harga_biaya,
         ];
 
-        BiayaLainnya::create($data);
+        $container->update($update_container);
+
+        for($i = 0; $i < count($request->keterangan_biaya); $i++) {
+            $data = [
+                'job_id' => $request->job_id,
+                'harga_biaya' => 0,
+                'kontainer_id' => $request->kontainer_id,
+                'keterangan' => $request->keterangan_biaya[$i],
+            ];
+            BiayaLainnya::create($data);
+        }
 
         return response()->json(['success' => true]);
     }
@@ -640,49 +661,41 @@ class ProcessLoadController extends Controller
     public function biayalain_edit($id)
     {
 
-        $biaya = BiayaLainnya::find($id);
+        $biaya = BiayaLainnya::where('kontainer_id',$id)->get();
+        // dd($biaya)
 
+
+        $total_biaya = ContainerPlanload::where('id', $id)->value('total_biaya_lain');
         return response()->json([
             'result' => $biaya,
+            'total_biaya' => $total_biaya,
         ]);
     }
 
     public function biayalain_update(Request $request, $id)
     {
-        // dd($request);
-
-        // $container_old = ContainerPlanload::findOrFail($request->old_id_container_biaya);
-
-        // $update_container_old = [
-        //     'status' => "Process-Load",
-        // ];
-
-        // $container_old->update($update_container_old);
-
-
-        // $container = ContainerPlanload::findOrFail($request->kontainer_biaya);
-
-        // $update_container = [
-        //     'status' => "Biaya-Lainnya",
-        // ];
-
-        // $container->update($update_container);
-
-
-
-        $biayas = BiayaLainnya::findOrFail($id);
-        $data = [
-            'job_id' => $request->job_id,
-            'kontainer_id' => $request->kontainer_biaya,
-            'harga_biaya' => $request->harga_biaya,
-            'keterangan' => $request->keterangan,
-
-
+        $container = [
+            "total_biaya_lain"=> $request->harga_biaya,
         ];
 
-        $biayas->update($data);
+        ContainerPlanload::where('id', $id)->update($container);
+
+        BiayaLainnya::where('kontainer_id', $id)->delete();
+
+        for($i = 0; $i < count($request->keterangan); $i++) {
+            $data = [
+                'job_id' => $request->job_id,
+                'kontainer_id' => $id,
+                'harga_biaya' => 0,
+                'keterangan' => $request->keterangan[$i],
+            ];
+            BiayaLainnya::create($data);
+        }
+        // dd($data);
 
         return response()->json(['success' => true]);
+
+
     }
     public function destroy_biaya(Request $request)
     {
