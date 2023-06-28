@@ -6,7 +6,6 @@ $("#sticky-header-desktop").height()
 
 var vessel = $("#nama_kapal").html()
 var vessel_code = $("#kode_kapal").html()
-console.log(vessel);
     $("#table_informasi1").DataTable({
         responsive:true,
         stateSave: true,

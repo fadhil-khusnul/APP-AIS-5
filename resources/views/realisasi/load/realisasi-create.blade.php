@@ -92,11 +92,11 @@
                                     <td>:</td>
                                     <td>{{ $planload->pol }}</td>
                                 </tr>
-                                <tr>
+                                {{-- <tr>
                                     <td>POT (Port of Transit)</td>
                                     <td>:</td>
                                     <td>{{ $planload->pot }}</td>
-                                </tr>
+                                </tr> --}}
 
 
                             </table>
@@ -131,19 +131,68 @@
                         <div class="col-md-12 text-center py-4">
                             <label for="inputState" class="form-label"><b>DETAIL KONTAINER :</b></label>
                         </div>
+
+                        <div class="row row-cols-lg-auto py-5 g-3">
+                            <label for="" class="col-form-label">Filter Tabel :</label>
+
+                            <div class="col-6">
+                                <select id="pilih_pod" name="pilih_pod" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POD</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_pot" name="pilih_pot" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POT</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_size" name="pilih_size" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Size</option>
+                                    @foreach ($sizes as $size)
+                                    <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_type" name="pilih_type" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Type</option>
+                                    @foreach ($types as $type)
+                                    <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+
+
+                        </div>
                         <div class="table-responsive">
 
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0" style="width: 100% !important">
+                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center"> </th>
                                         <th class="text-center">POD</th>
-                                        <th class="text-center">Pengirim</th>
-                                        <th class="text-center">Penerima</th>
+                                        <th class="text-center">POT</th>
+                                        <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Size</th>
                                         <th class="text-center">Type</th>
-                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Pengirim</th>
+                                        <th class="text-center">Penerima</th>
                                         <th class="text-center">Seal-Container</th>
                                         <th class="text-center">Cargo (Nama Barang)</th>
 
@@ -174,6 +223,26 @@
                                                     id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
 
                                             </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pot_container[{{ $container->id }}]">{{ old('pot_container', $container->pot_container) }}</label>
+
+                                            </td>
+
+                                            <td>
+
+                                                <label disabled @readonly(true)
+                                                    id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
+
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="type[{{ $container->id }}]">{{ old('type', $container->type) }}</label>
+                                            </td>
 
                                             <td>
                                                 <label disabled @readonly(true)
@@ -186,20 +255,8 @@
                                                     id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
 
                                             </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $container->id }}]">{{ old('size', $container->size) }}</label>
 
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="type[{{ $container->id }}]">{{ old('type', $container->type) }}</label>
-                                            </td>
-                                            <td>
 
-                                                <label disabled @readonly(true)
-                                                    id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
-                                            </td>
                                             <td>
                                                 @if ($sealsc->count() == 1)
                                                     @foreach ($sealsc as $seal)
@@ -269,10 +326,36 @@
                         <div class="col-md-12 text-center">
                             <label for="inputState" class="form-label"><b>ALIH KAPAL</b></label>
                         </div>
+
+                        <div class="row row-cols-lg-auto py-5 g-3">
+                            <label for="" class="col-form-label">Filter Tabel :</label>
+                            <div class="col-6">
+                                <select id="pilih_pot_alih" name="pilih_pot_alih" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POT</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_pod_alih" name="pilih_pod_alih" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POD</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
                         <div class="table-responsive">
 
 
-                        <table id="table_alih_kapal_realisasi" class="table mb-0">
+                        <table id="table_alih_kapal_realisasi" class="table table-bordered table-hover mb-0 seratus">
                             <thead id="thead_alih" class="table-danger">
                                 <tr>
                                     <th class="text-center">No</th>
@@ -285,7 +368,7 @@
                                     <th class="text-center">Code Vessel/Voyage</th>
                                     <th class="text-center">Biaya Alih Kapal</th>
                                     <th class="text-center">Keterangan</th>
-                                    <th class="text-center"></th>
+                                    {{-- <th class="text-center"></th> --}}
                                 </tr>
                             </thead>
                             <tbody id="tbody_alih" class="text-center">
@@ -343,13 +426,13 @@
                                                 {{ $alih->keterangan_alih_kapal }}</label>
 
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <button type="button" id="btn_detail" name="btn_detail"
                                                 class="btn btn-outline-info btn-sm text-nowrap" value="{{ $alih->kontainer_alih }}"
                                                 onclick="detail_update(this)">Detail Kontainer <i
                                                     class="fa fa-eye"></i></button>
 
-                                        </td>
+                                        </td> --}}
 
                                     </tr>
                                 @endforeach
@@ -393,7 +476,40 @@
                             <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
                         </div>
 
-                        <table id="tabel_si" class="table mb-0">
+                        <div class="row row-cols-lg-auto py-5 g-3">
+                            <label for="" class="col-form-label">Filter Tabel :</label>
+                            <div class="col-6">
+                                <select id="pilih_status" name="pilih_status" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Status Approve</option>
+                                    <option value="Belum Approve">Belum Approve</option>
+                                    <option value="Sudah Approve">Sudah Approve</option>
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_status_bl" name="pilih_status_bl" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Status BL</option>
+                                    <option value="Belum BL">Belum BL</option>
+                                    <option value="Sudah BL">Sudah BL</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-6">
+                                <select id="pilih_status_si" name="pilih_status_si" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Jenis SI</option>
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="ALIH-KAPAL">ALIH-KAPAL</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
                             <thead id="thead_alih" class="table-danger">
                                 <tr>
                                     <th class="">No</th>
@@ -474,12 +590,14 @@
                                             @endif
 
                                         </td>
-                                        <td>
+                                        <td class="align-middle text-nowrap">
 
                                             @if ($pdf->status_si == 'Default')
-                                                <span class="badge badge-label-success">NORMAL </span>
+                                            <i class="marker marker-dot text-success"></i>
+                                            NORMAL
                                             @else
-                                                <span class="badge badge-label-primary">ALIH-KAPAL</span>
+                                            <i class="marker marker-dot text-primary"></i>
+                                            ALIH-KAPAL
                                             @endif
                                         </td>
 
@@ -549,6 +667,64 @@
                         <div class="col-md-12 text-center">
                             <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
                         </div>
+
+                        <div class="row row-cols-lg-auto py-5 g-3">
+                            <label for="" class="col-form-label">Filter Tabel :</label>
+
+                            <div class="col-6">
+                                <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Status Container</option>
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="ALIH-KAPAL">ALIH-KAPAL</option>
+
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_pod_if1" name="pilih_pod_if1" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POD</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_pot_if1" name="pilih_pot_if1" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POT</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_size_if1" name="pilih_size_if1" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Size</option>
+                                    @foreach ($sizes as $size)
+                                    <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_type_if1" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Type</option>
+                                    @foreach ($types as $type)
+                                    <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+
+
+                        </div>
                         <div class="table-responsive">
 
                             <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
@@ -562,7 +738,8 @@
                                         <th>POD</th>
                                         <th>POT</th>
                                         <th>VESEEL POT</th>
-                                        <th>Size/Type Container</th>
+                                        <th>Size Container</th>
+                                        <th>Type Container</th>
                                         <th>Nomor Container</th>
                                         <th>Cargo</th>
                                         <th>Seal</th>
@@ -577,15 +754,14 @@
                                     @foreach ($containers as $container)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
+                                        <td class="align-middle text-nowrap">
                                             @if ($container->status == "Alih-Kapal" || $container->status == "Realisasi-Alih" )
-                                            <span class=" badge badge-label-primary">Alih-Kapal</span>
+                                            <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
                                             @elseif ($container->status == "Batal-Muat")
-                                            <span class=" badge badge-label-danger">Batal-Muat</span>
+                                            <i class="marker marker-dot text-danger"></i>BATAL-MUAT
                                             @else
-                                            <span class=" badge badge-label-success">Normal</span>
+                                            <i class="marker marker-dot text-success"></i> NORMAL
                                             @endif
-                                            {{ $container->iteration }}
 
 
                                         </td>
@@ -596,9 +772,10 @@
                                         <td>{{$container->pengirim}}</td>
                                         <td>{{$container->penerima}}</td>
                                         <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>{{$container->pot_container}}</td>
+                                        <td>{{$container->vessel_pot}}</td>
+                                        <td>{{$container->size}}</td>
+                                        <td>{{$container->type}}</td>
                                         <td>{{$container->nomor_kontainer}}</td>
                                         <td>{{$container->cargo}}</td>
                                         <td>
@@ -649,6 +826,35 @@
 
                             </div>
 
+                            <div class="row row-cols-lg-auto py-5 g-3">
+                                <label for="" class="col-form-label">Filter Tabel :</label>
+
+
+                                <div class="col-6">
+                                    <select id="pilih_size_if2" name="pilih_size_if2" class="form-select pilih" onchange="filter_status(this)">
+                                        <option selected disabled>Pilih Size</option>
+                                        @foreach ($sizes as $size)
+                                        <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+                                <div class="col-6">
+                                    <select id="pilih_type_if2" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
+                                        <option selected disabled>Pilih Type</option>
+                                        @foreach ($types as $type)
+                                        <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+
+
+
+                            </div>
+
                             <div class="table-responsive mt-5">
 
 
@@ -657,7 +863,8 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Container</th>
-                                            <th>Size/Type</th>
+                                            <th>Size</th>
+                                            <th>Type</th>
                                             <th>Biaya Stuffing</th>
                                             <th>SPK</th>
                                             <th>Biaya Trucking</th>
@@ -683,7 +890,8 @@
                                             {{$loop->iteration}}
                                         </td>
                                         <td>{{$container->nomor_kontainer}}</td>
-                                        <td>{{$container->size}}/{{$container->type}}</td>
+                                        <td>{{$container->size}}</td>
+                                        <td>{{$container->type}}</td>
                                         <td>@rupiah($container->biaya_stuffing)</td>
                                         <td>@rupiah($container->biaya_stuffing)</td>
                                         <td>@rupiah($container->biaya_trucking)</td>
@@ -692,7 +900,8 @@
                                         <td>@rupiah($container->biaya_thc)</td>
                                         <td>@rupiah($container->freight)</td>
                                         <td>@rupiah($container->lss)</td>
-                                        <td>@if ($biayas->count() == 1)
+                                        <td>@rupiah($container->total_biaya_lain)</td>
+                                        {{-- <td>@if ($biayas->count() == 1)
                                             @foreach ($biayas as $biaya)
                                             @if ($biaya->kontainer_id == $container->id)
                                                     @rupiah($biaya->harga_biaya)
@@ -711,7 +920,7 @@
                                                 @endforeach
                                             </ol>
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             @if ($container->harga_alih != null)
 

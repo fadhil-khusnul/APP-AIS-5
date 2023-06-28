@@ -6,8 +6,11 @@ use App\Models\OngkoSupir;
 use App\Models\SupirMobil;
 use App\Models\VendorMobil;
 use App\Models\RekeningBank;
-use App\Models\ContainerPlanload;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DetailBarangLoad;
+use App\Models\OrderJobPlanload;
+use App\Models\ContainerPlanload;
 
 class OngkoSupirController extends Controller
 {
@@ -136,10 +139,11 @@ class OngkoSupirController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
         $data = [
 
             'pj' => $request->pj,
+            'tanggal_deposit' => $request->tanggal_deposit,
             'nominal' => str_replace('.', '', $request->nominal),
 
         ];
@@ -199,7 +203,6 @@ class OngkoSupirController extends Controller
      */
     public function edit($id)
     {
-        //
         $ongkoSupir = OngkoSupir::find($id);
 
         return response()->json([
@@ -231,18 +234,22 @@ class OngkoSupirController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request);
+
 
         $danas = OngkoSupir::findOrFail($id);
 
         $data = [
             "pj" => $request->pj,
+            "tanggal_deposit" => $request->tanggal_deposit,
             'nominal' => str_replace('.', '', $request->nominal),
         ];
 
         $danas->update($data);
         return response()->json(['success' => true]);
     }
+
+
 
     public function update_rekening(Request $request, $id)
     {
@@ -306,5 +313,79 @@ class OngkoSupirController extends Controller
         return response()->json([
             'success'   => true
         ]);
+    }
+
+    public function print_dana(Request $request, $id){
+
+
+
+
+        // $old_slug = $request->old_slug;
+        // $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
+        // $loads = OrderJobPlanload::where('id', $old_id)->get();
+
+        // $kontainer_id = DetailBarangLoad::where("job_id", $old_id)->distinct()->get('kontainer_id');
+
+
+
+        // for ($i=0; $i <count($kontainer_id) ; $i++) {
+        //     $containers[$i] = ContainerPlanload::where('id', $kontainer_id[$i]->kontainer_id)->get();
+        // }
+        // $new_container = [];
+
+
+        // for($i = 0; $i < count($containers); $i++) {
+        //     $new_container[$i] = [
+        //         'id' => $containers[$i][0]->id,
+        //         'job_id' => $containers[$i][0]->job_id,
+        //         'size' => $containers[$i][0]->size,
+        //         'type' => $containers[$i][0]->type,
+        //         'nomor_kontainer' => $containers[$i][0]->nomor_kontainer,
+        //         'pengirim' => $containers[$i][0]->pengirim,
+        //         'pod_container' => $containers[$i][0]->pod_container,
+
+        //     ];
+
+        // }
+        // // dd($containers[1][0]->nomor_kontainer);
+
+        // $details = DetailBarangLoad::where("job_id", $old_id)->get();
+
+        // // dd($request);
+
+
+        // dd($request, $id);
+
+        $danas = OngkoSupir::find($id);
+        $awal = OngkoSupir::where('id', $id)->value('nominal_awal');
+
+        $containers = ContainerPlanload::where('dana', $id)->get();
+
+        // dd($containers);
+        $total_container = ContainerPlanload::where('dana', $id)->sum('ongkos_supir');
+
+        $sisa = (int)$awal - (int)$total_container;
+
+
+
+
+        $save = 'storage/deposit_report.pdf';
+
+        $pdf1 = Pdf::loadview('pdf.detail.deposit_report',[
+            "danas" => $danas,
+            "report" => "MUATAN",
+            "containers" => $containers,
+            "total_container" => $total_container,
+            "sisa" => $sisa,
+
+
+
+
+        ]);
+        $pdf1->setPaper('A4', 'landscape');
+        $pdf1->save($save);
+        return response()->download($save);
+
+
     }
 }

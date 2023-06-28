@@ -68,6 +68,19 @@
 
 
 }
+
+h3 {
+    font-family: Calibri;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: underline;
+    color:#102b5d;
+    text-align: center;
+
+
+}
 .header-invoice2 {
     position: fixed;
     /* margin-top: 20px; */
@@ -85,7 +98,7 @@
     top: -15px;
     right: -15px;
     /* right: -20px; */
-    width: 18%;
+    width: 15%;
 
 
 }
@@ -260,6 +273,16 @@
 }
 .bank tbody tr {
     color: #0c341d;
+
+
+}
+.bank tfoot tr {
+    color: #0c341d;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #a5d6a7;
+    text-align: right;
+
 
 
 }

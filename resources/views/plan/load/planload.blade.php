@@ -61,8 +61,8 @@
                             <th>Pemilik Barang</th>
                             <th>Activity</th>
                             <th>POL</th>
-                            <th>POT</th>
-                            <th>POD</th>
+                            {{-- <th>POT</th> --}}
+                            {{-- <th>POD</th> --}}
                             <th class="align-top">JUMLAH X (SIZE - TYPE - CARGO CONTAINER)</th>
 
                             <th>Status</th>
@@ -90,12 +90,12 @@
                             <td>
                                 {{$planload->activity}}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{$planload->pol}}
                             </td>
                             <td>
                                 {{$planload->pot}}
-                            </td>
+                            </td> --}}
                             <td>
                                 {{$planload->pod}}
                             </td>

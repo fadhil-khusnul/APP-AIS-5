@@ -611,21 +611,48 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Masukkan Detail Invoice Kontainer</h5>
+                        <h5 class="modal-title">Masukkan Detail Invoice Kontainer :</h5>
+                        <br>
+                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_modal"></h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3">
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Unit Prize :<span
+                            <label class="col-sm-4 col-form-label" for="">Unit Price :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
                                     <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="price_invoice" name="price_invoice" placeholder="Unit Price..." required>
+                                        id="price_invoice" name="price_invoice" placeholder="Unit Price..." onblur="blur_selisih(this)" autofocus required>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Total Biaya Container :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="total_biaya_kontainer" name="total_biaya_kontainer">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="">Selisih :<span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="selisih_price" name="selisih_price">
 
                                 </div>
                             </div>
@@ -634,11 +661,8 @@
                             <label for="" class="col-sm-4 col-form-label">Pilih Kondisi:<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
-
                                 <select data-bs-toggle="tooltip" id="kondisi_invoice" name="kondisi_invoice"
                                     class="form-select" required>
-
-
                                     <option value="DP" @if ('DP') selected @endif>Door to Port
                                     </option>
                                     <option value="DC" @if ('DC') selected @endif>Door to Cy
@@ -654,15 +678,12 @@
                             <label for="" class="col-sm-4 col-form-label">Keterangan :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
-
                                 <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_invoice" name="keterangan_invoice" required>{{ old('keterangan_invoice') }}</textarea>
-
                             </div>
                         </div>
-
-
                     </div>
                     <div class="modal-footer">
+                        <h5 id="total_biaya_kontainer" class="modal-title"></h5>
                         <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
@@ -813,7 +834,6 @@
 
     <div class="modal fade" id="modal_total">
         <div class="modal-dialog modal-dialog-centered">
-
             <form class="modal-content" id="valid_total" name="valid_total">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                 <input type="hidden" name="id_container" id="id_container">

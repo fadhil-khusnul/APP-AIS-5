@@ -840,8 +840,6 @@ $(function () {
 
 function editrekening(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: '/rekening-bank/' + id + '/edit',
@@ -895,7 +893,6 @@ function editrekening(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var oldid = $('#old_id_rekening').val();
@@ -985,7 +982,6 @@ function deleterekening(id) {
 }
 
 function nama_pengirim(ini) {
-    console.log(ini.value);
     let token = $("#csrf").val();
 
     var swal = Swal.mixin({
@@ -1004,8 +1000,6 @@ function nama_pengirim(ini) {
                 _token: token,
             },
             success: function (response) {
-                console.log(response);
-
                 for (let i = 0; i < response.length; i++) {
                     if (response[i] == ini.value) {
 
@@ -1070,8 +1064,6 @@ function nama_pengirim(ini) {
 
 function editCompany(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'company/' + id + '/edit',
@@ -1109,8 +1101,6 @@ function editCompany(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var oldid = $('#old_id_company').val();
@@ -1143,8 +1133,6 @@ function editCompany(e) {
 }
 function ppn_modal(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: '/ppn-edit/'+id,
@@ -1181,7 +1169,6 @@ function ppn_modal(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
 
@@ -1214,8 +1201,6 @@ function ppn_modal(e) {
 }
 function editVendor(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'vendor-mobil/' + id + '/edit',
@@ -1255,7 +1240,6 @@ function editVendor(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var old_id = $('#old_id_vendor').val();
@@ -1289,8 +1273,6 @@ function editVendor(e) {
 
 function editDepo(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'depo/' + id + '/edit',
@@ -1331,7 +1313,6 @@ function editDepo(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_depo').val();
@@ -1366,8 +1347,6 @@ function editDepo(e) {
 
 function editpelabuhan(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'pelabuhan/' + id + '/edit',
@@ -1413,8 +1392,6 @@ function editpelabuhan(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_pelabuhan').val();
@@ -1449,8 +1426,6 @@ function editpelabuhan(e) {
 
 function editpengirim(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'pengirim/' + id + '/edit',
@@ -1517,7 +1492,6 @@ function editpengirim(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_pengirim').val();
@@ -1555,8 +1529,6 @@ function editpengirim(e) {
 
 function editpenerima(e) {
     var id = e.value;
-    console.log(id);
-
 
     $.ajax({
         url: 'penerima/' + id + '/edit',
@@ -1623,8 +1595,6 @@ function editpenerima(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-
-                // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_penerima').val();

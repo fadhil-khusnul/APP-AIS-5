@@ -40,64 +40,70 @@
 
         @foreach ($alihs as $key => $load)
             <div>
-                <table class="sub-judul" border="0" width="100%">
+                <table class="sub-judul" width="100%">
                     <tr class="judul">
-                        <td colspan="5" class="judul">
+                        <td colspan="7" class="judul">
                             SHIPPING INSTRUCTION
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="" width="30%">SHIPPER</td>
+                        <td colspan="3" width="30%">SHIPPER</td>
                         <td width="4%">:</td>
                         <td colspan="3">{{ $shipper }}</td>
                     </tr>
                     <tr>
-                        <td>CONSIGNE</td>
+                        <td colspan="3">CONSIGNE</td>
                         <td>:</td>
                         <td colspan="3">{{ $consigne }}</td>
                     </tr>
                     <tr>
-                        <td>FEEDER</td>
+                        <td colspan="3">FEEDER</td>
                         <td>:</td>
                         <td colspan="3">{{$load->pelayaran_alih}}</td>
                     </tr>
                     <tr>
-                        <td>VESSEL</td>
+                        <td colspan="3">VESSEL</td>
                         <td>:</td>
                         <td colspan="3">{{ $load->vesseL_alih }}</td>
                     </tr>
                     <tr>
-                        <td>VESSEL CODE</td>
+                        <td colspan="3">VESSEL CODE</td>
                         <td>:</td>
                         <td colspan="3">{{ $load->code_vesseL_alih }}</td>
                     </tr>
                     <tr>
-                        <td>QTY</td>
+                        <td colspan="3">QTY</td>
                         <td>:</td>
                         <td colspan="3"></td>
                     </tr>
                     @foreach ($quantity as $quantities)
                     <tr>
-                        <td></td>
+                        <td colspan="3"></td>
                         <td></td>
                         <td colspan="3">{{$quantities}}</td>
                     </tr>
                     @endforeach
                     <tr>
-                        <td>CONTAINER</td>
+                        <td colspan="3">CONTAINER</td>
                         <td>:</td>
                         <td colspan="3"></td>
                     </tr>
 
                     <tr>
-                        <td  align="center" valign="top">NO. CONTAINER</td>
-                        <td colspan="2" align="center" valign="top">SEAL</td>
+                        <td align="right" valign="top"></td>
+                        <td align="center" valign="top">NO.</td>
+                        <td colspan="2" align="center" valign="top">CONTAINER</td>
+                        <td align="center" valign="top">SIZE/TYPE</td>
+                        <td align="center" valign="top">SEAL</td>
                         <td align="center" valign="top">COMMODITY</td>
                     </tr>
                     @foreach ($containers as $container)
                     <tr>
-                        <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
-                        <td colspan="2" align="center" valign="top">
+                        <td align="right" valign="top"></td>
+                        <td align="center" valign="top">{{ $loop->iteration }}.</td>
+                        <td colspan="2" align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
+                        <td align="center" valign="top">{{ $container['size'] }}/{{ $container['type'] }}</td>
+                        <td align="center" valign="top">
                             @foreach ($container['seal'] as $seal)
                                 @if ($loop->iteration < count($container['seal']))
                                     {{ $seal->seal_kontainer }}, &ensp;
@@ -110,31 +116,31 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <td>PORT OF LANDING</td>
+                        <td colspan="3">PORT OF LANDING</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             {{ $load->pol_alih }}
                         </td>
                     </tr>
+
                     <tr>
-                        <td>PORT OF TRANSIT</td>
+                        <td colspan="3">PORT OF TRANSIT</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             @if ($load->pot_alih)
-                            {{ $load->pot_alih }}
+                                {{ $load->pot_alih }}
                             @else
-                            -
+                                -
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <td>PORT OF DISCHARGE</td>
+                        <td colspan="3">PORT OF DISCHARGE</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             {{ $load->pod_alih }}
                         </td>
                     </tr>
-
 
 
                 </table>
@@ -147,64 +153,70 @@
 
         @foreach ($loads as $key => $load)
             <div>
-                <table class="sub-judul" border="0" width="100%">
+                <table class="sub-judul" width="100%">
                     <tr class="judul">
-                        <td colspan="5" class="judul">
+                        <td colspan="7" class="judul">
                             SHIPPING INSTRUCTION
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="" width="30%">SHIPPER</td>
+                        <td colspan="3" width="30%">SHIPPER</td>
                         <td width="4%">:</td>
                         <td colspan="3">{{ $shipper }}</td>
                     </tr>
                     <tr>
-                        <td>CONSIGNE</td>
+                        <td colspan="3">CONSIGNE</td>
                         <td>:</td>
                         <td colspan="3">{{ $consigne }}</td>
                     </tr>
                     <tr>
-                        <td>FEEDER</td>
+                        <td colspan="3">FEEDER</td>
                         <td>:</td>
                         <td colspan="3">{{$load->select_company}}</td>
                     </tr>
                     <tr>
-                        <td>VESSEL</td>
+                        <td colspan="3">VESSEL</td>
                         <td>:</td>
                         <td colspan="3">{{ $load->vessel }}</td>
                     </tr>
                     <tr>
-                        <td>VESSEL CODE</td>
+                        <td colspan="3">VESSEL CODE</td>
                         <td>:</td>
                         <td colspan="3">{{ $load->vessel_code }}</td>
                     </tr>
                     <tr>
-                        <td>QTY</td>
+                        <td colspan="3">QTY</td>
                         <td>:</td>
                         <td colspan="3"></td>
                     </tr>
                     @foreach ($quantity as $quantities)
                     <tr>
-                        <td></td>
+                        <td colspan="3"></td>
                         <td></td>
                         <td colspan="3">{{$quantities}}</td>
                     </tr>
                     @endforeach
                     <tr>
-                        <td>CONTAINER</td>
+                        <td colspan="3">CONTAINER</td>
                         <td>:</td>
                         <td colspan="3"></td>
                     </tr>
 
                     <tr>
-                        <td  align="center" valign="top">NO. CONTAINER</td>
-                        <td colspan="2" align="center" valign="top">SEAL</td>
+                        <td align="right" valign="top"></td>
+                        <td align="center" valign="top">NO.</td>
+                        <td colspan="2" align="center" valign="top">CONTAINER</td>
+                        <td align="center" valign="top">SIZE/TYPE</td>
+                        <td align="center" valign="top">SEAL</td>
                         <td align="center" valign="top">COMMODITY</td>
                     </tr>
                     @foreach ($containers as $container)
                     <tr>
-                        <td align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
-                        <td colspan="2" align="center" valign="top">
+                        <td align="right" valign="top"></td>
+                        <td align="center" valign="top">{{ $loop->iteration }}.</td>
+                        <td colspan="2" align="center" valign="top">{{ $container['nomor_kontainer'] }}</td>
+                        <td align="center" valign="top">{{ $container['size'] }}/{{ $container['type'] }}</td>
+                        <td align="center" valign="top">
                             @foreach ($container['seal'] as $seal)
                                 @if ($loop->iteration < count($container['seal']))
                                     {{ $seal->seal_kontainer }}, &ensp;
@@ -217,17 +229,17 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <td>PORT OF LANDING</td>
+                        <td colspan="3">PORT OF LANDING</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             {{ $load->pol }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>PORT OF TRANSIT</td>
+                        <td colspan="3">PORT OF TRANSIT</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             @if ($load->pot)
                                 {{ $load->pot }}
                             @else
@@ -236,9 +248,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>PORT OF DISCHARGE</td>
+                        <td colspan="3">PORT OF DISCHARGE</td>
                         <td>:</td>
-                        <td>
+                        <td colspan="3">
                             {{ $load->pod }}
                         </td>
                     </tr>

@@ -427,7 +427,6 @@ var spk = $("#input-seal").DataTable({
 
 $('#filter_pelayaran').on("change", function(event) {
     var pelayaran = $('#filter_pelayaran').val();
-    console.log(pelayaran);
     if (pelayaran == null) {
 
         spk.columns(1).search('').draw();

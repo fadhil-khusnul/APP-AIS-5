@@ -224,6 +224,14 @@ function detail(e) {
                     allowClear: true,
                     dropdownParent: $("#modal-job"),
                 });
+            $("#pot_container")
+                .val(response.result.pot_container)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih POT",
+                    allowClear: true,
+                    dropdownParent: $("#modal-job"),
+                });
 
             $("#driver")
                 .val(response.result.driver)

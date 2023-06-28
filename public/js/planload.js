@@ -95,7 +95,7 @@ function CreateJobPlanload() {
             let vessel = document.getElementById("vessel").value;
             let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
-            let pot = document.getElementById("POT_1").value;
+            // let pot = document.getElementById("POT_1").value;
             // let pod = document.getElementById("POD_1").value;
 
 
@@ -119,7 +119,7 @@ function CreateJobPlanload() {
             fd.append("vessel_code", vessel_code);
             fd.append("vessel", vessel);
             fd.append("pol", pol);
-            fd.append("pot", pot);
+            // fd.append("pot", pot);
             // fd.append("pod", pod);
             fd.append("tambah", tambah);
 
@@ -278,7 +278,7 @@ function UpdateteJobPlanload() {
             let vessel = document.getElementById("vessel").value;
             let vessel_code = document.getElementById("vessel_code").value;
             let pol = document.getElementById("POL_1").value;
-            let pot = document.getElementById("POT_1").value;
+            // let pot = document.getElementById("POT_1").value;
             // let pod = document.getElementById("POD_1").value;
             let old_slug = document.getElementById("old_slug").value;
 
@@ -301,7 +301,7 @@ function UpdateteJobPlanload() {
             fd.append("vessel", vessel);
             fd.append("vessel_code", vessel_code);
             fd.append("pol", pol);
-            fd.append("pot", pot);
+            // fd.append("pot", pot);
             // fd.append("pod", pod);
             fd.append("old_slug", old_slug);
             var table_container = document.getElementById("table_container");

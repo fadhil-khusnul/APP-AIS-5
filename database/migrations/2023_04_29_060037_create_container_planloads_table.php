@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('type');
             $table->string('cargo');
             $table->string('pot_container')->nullable();
-            $table->string('pot_container')->nullable();
             $table->string('vessel_pot')->nullable();
             $table->string('kode_vessel_pot')->nullable();
             $table->string('pengirim')->nullable();

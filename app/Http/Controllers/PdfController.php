@@ -556,6 +556,10 @@ class PdfController extends Controller
         $status = [
             "status"=> "Process-Load",
         ];
+        $status1 = [
+            "status"=> "Process-Load",
+            "slug"=> null,
+        ];
 
         $deletefiles = Storage::delete('public/si-container/'.$path.'.pdf');
         Storage::delete('public/si-container/'.$path.'-ditolak.pdf');
@@ -564,7 +568,7 @@ class PdfController extends Controller
 
 
         $job = OrderJobPlanload::where('id', $job_id)->update($status);
-        $container = ContainerPlanload::where('slug', $container_id)->update($status);
+        $container = ContainerPlanload::where('slug', $container_id)->update($status1);
 
         $pdf->delete();
 

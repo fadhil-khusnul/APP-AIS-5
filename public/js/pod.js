@@ -1,3 +1,13 @@
+var realisasiload_create = $("#realisasiload_create").DataTable({
+    responsive:true,
+    pageLength : 5,
+    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    fixedHeader: {
+        header:true,
+    },
+    // scroller: true,
+
+});
 function biaya_do(e) {
     var id = e.value;
     console.log(id);

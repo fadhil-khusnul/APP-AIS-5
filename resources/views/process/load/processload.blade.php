@@ -26,7 +26,7 @@
                                     <th>Shipping Company</th>
                                     <th>Activity</th>
                                     <th>POL</th>
-                                    <th>POT</th>
+                                    {{-- <th>POT</th> --}}
 
 
                                     <th class="align-top"> Jumlah Kontainer :</th>
@@ -87,9 +87,9 @@
                                         <td>
                                             {{$planload->pol}}
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             {{$planload->pot}}
-                                        </td>
+                                        </td> --}}
 
 
                                         <td align="top" valign="top">

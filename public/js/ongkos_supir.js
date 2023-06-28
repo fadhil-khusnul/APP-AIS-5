@@ -37,11 +37,23 @@ $(function () {
                 var nominal = $("#nominal").val();
                 var token = $('#csrf').val();
 
+                let tanggal_deposit = document.getElementById("tanggal_deposit").value;
+                var tempDate;
+                var formattedDate;
+
+                tempDate = new Date(tanggal_deposit);
+                formattedDate = [
+                    tempDate.getFullYear(),
+                    tempDate.getMonth() + 1,
+                    tempDate.getDate(),
+                ].join("-");
+
 
                 var data = {
                     "_token": token,
                     "pj": pj,
                     "nominal": nominal,
+                    "tanggal_deposit": formattedDate,
                 }
 
                 $.ajax({
@@ -125,8 +137,15 @@ function editdana(e) {
         success: function (response) {
             $('#modal-dana-edit').modal('show');
 
+            var old_tanggal_result = moment(
+                response.result.tanggal_deposit,
+                "YYYY-MM-DD"
+            ).format("dddd, DD MMMM YYYY");
+
+            $('#new_id').val(response.result.id);
             $('#pj_edit').val(response.result.pj);
             $('#nominal_edit').val(response.result.nominal);
+            $('#tanggal_deposit_update').val(old_tanggal_result);
 
             $('#valid_dana_edit').validate({
                 rules: {
@@ -165,14 +184,28 @@ function editdana(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var token = $('#csrf').val();
+                    var new_id = $('#new_id').val();
+                    console.log(new_id, id);
+
+                    let tanggal_deposit = document.getElementById("tanggal_deposit_update").value;
+                    var tempDate;
+                    var formattedDate;
+
+                    tempDate = new Date(tanggal_deposit);
+                    formattedDate = [
+                        tempDate.getFullYear(),
+                        tempDate.getMonth() + 1,
+                        tempDate.getDate(),
+                    ].join("-");
 
                     $.ajax({
-                        url: 'ongkos-supir/' + id,
+                        url: 'ongkos-supir/' + new_id,
                         type: 'PUT',
                         data: {
                             "_token": token,
                             pj: $('#pj_edit').val(),
                             nominal: $('#nominal_edit').val(),
+                            tanggal_deposit: formattedDate,
                         },
                         success: function (response) {
                             swal.fire({
@@ -309,6 +342,76 @@ function deletedana(id) {
                     icon: "error",
                     timer: 2e3,
                     showConfirmButton: false
+                });
+            }
+        });
+}
+function printdana(id) {
+    var id_dana = id.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1" },
+            buttonsStyling: false
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    swal.fire({
+        title: " Ingin Mencetak Report Deposit?",
+        text: "Silahkan Periksa Semua Data yang ada Sebelum Mencetak.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    })
+        .then((willCreate) => {
+            if (willCreate.isConfirmed) {
+
+                var data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': id_dana,
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/print-dana/" + id_dana,
+                    data: data,
+                    xhrFields: {
+                        responseType: "blob",
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        toast.fire({
+                            icon: "success",
+                            title: "Report Deposit Didownload",
+                        });
+                        var blob = new Blob([response]);
+                        var link = document.createElement("a");
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = "deposit_report.pdf";
+                        link.click();
+
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 10);
+                    },
+                });
+            } else {
+                toast.fire({
+                    title: "Report Deposit Tidak Didownload",
+                    icon: "error",
                 });
             }
         });

@@ -8,6 +8,26 @@ var tabelvendor = $("#realisasiload_create").DataTable({
     // scroller: true,
 
 });
+var table_alih_kapal_realisasi = $("#table_alih_kapal_realisasi").DataTable({
+    responsive:true,
+    pageLength : 5,
+    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    fixedHeader: {
+        header:true,
+    },
+    // scroller: true,
+
+});
+var tabel_si = $("#tabel_si").DataTable({
+    responsive:true,
+    pageLength : 5,
+    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    fixedHeader: {
+        header:true,
+    },
+    // scroller: true,
+
+});
 function pdf_si() {
     var swal = Swal.mixin({
         customClass: {
@@ -85,8 +105,6 @@ function pdf_si() {
                     d.getMinutes(),
                     d.getSeconds(),
                 ].join("-");
-
-            console.log(chek_container);
 
             swal.fire({
                 title: " Buat SI Untuk Job Load ini?",
@@ -182,7 +200,6 @@ function pdf_si() {
                                 // seal: seal,
                                 status_si: "Default",
                             };
-                            // console.log(data);
 
                             $.ajax({
                                 type: "POST",
@@ -192,7 +209,6 @@ function pdf_si() {
                                     responseType: "blob",
                                 },
                                 success: function (response) {
-                                    // console.log(response);
                                     toast.fire({
                                         icon: "success",
                                         title: "SI Berhasil Dibuat",
@@ -319,7 +335,6 @@ function pdf_si_alih() {
                             d.getMinutes(),
                             d.getSeconds(),
                         ].join('-');
-                        console.log(chek_container);
                         swal.fire({
                             title: " Buat SI Untuk Job Load ini?",
                             text: "Silahkan Periksa Semua Data yang ada Sebelum Membuat Shipping Container (SI).",
@@ -365,7 +380,6 @@ function pdf_si_alih() {
                                         var consigne = $('#consigne').val();
                                         var old_slug = $('#old_slug').val();
                                         // var slug_container = $('#slug_container').val();
-                                        console.log(chek_container);
                                         var data = {
                                             "_token": token,
                                             'chek_container': chek_container,
@@ -374,7 +388,6 @@ function pdf_si_alih() {
                                             'old_slug': old_slug,
                                             'status_si': "Alih-Kapal",
                                         };
-                                        // console.log(data);
                                         $.ajax({
                                             type: "POST",
                                             url: '/create-si-alih',
@@ -383,7 +396,6 @@ function pdf_si_alih() {
                                                 responseType: 'blob'
                                             },
                                             success: function (response) {
-                                                // console.log(response);
                                                 toast.fire({
                                                     icon: "success",
                                                     title: "SI Berhasil Dibuat"
@@ -509,7 +521,6 @@ function input_bl(e) {
                         nomor_bl: nomor_bl,
                         tanggal_bl: formattedDate,
                     };
-                    // console.log(data);
 
                     $.ajax({
                         type: "POST",
@@ -517,7 +528,6 @@ function input_bl(e) {
                         data: data,
 
                         success: function (response) {
-                            // console.log(response);
                             toast
                                 .fire({
                                     icon: "success",
@@ -573,11 +583,6 @@ function update_bl(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            console.log(new_id);
-
-
-
-
             $("#modal-bl-edit").modal("show");
 
             $("#id_container").val(response.result.id);
@@ -633,7 +638,6 @@ function update_bl(e) {
                         nomor_bl: nomor_bl,
                         tanggal_bl: formattedDate,
                     };
-                    // console.log(data);
 
                     $.ajax({
                         type: "POST",
@@ -641,7 +645,6 @@ function update_bl(e) {
                         data: data,
 
                         success: function (response) {
-                            // console.log(response);
                             toast
                                 .fire({
                                     icon: "success",
@@ -785,7 +788,6 @@ function tolak_si(ini) {
 
 function detail_update(e) {
     let id = e.value;
-    console.log(id);
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-success btn-wide mx-1",
@@ -800,7 +802,6 @@ function detail_update(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            console.log(new_id);
 
             var seals = [""];
             var spk = [""];
@@ -822,7 +823,6 @@ function detail_update(e) {
                     response.supirs[i].nomor_polisi +
                     "</option>";
             }
-            console.log(seals);
             $("#modal-job-update").modal("show");
 
             $("#size_update").val(response.result.size);
@@ -846,9 +846,6 @@ function detail_update(e) {
                 .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
 
                     var element = e.params.data.element;
                     var $element = $(element);
@@ -867,10 +864,8 @@ function detail_update(e) {
                             _token: token,
                         },
                         success: function (response) {
-                            // console.log(seals);
                             var seal = $("#seal_update").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -891,7 +886,6 @@ function detail_update(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
@@ -916,9 +910,6 @@ function detail_update(e) {
                 .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
 
                     var element = e.params.data.element;
                     var $element = $(element);
@@ -937,10 +928,8 @@ function detail_update(e) {
                             _token: token,
                         },
                         success: function (response) {
-                            // console.log(seals);
                             var seal = $("#spk_update").val();
                             var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
                             var count_seal = response.length;
                             var seal_already = [];
                             for (var i = 0; i < count_seal; i++) {
@@ -961,7 +950,6 @@ function detail_update(e) {
                                                 last_seal +
                                                 '"]'
                                         );
-                                        console.log(wanted_option);
 
                                         wanted_option.prop("selected", false);
                                         // $(this).trigger("change.select2");
@@ -1092,11 +1080,8 @@ function detail_update(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                // console.log();
                 submitHandler: function (form) {
                     var new_id = document.getElementById("new_id_update").value;
-                    console.log(new_id);
-                    console.log(id);
                     var token = $("#csrf").val();
 
                     let date_activity = document.getElementById(
@@ -1106,7 +1091,6 @@ function detail_update(e) {
                     var formattedDate;
 
                     tempDate = new Date(date_activity);
-                    console.log(tempDate);
                     formattedDate = [
                         tempDate.getFullYear(),
                         tempDate.getMonth() + 1,

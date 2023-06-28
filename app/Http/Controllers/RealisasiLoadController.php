@@ -107,7 +107,7 @@ class RealisasiLoadController extends Controller
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
-        $pod = Pelabuhan::all();
+        $pelabuhans = Pelabuhan::all();
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
@@ -143,7 +143,7 @@ class RealisasiLoadController extends Controller
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
-            'pod' => $pod,
+            'pelabuhans' => $pelabuhans,
             'pengirims' => $pengirim,
             'penerimas' => $penerima,
             'kontainers' => $kontainer,
@@ -176,6 +176,7 @@ class RealisasiLoadController extends Controller
         $pol = Pelabuhan::all();
         $pot = Pelabuhan::all();
         $pod = Pelabuhan::all();
+        $pelabuhans = Pelabuhan::all();
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
@@ -218,6 +219,7 @@ class RealisasiLoadController extends Controller
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
+            'pelabuhans' => $pelabuhans,
             'pengirims' => $pengirim,
             'penerimas' => $penerima,
             'kontainers' => $kontainer,

@@ -113,19 +113,20 @@ class ProcessLoadController extends Controller
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih')
                 ->orWhereNull('status');
-        })->get();
+        })->whereNull('slug')->get();
 
-        $containers_info = ContainerPlanload::where('job_id', $id)->get();
+        $containers_info = ContainerPlanload::where('job_id', $id)->whereNull('slug')->get();
 
 
 
         $container_batal = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', 'Batal-Muat')
                 ;
-        })->get();
+        })->whereNull('slug')->get();
 
-        $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->get();
-        $select_barang = ContainerPlanload::where('job_id', $id)->whereNull('status_barang')->whereNotNull('status')->get();
+        $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->whereNull('slug')->get();
+        $select_biaya = ContainerPlanload::where('job_id', $id)->where('total_biaya_lain', 0)->whereNotNull('status')->whereNull('slug')->get();
+        $select_barang = ContainerPlanload::where('job_id', $id)->whereNull('status_barang')->whereNotNull('status')->whereNull('slug')->get();
         // dd($containers);
 
         $containers_alih = ContainerPlanload::where('job_id', $id)->where(function($query) {
@@ -134,7 +135,7 @@ class ProcessLoadController extends Controller
             ->where('status', '!=', 'Realisasi-Alih')
             ->where('status', '!=', 'Realisasi')
                 ->whereNotNull('status');
-        })->get();
+        })->whereNull('slug')->get();
 
 
         $alihs = AlihKapal::where('job_id', $id)->get();
@@ -162,12 +163,15 @@ class ProcessLoadController extends Controller
                     'nomor_kontainer' => $containers_barang[$i][0]->nomor_kontainer,
                     'pengirim' => $containers_barang[$i][0]->pengirim,
                     'pod_container' => $containers_barang[$i][0]->pod_container,
+                    'slug' => $containers_barang[$i][0]->slug,
 
                 ];
 
             }
         }
         $id_biaya = BiayaLainnya::where("job_id", $id)->distinct()->get('kontainer_id');
+
+        // dd($id_biaya);
         $containers_biaya = [];
         $new_container_biaya = [];
         if ($id_biaya != null) {
@@ -186,11 +190,16 @@ class ProcessLoadController extends Controller
                     'total_biaya_lain' => $containers_biaya[$i][0]->total_biaya_lain,
                     'pengirim' => $containers_biaya[$i][0]->pengirim,
                     'pod_container' => $containers_biaya[$i][0]->pod_container,
+                    'slug' => $containers_biaya[$i][0]->slug
 
                 ];
 
             }
         }
+
+
+        $new_container = collect($new_container)->whereNull('slug');
+        $new_container_biaya = collect($new_container_biaya)->whereNull('slug');
 
 
 
@@ -206,6 +215,7 @@ class ProcessLoadController extends Controller
             'spks_edit' => $spks_edit,
             'sealsc' => $sealsc,
             'select_barang' => $select_barang,
+            'select_biaya' => $select_biaya,
             'seals_edit' => $seals_edit,
             'shippingcompany' => $shipping_company,
             'shipping_companys' => $shipping_companys,
@@ -700,18 +710,19 @@ class ProcessLoadController extends Controller
     public function destroy_biaya(Request $request)
     {
 
+        // dd($request);
 
-        $id_container = BiayaLainnya::where('id', $request->id)->value('kontainer_id');
-        $id_biaya = BiayaLainnya::find($request->id);
-        $container = ContainerPlanload::find($id_container);
+
+        $container = ContainerPlanload::find($request->id);
 
         $data = [
             "status" => "Process-Load",
+            "total_biaya_lain" => 0,
         ];
 
         $container->update($data);
 
-        $id_biaya->delete();
+        BiayaLainnya::where('kontainer_id', $request->id)->delete();
 
 
         return response()->json([

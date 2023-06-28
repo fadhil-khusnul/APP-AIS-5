@@ -62,6 +62,76 @@
             <div class="col-md-12">
                 <div class="portlet">
 
+                    <div class="portlet-body py-5">
+
+
+
+                        <div class="col-md-12 text-center mb-3">
+                            <h3 style="margin-left: auto !important; margin-right:auto !important"
+                                class="portlet-title text-center"> {{ $planload->vessel }} ( {{ $planload->select_company }}
+                                )</h3>
+                        </div>
+                        <div class="col-md-12 mb-3 table-responsive">
+                            <table border="0" style="margin-left: auto; margin-right:auto">
+                                <tr>
+                                    <td width="47%">Vessel/Voyage</td>
+                                    <td width="3%">:</td>
+                                    <td width="50%" id="nama_kapal">{{ $planload->vessel }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Vessel Code</td>
+                                    <td>:</td>
+                                    <td id="kode_kapal">{{ $planload->vessel_code }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping Company</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->select_company }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Activity</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->activity }}</td>
+                                </tr>
+                                <tr>
+                                    <td>POL (Port of Loading)</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->pol }}</td>
+                                </tr>
+                                {{-- <tr>
+                                    <td>POT (Port of Transit)</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->pot }}</td>
+                                </tr> --}}
+
+
+                            </table>
+                            <div class="text-center mt-3">
+                                <a href="/realisasi-load-create/{{ $planload->slug }}"
+                                    class="btn btn-success "><i
+                                    class="fa fa-arrow-left"></i> Back to Realisasi (POL)
+                                </a>
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <!-- END Form -->
+
+
+                    </div>
+                    <!-- BEGIN Portlet -->
+
+                    <!-- END Portlet -->
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="portlet">
+
                     <div class="portlet-body">
                         <div class="col-auto">
 
@@ -71,18 +141,68 @@
                         <div class="col-md-12 text-center">
                             <label for="inputState" class="form-label"><b>KONTAINER <b class="text-danger">NON</b> ALIH-KAPAL:</b></label>
                         </div>
+
+                        <div class="row row-cols-lg-auto py-5 g-3">
+                            <label for="" class="col-form-label">Filter Tabel :</label>
+
+                            <div class="col-6">
+                                <select id="pilih_pod" name="pilih_pod" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POD</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_pot" name="pilih_pot" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih POT</option>
+                                    @foreach ($pelabuhans as $pelabuhan)
+                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_size" name="pilih_size" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Size</option>
+                                    @foreach ($sizes as $size)
+                                    <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_type" name="pilih_type" class="form-select pilih" onchange="filter_status(this)">
+                                    <option selected disabled>Pilih Type</option>
+                                    @foreach ($types as $type)
+                                    <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+
+
+
+                        </div>
                         <div class="table-responsive">
 
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered mb-0">
+                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="">Input Biaya POD</th>
                                         <th class="text-center">POD</th>
+                                        <th class="text-center">POT</th>
+                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Size</th>
+                                        <th class="text-center">Type</th>
                                         <th class="text-center">Pengirim</th>
                                         <th class="text-center">Penerima</th>
-                                        <th class="text-center">Size/Type</th>
-                                        <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Seal-Container</th>
                                         <th class="text-center">Cargo (Nama Barang)</th>
                                     </tr>
@@ -113,20 +233,29 @@
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
+                                                    id="pot_container[{{ $container->id }}]">{{ old('pot_container', $container->pot_container) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $container->id }}]">{{ $container->size }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="type[{{ $container->id }}]">{{$container->type}}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
                                                     id="pengirim[{{ $container->id }}]">{{ old('pengirim', $container->pengirim) }}</label>
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
                                             </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $container->id }}]">{{ $container->size }}/{{$container->type}}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
-                                            </td>
+
                                             <td>
                                                 @if ($sealsc->count() == 1)
                                                     @foreach ($sealsc as $seal)
@@ -1131,6 +1260,10 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
+
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+
 
     <script type="text/javascript" src="{{ asset('/') }}./js/pod.js"></script>
 

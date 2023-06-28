@@ -13,6 +13,21 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
     // scroller: true,
 });
 
+var check = tabelvendor.$(".check-container1", { page: "all" });
+
+$("#add_biaya").attr("disabled", "disabled");
+check.click(function() {
+    if ($(this).is(":checked")) {
+        $("#add_biaya").removeAttr("disabled");
+    } else {
+        $("#add_biaya").attr("disabled", "disabled");
+    }
+});
+
+
+
+
+
 // var start_date;
 // var end_date;
 // var DateFilterFunction = function (oSettings, aData, iDataIndex) {

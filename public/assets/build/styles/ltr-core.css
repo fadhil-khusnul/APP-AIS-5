@@ -13949,6 +13949,10 @@ body.preload-hide .preload {
     left:33px;
     z-index:1;
 }
+.seratus {
+    width: 100% !important;
+}
+
 
 
 /*# sourceMappingURL=ltr-core.css.map */

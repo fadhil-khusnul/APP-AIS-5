@@ -357,34 +357,6 @@
 
     <script type="text/javascript" >
 
-
-
-
-        $(document).ready(function() {
-
-
-            var check = $(".check-container1");
-
-            $("#add_biaya").attr("disabled", "disabled");
-            check.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#add_biaya").removeAttr("disabled");
-                } else {
-                    $("#add_biaya").attr("disabled", "disabled");
-                }
-            });
-
-
-
-        });
-
-
-
-
-
-
-
-
         $('.modal>.modal-dialog').draggable({
                 cursor: 'move',
                 handle: '.modal-header, .modal-footer'
@@ -394,7 +366,7 @@
 
     </script>
 
-  
+
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/vendor_truck.js"></script>
 

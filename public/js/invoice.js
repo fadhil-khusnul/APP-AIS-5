@@ -1,47 +1,44 @@
 var tabel_invoice = $("#tabel_si").DataTable({
-    responsive:true,
-    paging:true,
-    fixedHeader:
-    {
-        header:true,
-
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
     },
-    pageLength : 5,
-    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
 
     // scroller: true,P
-
 });
 
+// Event listener to the two range filtering inputs to redraw on input
+$("#min, #max").change(function () {
+    var min = $("#min").val();
+    var max = $("#max").val();
 
-    // Event listener to the two range filtering inputs to redraw on input
-    $('#min, #max').change(function() {
+    console.log(min, max);
+    tabel_invoice.draw();
+});
 
-        var min = $('#min').val();
-        var max = $('#max').val();
+$.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    var min = $("#min").val();
+    var max = $("#max").val();
 
-        console.log(min, max);
-        tabel_invoice.draw();
-    });
+    console.log("inii" + max, min);
+    var createdAt = data[4] || 0; // Our date column in the table
 
-
-    $.fn.dataTable.ext.search.push(
-        function(settings, data, dataIndex) {
-          var min = $('#min').val();
-          var max = $('#max').val();
-
-          console.log("inii"+ max, min);
-          var createdAt = data[4] || 0; // Our date column in the table
-
-          if (
-            (min == "" || max == "") ||
-            (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
-          ) {
-            return true;
-          }
-          return false;
-        }
-      );
+    if (
+        min == "" ||
+        max == "" ||
+        (moment(createdAt).isSameOrAfter(min) &&
+            moment(createdAt).isSameOrBefore(max))
+    ) {
+        return true;
+    }
+    return false;
+});
 
 function input_invoice(e) {
     var id = e.value;
@@ -81,9 +78,23 @@ function input_invoice(e) {
                 success: function (response) {
                     let new_id = id;
                     console.log(new_id);
+                    console.log(response);
                     $("#modal_invoice").modal("show");
 
                     $("#id_container").val(response.result.id);
+                    $("#nomor_kontainer_modal").html(
+                        response.result.nomor_kontainer
+                    );
+                    var total_biaya_kontainer =
+                        parseFloat(response.result.biaya_stuffing) +
+                        parseFloat(response.result.biaya_trucking) +
+                        parseFloat(response.result.ongkos_supir) +
+                        parseFloat(response.result.total_biaya_lain) +
+                        parseFloat(response.result.biaya_thc) +
+                        parseFloat(response.result.biaya_seal) +
+                        parseFloat(response.result.freight) +
+                        parseFloat(response.result.lss);
+                    $("#total_biaya_kontainer").val(total_biaya_kontainer);
 
                     $("#valid_invoice").validate({
                         highlight: function highlight(
@@ -333,11 +344,9 @@ function pdf_invoice() {
             var old_slug = $("#old_slug").val();
 
             var d = new Date(),
-                dformat = [
-                    d.getFullYear(),
-                    d.getMonth() + 1,
-                    d.getDate(),
-                ].join("-");
+                dformat = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join(
+                    "-"
+                );
 
             console.log(check_container);
 
@@ -441,14 +450,25 @@ function pdf_invoice() {
 
                                                 var data = {
                                                     _token: token,
-                                                    check_container: check_container,
+                                                    check_container:
+                                                        check_container,
                                                     old_slug: old_slug,
-                                                    nomor_invoice: nomor_invoice,
+                                                    nomor_invoice:
+                                                        nomor_invoice,
                                                     tahun: tahun,
                                                     tanggal: tanggal,
-                                                    ppn: $('#ppn:checked').val(),
-                                                    materai: $('#materai:checked').val(),
-                                                    value_materai: $('#value_materai').val().replace(/\./g, ""),
+                                                    ppn: $(
+                                                        "#ppn:checked"
+                                                    ).val(),
+                                                    materai:
+                                                        $(
+                                                            "#materai:checked"
+                                                        ).val(),
+                                                    value_materai: $(
+                                                        "#value_materai"
+                                                    )
+                                                        .val()
+                                                        .replace(/\./g, ""),
                                                     yth: yth,
                                                     km: km,
                                                     status: "Default",
@@ -634,10 +654,11 @@ function bayar() {
 
         // tabelvendor.search(search).draw();
         if (willCreate.isConfirmed) {
+            var ids = [];
 
-            var ids = []
-
-            var rowcollection =  tabel_invoice.$(".check-container2:checked", {"page": "all"});
+            var rowcollection = tabel_invoice.$(".check-container2:checked", {
+                page: "all",
+            });
             rowcollection.each(function (index, elem) {
                 ids.push($(elem).val());
             });
@@ -673,8 +694,6 @@ function bayar() {
                     Selisih = tandaPemisahTitik(Selisih);
 
                     $("#selisih").html("Rp. " + Selisih);
-
-
 
                     // console.log(id_container);
                     // console.log(response);
@@ -772,4 +791,13 @@ function blur_terbayar(ini) {
             ini.value = "";
         });
     }
+}
+
+function blur_selisih(ini) {
+    var unit_price = ini.value.replace(/\./g, "");
+    unit_price = parseFloat(unit_price);
+    var total_biaya_kontainer = $("#total_biaya_kontainer").val().replace(/\./g, "");
+    total_biaya_kontainer = parseFloat(total_biaya_kontainer);
+    var selisih = unit_price - total_biaya_kontainer;
+    $("#selisih_price").val(selisih);
 }

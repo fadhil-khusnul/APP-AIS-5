@@ -12,6 +12,14 @@
                 <div class="portlet-body">
 
                     <form class="row g-3" id="valid_dana" name="valid_dana">
+
+                        <div class="col-md-12">
+                            <div class="validation-container">
+                                <label for="" class="form-label">Masukkan Tanggal Deposit :</label>
+                                <input id="tanggal_deposit" name="tanggal_deposit" type="text" placeholder="Tanggal Deposit" class="form-control date_activity"
+                                    required>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Masukkan Nama Penanggung Jawab :</label>
@@ -20,6 +28,7 @@
                                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                             </div>
                         </div>
+
                         <div class="col-md-12">
 
                             <div class="validation-container">
@@ -59,8 +68,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal Deposit</th>
                                 <th>Penanggung Jawab</th>
-                                <th>Dana Ongkos Supir</th>
+                                <th>Dana Awal</th>
+                                <th>Dana Sisa</th>
                                 <th class="text-center">Aksi</th>
 
                             </tr>
@@ -72,12 +83,22 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     <td>
+                                        {{ \Carbon\Carbon::parse($dana->tanggal_deposit)->isoFormat('dddd, DD MMMM YYYY') }}
+                                    </td>
+                                    <td>
                                         {{ $dana->pj }}
+                                    </td>
+                                    <td>
+                                        @rupiah($dana->nominal_awal)
                                     </td>
                                     <td>
                                         @rupiah($dana->nominal)
                                     </td>
-                                    <td class="text-center"><button onclick="editdana(this)" value="{{ $dana->id }}"
+                                    <td class="text-center">
+                                        <button onclick="printdana(this)" value="{{ $dana->id }}" type="button"
+                                            class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
+                                                class="fa fa-print"></i></button>
+                                        <button onclick="editdana(this)" value="{{ $dana->id }}"
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
@@ -108,23 +129,39 @@
         <div class="modal-dialog">
             <form action="#" name="valid_dana_edit" id="valid_dana_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="new_id" id="new_id">
 
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data Pelabuhan</h5>
+                    <h5 class="modal-title">Edit Data Deposit</h5>
                     <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label class="form-label" for="area_code">Nama Penanggung Jawab</label>
-                        <input class="form-control" id="pj_edit" name="pj_edit" type="text">
+
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" for="">Masukkan Tanggal Deposit :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input id="tanggal_deposit_update" name="tanggal_deposit_update" type="text" placeholder="Tanggal Deposit" class="form-control date_activity"
+                                required>
+                        </div>
                     </div>
-                    <div>
-                        <label class="form-label" for="email">Nominal</label>
-                        <input class="form-control" id="nominal_edit" name="nominal_edit" type="text" onkeydown="return numbersonly(this, event);" onkeyup="javascript:tandaPemisahTitik(this);">
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label"for="area_code">Nama Penanggung Jawab :</label>
+                        <div class="col-sm-8 validation-container">
+                        <input class="form-control" id="pj_edit" name="pj_edit" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label" for="email">Nominal :</label>
+                        <div class="col-sm-8 validation-container">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text" for="">Rp.</span>
+                                <input class="form-control currency-rupiah" id="nominal_edit" name="nominal_edit" type="text">
+                            </div>
+                        </div>
                     </div>
 
                 </div>

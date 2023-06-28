@@ -268,6 +268,7 @@ Route::post('/kontainer-dibayar', [OngkoSupirController::class, 'dibayar']);
 Route::post('/get-selisih-load', [OngkoSupirController::class, 'selisih']);
 
 Route::get('/ongkos-supir/{id}/edit', [OngkoSupirController::class, 'edit']);
+Route::post('/print-dana/{id}', [OngkoSupirController::class, 'print_dana']);
 Route::put('/ongkos-supir/{id}', [OngkoSupirController::class, 'update']);
 Route::delete('/ongkos-supir/{id}', [OngkoSupirController::class, 'destroy']);
 //REKENING BANK

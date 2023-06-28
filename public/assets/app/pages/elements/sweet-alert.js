@@ -24,7 +24,7 @@ $(function(){
             b.textContent=swal.getTimerLeft()},100
             )},
             willClose:function willClose(){
-                clearInterval(timerInterval)}}).then(function(result){if(result.dismiss===swal.DismissReason.timer){console.log("I was closed by the timer")}
+                clearInterval(timerInterval)}}).then(function(result){if(result.dismiss===swal.DismissReason.timer)
             })
             })
 
