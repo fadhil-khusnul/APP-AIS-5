@@ -2244,12 +2244,12 @@ textarea.form-control-lg {
   filter: brightness(90%);
 }
 .form-check-input:focus {
-  border-color: #2196f3;
+  border-color: #4caf50;
   outline: 0;
 }
 .form-check-input:checked {
-  background-color: #2196f3;
-  border-color: #2196f3;
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 .form-check-input:checked[type=checkbox] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
@@ -2259,8 +2259,8 @@ textarea.form-control-lg {
 }
 .form-check-input[type=checkbox]:indeterminate {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
-  background-color: #2196f3;
-  border-color: #2196f3;
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 .form-check-input:disabled {
   pointer-events: none;
@@ -3024,7 +3024,7 @@ body.preload-hide .preload {
 }
 
 .table-success {
-  --bs-table-bg: rgb(175, 219, 176);
+  --bs-table-bg: rgb(114 199 122 / 43%);
   --bs-table-striped-bg: rgb(76, 175, 79);
   --bs-table-active-bg: rgb(76, 175, 79);
   --bs-table-hover-bg: rgb(76, 175, 79);
@@ -3044,7 +3044,7 @@ body.preload-hide .preload {
 }
 
 .table-warning {
-  --bs-table-bg: rgba(255, 235, 59, 0.1);
+  --bs-table-bg: rgb(255 236 68 / 26%);
   --bs-table-striped-bg: rgba(255, 235, 59, 0.3);
   --bs-table-active-bg: rgba(255, 235, 59, 0.7);
   --bs-table-hover-bg: rgba(255, 235, 59, 0.5);
@@ -3054,7 +3054,7 @@ body.preload-hide .preload {
 }
 
 .table-danger {
-  --bs-table-bg: rgb(255, 183, 178);
+  --bs-table-bg: rgb(241 86 86 / 38%);
   --bs-table-striped-bg: rgba(244, 67, 54, 0.3);
   --bs-table-active-bg: rgba(244, 67, 54, 0.7);
   --bs-table-hover-bg: rgba(244, 67, 54, 0.5);
@@ -4354,10 +4354,10 @@ body.preload-hide .preload {
   --bs-dropdown-item-font-size: 1rem;
   --bs-dropdown-item-font-weight: 400;
   --bs-dropdown-item-color: var(--bs-text-level-2);
-  --bs-dropdown-item-hover-color: #2196f3;
+  --bs-dropdown-item-hover-color: #4caf50;
   --bs-dropdown-item-hover-bg: var(--bs-bg-level-2);
   --bs-dropdown-item-active-color: #fff;
-  --bs-dropdown-item-active-bg: #2196f3;
+  --bs-dropdown-item-active-bg: #4caf50;
   --bs-dropdown-item-disabled-color: var(--bs-text-level-1);
   --bs-dropdown-item-disabled-bg: var(--bs-bg-level-2);
   --bs-dropdown-item-disabled-opacity: 0.65;
@@ -5522,13 +5522,13 @@ body.preload-hide .preload {
   --bs-pagination-border-width: 1px;
   --bs-pagination-border-color: var(--bs-bg-level-4);
   --bs-pagination-border-radius: 0.375rem;
-  --bs-pagination-hover-color: #2196f3;
+  --bs-pagination-hover-color: #4caf50;
   --bs-pagination-hover-bg: var(--bs-bg-level-2);
   --bs-pagination-hover-border-color: var(--bs-bg-level-4);
-  --bs-pagination-focus-color: #2196f3;
+  --bs-pagination-focus-color: #4caf50;
   --bs-pagination-focus-bg: var(--bs-bg-level-2);
   --bs-pagination-active-color: #fff;
-  --bs-pagination-active-bg: #2196f3;
+  --bs-pagination-active-bg: #4caf50;
   --bs-pagination-active-border-color: var(--bs-bg-level-4);
   --bs-pagination-disabled-color: var(--bs-text-level-1);
   --bs-pagination-disabled-bg: var(--bs-bg-level-3);
@@ -8683,7 +8683,7 @@ body.preload-hide .preload {
   --bs-menu-link-bg: transparent;
   --bs-menu-link-color: var(--bs-text-level-1);
   --bs-menu-link-hover-color: var(--bs-text-level-1);
-  --bs-menu-link-active-bg: #2196f3;
+  --bs-menu-link-active-bg: #4caf50;
   --bs-menu-link-active-color: #fff;
   --bs-menu-link-font-size: 1rem;
   --bs-menu-link-font-weight: 400;

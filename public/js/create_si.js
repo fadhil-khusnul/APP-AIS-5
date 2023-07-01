@@ -300,11 +300,14 @@ function pdf_si_alih() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            var chek_container = $(".check-container1:checked")
-                .map(function () {
-                    return this.value;
-                })
-                .get();
+            //
+            var chek_container = []
+
+            var rowcollection =  table_alih_kapal_realisasi.$(".check-container1:checked", {"page": "all"});
+            rowcollection.each(function (index, elem) {
+                chek_container.push($(elem).val());
+            });
+            console.log(chek_container);
 
             $.ajax({
                 type: "post",
@@ -374,8 +377,8 @@ function pdf_si_alih() {
                                         element.closest(".validation-container").append(error);
                                     },
                                     submitHandler: function (form) {
-                                        // document.getElementById('loading-wrapper').style.cursor = "wait";
-                                        // document.getElementById('btnFinish').setAttribute('disabled', true);
+                                        document.getElementById('loading-wrapper').style.cursor = "wait";
+                                        document.getElementById('btnFinish').setAttribute('disabled', true);
                                         var shipper = $('#shipper').val();
                                         var consigne = $('#consigne').val();
                                         var old_slug = $('#old_slug').val();
@@ -422,9 +425,7 @@ function pdf_si_alih() {
                                 });
                             }
                         });
-                        for (let i = 0; i < chek_container.length; i++) {
-                            volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
-                        }
+                      
                     }
                 },
             });
@@ -507,6 +508,8 @@ function input_bl(e) {
                     var csrf = $("#csrf").val();
                     var nomor_bl = $("#nomor_bl").val();
                     var tanggal_bl = $("#tanggal_bl").val();
+                    var biaya_do_pol = $("#biaya_do_pol").val().replace(/\./g, "");
+
 
                     tempDate = new Date(tanggal_bl);
                     formattedDate = [
@@ -520,6 +523,7 @@ function input_bl(e) {
                         id: id,
                         nomor_bl: nomor_bl,
                         tanggal_bl: formattedDate,
+                        biaya_do_pol: biaya_do_pol,
                     };
 
                     $.ajax({
@@ -591,10 +595,10 @@ function update_bl(e) {
             var old_tanggal_result = moment(
                 response.result.tanggal_bl,
                 "YYYY-MM-DD"
-            ).format("dddd, DD-MM-YYYY");
+            ).format("dddd, DD MM YYYY");
             $("#tanggal_bl_edit").val(old_tanggal_result);
 
-            // $("#tanggal_bl").val(response.result.tanggal_bl);
+            $("#biaya_do_pol_edit").val(response.result.biaya_do_pol);
 
             $("#valid_bl_edit").validate({
 
@@ -624,6 +628,7 @@ function update_bl(e) {
                     var nomor_bl = $("#nomor_bl_edit").val();
                     var id_container = $("#id_container").val();
                     var tanggal_bl = $("#tanggal_bl_edit").val();
+                    var biaya_do_pol = $("#biaya_do_pol_edit").val().replace(/\./g, "");
 
                     tempDate = new Date(tanggal_bl);
                     formattedDate = [
@@ -636,6 +641,7 @@ function update_bl(e) {
                         _token: csrf,
                         id: id_container,
                         nomor_bl: nomor_bl,
+                        biaya_do_pol: biaya_do_pol,
                         tanggal_bl: formattedDate,
                     };
 

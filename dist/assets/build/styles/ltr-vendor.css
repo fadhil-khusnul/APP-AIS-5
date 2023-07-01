@@ -16772,6 +16772,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 150px !important;
 }
 
 .select2-container {

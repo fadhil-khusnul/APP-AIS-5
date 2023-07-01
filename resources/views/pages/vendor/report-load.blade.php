@@ -141,8 +141,7 @@
                                     </span>
                                     <input type="text" id="max" class="form-control" placeholder="To" onchange="filter_date()">
                                 </div>
-                                {{-- <input type="text" name="filter_date" id="filter_date" class="form-control daterangepicker_filter" placeholder="To"> --}}
-                                <!-- END Input Group -->
+                                
                             </div>
                         </div>
                         <div class="col-6">

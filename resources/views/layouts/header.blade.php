@@ -7,7 +7,7 @@
         <div class="header-holder header-holder-desktop">
             <div class="header-container container-fluid g-5">
                 <div class="header-wrap">
-                    <button class="btn btn-flat-primary btn-icon" data-toggle="aside">
+                    <button class="btn btn-flat-success btn-icon" data-toggle="aside">
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
@@ -19,12 +19,16 @@
 
                 </div>
                 <div class="header-wrap hstack gap-2">
-                    <button class="btn btn-flat-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-todo">
+                    <button class="btn btn-flat-success" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-todo">
                         <i class="far fa-address-card"></i>
                     </button>
+                    <button class="btn btn-flat-success btn-icon" data-bs-toggle="tooltip" data-bs-placement="right" title="Change theme" id="theme-toggle">
+                        <i class="fa fa-moon"></i>
+                    </button>
+
                     <!-- BEGIN Dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-flat-primary widget13" data-bs-toggle="dropdown">
+                        <button class="btn btn-flat-success widget13" data-bs-toggle="dropdown">
                             <div class="widget13-text"> Hi <strong>User</strong>
                             </div>
                             <!-- BEGIN Avatar -->
@@ -38,7 +42,7 @@
                         <div class="dropdown-menu dropdown-menu-wide dropdown-menu-end dropdown-menu-animated overflow-hidden py-0">
                             <!-- BEGIN Portlet -->
                             <div class="portlet border-0">
-                                <div class="portlet-header bg-primary rounded-0">
+                                <div class="portlet-header bg-success rounded-0">
                                     <!-- BEGIN Rich List Item -->
                                     <div class="rich-list-item w-100 p-0">
                                         <div class="rich-list-prepend">
@@ -97,12 +101,12 @@
                 </div>
                 <div class="header-wrap hstack gap-2">
 
-                    <button class="btn btn-flat-primary btn-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-todo">
+                    <button class="btn btn-flat-success btn-icon" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-todo">
                         <i class="far fa-calendar-alt"></i>
                     </button>
                     <!-- BEGIN Dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-flat-primary widget13" data-bs-toggle="dropdown">
+                        <button class="btn btn-flat-success widget13" data-bs-toggle="dropdown">
                             <div class="widget13-text"> Hi <strong>User</strong>
                             </div>
                             <!-- BEGIN Avatar -->
@@ -116,7 +120,7 @@
                         <div class="dropdown-menu dropdown-menu-wide dropdown-menu-end dropdown-menu-animated overflow-hidden py-0">
                             <!-- BEGIN Portlet -->
                             <div class="portlet border-0">
-                                <div class="portlet-header bg-primary rounded-0">
+                                <div class="portlet-header bg-success rounded-0">
                                     <!-- BEGIN Rich List Item -->
                                     <div class="rich-list-item w-100 p-0">
                                         <div class="rich-list-prepend">

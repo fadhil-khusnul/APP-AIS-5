@@ -19,7 +19,7 @@ $("#shipping").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Pelayaran',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1],
         }
@@ -27,9 +27,9 @@ $("#shipping").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Pelayaran',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1],
     }},
@@ -49,7 +49,7 @@ $("#data_vendor").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel VENDOR MOBIL',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1],
         }
@@ -57,9 +57,9 @@ $("#data_vendor").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data VENDOR MOBIL',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1],
     }},
@@ -81,7 +81,7 @@ $("#depo").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Depo',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1],
         }
@@ -89,9 +89,9 @@ $("#depo").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Depo',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1],
     }},
@@ -113,7 +113,7 @@ $("#pol").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Pelabuhan',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1,2],
         }
@@ -121,9 +121,9 @@ $("#pol").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Pelabuhan',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1, 2],
     }},
@@ -143,7 +143,7 @@ $("#pengirim_tabel").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Pengirim',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1,2,3,4,5,6],
         }
@@ -151,9 +151,9 @@ $("#pengirim_tabel").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Pengirim',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1,2,3,4,5,6],
             }},
@@ -174,7 +174,7 @@ $("#penerima_tabel").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Penerima',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1,2,3,4,5,6],
         }
@@ -182,9 +182,9 @@ $("#penerima_tabel").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Penerima',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1,2,3,4,5,6],
             }},
@@ -206,7 +206,7 @@ $("#biaya").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Biaya',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1,2],
         }
@@ -214,9 +214,9 @@ $("#biaya").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Biaya',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1,2],
             }},
@@ -262,7 +262,7 @@ $("#trucking").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Type Container',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1],
         }
@@ -270,9 +270,9 @@ $("#trucking").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Type Container',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1],
             }},
@@ -292,7 +292,7 @@ $("#table-container").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel size Container',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1],
         }
@@ -300,9 +300,9 @@ $("#table-container").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Size Container',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1],
             }},
@@ -331,7 +331,7 @@ $("#kegiatan-stripping").DataTable({
     {
         extend:"excel",
         title: 'Data Tabel Kegiatan',
-        className:"btn btn-flat-primary",
+        className:"btn btn-flat-success",
         exportOptions: {
             columns: [0,1,2],
         }
@@ -339,9 +339,9 @@ $("#kegiatan-stripping").DataTable({
     },
     {
             extend:"pdf",
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             title: 'Data Tabel Kegiatan',
-            className:"btn btn-flat-primary",
+            className:"btn btn-flat-success",
             exportOptions: {
                 columns: [0,1,2],
             }},
@@ -394,11 +394,7 @@ $("#table_alih_kapal_realisasi").DataTable({
     "paging": false,
     "info": false,
     "searching": false,
-    fixedHeader: {
-        header:true,
-        headerOffset:
-        offset
-    },
+
 
 });
 // $("#planload").DataTable({

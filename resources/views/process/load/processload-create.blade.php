@@ -151,13 +151,13 @@
                             <label for="inputState" class="form-label"><b>INPUT KONTAINER :</b></label>
                         </div>
 
-                        <div class="row row-cols-lg-auto py-5 g-3">
-                            <label for="" class="col-form-label">Filter Tabel :</label>
+                        <div class="row row-cols-lg-auto py-3 g-3">
+                            <label for="" class="col-auto col-form-label">Filter Tabel :</label>
 
 
-                            <div class="col-6">
-                                <select id="pilih_size_if2" name="pilih_size_if2" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Size</option>
+                            <div class="col-12">
+                                <select multiple aria-placeholder="Pilih Size" id="pilih_size_in"  name="pilih_size_in" class="form-select" onchange="fun_pilih_size_in(this)">
+                                    <label for="">Pilih Size</label>
                                     @foreach ($sizes as $size)
                                     <option value="{{$size->size_container}}">{{$size->size_container}}</option>
                                     @endforeach
@@ -166,8 +166,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_type_if2" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Type</option>
+                                <select multiple id="pilih_type_in" name="pilih_type_in" class="form-select" onchange="fun_pilih_type_in(this)">
                                     @foreach ($types as $type)
                                     <option value="{{$type->type_container}}">{{$type->type_container}}</option>
                                     @endforeach
@@ -276,8 +275,8 @@
                             <label for="" class="col-form-label">Filter Tabel :</label>
 
                             <div class="col-6">
-                                <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Status Container</option>
+                                <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="pilih_status_if1_fun(this)">
+                                    <option selected value="">Pilih Status Container</option>
                                     <option value="NORMAL">NORMAL</option>
                                     <option value="ALIH-KAPAL">ALIH-KAPAL</option>
 
@@ -286,8 +285,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_pod_if1" name="pilih_pod_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POD</option>
+                                <select multiple id="pilih_pod_if1" name="pilih_pod_if1" class="form-select" onchange="pilih_pod_if1_fun(this)">
                                     @foreach ($pelabuhans as $pelabuhan)
                                     <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
                                     @endforeach
@@ -296,8 +294,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_pot_if1" name="pilih_pot_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POT</option>
+                                <select multiple id="pilih_pot_if1" name="pilih_pot_if1" class="form-select" onchange="pilih_pot_if1_fun(this)">
                                     @foreach ($pelabuhans as $pelabuhan)
                                     <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
                                     @endforeach
@@ -306,8 +303,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_size_if1" name="pilih_size_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Size</option>
+                                <select multiple id="pilih_size_if1" name="pilih_size_if1" class="form-select pilih" onchange="pilih_size_if1_fun(this)">
                                     @foreach ($sizes as $size)
                                     <option value="{{$size->size_container}}">{{$size->size_container}}</option>
                                     @endforeach
@@ -316,8 +312,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_type_if1" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Type</option>
+                                <select multiple id="pilih_type_if1" name="pilih_type_if1" class="form-select pilih" onchange="pilih_type_if1_fun(this)">
                                     @foreach ($types as $type)
                                     <option value="{{$type->type_container}}">{{$type->type_container}}</option>
                                     @endforeach
@@ -434,8 +429,7 @@
 
 
                                 <div class="col-6">
-                                    <select id="pilih_size_if2" name="pilih_size_if2" class="form-select pilih" onchange="filter_status(this)">
-                                        <option selected disabled>Pilih Size</option>
+                                    <select multiple id="pilih_size_if2" name="pilih_size_if2" class="form-select" onchange="pilih_size_if2_fun(this)">
                                         @foreach ($sizes as $size)
                                         <option value="{{$size->size_container}}">{{$size->size_container}}</option>
                                         @endforeach
@@ -444,8 +438,7 @@
 
                                 </div>
                                 <div class="col-6">
-                                    <select id="pilih_type_if2" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
-                                        <option selected disabled>Pilih Type</option>
+                                    <select multiple id="pilih_type_if2" name="pilih_type_if2" class="form-select" onchange="pilih_type_if2_fun(this)">
                                         @foreach ($types as $type)
                                         <option value="{{$type->type_container}}">{{$type->type_container}}</option>
                                         @endforeach
@@ -821,58 +814,58 @@
                                         <th class="text-center">Kode vessel</th>
                                         <th class="text-center">Biaya Alih Kapal</th>
                                         <th class="text-center">Keterangan Alih Kapal</th>
-                                        <th class="text-center"></th>
+                                        {{-- <th class="text-center"></th> --}}
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_alih" class="text-center">
-                                    @foreach ($alihs as $alih)
+                                    @foreach ($new_container_alih as $alih)
                                         <tr>
                                             <td class="text-center text-nowrap">
                                                 <button id="delete_alih" name="delete_alih"
                                                     class="btn btn-label-info btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $alih->kontainer_alih }}" onclick="delete_alihDB(this)"
+                                                    value="{{ $alih->id}}" onclick="delete_alihDB(this)"
                                                     @readonly(true)><i class="fa fa-refresh"></i></button>
                                                 <button id="edit_batal" name="edit_batal"
                                                     class="btn btn-label-primary btn-icon btn-circle btn-sm"
-                                                    type="button" value="{{ $alih->id }}"
+                                                    type="button" value="{{ $alih->alihs->id}}"
                                                     onclick="detail_alih_kapal_edit(this)" @readonly(true)><i
                                                         class="fa fa-pencil"></i></button>
                                             </td>
                                             <td>
 
-                                                {{ $loop->iteration }}
+                                                {{ $loop->iteration}}
                                             </td>
                                             <td>
-                                                {{ $alih->container_planloads->nomor_kontainer }}
+                                                {{ $alih->nomor_kontainer}}
                                             </td>
                                             <td>
-                                                {{ $alih->pelayaran_alih }}
+                                                {{ $alih->alihs->pelayaran_alih}}
                                             </td>
                                             <td>
-                                                {{ $alih->pot_alih }}
+                                                {{ $alih->alihs->pot_alih}}
                                             </td>
                                             <td>
-                                                {{ $alih->pod_alih }}
+                                                {{ $alih->alihs->pod_alih}}
                                             </td>
                                             <td>
-                                                {{ $alih->vesseL_alih }}
+                                                {{ $alih->alihs->vesseL_alih}}
                                             </td>
                                             <td>
-                                                {{ $alih->code_vesseL_alih }}
+                                                {{ $alih->alihs->code_vesseL_alih}}
                                             </td>
                                             <td>
-                                                @rupiah($alih->harga_alih_kapal)
+                                                @rupiah($alih->alihs->harga_alih_kapal)
                                             </td>
                                             <td>
-                                                {{ $alih->keterangan_alih_kapal }}
+                                                {{ $alih->alihs->keterangan_alih_kapal}}
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <button type="button" id="btn_detail" name="btn_detail"
                                                     class="btn btn-label-primary btn-sm text-nowrap"
-                                                    value="{{ $alih->kontainer_alih }}" onclick="detail_disabled(this)">Detail
+                                                    value="{{ $alih->alihs->kontainer_alih}}" onclick="detail_disabled(this)">Detail
                                                     Kontainer <i class="fa fa-eye"></i></button>
 
-                                            </td>
+                                            </td> --}}
 
 
                                         </tr>
@@ -3327,7 +3320,7 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
+
 
 
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
@@ -3361,4 +3354,7 @@
 
 
     </script>
+     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/export_filter_kontainer.js"></script>
+
 @endsection

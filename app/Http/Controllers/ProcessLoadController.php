@@ -108,7 +108,7 @@ class ProcessLoadController extends Controller
         $spks_edit = Spk::where('pelayaran_id', $pelayaran_id)->where('status', 'input')->orWhere('status', 'Container')->get();
         $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
 
-        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+        $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih')
@@ -129,7 +129,7 @@ class ProcessLoadController extends Controller
         $select_barang = ContainerPlanload::where('job_id', $id)->whereNull('status_barang')->whereNotNull('status')->whereNull('slug')->get();
         // dd($containers);
 
-        $containers_alih = ContainerPlanload::where('job_id', $id)->where(function($query) {
+        $containers_alih = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih')
@@ -196,10 +196,43 @@ class ProcessLoadController extends Controller
 
             }
         }
+        $id_alih = AlihKapal::where("job_id", $id)->distinct()->get('kontainer_alih');
+
+        // dd($id_alih);
+        $containers_alih_list = [];
+        $new_container_alih = [];
+        if ($id_alih != null) {
+            for ($i=0; $i <count($id_alih) ; $i++) {
+                $containers_alih_list[$i] = ContainerPlanload::where('id', $id_alih[$i]->kontainer_alih)->get();
+            }
+
+            // dd($containers_alih_list);
+
+
+
+
+            for($i = 0; $i < count($containers_alih_list); $i++) {
+                $new_container_alih[$i] = new ContainerPlanload([
+                    'id' => $containers_alih_list[$i][0]->id,
+                    'job_id' => $containers_alih_list[$i][0]->job_id,
+                    'size' => $containers_alih_list[$i][0]->size,
+                    'type' => $containers_alih_list[$i][0]->type,
+                    'harga_alih' => (int)$containers_alih_list[$i][0]->harga_alih,
+                    'nomor_kontainer' => $containers_alih_list[$i][0]->nomor_kontainer,
+                    'pengirim' => $containers_alih_list[$i][0]->pengirim,
+                    'penerima' => $containers_alih_list[$i][0]->penerima,
+                    'slug' => $containers_alih_list[$i][0]->slug
+
+                ]);
+
+            }
+        }
 
 
         $new_container = collect($new_container)->whereNull('slug');
         $new_container_biaya = collect($new_container_biaya)->whereNull('slug');
+        $new_container_alih = collect($new_container_alih)->whereNull('slug')->whereNotNull('harga_alih');
+        // dd($new_container_alih);
 
 
 
@@ -221,6 +254,7 @@ class ProcessLoadController extends Controller
             'shipping_companys' => $shipping_companys,
             'containers_barang' => $new_container,
             'new_container_biaya' => $new_container_biaya,
+            'new_container_alih' => $new_container_alih,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,

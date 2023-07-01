@@ -182,19 +182,23 @@
                         <div class="table-responsive">
 
                             <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
-                                <thead class="table-danger text-nowrap">
+                                <thead class="table-danger text-nowrap text-center">
                                     <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center"> </th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">POT</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Size</th>
-                                        <th class="text-center">Type</th>
-                                        <th class="text-center">Pengirim</th>
-                                        <th class="text-center">Penerima</th>
-                                        <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Cargo (Nama Barang)</th>
+                                        <th>No</th>
+                                        <th>SI</th>
+                                        {{-- <th>Receiving</th> --}}
+                                        <th>Receiving OK</th>
+                                        <th>POD</th>
+                                        <th>POT</th>
+                                        <th>Nomor Kontainer</th>
+                                        <th>Size</th>
+                                        <th>Type</th>
+                                        <th>Pengirim</th>
+                                        <th>Penerima</th>
+                                        <th>Seal-Container</th>
+                                        <th>Cargo (Nama Barang)</th>
+
+
 
                                     </tr>
                                 </thead>
@@ -202,6 +206,7 @@
                                     @foreach ($containers as $container)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
+
                                             <td>
                                                 @if ($container->status != 'Realisasi')
                                                     <div class="validation-container">
@@ -218,14 +223,61 @@
                                                 @endif
                                             </td>
 
+
+                                            {{-- <td>
+                                                @if ($container->ok != null)
+                                                <input readonly disabled checked type="checkbox"
+                                                    class="form-check-input btn-success"
+                                                    id="kontainer_check[{{ $loop->iteration }}]">
+                                                @else
+                                                    <div class="validation-container">
+                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                            class="form-check-input text-success check-container2"
+                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
+                                                            value="{{ $container->id }}" required autofocus>
+
+                                                    </div>
+                                                @endif
+                                            </td> --}}
+                                            <td class="text-nowrap">
+                                                @if ($container->ok != null )
+                                                <i class="marker marker-dot text-success"></i>Receiving OK
+
+                                                @else
+                                                <div class="dropdown">
+                                                    <i class="marker marker-dot text-danger"></i>Belum Buat JOB
+                                                    <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown">
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
+                                                        <a class="dropdown-item" href="/ok-load">
+                                                            <div class="dropdown-icon">
+                                                                <i class="fa fa-check"></i>
+                                                            </div>
+                                                            <span class="dropdown-content">Receiving Ok</span>
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                                @endif
+
+
+                                            </td>
+
+
+
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
 
                                             </td>
                                             <td>
+                                                @if ($container->pot_container != null)
                                                 <label disabled @readonly(true)
                                                     id="pot_container[{{ $container->id }}]">{{ old('pot_container', $container->pot_container) }}</label>
+                                                @else
+                                                -
+                                                @endif
 
                                             </td>
 
@@ -290,6 +342,7 @@
 
                                             </td>
 
+
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -301,8 +354,8 @@
                         <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
 
                             <div class="col-auto">
-                                <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
-                                    SI <i class="fa fa-print"></i></button> <label for="" class="text-primary" style="margin-left: 20px"><b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
+                                <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-success ">Cetak
+                                    SI <i class="fa fa-print"></i></button> <label for="" class="" style="margin-left: 20px"><b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                             </div>
 
 
@@ -377,7 +430,12 @@
                                         <td>{{ $loop->iteration }}</td>
 
                                         <td>
-                                            @if ($alih->container_planloads->status != 'Realisasi-Alih')
+                                            @if ($alih->container_planloads->slug != null)
+                                            <input readonly disabled checked type="checkbox"
+                                                class="form-check-input"
+                                                id="kontainer_check[{{ $loop->iteration }}]">
+
+                                            @else
                                                 <div class="validation-container">
                                                     <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                         class="form-check-input check-container1"
@@ -385,10 +443,6 @@
                                                         value="{{ $alih->kontainer_alih }}" required autofocus>
 
                                                 </div>
-                                            @else
-                                                <input readonly disabled checked type="checkbox"
-                                                    class="form-check-input"
-                                                    id="kontainer_check[{{ $loop->iteration }}]">
                                             @endif
                                         </td>
 
@@ -522,6 +576,7 @@
                                     <th class="">Consigne</th>
                                     <th class="">Tanggal BL</th>
                                     <th class="">Nomor BL</th>
+                                    <th class="">DO Fee</th>
 
 
 
@@ -569,24 +624,24 @@
 
                                         <td>
                                             @if ($pdf->status_approve == 'Disetujui')
-                                                <span class="badge badge-label-success">Approve <i
-                                                        class="fa fa-check"></i></span>
+                                            <i class="marker marker-dot text-success"></i>Approve <i
+                                                        class="fa fa-check"></i>
                                             @elseif ($pdf->status_approve == 'Ditolak')
-                                                <span class="badge badge-label-danger">Reject <i
+                                            <i class="marker marker-dot text-danger"></i>Reject <i
                                                         class="fa fa-times"></i></span>
                                             @elseif ($pdf->status_approve == null)
-                                                <span class="badge badge-label-primary"><i
-                                                        class="fa fa-exclamation"></i></span>
+                                            <i class="marker marker-dot text-primary"></i>Belum
+                                            <i class="fa fa-exclamation"></i>
                                             @endif
 
                                         </td>
                                         <td>
                                             @if ($pdf->nomor_bl != null)
-                                                <span class="badge badge-label-success">Done <i
-                                                        class="fa fa-check"></i></span>
+                                            <i class="marker marker-dot text-success"></i>Selesai <i
+                                                        class="fa fa-check"></i>
                                             @else
-                                                <span class="badge badge-label-primary"><i
-                                                        class="fa fa-exclamation"></i></span>
+                                                <i class="marker marker-dot text-danger"></i>
+                                                Belum <i class="fa fa-exclamation"></i
                                             @endif
 
                                         </td>
@@ -621,6 +676,14 @@
                                         <td>
                                             @if ($pdf->nomor_bl != null)
                                                 {{ $pdf->nomor_bl }}
+                                            @else
+                                                -
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            @if ($pdf->biaya_do_pol != null)
+                                                @rupiah($pdf->biaya_do_pol)
                                             @else
                                                 -
                                             @endif
@@ -1031,13 +1094,23 @@
                             <label class="col-sm-4 col-form-label" for="text">Tanggal BL</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_bl" name="tanggal_bl" type="text"
-                                    placeholder="Masukkan Tanggal BL">
+                                placeholder="Masukkan Tanggal BL">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">DO Fee :</label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+                                    <input required class="form-control currency-rupiah" id="biaya_do_pol" name="biaya_do_pol" type="text"
+                                        placeholder="Masukkan DO Fee">
+                                </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Masukkan Nomor BL</button>
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -1444,6 +1517,17 @@
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_bl_edit" name="tanggal_bl_edit" type="text"
                                     placeholder="Masukkan Tanggal BL">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">DO Fee :</label>
+                            <div class="col-sm-8 validation-container">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" for="">Rp.</span>
+                                    <input required class="form-control currency-rupiah" id="biaya_do_pol_edit" name="biaya_do_pol_edit" type="text"
+                                        placeholder="Masukkan DO Fee">
+                                </div>
                             </div>
                         </div>
 

@@ -2475,7 +2475,7 @@ body.dt-rowReorder-noOverflow {
   border-radius: 0.375rem;
 }
 .dtsp-searchPane .dataTables_scrollBody:hover {
-  border-color: #2196f3 !important;
+  border-color: #4caf50 !important;
 }
 .dtsp-searchPane .dataTables_scrollBody table tbody tr {
   cursor: pointer;
@@ -16773,6 +16773,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 150px;
 }
 
 .select2-container {

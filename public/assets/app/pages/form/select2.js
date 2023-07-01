@@ -31,11 +31,57 @@ $("#filter_pelayaran").select2
 
 
 });
-$(".pilih").select2
+
+$("#pilih_size_in").select2
 ({
     dropdownAutoWidth:true,
     allowClear:true,
-    placeholder:"Silahkan Pilih Filter",
+    placeholder:"Size Container",
+
+
+
+});
+$("#pilih_type_in").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Type Container",
+
+
+
+});
+$("#pilih_pod_if1").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"POD Container",
+
+
+
+});
+$("#pilih_pot_if1").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"POT Container",
+
+
+
+});
+$("#pilih_size_if1").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Size Container",
+
+
+
+});
+$("#pilih_type_if1").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Type Container",
 
 
 
@@ -46,6 +92,34 @@ $("#pilih_vendor").select2
     dropdownAutoWidth:true,
     placeholder:"Silahkan Pilih Vendor",
     allowClear:true
+
+
+
+});
+
+$("#pilih_size_if2").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Size Container",
+
+
+
+});
+$("#pilih_status_if1").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Status Container",
+
+
+
+});
+$("#pilih_type_if2").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Type Container",
 
 
 

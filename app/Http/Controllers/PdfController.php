@@ -429,6 +429,7 @@ class PdfController extends Controller
 
             "nomor_bl" => $request->nomor_bl,
             "tanggal_bl" => $request->tanggal_bl,
+            "biaya_do_pol" => $request->biaya_do_pol,
             "status" => "BL",
 
         ];
@@ -546,7 +547,6 @@ class PdfController extends Controller
     {
 
 
-        // dd($seals);
 
         $pdf = SiPdfContainer::findOrFail($request->id);
         $job_id = SiPdfContainer::where('id',$request->id)->value('job_id');
@@ -556,10 +556,24 @@ class PdfController extends Controller
         $status = [
             "status"=> "Process-Load",
         ];
-        $status1 = [
-            "status"=> "Process-Load",
-            "slug"=> null,
-        ];
+
+        $alihorno = ContainerPlanload::where('slug', $container_id)->value('harga_alih');
+
+        if ($alihorno != null) {
+            $status1 = [
+                "status"=> "Alih-Kapal",
+                "slug"=> null,
+            ];
+
+        } else {
+            $status1 = [
+                "status"=> "Process-Load",
+                "slug"=> null,
+            ];
+        }
+        // dd($status1);
+
+
 
         $deletefiles = Storage::delete('public/si-container/'.$path.'.pdf');
         Storage::delete('public/si-container/'.$path.'-ditolak.pdf');

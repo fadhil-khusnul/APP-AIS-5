@@ -13,20 +13,7 @@ $(function(){
     $("#swal-8").on("click",function(){
         swal.fire({title:"Sweet!",text:"Modal with a custom image.",imageUrl:"https://unsplash.it/400/200",imageWidth:400,imageHeight:200,imageAlt:"Custom image"})
     });
-    $("#swal-9").on("click", function()
-        {
-        var timerInterval;
-        swal.fire({
-        title:"Auto close alert!",html:"I will close in <b></b> milliseconds.",
-        timer:2e3,timerProgressBar:true,didOpen:function didOpen(){
-            swal.showLoading();
-            var b=swal.getHtmlContainer().querySelector("b");timerInterval=setInterval(function(){
-            b.textContent=swal.getTimerLeft()},100
-            )},
-            willClose:function willClose(){
-                clearInterval(timerInterval)}}).then(function(result){if(result.dismiss===swal.DismissReason.timer)
-            })
-            })
+    
 
 
                 ;$("#swal-10").on("click",function(){swal.fire({title:"Submit your Github username",input:"text",inputAttributes:{autocapitalize:"off"},showCancelButton:true,confirmButtonText:"Look up",showLoaderOnConfirm:true,preConfirm:function preConfirm(login){return fetch("//api.github.com/users/".concat(login)).then(function(response){if(!response.ok){throw new Error(response.statusText)}return response.json()})["catch"](function(error){swal.showValidationMessage("Request failed: ".concat(error))})},allowOutsideClick:function allowOutsideClick(){return!swal.isLoading()}}).then(function(result){if(result.isConfirmed){swal.fire({title:"".concat(result.value.login,"'s avatar"),imageUrl:result.value.avatar_url})}})});$("#swal-11").on("click",function(){toast.fire({icon:"success",title:"Signed in successfully"})})

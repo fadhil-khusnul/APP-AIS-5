@@ -1,3 +1,5 @@
+
+
 function detail(e) {
     let id = e.value;
     // console.log(id);
@@ -2440,12 +2442,13 @@ function detail_alih_kapal() {
 
 function detail_alih_kapal_edit(e) {
     let id = e.value;
-    // console.log(id);
+    console.log(id);
 
     $.ajax({
         url: "/alihkapal-edit/" + id,
         type: "GET",
         success: function (response) {
+            console.log(response);
             $("#modal_alih_kapal_edit").modal("show");
 
             $("#id_lama_alih").val(response.result.id);

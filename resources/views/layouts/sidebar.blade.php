@@ -3,7 +3,7 @@
             <h3 class="aside-title"><img src="{{ asset('/') }}./assets/images/icon.png" width="50" alt=""> AIS-ONLINE</h3>
 
             <div class="aside-addon">
-                <button class="btn btn-label-primary btn-icon btn-lg" data-toggle="aside">
+                <button class="btn btn-label-success btn-icon btn-lg" data-toggle="aside">
                     <i class="fa fa-times aside-icon-minimize"></i>
 
                     <i class="fa fa-thumbtack aside-icon-maximize"></i>

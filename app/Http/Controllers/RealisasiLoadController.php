@@ -118,7 +118,7 @@ class RealisasiLoadController extends Controller
         $danas = OngkoSupir::all();
 
 
-        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+        $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih');
