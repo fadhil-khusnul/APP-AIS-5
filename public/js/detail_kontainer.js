@@ -105,6 +105,8 @@ function detail(e) {
                                             .value.replace(/\./g, "");
                                         harga_seal = parseFloat(harga_seal);
 
+                                        console.log(response);
+
                                         if (isNaN(harga_seal)) {
                                             harga_seal = 0;
                                         }

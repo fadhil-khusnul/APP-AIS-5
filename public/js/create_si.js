@@ -425,7 +425,7 @@ function pdf_si_alih() {
                                 });
                             }
                         });
-                      
+
                     }
                 },
             });
@@ -1230,4 +1230,57 @@ function countCheck() {
         ids.push($(elem).val());
     });
     document.getElementById("nomor").innerHTML = ids.length;
+}
+
+function ok_load(ini) {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    let token = $("#csrf").val();
+
+    var container_id = ini.value;
+    var data = {
+        _token: token,
+        container_id: container_id,
+    };
+
+        swal.fire({
+            title: "Apakah anda yakin Ingin Receiving Container ini?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        }).then((willCreate) => {
+            if (willCreate.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ok-load",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            title: "Container Receiving OK",
+                            icon: "success",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        }).then((result) => {
+                            window.location.reload();
+                        });
+                    },
+                });
+            } else {
+                swal.fire({
+                    title: "Container Belum Receiving",
+                    icon: "warning",
+                    timer: 2e3,
+                    showConfirmButton: false,
+                });
+            }
+        });
+
 }

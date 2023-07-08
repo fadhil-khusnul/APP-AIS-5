@@ -65,7 +65,7 @@
                                         </td>
                                         <td class="text-center text-nowrap">
                                             <a href="/processload-create/{{ $planload->slug }}"
-                                                class="btn btn-success btn-sm rounded-pill">Process Load <i
+                                                class="btn btn-success btn-sm">Process Load <i
                                                     class="fa fa-pencil"></i>
                                             </a>
 

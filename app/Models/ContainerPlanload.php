@@ -29,6 +29,13 @@ class ContainerPlanload extends Model
     {
         return $this->belongsTo(AlihKapal::class, 'harga_alih', 'id');
     }
+    public function invoices()
+    {
+        return $this->belongsTo(InvoiceLoad::class, 'status_invoice', 'nomor_invoice')->withDefault([
+            'tanggal_invoice' => ' ',
+
+        ]);
+    }
     public function danas()
     {
         return $this->belongsTo(OngkoSupir::class, 'dana', 'id')->withDefault([

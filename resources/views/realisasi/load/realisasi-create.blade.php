@@ -240,22 +240,22 @@
                                                 @endif
                                             </td> --}}
                                             <td class="text-nowrap">
-                                                @if ($container->ok != null )
+                                                @if ($container->ok == 1 )
                                                 <i class="marker marker-dot text-success"></i>Receiving OK
 
                                                 @else
                                                 <div class="dropdown">
                                                     <i class="marker marker-dot text-danger"></i>Belum Buat JOB
-                                                    <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown">
+                                                    <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown" @if ($container->slug == null) disabled readonly @endif>
                                                         <i class="fa fa-ellipsis-h"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
-                                                        <a class="dropdown-item" href="/ok-load">
+                                                        <button class="dropdown-item" value="{{$container->id}}" onclick="ok_load(this)">
                                                             <div class="dropdown-icon">
                                                                 <i class="fa fa-check"></i>
                                                             </div>
                                                             <span class="dropdown-content">Receiving Ok</span>
-                                                        </a>
+                                                        </button>
 
                                                     </div>
                                                 </div>
@@ -723,50 +723,173 @@
             </div>
         @endif
 
-            <div class="col-md-12 col-xl-12">
-                <div class="portlet">
-                    <div class="portlet-body">
+        <div class="col-md-12 col-xl-12">
+            <div class="portlet">
+                <div class="portlet-body">
 
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
+                    <div class="col-md-12 text-center">
+                        <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
+                    </div>
+
+                    <div class="row row-cols-lg-auto py-5 g-3">
+                        <label for="" class="col-form-label">Filter Tabel :</label>
+
+                        <div class="col-6">
+                            <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="pilih_status_if1_fun(this)">
+                                <option selected value="">Pilih Status Container</option>
+                                <option value="NORMAL">NORMAL</option>
+                                <option value="ALIH-KAPAL">ALIH-KAPAL</option>
+
+
+                            </select>
+
+                        </div>
+                        <div class="col-6">
+                            <select multiple id="pilih_pod_if1" name="pilih_pod_if1" class="form-select" onchange="pilih_pod_if1_fun(this)">
+                                @foreach ($pelabuhans as $pelabuhan)
+                                <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        <div class="col-6">
+                            <select multiple id="pilih_pot_if1" name="pilih_pot_if1" class="form-select" onchange="pilih_pot_if1_fun(this)">
+                                @foreach ($pelabuhans as $pelabuhan)
+                                <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        <div class="col-6">
+                            <select multiple id="pilih_size_if1" name="pilih_size_if1" class="form-select pilih" onchange="pilih_size_if1_fun(this)">
+                                @foreach ($sizes as $size)
+                                <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        <div class="col-6">
+                            <select multiple id="pilih_type_if1" name="pilih_type_if1" class="form-select pilih" onchange="pilih_type_if1_fun(this)">
+                                @foreach ($types as $type)
+                                <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                @endforeach
+
+                            </select>
+
                         </div>
 
+
+
+                    </div>
+                    <div class="table-responsive">
+
+                        <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
+                            <thead class="table">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Status</th>
+                                    <th>Tgl. Kegiatan</th>
+                                    <th>Pengirim</th>
+                                    <th>Penerima</th>
+                                    <th>POD</th>
+                                    <th>POT</th>
+                                    <th>VESEEL POT</th>
+                                    <th>Size Container</th>
+                                    <th>Type Container</th>
+                                    <th>Nomor Container</th>
+                                    <th>Cargo</th>
+                                    <th>Seal</th>
+                                    <th>Lokasi Pickup</th>
+                                    <th>Nama Supir/Nomor Polisi</th>
+                                    <th>Vendor Truck</th>
+                                    <th>Jenis Mobil</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach ($containers_info as $container)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="align-middle text-nowrap">
+                                        @if ($container->status == "Alih-Kapal" || $container->status == "Realisasi-Alih" )
+                                        <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
+                                        @elseif ($container->status == "Batal-Muat")
+                                        <i class="marker marker-dot text-danger"></i>BATAL-MUAT
+                                        @else
+                                        <i class="marker marker-dot text-success"></i> NORMAL
+                                        @endif
+
+
+                                    </td>
+
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                                    </td>
+                                    <td>{{$container->pengirim}}</td>
+                                    <td>{{$container->penerima}}</td>
+                                    <td>{{$container->pod_container}}</td>
+                                    <td>{{$container->pot_container}}</td>
+                                    <td>{{$container->vessel_pot}}</td>
+                                    <td>{{$container->size}}</td>
+                                    <td>{{$container->type}}</td>
+                                    <td>{{$container->nomor_kontainer}}</td>
+                                    <td>{{$container->cargo}}</td>
+                                    <td>
+                                        @if ($sealsc->count() == 1)
+                                            @foreach ($sealsc as $seal)
+                                            @if ($seal->kontainer_id == $container->id)
+                                                    {{ $seal->seal_kontainer }}
+
+                                            @endif
+                                            @endforeach
+                                        @else
+                                        <ol type="1.">
+
+                                            @foreach ($sealsc as $seal)
+                                                @if ($seal->kontainer_id == $container->id)
+                                                    <li id="seal[{{ $container->id }}]">
+                                                        {{ $seal->seal_kontainer }}
+                                                    </li>
+                                                @endif
+                                            @endforeach
+                                        </ol>
+                                        @endif
+                                    </td>
+                                    <td>{{$container->lokasi_depo}}</td>
+
+                                    <td>
+                                        @if ($container->nomor_polisi != null)
+                                            {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
+
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($container->nomor_polisi != null)
+                                            {{ $container->mobils->vendors->nama_vendor }}
+
+                                        @endif
+                                    </td>
+                                    <td>{{$container->jenis_mobil}}
+                                    </td>
+                                </tr>
+
+
+                                @endforeach
+                            </tbody>
+
+                        </table>
+
+
+                        </div>
                         <div class="row row-cols-lg-auto py-5 g-3">
                             <label for="" class="col-form-label">Filter Tabel :</label>
 
+
                             <div class="col-6">
-                                <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Status Container</option>
-                                    <option value="NORMAL">NORMAL</option>
-                                    <option value="ALIH-KAPAL">ALIH-KAPAL</option>
-
-
-                                </select>
-
-                            </div>
-                            <div class="col-6">
-                                <select id="pilih_pod_if1" name="pilih_pod_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POD</option>
-                                    @foreach ($pelabuhans as $pelabuhan)
-                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
-                            <div class="col-6">
-                                <select id="pilih_pot_if1" name="pilih_pot_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POT</option>
-                                    @foreach ($pelabuhans as $pelabuhan)
-                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
-                            <div class="col-6">
-                                <select id="pilih_size_if1" name="pilih_size_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Size</option>
+                                <select multiple id="pilih_size_if2" name="pilih_size_if2" class="form-select" onchange="pilih_size_if2_fun(this)">
                                     @foreach ($sizes as $size)
                                     <option value="{{$size->size_container}}">{{$size->size_container}}</option>
                                     @endforeach
@@ -775,8 +898,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_type_if1" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Type</option>
+                                <select multiple id="pilih_type_if2" name="pilih_type_if2" class="form-select" onchange="pilih_type_if2_fun(this)">
                                     @foreach ($types as $type)
                                     <option value="{{$type->type_container}}">{{$type->type_container}}</option>
                                     @endforeach
@@ -788,234 +910,106 @@
 
 
                         </div>
+
                         <div class="table-responsive">
 
-                            <table id="table_informasi1" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
+
+                            <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
                                 <thead class="table">
                                     <tr>
                                         <th>No</th>
-                                        <th>Status</th>
-                                        <th>Tgl. Kegiatan</th>
-                                        <th>Pengirim</th>
-                                        <th>Penerima</th>
-                                        <th>POD</th>
-                                        <th>POT</th>
-                                        <th>VESEEL POT</th>
-                                        <th>Size Container</th>
-                                        <th>Type Container</th>
-                                        <th>Nomor Container</th>
-                                        <th>Cargo</th>
-                                        <th>Seal</th>
-                                        <th>Lokasi Pickup</th>
-                                        <th>Nama Supir/Nomor Polisi</th>
-                                        <th>Vendor Truck</th>
+                                        <th>Container</th>
+                                        <th>Size</th>
+                                        <th>Type</th>
+                                        <th>SPK</th>
+                                        <th>Biaya Stuffing</th>
+                                        <th>Biaya Trucking</th>
+                                        <th>Ongkos Supir</th>
+                                        <th>Biaya Seal</th>
+                                        <th>Biaya THC POL</th>
+                                        <th>Biaya Freight</th>
+                                        <th>Biaya LSS</th>
+                                        <th>Biaya Lain-Lain</th>
+                                        <th>Biaya Alih Kapal</th>
+                                        <th>Biaya Batal Muat</th>
                                         <th>Jenis Mobil</th>
+                                        <th>Deposit Trucking</th>
+
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($containers as $container)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td class="align-middle text-nowrap">
-                                            @if ($container->status == "Alih-Kapal" || $container->status == "Realisasi-Alih" )
-                                            <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
-                                            @elseif ($container->status == "Batal-Muat")
-                                            <i class="marker marker-dot text-danger"></i>BATAL-MUAT
-                                            @else
-                                            <i class="marker marker-dot text-success"></i> NORMAL
-                                            @endif
+                                    @foreach ($containers_info as $container)
+                                <tr>
 
+                                    <td>
+                                        {{$loop->iteration}}
+                                    </td>
+                                    <td>{{$container->nomor_kontainer}}</td>
+                                    <td>{{$container->size}}</td>
+                                    <td>{{$container->type}}</td>
+                                    <td>{{$container->spk}}</td>
+                                    <td>@rupiah($container->biaya_stuffing)</td>
+                                    <td>@rupiah($container->biaya_trucking)</td>
+                                    <td>@rupiah($container->ongkos_supir)</td>
+                                    <td>@rupiah($container->biaya_seal)</td>
+                                    <td>@rupiah($container->biaya_thc)</td>
+                                    <td>@rupiah($container->freight)</td>
+                                    <td>@rupiah($container->lss)</td>
+                                    <td>@rupiah($container->total_biaya_lain)</td>
 
-                                        </td>
+                                    {{-- <td>@if ($biayas->count() == 1)
+                                        @foreach ($biayas as $biaya)
+                                        @if ($biaya->kontainer_id == $container->id)
+                                                @rupiah($biaya->harga_biaya)
 
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
-                                        </td>
-                                        <td>{{$container->pengirim}}</td>
-                                        <td>{{$container->penerima}}</td>
-                                        <td>{{$container->pod_container}}</td>
-                                        <td>{{$container->pot_container}}</td>
-                                        <td>{{$container->vessel_pot}}</td>
-                                        <td>{{$container->size}}</td>
-                                        <td>{{$container->type}}</td>
-                                        <td>{{$container->nomor_kontainer}}</td>
-                                        <td>{{$container->cargo}}</td>
-                                        <td>
-                                            @if ($sealsc->count() == 1)
-                                                @foreach ($sealsc as $seal)
-                                                @if ($seal->kontainer_id == $container->id)
-                                                        {{ $seal->seal_kontainer }}
+                                        @endif
+                                        @endforeach
+                                        @else
+                                        <ol type="1.">
 
+                                            @foreach ($biayas as $biaya)
+                                                @if ($biaya->kontainer_id == $container->id)
+                                                    <li id="biaya[{{ $container->id }}]">
+                                                        @rupiah($biaya->harga_biaya)
+                                                    </li>
                                                 @endif
-                                                @endforeach
-                                            @else
-                                            <ol type="1.">
+                                            @endforeach
+                                        </ol>
+                                        @endif
+                                    </td> --}}
+                                    <td>
+                                        @if ($container->harga_alih != null)
 
-                                                @foreach ($sealsc as $seal)
-                                                    @if ($seal->kontainer_id == $container->id)
-                                                        <li id="seal[{{ $container->id }}]">
-                                                            {{ $seal->seal_kontainer }}
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-                                            @endif
-                                        </td>
-                                        <td>{{$container->lokasi_depo}}</td>
+                                        @rupiah($container->alihs->harga_alih_kapal)
+                                        @endif
 
-                                        <td>
-                                            @if ($container->nomor_polisi != null)
-                                                {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
+                                    </td>
 
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($container->nomor_polisi != null)
-                                                {{ $container->mobils->vendors->nama_vendor }}
+                                    <td>@rupiah($container->harga_batal)</td>
+                                    <td>{{$container->jenis_mobil}}</td>
+                                    <td>@if ($container->dana != null)
+                                        {{$container->danas->pj}}
+                                        @endif
+                                    </td>
 
-                                            @endif
-                                        </td>
-                                        <td>{{$container->jenis_mobil}}
-                                        </td>
-                                    </tr>
+
+
+                                </tr>
+
+
+
+
 
 
                                     @endforeach
                                 </tbody>
 
                             </table>
-
-
-                            </div>
-
-                            <div class="row row-cols-lg-auto py-5 g-3">
-                                <label for="" class="col-form-label">Filter Tabel :</label>
-
-
-                                <div class="col-6">
-                                    <select id="pilih_size_if2" name="pilih_size_if2" class="form-select pilih" onchange="filter_status(this)">
-                                        <option selected disabled>Pilih Size</option>
-                                        @foreach ($sizes as $size)
-                                        <option value="{{$size->size_container}}">{{$size->size_container}}</option>
-                                        @endforeach
-
-                                    </select>
-
-                                </div>
-                                <div class="col-6">
-                                    <select id="pilih_type_if2" name="pilih_type_if1" class="form-select pilih" onchange="filter_status(this)">
-                                        <option selected disabled>Pilih Type</option>
-                                        @foreach ($types as $type)
-                                        <option value="{{$type->type_container}}">{{$type->type_container}}</option>
-                                        @endforeach
-
-                                    </select>
-
-                                </div>
-
-
-
-                            </div>
-
-                            <div class="table-responsive mt-5">
-
-
-                                <table id="table_informasi2" class="table table-bordered table-striped table-hover autosize" style="width: 100% !important">
-                                    <thead class="table">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Container</th>
-                                            <th>Size</th>
-                                            <th>Type</th>
-                                            <th>Biaya Stuffing</th>
-                                            <th>SPK</th>
-                                            <th>Biaya Trucking</th>
-                                            <th>Ongkos Supir</th>
-                                            <th>Biaya Seal</th>
-                                            <th>Biaya THC POL</th>
-                                            <th>Biaya Freight</th>
-                                            <th>Biaya LSS</th>
-                                            <th>Biaya Lain-Lain</th>
-                                            <th>Biaya Alih Kapal</th>
-                                            <th>Biaya Batal Muat</th>
-                                            <th>Jenis Mobil</th>
-                                            <th>Deposit Trucking</th>
-
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($containers as $container)
-                                    <tr>
-
-                                        <td>
-                                            {{$loop->iteration}}
-                                        </td>
-                                        <td>{{$container->nomor_kontainer}}</td>
-                                        <td>{{$container->size}}</td>
-                                        <td>{{$container->type}}</td>
-                                        <td>@rupiah($container->biaya_stuffing)</td>
-                                        <td>@rupiah($container->biaya_stuffing)</td>
-                                        <td>@rupiah($container->biaya_trucking)</td>
-                                        <td>@rupiah($container->ongkos_supir)</td>
-                                        <td>@rupiah($container->biaya_seal)</td>
-                                        <td>@rupiah($container->biaya_thc)</td>
-                                        <td>@rupiah($container->freight)</td>
-                                        <td>@rupiah($container->lss)</td>
-                                        <td>@rupiah($container->total_biaya_lain)</td>
-                                        {{-- <td>@if ($biayas->count() == 1)
-                                            @foreach ($biayas as $biaya)
-                                            @if ($biaya->kontainer_id == $container->id)
-                                                    @rupiah($biaya->harga_biaya)
-
-                                            @endif
-                                            @endforeach
-                                            @else
-                                            <ol type="1.">
-
-                                                @foreach ($biayas as $biaya)
-                                                    @if ($biaya->kontainer_id == $container->id)
-                                                        <li id="biaya[{{ $container->id }}]">
-                                                            @rupiah($biaya->harga_biaya)
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-                                            @endif
-                                        </td> --}}
-                                        <td>
-                                            @if ($container->harga_alih != null)
-
-                                            @rupiah($container->alihs->harga_alih_kapal)
-                                            @endif
-
-                                        </td>
-
-                                        <td>@rupiah($container->harga_batal)</td>
-                                        <td>{{$container->jenis_mobil}}</td>
-                                        <td>@if ($container->dana != null)
-                                            {{$container->danas->pj}}
-                                            @endif
-                                        </td>
-
-
-
-                                    </tr>
-
-
-
-
-
-
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
-                            </div>
-                    </div>
+                        </div>
                 </div>
             </div>
+        </div>
 
 
 
@@ -1549,9 +1543,8 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
 
-    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+
 
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
@@ -1596,6 +1589,8 @@
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
 
     </script>
+     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+     <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/export_filter_kontainer_real.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/create_si.js"></script>
 
 @endsection

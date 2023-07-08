@@ -137,13 +137,14 @@ class InvoiceLoadController extends Controller
     {
 
         $Container = ContainerPlanload::findOrFail($request->id);
+        // $random = Str::random(15);
 
         $data = [
 
             "price_invoice" => $request->price_invoice,
             "kondisi_invoice" => $request->kondisi_invoice,
             "keterangan_invoice" => $request->keterangan_invoice,
-            "status_invoice" => "ready",
+            // 'status_invoice' => $random.time(),
 
 
         ];
@@ -185,8 +186,7 @@ class InvoiceLoadController extends Controller
             $container2 = [
                 'invoice' => $sis->id,
                 'status' => "Realisasi",
-                'status_invoice' => "done",
-                // 'slug' => $random.time(),
+                'status_invoice' => $request->nomor_invoice,
             ];
 
             OrderJobPlanload::where('id', $old_id)->update($container);
@@ -306,19 +306,40 @@ class InvoiceLoadController extends Controller
     {
 
         $job_id = InvoiceLoad::where('id',$request->id)->value('job_id');
-        $container_id = InvoiceLoad::where('id',$request->id)->value('container_id');
+        $nomor_invoice = InvoiceLoad::where('id',$request->id)->value('nomor_invoice');
         $pdf = InvoiceLoad::findOrFail($request->id);
         $path = InvoiceLoad::where('id',$request->id)->value('path');
 
+        $alihorno = ContainerPlanload::where('status_invoice', $nomor_invoice)->value('harga_alih');
 
+        if ($alihorno != null) {
+            $status1 = [
+                "status"=> "Alih-Kapal",
+                // "status_invoice"=> null,
+            ];
 
+        } else {
+            $status1 = [
+                "status"=> "Process-Load",
+                // "status_invoice"=> null,
+            ];
+        }
         Storage::delete('public/load-invoice/'.$path.'.pdf');
 
+        $container = ContainerPlanload::where('status_invoice', $nomor_invoice)->update($status1);
 
-        // $job = OrderJobPlanload::where('id', $job_id)->update($status);
-        // $container = ContainerPlanload::where('slug', $container_id)->update($status);
 
-        $pdf->delete();
+        $invoice = [
+            "job_id"=> null,
+            "container_id"=> null,
+            "tanggal_invoice"=> null,
+            "path"=> null,
+            "yth"=> null,
+            "km"=> null,
+            "status"=> null,
+
+        ];
+        $pdf->update($invoice);
 
 
 

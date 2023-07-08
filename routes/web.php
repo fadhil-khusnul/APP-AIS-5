@@ -177,6 +177,7 @@ Route::get('/realisasi-pod', [RealisasiLoadController::class, 'index_pod']);
 Route::get('/detail-pdf/{id}/input', [RealisasiLoadController::class, 'detail_pdf']);
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
 Route::get('/realisasi-pod-create/{slug}', [RealisasiLoadController::class, 'create_pod']);
+Route::post('/ok-load', [RealisasiLoadController::class, 'ok_load']);
 Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
 Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fee']);
 

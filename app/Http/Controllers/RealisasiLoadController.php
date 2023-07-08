@@ -123,6 +123,8 @@ class RealisasiLoadController extends Controller
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih');
         })->get();
+        $containers_info = ContainerPlanload::where('job_id', $id)->whereNull('slug')->get();
+
 
         $sealsc = SealContainer::where('job_id', $id)->get();
 
@@ -144,6 +146,7 @@ class RealisasiLoadController extends Controller
             'pol' => $pol,
             'pot' => $pot,
             'pelabuhans' => $pelabuhans,
+            'containers_info' => $containers_info,
             'pengirims' => $pengirim,
             'penerimas' => $penerima,
             'kontainers' => $kontainer,
@@ -298,6 +301,22 @@ class RealisasiLoadController extends Controller
         return response()->json([
             'result' => $pdf
         ]);
+
+
+    }
+    public function ok_load(Request $request)
+    {
+        # code...
+
+        $container =ContainerPlanload::findOrFail($request->container_id);
+        $data = [
+
+            "ok" => 1,
+        ];
+
+        $container->update($data);
+
+        return response()->json(['success' => true]);
 
 
     }

@@ -53,7 +53,7 @@
                                     </td>
                                     <td class="text-center text-nowrap">
                                         <a href="/realisasi-pod-create/{{ $planload->slug }}"
-                                            class="btn btn-danger btn-sm rounded-pill">Realiasasi POD <i
+                                            class="btn btn-danger btn-sm">Realiasasi POD <i
                                                 class="fa fa-pencil"></i>
                                         </a>
 

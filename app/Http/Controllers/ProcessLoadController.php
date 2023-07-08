@@ -1429,6 +1429,8 @@ class ProcessLoadController extends Controller
 
         $harga_seal = Seal::where('kode_seal', $seal)->value('harga_seal');
 
+        // dd($harga_seal);
+
         return response()->json($harga_seal);
     }
     public function getSpkKontainer(Request $request) {

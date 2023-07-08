@@ -52,7 +52,7 @@
 
                                     <td class="text-center text-nowrap">
                                         <a href="/invoice-load-create/{{ $planload->slug }}"
-                                            class="btn btn-label-primary rounded-pill">Buat Invoice <i
+                                            class="btn btn-primary btn-sm">Buat Invoice <i
                                                 class="fa fa-pencil"></i>
 
                                         </a>

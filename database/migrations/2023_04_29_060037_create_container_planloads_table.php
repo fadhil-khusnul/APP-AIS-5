@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('container_planloads', function (Blueprint $table) {
             $table->id();
+            $table->string('ok')->default('0');
             $table->foreignId('job_id');
             $table->string('size');
             $table->string('type');

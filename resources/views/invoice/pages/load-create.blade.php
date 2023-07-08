@@ -138,6 +138,7 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Input</th>
                                         <th class="text-center"> </th>
+                                        <th class="text-center">NOMOR INVOICE</th>
                                         <th class="text-center">UNIT PRICE</th>
                                         <th class="text-center">KONDISI</th>
                                         <th class="text-center">KETERANGAN</th>
@@ -157,22 +158,22 @@
                                             <td>{{ $loop->iteration }}</td>
 
                                             <td>
-                                                @if ($container->status_invoice == 'ready')
+                                                @if ($container->price_invoice != null )
                                                     <button type="button" value="{{ $container->id }}" type="button"
                                                         onclick="update_invoice(this)"
-                                                        class="btn btn-outline-primary btn-sm "><i
+                                                        class="btn btn-primary btn-sm "><i
                                                             class="fa fa-pencil"></i></button>
                                                 @else
                                                     <button type="button" value="{{ $container->id }}" type="button"
                                                         onclick="input_invoice(this)"
-                                                        class="btn btn-outline-success btn-sm text-nowrap ">Input <i
+                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
                                                             class="fa fa-pencil"></i></button>
                                                 @endif
 
 
                                             </td>
                                             <td>
-                                                @if ($container->status_invoice == 'ready')
+                                                @if ($container->price_invoice != null && $container->status_invoice == null || $container->invoices->tanggal_invoice == null)
                                                     <div class="validation-container">
                                                         <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                             class="form-check-input check-container"
@@ -180,15 +181,16 @@
                                                             value="{{ $container->id }}" required autofocus>
 
                                                     </div>
-                                                @elseif ($container->status_invoice == 'done')
+                                                @elseif ($container->status_invoice != null)
                                                     <input readonly disabled checked type="checkbox"
                                                         class="form-check-input"
                                                         id="kontainer_check[{{ $loop->iteration }}]">
-                                                @elseif ($container->status_invoice == null)
+                                                @elseif ($container->price_invoice == null)
                                                     -
                                                 @endif
                                             </td>
 
+                                            <td>{{$container->status_invoice}}</td>
                                             <td>@rupiah($container->price_invoice)</td>
                                             <td>{{$container->kondisi_invoice}}</td>
                                             <td>{{$container->keterangan_invoice}}</td>
@@ -313,15 +315,15 @@
                                                 <td>{{ $loop->iteration }}</td>
 
                                                 <td>
-                                                    @if ($alih->container_planloads->status_invoice == 'ready')
+                                                    @if ($alih->container_planloads->price_invoice != null)
                                                         <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
                                                             onclick="update_invoice(this)"
-                                                            class="btn btn-outline-primary btn-sm "><i
+                                                            class="btn btn-primary btn-sm "><i
                                                                 class="fa fa-pencil"></i></button>
                                                     @else
                                                         <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
                                                             onclick="input_invoice(this)"
-                                                            class="btn btn-outline-success btn-sm text-nowrap ">Input <i
+                                                            class="btn btn-success btn-sm text-nowrap ">Input <i
                                                                 class="fa fa-pencil"></i></button>
                                                     @endif
 
@@ -337,7 +339,7 @@
                                                                 value="{{ $alih->container_planloads->id }}" required autofocus>
 
                                                         </div>
-                                                    @elseif ($alih->container_planloads->status_invoice == 'done')
+                                                    @elseif ($alih->container_planloads->status_invoice != null)
                                                         <input readonly disabled checked type="checkbox"
                                                             class="form-check-input"
                                                             id="kontainer_check[{{ $loop->iteration }}]">
@@ -382,7 +384,7 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-outline-info btn-sm text-nowrap"
+                                                        class="btn btn-info btn-sm text-nowrap"
                                                         value="{{ $alih->kontainer_alih }}"
                                                         onclick="detail_update(this)">Detail Kontainer <i
                                                             class="fa fa-eye"></i></button>
@@ -499,6 +501,8 @@
                                 </thead>
                                 <tbody id="tbody_alih" class="">
                                     @foreach ($pdfs as $pdf)
+                                    @if ($pdf->tanggal_invoice != null)
+
                                         <tr>
 
                                             <td>
@@ -509,7 +513,7 @@
 
 
                                                 <a type="button" href="/preview-invoice/{{ $pdf->path }}"
-                                                    class="btn btn-outline-primary btn-sm ">Preview Invoice <i
+                                                    class="btn btn-primary btn-sm ">Preview Invoice <i
                                                         class="fa fa-eye"></i></a>
 
                                             </td>
@@ -577,10 +581,12 @@
 
                                             <td>
                                                 <button type="button" value="{{ $pdf->id }}"
-                                                    onclick="delete_invoice(this)" class="btn btn-outline-danger btn-sm "><i
+                                                    onclick="delete_invoice(this)" class="btn btn-danger btn-sm "><i
                                                         class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
+                                        @endif
+
                                     @endforeach
 
                                 </tbody>
@@ -684,7 +690,7 @@
                     </div>
                     <div class="modal-footer">
                         <h5 id="total_biaya_kontainer" class="modal-title"></h5>
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish1" class="btn btn-outline-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -750,7 +756,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish2" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish2" class="btn btn-outline-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -824,7 +830,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish3" class="btn btn-success">Buatkan Invoice</button>
+                        <button type="submit" id="btnFinish3" class="btn btn-outline-success">Buatkan Invoice</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -868,7 +874,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btnFinish1" class="btn btn-outline-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
