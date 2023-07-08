@@ -1,5 +1,3 @@
-
-
 function detail(e) {
     let id = e.value;
     // console.log(id);
@@ -15,6 +13,7 @@ function detail(e) {
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
         type: "GET",
+        async: false,
         success: function (response) {
             let new_id = id;
 
@@ -24,15 +23,15 @@ function detail(e) {
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
-            // for (let i = 0; i < response.spks.length; i++) {
-            //     spk[i] = response.spks[i].spk_kontainer;
-            // }
-            // console.log(seals);
+            
             $("#modal-job").modal("show");
+
+            $("#biaya_seal").val(0);
 
             $("#size").val(response.result.size);
             $("#type").val(response.result.type);
             $("#nomor_kontainer").val(response.result.nomor_kontainer);
+            // console.log($("#nomor_kontainer").val(response.result.nomor_kontainer));
             $("#cargo").val(response.result.cargo);
             $("#detail_barang").val(response.result.detail_barang);
             $("#seal")
@@ -44,8 +43,13 @@ function detail(e) {
                     // allowClear:true,
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
+                    // multiple: true,
+                    // ajax: {
+                    //     async: false
+                    // }
                 })
-                .on("select2:select", function (e) {
+                .off("select2:select").on("select2:select", function (e) {
+                    // console.log(e);
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
 
@@ -57,15 +61,23 @@ function detail(e) {
                     $(this).trigger("change");
 
                     let token = $("#csrf").val();
+                    // var count = 0
+                    // count += 1
+
+                    // for(var i = 0; i <= count; i++) {
+                    //     if(i ===)
+                    // }
+                    // var ev = e;
+                    // console.log(token);
 
                     $.ajax({
                         url: "/getSealProcessLoad",
                         type: "post",
-                        async: false,
                         data: {
                             _token: token,
                         },
                         success: function (response) {
+                            // console.log(ev);
                             var seal = $("#seal").val();
                             // console.log(seal, response);
                             var last_seal = seal[seal.length - 1];
@@ -95,6 +107,7 @@ function detail(e) {
                                 $.ajax({
                                     url: "/getSealKontainer",
                                     type: "post",
+                                    async: false,
                                     data: {
                                         _token: token,
                                         seal: last_seal,
@@ -105,7 +118,8 @@ function detail(e) {
                                             .value.replace(/\./g, "");
                                         harga_seal = parseFloat(harga_seal);
 
-                                        console.log(response);
+                                        // console.log(response);
+                                        // console.log(seal_already);
 
                                         if (isNaN(harga_seal)) {
                                             harga_seal = 0;
@@ -114,6 +128,7 @@ function detail(e) {
                                         var harga_seal_now =
                                             harga_seal + response;
                                         $("#biaya_seal").val(harga_seal_now);
+                                        
                                     },
                                 });
                             }
@@ -130,7 +145,7 @@ function detail(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
                 })
-                .on("select2:unselect", function (e) {
+                .off("select2:select").on("select2:unselect", function (e) {
                     // var seal = $("#seal").val();
                     // console.log(seal);
                     // var last_seal = seal[seal.length - 1];
@@ -550,7 +565,7 @@ function detail_tambah() {
             maximumSelectionLength: 4,
             dropdownParent: $("#modal-job-tambah"),
         })
-        .on("select2:select", function (e) {
+        .off("select2:select").on("select2:select", function (e) {
             var selected_element = $(e.currentTarget);
             var select_val = selected_element.val();
             // console.log(select_val);
@@ -884,7 +899,7 @@ function detail_update(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .off("select2:select").on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
                     // console.log(select_val);
@@ -1027,7 +1042,7 @@ function detail_update(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .off("select2:select").on("select2:select", function (e) {
                     var select_val = $(this).val();
 
                     let token = $("#csrf").val();
@@ -1339,7 +1354,7 @@ function detail_disabled(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .off("select2:select").on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
                     // console.log(select_val);
@@ -1409,7 +1424,7 @@ function detail_disabled(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .off("select2:select").on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
                     // console.log(select_val);
