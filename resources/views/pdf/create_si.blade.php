@@ -245,8 +245,8 @@
                             <td colspan="3">PORT OF TRANSIT</td>
                             <td>:</td>
                             <td colspan="3">
-                                @if ($load->pot)
-                                    {{ $load->pot }}
+                                @if ($pot_container != null)
+                                    {{ $pot_container }}
                                 @else
                                     -
                                 @endif
@@ -256,7 +256,7 @@
                             <td colspan="3">PORT OF DISCHARGE</td>
                             <td>:</td>
                             <td colspan="3">
-                                {{ $load->pod }}
+                                {{ $pod_container }}
                             </td>
                         </tr>
                         <tr>

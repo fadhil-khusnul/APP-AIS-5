@@ -26,8 +26,6 @@ function detail(e) {
             
             $("#modal-job").modal("show");
 
-            $("#biaya_seal").val(0);
-
             $("#size").val(response.result.size);
             $("#type").val(response.result.type);
             $("#nomor_kontainer").val(response.result.nomor_kontainer);
@@ -37,6 +35,13 @@ function detail(e) {
             $("#seal")
                 .val(seals)
                 .select2({
+                    ajax: {
+                        dataType: 'json',
+                        delay: 250,
+                        async: false,
+                        cache: false,
+
+                    },
                     dropdownAutoWidth: true,
                     // tags: true,
                     placeholder: "Silahkan Pilih Seal",
@@ -73,6 +78,7 @@ function detail(e) {
                     $.ajax({
                         url: "/getSealProcessLoad",
                         type: "post",
+                        async: false,
                         data: {
                             _token: token,
                         },
@@ -107,15 +113,14 @@ function detail(e) {
                                 $.ajax({
                                     url: "/getSealKontainer",
                                     type: "post",
-                                    async: false,
                                     data: {
                                         _token: token,
                                         seal: last_seal,
                                     },
                                     success: function (response) {
-                                        var harga_seal = document
-                                            .getElementById("biaya_seal")
-                                            .value.replace(/\./g, "");
+                                        $("#seal").trigger("change.select2");
+                                        console.log(last_seal);
+                                        var harga_seal = $("#biaya_seal").val().replace(/\./g, "");
                                         harga_seal = parseFloat(harga_seal);
 
                                         // console.log(response);
@@ -130,15 +135,25 @@ function detail(e) {
                                         $("#biaya_seal").val(harga_seal_now);
                                         
                                     },
+                                    async: false,
+                                    cache: false,
+
+
                                 });
                             }
                         },
+                        async: false,
+                        cache: false,
+
+
                     });
                 });
+
             $("#seal")
                 .val(seals)
                 .select2({
                     dropdownAutoWidth: true,
+
                     // tags: true,
                     placeholder: "Silahkan Pilih Seal",
                     // allowClear:true,

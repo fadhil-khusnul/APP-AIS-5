@@ -163,12 +163,14 @@ class InvoiceLoadController extends Controller
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
         $loads = OrderJobPlanload::where('id', $old_id)->get();
 
+       
+
 
         $si_pdf =[
             'yth' => $request->yth,
             'km' => $request->km,
             'status' => $request->status,
-            'nomor_invoice' => $request->nomor_invoice,
+            'nomor_invoice' => $nomor_invoice,
             'tahun_invoice' => $request->tahun,
             'tanggal_invoice' => $request->tanggal,
             'job_id' => $old_id,
@@ -186,7 +188,7 @@ class InvoiceLoadController extends Controller
             $container2 = [
                 'invoice' => $sis->id,
                 'status' => "Realisasi",
-                'status_invoice' => $request->nomor_invoice,
+                'status_invoice' => $nomor_invoice,
             ];
 
             OrderJobPlanload::where('id', $old_id)->update($container);
@@ -271,7 +273,7 @@ class InvoiceLoadController extends Controller
             "loads" => $loads,
             "containers" => $new_container,
             "yth" => $request->yth,
-            "nomor_invoice" => $request->nomor_invoice,
+            "nomor_invoice" => $nomor_invoice,
             "km" => $request->km,
             "report" => "MUATAN",
             "status" => $request->status,

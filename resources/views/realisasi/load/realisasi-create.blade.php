@@ -136,8 +136,7 @@
                             <label for="" class="col-form-label">Filter Tabel :</label>
 
                             <div class="col-6">
-                                <select id="pilih_pod" name="pilih_pod" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POD</option>
+                                <select multiple id="pilih_pod_input" name="pilih_pod_input" class="form-select" onchange="pilih_pod_input_fun(this)">
                                     @foreach ($pelabuhans as $pelabuhan)
                                     <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
                                     @endforeach
@@ -146,8 +145,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_pot" name="pilih_pot" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih POT</option>
+                                <select multiple id="pilih_pot_input" name="pilih_pot_input" class="form-select" onchange="pilih_pot_input_fun(this)">
                                     @foreach ($pelabuhans as $pelabuhan)
                                     <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
                                     @endforeach
@@ -156,8 +154,7 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_size" name="pilih_size" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Size</option>
+                                <select multiple id="pilih_size_input" name="pilih_size_input" class="form-select pilih" onchange="pilih_size_input_fun(this)">
                                     @foreach ($sizes as $size)
                                     <option value="{{$size->size_container}}">{{$size->size_container}}</option>
                                     @endforeach
@@ -166,11 +163,20 @@
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_type" name="pilih_type" class="form-select pilih" onchange="filter_status(this)">
-                                    <option selected disabled>Pilih Type</option>
+                                <select multiple id="pilih_type_input" name="pilih_type_input" class="form-select pilih" onchange="pilih_type_input_fun(this)">
                                     @foreach ($types as $type)
                                     <option value="{{$type->type_container}}">{{$type->type_container}}</option>
                                     @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="col-6">
+                                <select id="pilih_ok_input" name="pilih_ok_input" class="form-select" onchange="pilih_ok_input_fun(this)">
+                                    <option selected value="">Pilih Status Container</option>
+                                    <option value="Receiving OK">Receiving OK</option>
+                                    <option value="Belum Buat JOB">Belum Buat JOB</option>
+
 
                                 </select>
 
@@ -186,8 +192,8 @@
                                     <tr>
                                         <th>No</th>
                                         <th>SI</th>
-                                        {{-- <th>Receiving</th> --}}
                                         <th>Receiving OK</th>
+                                        <th></th>
                                         <th>POD</th>
                                         <th>POT</th>
                                         <th>Nomor Kontainer</th>
@@ -239,13 +245,22 @@
                                                     </div>
                                                 @endif
                                             </td> --}}
-                                            <td class="text-nowrap">
+                                            <td class="text-nowrap text-start">
                                                 @if ($container->ok == 1 )
                                                 <i class="marker marker-dot text-success"></i>Receiving OK
 
                                                 @else
+                                                <i class="marker marker-dot text-danger"></i>Belum Buat JOB
+
+                                                @endif
+
+
+                                            </td>
+                                            <td class="text-nowrap">
+                                                @if ($container->ok == 1 || $container->status != "Realisasi")
+                                                -
+                                                @else
                                                 <div class="dropdown">
-                                                    <i class="marker marker-dot text-danger"></i>Belum Buat JOB
                                                     <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown" @if ($container->slug == null) disabled readonly @endif>
                                                         <i class="fa fa-ellipsis-h"></i>
                                                     </button>
@@ -554,7 +569,7 @@
                             <div class="col-6">
                                 <select id="pilih_status_si" name="pilih_status_si" class="form-select pilih" onchange="filter_status(this)">
                                     <option selected disabled>Pilih Jenis SI</option>
-                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="BIASA">BIASA</option>
                                     <option value="ALIH-KAPAL">ALIH-KAPAL</option>
 
                                 </select>
@@ -595,7 +610,7 @@
 
 
                                             <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                class="btn btn-outline-primary btn-sm ">Preview SI <i
+                                                class="btn btn-primary btn-sm ">Preview SI <i
                                                     class="fa fa-eye"></i></a>
 
 
@@ -608,13 +623,13 @@
                                             @if ($pdf->nomor_bl == null && $pdf->status_approve == "Disetujui")
                                                 <button value="{{ $pdf->id }}" type="button"
                                                     onclick="input_bl(this)"
-                                                    class="btn btn-outline-success btn-sm ">Input BL <i
+                                                    class="btn btn-success btn-sm ">Input BL <i
                                                         class="fa fa-pencil"></i></button>
 
                                             @elseif ($pdf->nomor_bl != null)
                                             <button value="{{ $pdf->id }}" type="button"
                                                 onclick="update_bl(this)"
-                                                class="btn btn-outline-primary btn-sm ">BL <i
+                                                class="btn btn-primary btn-sm ">BL <i
                                                     class="fa fa-pencil"></i></button>
                                             @endif
 
@@ -649,7 +664,7 @@
 
                                             @if ($pdf->status_si == 'Default')
                                             <i class="marker marker-dot text-success"></i>
-                                            NORMAL
+                                            BIASA
                                             @else
                                             <i class="marker marker-dot text-primary"></i>
                                             ALIH-KAPAL
@@ -696,7 +711,7 @@
 
                                         <td>
                                             <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                class="btn btn-outline-danger btn-sm "><i
+                                                class="btn btn-danger btn-sm "><i
                                                     class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -737,7 +752,7 @@
                         <div class="col-6">
                             <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="pilih_status_if1_fun(this)">
                                 <option selected value="">Pilih Status Container</option>
-                                <option value="NORMAL">NORMAL</option>
+                                <option value="BIASA">BIASA</option>
                                 <option value="ALIH-KAPAL">ALIH-KAPAL</option>
 
 
@@ -819,7 +834,7 @@
                                         @elseif ($container->status == "Batal-Muat")
                                         <i class="marker marker-dot text-danger"></i>BATAL-MUAT
                                         @else
-                                        <i class="marker marker-dot text-success"></i> NORMAL
+                                        <i class="marker marker-dot text-success"></i> BIASA
                                         @endif
 
 

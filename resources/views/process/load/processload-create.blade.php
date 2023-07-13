@@ -190,6 +190,8 @@
                                         <th class="text-center">Size Kontainer</th>
                                         <th class="text-center">Type Kontainer</th>
                                         <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">POT Kontainer</th>
+                                        <th class="text-center">POD Kontainer</th>
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>
@@ -221,15 +223,28 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if ($container->pot_container != null)
+                                                    {{ $container->pot_container }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($container->pod_container != null)
+                                                    {{ $container->pod_container }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($container->nomor_kontainer != null)
                                                     <button type="button" id="btn_detail" name="btn_detail"
                                                         class="btn btn-label-primary btn-sm text-nowrap"
-                                                        value="{{ $container->id }}" onclick="detail_update(this)">Detail
-                                                        Kontainer <i class="fa fa-eye"></i></button>
+                                                        value="{{ $container->id }}" onclick="detail_update(this)">Edit Kontainer <i class="fa fa-eye"></i></button>
                                                 @else
                                                     <button type="button" id="btn_detail" name="btn_detail"
                                                         class="btn btn-label-success btn-sm text-nowrap"
-                                                        value="{{ $container->id }}" onclick="detail(this)">Detail
+                                                        value="{{ $container->id }}" onclick="detail(this)">Input
                                                         Kontainer <i class="fa fa-pencil"></i></button>
                                                 @endif
 
@@ -277,7 +292,7 @@
                             <div class="col-6">
                                 <select id="pilih_status_if1" name="pilih_status_if1" class="form-select pilih" onchange="pilih_status_if1_fun(this)">
                                     <option selected value="">Pilih Status Container</option>
-                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="BIASA">BIASA</option>
                                     <option value="ALIH-KAPAL">ALIH-KAPAL</option>
 
 
@@ -359,7 +374,7 @@
                                             @elseif ($container->status == "Batal-Muat")
                                             <i class="marker marker-dot text-danger"></i>BATAL-MUAT
                                             @else
-                                            <i class="marker marker-dot text-success"></i> NORMAL
+                                            <i class="marker marker-dot text-success"></i> BIASA
                                             @endif
 
 

@@ -125,6 +125,52 @@ $("#pilih_type_if2").select2
 
 });
 
+$("#pilih_pod_input").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"POD Container",
+
+
+
+});
+$("#pilih_pot_input").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"POT Container",
+
+
+
+});
+$("#pilih_size_input").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Size Container",
+
+
+
+});
+$("#pilih_type_input").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Type Container",
+
+
+
+});
+$("#pilih_ok_input").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Receiving",
+
+
+
+});
+
 
 $("#select2-1, #penerima, #pengirim, .danas, #select_company, #activity, #pickup-lokasi, #select2-2, #POD_1, #POL_1, #POT_1, #Pengirim_1, #Penerima_1, #jenis-container, #penerima-process").select2
 ({

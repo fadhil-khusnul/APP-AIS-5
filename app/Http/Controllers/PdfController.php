@@ -40,6 +40,7 @@ class PdfController extends Controller
     {
         // dd($request);
         $random = Str::random(15);
+        $random_time = $random.time();
         $id_container = $request->chek_container;
 
         for ($i=0; $i < count($id_container) ; $i++) {
@@ -62,10 +63,6 @@ class PdfController extends Controller
             $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i];
         }
 
-        // for($i = 0; $i)
-        // dd($quantity);
-        // $sup_unique_size =
-        // $urutan = (int)$request->urutan;
         $old_slug = $request->old_slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
         $loads = OrderJobPlanload::where('id', $old_id)->get();
@@ -78,8 +75,8 @@ class PdfController extends Controller
             'status_si' => $request->status_si,
             'consigne' => $request->consigne,
             'job_id' => $old_id,
-            'container_id' => $random.time(),
-            'path' => 'SI-'.$old_slug.'-'.$random.time(),
+            'container_id' => $random_time,
+            'path' => 'SI-'.$old_slug.'-'.$random_time,
 
         ];
 
@@ -92,12 +89,17 @@ class PdfController extends Controller
             $container2 = [
                 'surat_si' => $sis->id,
                 'status' => "Realisasi",
-                'slug' => $random.time(),
+                'slug' => $random_time,
             ];
 
             OrderJobPlanload::where('id', $old_id)->update($container);
             ContainerPlanload::where('id',$request->chek_container[$i])->update($container2);
+
+            $pod_container = ContainerPlanload::where('id',$request->chek_container[$i])->value("pod_container");
+            $pot_container = ContainerPlanload::where('id',$request->chek_container[$i])->value("pot_container");
         }
+
+        // dd($pod_container, $pot_container);
 
         $checked = [];
         $containers = [];
@@ -154,9 +156,9 @@ class PdfController extends Controller
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
 
-        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'.pdf';
-        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-progress.pdf';
-        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
+        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'.pdf';
+        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'-progress.pdf';
+        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'-ditolak.pdf';
 
 
 
@@ -173,6 +175,8 @@ class PdfController extends Controller
             "consigne" => $request->consigne,
             "quantity" => $quantity,
             "seal_container" => $seal_container,
+            "pot_container" => $pot_container,
+            "pod_container" => $pod_container,
             "status_si" => $request->status_si,
 
 
@@ -190,6 +194,8 @@ class PdfController extends Controller
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
+            "pot_container" => $pot_container,
+            "pod_container" => $pod_container,
             "quantity" => $quantity,
             "status_si" => $request->status_si,
 
@@ -209,12 +215,11 @@ class PdfController extends Controller
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
             "consigne" => $request->consigne,
+            "pot_container" => $pot_container,
+            "pod_container" => $pod_container,
             "quantity" => $quantity,
             "seal_container" => $seal_container,
             "status_si" => $request->status_si,
-
-
-
         ]);
 
         $status2 = 'SI-DITOLAK';
@@ -265,8 +270,8 @@ class PdfController extends Controller
             'status_si' => $request->status_si,
             'consigne' => $request->consigne,
             'job_id' => $old_id,
-            'container_id' => $random.time(),
-            'path' => 'SI-'.$old_slug.'-'.$random.time(),
+            'container_id' => $random_time,
+            'path' => 'SI-'.$old_slug.'-'.$random_time,
 
         ];
 
@@ -279,7 +284,7 @@ class PdfController extends Controller
             $container2 = [
                 'surat_si' => $sis->id,
                 'status' => "Realisasi-Alih",
-                'slug' => $random.time(),
+                'slug' => $random_time,
             ];
 
             OrderJobPlanload::where('id', $old_id)->update($container);
@@ -342,9 +347,9 @@ class PdfController extends Controller
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
 
-        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'.pdf';
-        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-progress.pdf';
-        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random.time().'-ditolak.pdf';
+        $save1 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'.pdf';
+        $save2 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'-progress.pdf';
+        $save3 = 'storage/si-container/SI-'.$old_slug.'-'.$random_time.'-ditolak.pdf';
 
 
 
@@ -541,6 +546,20 @@ class PdfController extends Controller
         }
 
         return response()->json($vessel);
+    }
+    public function getPodLoad(Request $request) {
+        $pod_container = [];
+
+        for($i = 0; $i < count($request->chek_container); $i++) {
+            $pod_container[$i] = ContainerPlanload::where('id', $request->chek_container[$i])->value('pod_container');
+            $pot_container[$i] = ContainerPlanload::where('id', $request->chek_container[$i])->value('pot_container');
+        }
+
+        return response()->json([
+            'pod_container' => $pod_container,
+            'pot_container' => $pot_container,
+        ]);
+
     }
 
     public function delete_si(Request $request)

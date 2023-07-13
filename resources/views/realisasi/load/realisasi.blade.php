@@ -26,10 +26,6 @@
                                     <th>POL</th>
                                     <th>POT</th>
                                     <th class="align-top"> JUMLAH KONTAINER :</th>
-
-
-
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,7 +53,7 @@
                                     </td>
                                     <td class="text-center text-nowrap">
                                         <a href="/realisasi-load-create/{{ $planload->slug }}"
-                                            class="btn btn-danger btn-sm rounded-pill">Realisasi POL <i
+                                            class="btn btn-danger btn-sm">Realisasi POL <i
                                                 class="fa fa-pencil"></i>
                                         </a>
 

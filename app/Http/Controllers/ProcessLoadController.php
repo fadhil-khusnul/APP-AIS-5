@@ -232,7 +232,6 @@ class ProcessLoadController extends Controller
         $new_container = collect($new_container)->whereNull('slug');
         $new_container_biaya = collect($new_container_biaya)->whereNull('slug');
         $new_container_alih = collect($new_container_alih)->whereNull('slug')->whereNotNull('harga_alih');
-        // dd($new_container_alih);
 
 
 

@@ -139,7 +139,7 @@
 
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>KONTAINER <b class="text-danger">NON</b> ALIH-KAPAL:</b></label>
+                            <label for="inputState" class="form-label"><b>KONTAINER <b class="text-success">NON</b> ALIH-KAPAL:</b></label>
                         </div>
 
                         <div class="row row-cols-lg-auto py-5 g-3">
@@ -215,11 +215,11 @@
                                             <td>
                                                 @if ($container->status_container == "POD")
 
-                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Edit Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
 
                                                 @else
-                                                <button type="button" class="btn btn-outline-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
 
                                                 </button>
                                                 @endif
@@ -328,7 +328,6 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center">Input Biaya POD</th>
-                                        <th class="text-center">Detail Kontainer</th>
                                         <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">Pelayaran (Shipping Company)</th>
                                         <th class="text-center">POT</th>
@@ -349,21 +348,15 @@
                                             <td>
                                                 @if ($alih->container_planloads->status_container == "POD")
 
-                                                <button type="button" class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Edit Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
 
                                                 @else
-                                                <button type="button" class="btn btn-outline-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                <button type="button" class="btn btn-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
                                                 </button>
                                                 @endif
                                             </td>
-                                            <td>
 
-                                                    <button type="button" class="btn btn-outline-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="detail_kontainer(this)">
-                                                    Detail Kontainer <i class="fa fa-eye"></i>
-                                                    </button>
-
-                                            </td>
 
                                             <td>
                                                 <label id="kontainer_alih[{{ $loop->iteration }}]">
@@ -489,20 +482,20 @@
                                             </td>
                                             <td class="text-center">
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-outline-primary btn-icon btn-sm "><i
-                                                        class="fa fa-eye"></i></a>
+                                                    class="btn btn-primary btn-sm "><i
+                                                        class="fa fa-eye"></i> Preview SI</a>
 
                                             <td>
                                                 @if ($pdf->status == "POD")
 
                                                 <button type="button" value="{{ $pdf->id }}" type="button"
                                                     onclick="do_fee_edit(this)"
-                                                    class="btn btn-outline-primary btn-sm ">DO <i
+                                                    class="btn btn-primary btn-sm ">Edit DO <i
                                                     class="fa fa-pencil"></i></button>
                                                 @else
                                                 <button type="button" value="{{ $pdf->id }}" type="button"
                                                     onclick="input_biaya_do(this)"
-                                                    class="btn btn-outline-success btn-sm ">Input DO <i
+                                                    class="btn btn-success btn-sm ">Input DO <i
                                                     class="fa fa-pencil"></i></button>
 
                                                 @endif
@@ -556,16 +549,16 @@
                                             <td>
 
                                                 @if ($pdf->status_si == 'Default')
-                                                    <span class="badge badge-label-danger">NON ALIH-KAPAL</span>
+                                                    <i class="marker marker-dot text-success"></i> BIASA
                                                 @else
-                                                    <span class="badge badge-label-primary">ALIH-KAPAL</span>
+                                                     <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
                                                 @endif
                                             </td>
 
 
                                             <td class="no-indent">
                                                 <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                    class="btn btn-outline-danger btn-sm "><i
+                                                    class="btn btn-danger btn-sm "><i
                                                         class="fa fa-trash"></i></button>
 
                                             </td>

@@ -1,4 +1,4 @@
-var tabelvendor = $("#realisasiload_create").DataTable({
+var tabel_container = $("#realisasiload_create").DataTable({
     responsive:true,
     pageLength : 5,
     lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
@@ -28,6 +28,79 @@ var tabel_si = $("#tabel_si").DataTable({
     // scroller: true,
 
 });
+
+function pilih_pod_input_fun(val) {
+    var filter = [];
+    filter = $("#pilih_pod_input").val();
+    console.log(filter);
+
+    if (filter == null) {
+        tabel_container.columns(4).search("").draw();
+    } else {
+        tabel_container
+            .columns(4)
+            .search(filter.join("|"), true, false, true)
+            .draw();
+    }
+}
+function pilih_pot_input_fun(val) {
+    var filter = [];
+    filter = $("#pilih_pot_input").val();
+    console.log(filter);
+
+    if (filter == null) {
+        tabel_container.columns(5).search("").draw();
+    } else {
+        tabel_container
+            .columns(5)
+            .search(filter.join("|"), true, false, true)
+            .draw();
+    }
+}
+function pilih_size_input_fun(val) {
+    var filter = [];
+    filter = $("#pilih_size_input").val();
+    console.log(filter);
+
+    if (filter == null) {
+        tabel_container.columns(7).search("").draw();
+    } else {
+        tabel_container
+            .columns(7)
+            .search(filter.join("|"), true, false, true)
+            .draw();
+    }
+}
+function pilih_type_input_fun(val) {
+    var filter = [];
+    filter = $("#pilih_type_input").val();
+    console.log(filter);
+
+    if (filter == null) {
+        tabel_container.columns(8).search("").draw();
+    } else {
+        tabel_container
+            .columns(8)
+            .search(filter.join("|"), true, false, true)
+            .draw();
+    }
+}
+function pilih_ok_input_fun(val) {
+
+    // console.log(val);
+    var filter = [];
+    filter = $("#pilih_ok_input").val();
+    console.log(filter);
+
+    if (filter == null) {
+        tabel_container.columns(2).search("").draw();
+    } else {
+        tabel_container
+            .columns(2)
+            .search(filter)
+            .draw();
+    }
+}
 function pdf_si() {
     var swal = Swal.mixin({
         customClass: {
@@ -89,160 +162,156 @@ function pdf_si() {
 
             var chek_container = []
 
-            var rowcollection =  tabelvendor.$(".check-container:checked", {"page": "all"});
+            var rowcollection =  tabel_container.$(".check-container:checked", {"page": "all"});
             rowcollection.each(function (index, elem) {
                 chek_container.push($(elem).val());
             });
 
-            var old_slug = $("#old_slug").val();
 
-            var d = new Date(),
-                dformat = [
-                    d.getFullYear(),
-                    d.getMonth() + 1,
-                    d.getDate(),
-                    d.getHours(),
-                    d.getMinutes(),
-                    d.getSeconds(),
-                ].join("-");
+            $.ajax({
+                type: "post",
+                url: "/getPodLoad",
+                data: {
+                    _token: token,
+                    chek_container: chek_container,
+                },
+                success: function (response) {
+                    console.log(response);
+                    var pod_sama = [...new Set(response.pod_container)];
+                    var pot_sama = [...new Set(response.pot_container)];
+                    console.log(pot_sama, pod_sama);
 
-            swal.fire({
-                title: " Buat SI Untuk Job Load ini?",
-                text: "Silahkan Periksa Semua Data yang ada Sebelum Membuat Shipping Container (SI).",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Iya",
-                cancelButtonText: "Tidak",
-            }).then((willCreate) => {
-                if (willCreate.isConfirmed) {
-                    $("#modal-si").modal("show");
+                    if (pod_sama.length != 1 || pot_sama.length != 1) {
+                        swal.fire({
+                            title: "POD/POT Container Tidak Sama",
+                            text: "Silahkan Perhatikan Detail Informasi Containernya",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        });
+                    }
+                    else{
+                        var old_slug = $("#old_slug").val();
 
-                    $("#valid_si").validate({
-                        rules: {
-                            shipper: {
-                                required: true,
-                            },
-                            consigne: {
-                                required: true,
-                            },
-                        },
-                        messages: {
-                            shipper: {
-                                required: "Silakan Isi SHIPPER",
-                            },
-                            consigne: {
-                                required: "Silakan Isi CONSIGNE",
-                            },
-                        },
-                        highlight: function highlight(
-                            element,
-                            errorClass,
-                            validClass
-                        ) {
-                            $(element).addClass("is-invalid");
-                            $(element).removeClass("is-valid");
-                        },
-                        unhighlight: function unhighlight(
-                            element,
-                            errorClass,
-                            validClass
-                        ) {
-                            $(element).removeClass("is-invalid");
-                        },
-                        errorPlacement: function errorPlacement(
-                            error,
-                            element
-                        ) {
-                            error.addClass("invalid-feedback");
-                            element
-                                .closest(".validation-container")
-                                .append(error);
-                        },
-                        submitHandler: function (form) {
-                            document.getElementById('loading-wrapper').style.cursor = "wait";
-                            document.getElementById('btnFinish').setAttribute('disabled', true);
-                            var shipper = $("#shipper").val();
-                            var consigne = $("#consigne").val();
-                            // var slug_container = $('#slug_container').val();
+                        var d = new Date(),
+                            dformat = [
+                                d.getFullYear(),
+                                d.getMonth() + 1,
+                                d.getDate(),
+                                d.getHours(),
+                                d.getMinutes(),
+                                d.getSeconds(),
+                            ].join("-");
 
-                            // var size = [];
-                            // var type = [];
-                            // var nomor_kontainer = [];
-                            // var cargo = [];
-                            // var seal = [];
-                            // for (var i = 0; i < chek_container.length; i++) {
-                            //     size[i] = document.getElementById(
-                            //         "size[" + chek_container[i] + "]"
-                            //     ).innerText;
-                            //     type[i] = document.getElementById(
-                            //         "type[" + chek_container[i] + "]"
-                            //     ).innerText;
-                            //     nomor_kontainer[i] = document.getElementById(
-                            //         "nomor_kontainer[" + chek_container[i] + "]"
-                            //     ).innerText;
-                            //     cargo[i] = document.getElementById(
-                            //         "cargo[" + chek_container[i] + "]"
-                            //     ).innerText;
-                            //     seal[i] = document.getElementById(
-                            //         "seal[" + chek_container[i] + "]"
-                            //     ).innerText;
-                            // }
-                            var data = {
-                                _token: token,
-                                chek_container: chek_container,
-                                old_slug: old_slug,
-                                shipper: shipper,
-                                consigne: consigne,
-                                // type: type,
-                                // size: size,
-                                // nomor_kontainer: nomor_kontainer,
-                                // cargo: cargo,
-                                // seal: seal,
-                                status_si: "Default",
-                            };
+                        swal.fire({
+                            title: " Buat SI Untuk Job Load ini?",
+                            text: "Silahkan Periksa Semua Data yang ada Sebelum Membuat Shipping Container (SI).",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Iya",
+                            cancelButtonText: "Tidak",
+                        }).then((willCreate) => {
+                            if (willCreate.isConfirmed) {
+                                $("#modal-si").modal("show");
 
-                            $.ajax({
-                                type: "POST",
-                                url: "/create-si-container",
-                                data: data,
-                                xhrFields: {
-                                    responseType: "blob",
-                                },
-                                success: function (response) {
-                                    toast.fire({
-                                        icon: "success",
-                                        title: "SI Berhasil Dibuat",
-                                    });
-                                    var blob = new Blob([response]);
-                                    var link = document.createElement("a");
-                                    link.href =
-                                        window.URL.createObjectURL(blob);
-                                    link.download =
-                                        "" + old_slug + dformat + ".pdf";
-                                    link.click();
+                                $("#valid_si").validate({
+                                    rules: {
+                                        shipper: {
+                                            required: true,
+                                        },
+                                        consigne: {
+                                            required: true,
+                                        },
+                                    },
+                                    messages: {
+                                        shipper: {
+                                            required: "Silakan Isi SHIPPER",
+                                        },
+                                        consigne: {
+                                            required: "Silakan Isi CONSIGNE",
+                                        },
+                                    },
+                                    highlight: function highlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).addClass("is-invalid");
+                                        $(element).removeClass("is-valid");
+                                    },
+                                    unhighlight: function unhighlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).removeClass("is-invalid");
+                                    },
+                                    errorPlacement: function errorPlacement(
+                                        error,
+                                        element
+                                    ) {
+                                        error.addClass("invalid-feedback");
+                                        element
+                                            .closest(".validation-container")
+                                            .append(error);
+                                    },
+                                    submitHandler: function (form) {
+                                        document.getElementById('loading-wrapper').style.cursor = "wait";
+                                        document.getElementById('btnFinish').setAttribute('disabled', true);
+                                        var shipper = $("#shipper").val();
+                                        var consigne = $("#consigne").val();
 
-                                    setTimeout(function () {
-                                        window.location.reload();
-                                    }, 10);
-                                },
-                            });
-                        },
-                    });
-                } else {
-                    swal.fire({
-                        title: "SI Tidak Dibuat",
-                        // text: "Data Batal Dihapus",
-                        icon: "error",
-                        timer: 2e3,
-                        showConfirmButton: false,
-                    });
-                }
+                                        var data = {
+                                            _token: token,
+                                            chek_container: chek_container,
+                                            old_slug: old_slug,
+                                            shipper: shipper,
+                                            consigne: consigne,
+
+                                            status_si: "Default",
+                                        };
+
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/create-si-container",
+                                            data: data,
+                                            xhrFields: {
+                                                responseType: "blob",
+                                            },
+                                            success: function (response) {
+                                                toast.fire({
+                                                    icon: "success",
+                                                    title: "SI Berhasil Dibuat",
+                                                });
+                                                var blob = new Blob([response]);
+                                                var link = document.createElement("a");
+                                                link.href =
+                                                    window.URL.createObjectURL(blob);
+                                                link.download =
+                                                    "" + old_slug + dformat + ".pdf";
+                                                link.click();
+
+                                                setTimeout(function () {
+                                                    window.location.reload();
+                                                }, 10);
+                                            },
+                                        });
+                                    },
+                                });
+                            } else {
+                                swal.fire({
+                                    title: "SI Tidak Dibuat",
+                                    // text: "Data Batal Dihapus",
+                                    icon: "error",
+                                    timer: 2e3,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        });
+
+                    }
+                },
             });
-
-            // for (let i = 0; i < chek_container.length; i++) {
-            //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
-
-            // }
         },
     });
 }
@@ -1220,12 +1289,12 @@ function delete_SI(r) {
 function countCheck() {
     // var search = "";
 
-    // tabelvendor.search(search).draw();
+    // tabel_container.search(search).draw();
     // var count = $('input[name="letter"]:checked').length;
 
     var ids = []
 
-    var rowcollection =  tabelvendor.$('input[name="letter"]:checked', {"page": "all"});
+    var rowcollection =  tabel_container.$('input[name="letter"]:checked', {"page": "all"});
     rowcollection.each(function (index, elem) {
         ids.push($(elem).val());
     });

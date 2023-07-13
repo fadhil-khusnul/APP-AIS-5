@@ -205,6 +205,7 @@ Route::post('/getNoContainer-discharge', [PlanDischargeController::class, 'getNo
 Route::post('/create-si-container', [PdfController::class, 'create_si']);
 Route::post('/create-si-alih', [PdfController::class, 'create_si_alih']);
 Route::post('/getAlihKapal', [PdfController::class, 'getAlihKapal']);
+Route::post('/getPodLoad', [PdfController::class, 'getPodLoad']);
 Route::post('/masukkan-bl', [PdfController::class, 'masukkan_bl']);
 Route::get('/invoice-load/{slug}', [PdfController::class, 'invoice_load']);
 Route::post('/create-si-discharge', [PdfController::class, 'si_discharge']);
