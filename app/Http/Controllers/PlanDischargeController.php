@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PlanDischarge;
-use App\Models\PlanLoad;
-use Illuminate\Http\Request;
-use App\Models\Stripping;
-use App\Models\ShippingCompany;
-use App\Models\Pelabuhan;
-use App\Models\Pengirim;
+use App\Models\Depo;
+use App\Models\Seal;
 use App\Models\Penerima;
-use App\Models\Container;
-use App\Models\PlanDischargeContainer;
-use App\Models\TypeContainer;
-use App\Http\Requests\StorePlanLoadRequest;
-use App\Http\Requests\UpdatePlanLoadRequest;
-use Illuminate\Support\Str;
+use App\Models\Pengirim;
+use App\Models\PlanLoad;
 use App\Models\AlihKapal;
 use App\Models\BatalMuat;
-use App\Models\Seal;
-use App\Models\Depo;
+use App\Models\Container;
+use App\Models\Pelabuhan;
+use App\Models\Stripping;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\PlanDischarge;
+use App\Models\SealContainer;
+use App\Models\TypeContainer;
+use App\Models\ShippingCompany;
+use App\Models\ContainerPlanload;
 use App\Models\BiayaLainDischarge;
+use App\Models\PlanDischargeContainer;
+use App\Http\Requests\StorePlanLoadRequest;
+use App\Http\Requests\UpdatePlanLoadRequest;
 
 
 class PlanDischargeController extends Controller
@@ -51,7 +53,7 @@ class PlanDischargeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
         $shipping_company = ShippingCompany::all();
@@ -61,6 +63,8 @@ class PlanDischargeController extends Controller
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
+
+     
 
         return view('plan.discharge.plandischarge-create',[
             'title' => 'Buat Discharge-Plan',
@@ -123,29 +127,42 @@ class PlanDischargeController extends Controller
 
         $tambah = $request->tambah;
 
-        $jumlah_kontainer = [];
         $size = [];
         $type = [];
         $cargo = [];
 
         for ($j = 0; $j < $tambah; $j++) {
             $job_id[$j] = $id;
-            $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
-            $size[$j] = [];
-            $type[$j] = [];
-            $cargo[$j] = [];
-            // $tambah2[$j] = [];
-            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
+       
+            $container = [
+                'job_id' => $job_id[$j],
+                'size' => $request->size[$j],
+                'type' => $request->type[$j],
+                'cargo' => $request->cargo[$j],
+            ];
+            $plandischarge = PlanDischargeContainer::create($container);
+        
+        }
 
-                $container = [
-                    'job_id' => $job_id[$j],
-                    'jumlah_kontainer' => $jumlah_kontainer[$j],
-                    'size' => $request->size[$j][$i],
-                    'type' => $request->type[$j][$i],
-                    'cargo' => $request->cargo[$j][$i],
-                ];
-                PlanDischargeContainer::create($container);
-            }
+
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $seal = [
+                "job_id_discharge" => $id,
+                "kontainer_id_discharge" => $plandischarge->id,
+                "seal_kontainer" => $request->seal[$i],
+            ];
+
+            SealContainer::create($seal);
+        }
+        for ($i=0; $i <count($request->seal) ; $i++) {
+
+            $data1 = [
+                "status" => "Container",
+
+            ];
+
+            Seal::where("kode_seal", $request->seal[$i])->update($data1);
         }
 
         return response()->json(['success' => true]);

@@ -17,9 +17,11 @@
     <link href="{{ asset('/') }}./assets/build/scripts/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-
-
+    
+    
+    
     <title>{{$title}} | AIS-ONLINE</title>
+    @vite('resources/js/app.js')
 
 </head>
 

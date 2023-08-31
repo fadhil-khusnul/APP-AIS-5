@@ -24,7 +24,7 @@
 
     });
 
-   $("#nomor_kontainer, #nomor_kontainer_update, #nomor_kontainer_tambah").inputmask(
+   $("#nomor_kontainer, #nomor_kontainer_update, #nomor_kontainer_tambah, .nomor_kontainer").inputmask(
         {
             mask:"AAAA9999999",
             placeholder:"",

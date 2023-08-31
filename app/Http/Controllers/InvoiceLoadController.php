@@ -88,7 +88,8 @@ class InvoiceLoadController extends Controller
         $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
-            ->where('status', '!=', 'Realisasi-Alih');
+            ->where('status', '!=', 'Realisasi-Alih')
+            ->whereNotNull('slug');
         })->get();
 
         $sealsc = SealContainer::where('job_id', $id)->get();
@@ -157,42 +158,90 @@ class InvoiceLoadController extends Controller
 
     public function pdf_invoice(Request $request)
     {
-        // dd($request);
+        // dd($request->check_container);
         $random = Str::random(15);
         $old_slug = $request->old_slug;
+        $nomor_invoice = $request->nomor_invoice;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
+        // dd($old_id);
         $loads = OrderJobPlanload::where('id', $old_id)->get();
 
-       
+        $no_incvoice = [];
+        for($i = 0; $i < count($request->check_container); $i++) {
+            $no_incvoice[$i] = ContainerPlanLoad::where('id', $request->check_container[$i])->value('status_invoice');
+        }
+        $no_invoice_unique = array_unique($no_incvoice);
+        // dd($no_invoice_unique);
 
+        // for($i = 0; $i < count($request->check_container); $i++) {
+        //     if($no_incvoice[$i] == null) {
 
-        $si_pdf =[
-            'yth' => $request->yth,
-            'km' => $request->km,
-            'status' => $request->status,
-            'nomor_invoice' => $nomor_invoice,
-            'tahun_invoice' => $request->tahun,
-            'tanggal_invoice' => $request->tanggal,
-            'job_id' => $old_id,
-            'container_id' => $random.time(),
-            'path' => 'Invoice-'.$old_slug.'-'.$random.time(),
+        //     }
+        // }
 
-        ];
+        // dd($no_incvoice);
+        $no_invoice_2 = InvoiceLoad::where('nomor_invoice', $no_invoice_unique[0])->value('id');
+        // dd($no_invoice_2);
 
-        $sis = InvoiceLoad::create($si_pdf);
+        if($no_invoice_2 == null) {
+            $si_pdf =[
+                'yth' => $request->yth,
+                'km' => $request->km,
+                'status' => $request->status,
+                'nomor_invoice' => $nomor_invoice,
+                'tahun_invoice' => $request->tahun,
+                'tanggal_invoice' => $request->tanggal,
+                'job_id' => $old_id,
+                'container_id' => $random.time(),
+                'path' => 'Invoice-'.$old_slug.'-'.$random.time(),
+            ];
+            
+            $sis = InvoiceLoad::create($si_pdf);
+        } else {
+            $si_pdf = [
+                'yth' => $request->yth,
+                'km' => $request->km,
+                'status' => $request->status,
+                'nomor_invoice' => $no_invoice_unique[0],
+                'tahun_invoice' => $request->tahun,
+                'tanggal_invoice' => $request->tanggal,
+                'job_id' => $old_id,
+                'container_id' => $random.time(),
+                'path' => 'Invoice-'.$old_slug.'-'.$random.time(),
+            ];
+
+            $sis = InvoiceLoad::where('id', $no_invoice_2)->update($si_pdf);
+            // $sis = InvoiceLoad::where('id', $no_invoice_2)->get();
+        }
+        // dd($no_invoice_2);
+
 
         for ($i=0; $i < count($request->check_container) ; $i++) {
-            $container = [
-                'status' => "Realisasi",
-            ];
-            $container2 = [
-                'invoice' => $sis->id,
-                'status' => "Realisasi",
-                'status_invoice' => $nomor_invoice,
-            ];
-
-            OrderJobPlanload::where('id', $old_id)->update($container);
-            ContainerPlanload::where('id',$request->check_container[$i])->update($container2);
+            if($no_incvoice[$i] == null) {
+                $container = [
+                    'status' => "Realisasi",
+                ];
+                $container2 = [
+                    'invoice' => $sis->id,
+                    'status' => "Realisasi",
+                    'status_invoice' => $nomor_invoice,
+                ];
+    
+                OrderJobPlanload::where('id', $old_id)->update($container);
+                ContainerPlanload::where('id',$request->check_container[$i])->update($container2);
+            } else {
+                $container = [
+                    'status' => "Realisasi",
+                ];
+                $container2 = [
+                    'invoice' => $no_invoice_2,
+                    'status' => "Realisasi",
+                    'status_invoice' => $no_incvoice[$i],
+                ];
+    
+                OrderJobPlanload::where('id', $old_id)->update($container);
+                ContainerPlanload::where('id',$request->check_container[$i])->update($container2);
+            }
         }
 
         $checked = [];
@@ -256,8 +305,11 @@ class InvoiceLoadController extends Controller
         $total_invoice = [
             "total" => $total_with_ppn_materai,
         ];
-
-        InvoiceLoad::find($sis->id)->update($total_invoice);
+        if($no_invoice_2 == null) {
+            InvoiceLoad::find($sis->id)->update($total_invoice);
+        } else {
+            InvoiceLoad::find($no_invoice_2)->update($total_invoice);
+        }
 
 
 
@@ -269,23 +321,43 @@ class InvoiceLoadController extends Controller
 
         $save1 = 'storage/load-invoice/Invoice-'.$old_slug.'-'.$random.time().'.pdf';
 
-        $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
-            "loads" => $loads,
-            "containers" => $new_container,
-            "yth" => $request->yth,
-            "nomor_invoice" => $nomor_invoice,
-            "km" => $request->km,
-            "report" => "MUATAN",
-            "status" => $request->status,
-            'rekenings' => $rekenings,
-            'ppn' => round($total * ((Float)$ppn / (Float)100)),
-            'persen_ppn' => $ppn,
-            'materai' => $materai,
-            'total' => $total_with_ppn_materai,
-        ]);
-
-        $pdf1->save($save1);
-        return response()->download($save1);
+        if($no_invoice_2 == null) {
+            $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
+                "loads" => $loads,
+                "containers" => $new_container,
+                "yth" => $request->yth,
+                "nomor_invoice" => $nomor_invoice,
+                "km" => $request->km,
+                "report" => "MUATAN",
+                "status" => $request->status,
+                'rekenings' => $rekenings,
+                'ppn' => round($total * ((Float)$ppn / (Float)100)),
+                'persen_ppn' => $ppn,
+                'materai' => $materai,
+                'total' => $total_with_ppn_materai,
+            ]);
+    
+            $pdf1->save($save1);
+            return response()->download($save1);
+        } else {
+            $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
+                "loads" => $loads,
+                "containers" => $new_container,
+                "yth" => $request->yth,
+                "nomor_invoice" => $no_invoice_unique[0],
+                "km" => $request->km,
+                "report" => "MUATAN",
+                "status" => $request->status,
+                'rekenings' => $rekenings,
+                'ppn' => round($total * ((Float)$ppn / (Float)100)),
+                'persen_ppn' => $ppn,
+                'materai' => $materai,
+                'total' => $total_with_ppn_materai,
+            ]);
+    
+            $pdf1->save($save1);
+            return response()->download($save1);
+        }
     }
     public function preview_invoice(Request $request)
 
@@ -355,14 +427,17 @@ class InvoiceLoadController extends Controller
 
     public function getPod(Request $request){
         $pod = [];
+        $nomor_invoice = [];
 
         for($i = 0; $i < count($request->pod); $i++) {
             $pod[$i] = ContainerPlanLoad::where('id', $request->pod[$i])->value('pod_container');
+            $nomor_invoice[$i] = ContainerPlanLoad::where('id', $request->pod[$i])->value('status_invoice');
         }
 
-        $pod = array_unique($pod);
-
-        return response()->json($pod);
+        return response()->json([
+            "pod" => $pod,
+            "nomor_invoice" => $nomor_invoice
+        ]);
     }
 
     public function getInvoice(Request $request){
@@ -444,6 +519,13 @@ class InvoiceLoadController extends Controller
         return response()->json([
             'success'   => true
         ]);
+    }
+
+    public function nomor_invoice(Request $request) {
+        $id = $request->id;
+
+        $nomor_invoice = ContainerPlanLoad::where('id', $id)->value('status_invoice');
+        return response()->json($nomor_invoice);
     }
 
 }

@@ -333,6 +333,7 @@ Route::post('/get-total-invoice-load', [InvoiceLoadController::class, 'selisih']
 Route::post('/getPod', [InvoiceLoadController::class, 'getPod']);
 Route::post('/getInvoice', [InvoiceLoadController::class, 'getInvoice']);
 Route::post('/kontainer-dibayar-ii', [InvoiceLoadController::class, 'dibayar']);
+Route::post('/getNomorInvoice', [InvoiceLoadController::class, 'nomor_invoice']);
 Route::get('/preview-invoice/{path}', [InvoiceLoadController::class, 'preview_invoice']);
 Route::delete('/delete-invoice/{id}', [InvoiceLoadController::class, 'delete_invoice']);
 

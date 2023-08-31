@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PlanLoad;
-use Illuminate\Http\Request;
-use App\Models\Stuffing;
-use App\Models\Stripping;
-use App\Models\ShippingCompany;
-use App\Models\Pelabuhan;
-use App\Models\Pengirim;
+use App\Models\Seal;
 use App\Models\Penerima;
-use App\Models\OrderJobPlanload;
+use App\Models\Pengirim;
+use App\Models\PlanLoad;
+use App\Models\Stuffing;
 use App\Models\Container;
-use App\Models\ContainerPlanload;
+use App\Models\Pelabuhan;
+use App\Models\Stripping;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\TypeContainer;
+use App\Models\ShippingCompany;
+use App\Models\OrderJobPlanload;
+use App\Models\ContainerPlanload;
 use App\Http\Requests\StorePlanLoadRequest;
 use App\Http\Requests\UpdatePlanLoadRequest;
-use Illuminate\Support\Str;
 
 
 class PlanLoadController extends Controller
@@ -271,9 +272,12 @@ class PlanLoadController extends Controller
     {
         $size = Container::all();
         $type = TypeContainer::all();
+        $seals = Seal::where('status', 'input')->get();
+
         $kontainer = [
             'size' => $size,
-            'type' => $type
+            'type' => $type,
+            'seals' => $seals,
         ];
         return response()->json($kontainer);
     }

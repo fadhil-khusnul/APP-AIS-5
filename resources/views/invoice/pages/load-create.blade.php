@@ -169,17 +169,15 @@
                                                         class="btn btn-success btn-sm text-nowrap ">Input <i
                                                             class="fa fa-pencil"></i></button>
                                                 @endif
-
-
                                             </td>
                                             <td>
                                                 @if ($container->price_invoice != null && $container->status_invoice == null || $container->invoices->tanggal_invoice == null)
                                                     <div class="validation-container">
+                                                        <input type="hidden" value="{{ $container->status_invoice }}" class="{{ $container->status_invoice }}">
                                                         <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                             class="form-check-input check-container"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                            value="{{ $container->id }}" required autofocus>
-
+                                                            id="kontainer_check[{{ $loop->iteration }}]" name="{{ $container->status_invoice }}"
+                                                            value="{{ $container->id }}" autofocus onclick="click_check(this)">
                                                     </div>
                                                 @elseif ($container->status_invoice != null)
                                                     <input readonly disabled checked type="checkbox"
@@ -189,17 +187,13 @@
                                                     -
                                                 @endif
                                             </td>
-
                                             <td>{{$container->status_invoice}}</td>
                                             <td>@rupiah($container->price_invoice)</td>
                                             <td>{{$container->kondisi_invoice}}</td>
                                             <td>{{$container->keterangan_invoice}}</td>
-
-
                                             <td>
                                                 <label disabled @readonly(true)
                                                     id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
-
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
@@ -528,7 +522,7 @@
                                                     <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                         class="form-check-input check-container2"
                                                         id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                        value="{{ $pdf->id }}" required autofocus>
+                                                        value="{{ $pdf->id }}" autofocus>
 
                                                 </div>
 
@@ -896,51 +890,7 @@
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
-        $(document).ready(function() {
-            var check = $(".check-container");
-
-            $("#submit-id").attr("disabled", "disabled");
-            check.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#submit-id").removeAttr("disabled");
-                } else {
-                    $("#submit-id").attr("disabled", "disabled");
-                }
-            });
-
-            var check = $(".check-container1");
-
-            $("#submit-id1").attr("disabled", "disabled");
-            check.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#submit-id1").removeAttr("disabled");
-                } else {
-                    $("#submit-id1").attr("disabled", "disabled");
-                }
-            });
-
-            var check2 = $(".check-container2");
-
-            $("#add_total").attr("disabled", "disabled");
-            check2.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#add_total").removeAttr("disabled");
-                } else {
-                    $("#add_total").attr("disabled", "disabled");
-                }
-            });
-
-
-            // var radiom = $("#materai")
-            $("#value_materai").attr("disabled", "disabled");
-            // radiom.click(function() {
-            //     if ($(this).val() == "no") {
-            //         $("#value_materai").attr("disabled", "disabled");
-            //     } else{
-            //         $("#value_materai").removeAttr("disabled");
-            //     }
-            // });
-        });
+       
 
         $('.modal>.modal-dialog').draggable({
                 cursor: 'move',

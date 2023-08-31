@@ -12,6 +12,67 @@ var tabel_invoice = $("#tabel_si").DataTable({
 
     // scroller: true,P
 });
+var realisasiload_create = $("#realisasiload_create").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
+});
+var table_alih_kapal_realisasi = $("#table_alih_kapal_realisasi").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
+});
+
+$("#submit-id").attr("disabled", "disabled");
+realisasiload_create.$(".check-container",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit-id").removeAttr("disabled");
+    } else {
+        $("#submit-id").attr("disabled", "disabled");
+    }
+});
+
+
+$("#submit-id1").attr("disabled", "disabled");
+realisasiload_create.$(".check-container1",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit-id1").removeAttr("disabled");
+    } else {
+        $("#submit-id1").attr("disabled", "disabled");
+    }
+});
+
+
+$("#add_total").attr("disabled", "disabled");
+tabel_invoice.$(".check-container2",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#add_total").removeAttr("disabled");
+    } else {
+        $("#add_total").attr("disabled", "disabled");
+    }
+});
+
+
+// var radiom = $("#materai")
+$("#value_materai").attr("disabled", "disabled");
 
 // Event listener to the two range filtering inputs to redraw on input
 $("#min, #max").change(function () {
@@ -306,16 +367,8 @@ function pdf_invoice() {
 
     $("#valid_realisasi").validate({
         ignore: "select[type=hidden]",
-        rules: {
-            letter: {
-                required: true,
-            },
-        },
-        messages: {
-            letter: {
-                required: "Silakan Pilih Minimal 1 Container",
-            },
-        },
+        
+       
 
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
@@ -335,11 +388,12 @@ function pdf_invoice() {
         },
         submitHandler: function (form) {
             let token = $("#csrf").val();
-            var check_container = $(".check-container:checked")
+            var check_container = realisasiload_create.$(".check-container:checked", {"page": "all"})
                 .map(function () {
                     return this.value;
                 })
                 .get();
+            console.log(check_container);
 
             var old_slug = $("#old_slug").val();
 
@@ -358,8 +412,9 @@ function pdf_invoice() {
                     pod: check_container,
                 },
                 success: function (response) {
-                    // console.log(response[0]);
-                    if (response.length == 1) {
+                    var pod_1 = [...new Set(response.pod)];
+                    var nomor_invoice = [...new Set(response.nomor_invoice)];
+                    if (pod_1.length == 1 && nomor_invoice.length == 1) {
                         var pod = response[0];
                         swal.fire({
                             title: " Buat Invoice Untuk Container ini?",
@@ -502,7 +557,7 @@ function pdf_invoice() {
                                                             );
                                                         link.download =
                                                             "" +
-                                                            old_slug +
+                                                            old_slugl +
                                                             dformat +
                                                             ".pdf";
                                                         link.click();
@@ -518,7 +573,7 @@ function pdf_invoice() {
                                 });
                             } else {
                                 swal.fire({
-                                    title: "Invoice Tidak Dibuat",
+                                    titlxe: "Invoice Tidak Dibuat",
                                     icon: "error",
                                     timer: 2e3,
                                     showConfirmButton: false,
@@ -527,7 +582,7 @@ function pdf_invoice() {
                         });
                     } else {
                         swal.fire({
-                            title: "POD Harus Sama",
+                            title: "POD atau Nomor Invoice Harus Sama",
                             text: "SIlakan Pilih Container yang POD-nya Sama",
                             icon: "error",
                             timer: 2e3,
@@ -800,4 +855,63 @@ function blur_selisih(ini) {
     total_biaya_kontainer = parseFloat(total_biaya_kontainer);
     var selisih = unit_price - total_biaya_kontainer;
     $("#selisih_price").val(selisih);
+}
+
+function click_check(ini) {
+    var csrf = $("#csrf").val();
+    var data = {
+        _token: csrf,
+        id: ini.value
+    }
+
+    $.ajax({
+        type: 'post',
+        url: '/getNomorInvoice',
+        data: data,
+        async: false,
+        success: function(response) {
+            var count = response.length;
+            count = count ?? 0;
+            if(count != 0) {
+                realisasiload_create.$('input[name="'+ response +'"]', {"page": "all"}).prop('checked', ini.checked);
+            }
+            // var html_nomor_invoice = document.getElementsByClassName(response);
+            // var nomor_invoice = [];
+
+            // for(var i = 0; i < html_nomor_invoice.length; i++) {
+            //     nomor_invoice[i] = html_nomor_invoice[i].value;
+            // }
+
+            // nomor_invoice = [...new Set(nomor_invoice)];
+
+            // $('input[name"'+ nomor_invoice +'"]:checkbox').prop('checked', ini.checked)
+            // console.log(nomor_invoice.length);
+            // if (ini.checked) {
+            //     for(var i = 0; i < nomor_invoice.length; i++) {
+            //         nomor_invoice[i].nextElementSibling.prop("checked", $(this).prop("checked"));
+            //     }
+            //     console.log("tercek");
+            // } else {
+            //     for(var i = 0; i < nomor_invoice.length; i++) {
+            //         nomor_invoice[i].nextElementSibling.removeAttribute('checked');
+            //     }
+            //     console.log("tidak");
+            // } 
+
+            // if(ini.prop('checked') == true) {
+            //     for(var i = 0; i < nomor_invoice.length; i++) {
+            //         nomor_invoice[i].nextElementSibling.setAttribute('checked', true);
+            //     }
+            // } else {
+                
+            // }
+            // console.log(response);
+            // var nomor_invoice = document.querySelectorAll("td").textContent
+        }
+    })
+    // console.log(ini.parentNode.parentNode.nextElementSibling.innerHTML);
+    // console.log(ini.parentNode.parentNode.nextElementSibling);
+    // nomor_invoice = ini.parentNode.parentNode.nextElementSibling.innerHTML
+    // console.log(ini);
+    // ini.parentNodes
 }

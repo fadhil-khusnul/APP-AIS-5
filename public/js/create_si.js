@@ -29,6 +29,28 @@ var tabel_si = $("#tabel_si").DataTable({
 
 });
 
+$("#submit-id").attr("disabled", "disabled");
+tabel_container.$(".check-container",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit-id").removeAttr("disabled");
+    } else {
+        $("#submit-id").attr("disabled", "disabled");
+    }
+});
+
+
+
+
+$("#submit-id1").attr("disabled", "disabled");
+table_alih_kapal_realisasi.$(".check-container1",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit-id1").removeAttr("disabled");
+    } else {
+        $("#submit-id1").attr("disabled", "disabled");
+    }
+});
+
+
 function pilih_pod_input_fun(val) {
     var filter = [];
     filter = $("#pilih_pod_input").val();

@@ -28,6 +28,7 @@ function detail(e) {
 
             $("#size").val(response.result.size);
             $("#type").val(response.result.type);
+            $("#biaya_seal").val("");
             $("#nomor_kontainer").val(response.result.nomor_kontainer);
             // console.log($("#nomor_kontainer").val(response.result.nomor_kontainer));
             $("#cargo").val(response.result.cargo);
@@ -160,7 +161,7 @@ function detail(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
                 })
-                .off("select2:select").on("select2:unselect", function (e) {
+                .off("select2:unselect").on("select2:unselect", function (e) {
                     // var seal = $("#seal").val();
                     // console.log(seal);
                     // var last_seal = seal[seal.length - 1];
@@ -174,7 +175,7 @@ function detail(e) {
                     let token = $("#csrf").val();
 
                     $element.detach();
-                    $(this).append($element);
+                    $(this).append($element);{{  }}
                     $(this).trigger("change");
 
                     $.ajax({
@@ -314,20 +315,7 @@ function detail(e) {
                     dropdownParent: $("#modal-job"),
                 });
 
-            // var ongkos_supir = document.getElementById("ongkos_supir").value;
-            // var biaya_trucking = document.getElementById("biaya_trucking").value;
-
-            // console.log(ongkos_supir, biaya_trucking);
-
-            // var biaya_trucking = document.getElementById("biaya_trucking").value.replace(/\./g, "");
-
-            // $.validator.addMethod(
-            //     "biggerThen",
-            //     function (value, element, arg) {
-            //         var biaya_trucking = document.getElementById("biaya_trucking").value.replace(/\./g, "");
-            //     },
-            //     "Value must not equal arg."
-            // );
+           
             $("#valid_job").validate({
                 ignore: "select[type=hidden]",
 
@@ -335,28 +323,13 @@ function detail(e) {
                     size: {
                         required: true,
                     },
-                    // ongkos_supir: {
-                    //     remote: {
-                    //         url: "/checkOngkosSupir",
-                    //         type: "post",
-                    //         // async: false,
-                    //         data: {
-                    //             _token: $("#csrf").val(),
-                    //             // 'ongkos_supir': $("#ongkos_supir").val().replace(/\./g, ""),
-                    //             biaya_trucking: $("#biaya_trucking")
-                    //                 .val()
-                    //                 .replace(/\./g, ""),
-                    //         },
-                    //     },
-                    // },
+                    
                 },
                 messages: {
                     size: {
                         required: "Silakan Pilih Size",
                     },
-                    // ongkos_supir: {
-                    //     remote: "Ongkos Supir Harus Lebih Kecil Dari Biaya Trucking",
-                    // },
+                    
                 },
                 highlight: function highlight(element, errorClass, validClass) {
                     $(element).addClass("is-invalid");
@@ -383,15 +356,23 @@ function detail(e) {
 
                     let date_activity =
                         document.getElementById("date_activity").value;
+                    date_activity = moment(date_activity, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    console.log(date_activity);
                     var tempDate;
                     var formattedDate;
+                    
+                    // tempDate = new Date(date_activity);
 
-                    tempDate = new Date(date_activity);
-                    formattedDate = [
-                        tempDate.getFullYear(),
-                        tempDate.getMonth() + 1,
-                        tempDate.getDate(),
-                    ].join("-");
+                    // console.log(tempDate);
+                    // formattedDate = [
+                    //     tempDate.getFullYear(),
+                    //     tempDate.getMonth() + 1,
+                    //     tempDate.getDate(),
+                    // ].join("-");
+
+
+                    // console.log(formattedDate);
+
 
                     $.ajax({
                         url: "/detail-kontainer-update/" + new_id,
@@ -405,7 +386,7 @@ function detail(e) {
                             cargo: $("#cargo").val(),
                             detail_barang: $("#detail_barang").val(),
                             seal: $("#seal").val(),
-                            date_activity: formattedDate,
+                            date_activity: date_activity,
                             lokasi: $("#lokasi").val(),
                             pod_container: $("#pod_container").val(),
                             pot_container: $("#pot_container").val(),
@@ -661,7 +642,7 @@ function detail_tambah() {
             maximumSelectionLength: 4,
             dropdownParent: $("#modal-job-tambah"),
         })
-        .on("select2:unselect", function (e) {
+        .off("select2:unselect").on("select2:unselect", function (e) {
             // var seal = $("#seal").val();
             // console.log(seal);
             // var last_seal = seal[seal.length - 1];
@@ -766,15 +747,9 @@ function detail_tambah() {
             let date_activity = document.getElementById(
                 "date_activity_tambah"
             ).value;
-            var tempDate;
-            var formattedDate;
 
-            tempDate = new Date(date_activity);
-            formattedDate = [
-                tempDate.getFullYear(),
-                tempDate.getMonth() + 1,
-                tempDate.getDate(),
-            ].join("-");
+            date_activity = moment(date_activity, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+           
 
             var data = {
                 _token: token,
@@ -788,7 +763,7 @@ function detail_tambah() {
                 detail_barang: $("#detail_barang_tambah").val(),
                 seal: $("#seal_tambah").val(),
                 spk: $("#spk_tambah").val(),
-                date_activity: formattedDate,
+                date_activity: date_activity,
                 lokasi: $("#lokasi_tambah").val(),
                 pod_container: $("#pod_container_tambah").val(),
                 pot_container: $("#pot_container_tambah").val(),
@@ -1009,7 +984,7 @@ function detail_update(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:unselect", function (e) {
+                .off("select2:unselect").on("select2:unselect", function (e) {
                     // var seal = $("#seal").val();
                     // console.log(seal);
                     // var last_seal = seal[seal.length - 1];

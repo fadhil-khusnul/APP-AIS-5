@@ -109,20 +109,23 @@ class ProcessLoadController extends Controller
         $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
 
         $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
-            $query->where('status', '!=', 'Batal-Muat')
-            ->where('status', '!=', 'Alih-Kapal')
-            ->where('status', '!=', 'Realisasi-Alih')
+            $query
+            // ->where('status', '!=', 'Batal-Muat')
+            // ->where('status', '!=', 'Alih-Kapal')
+            // ->where('status', '!=', 'Realisasi-Alih')
+            ->Where('status', '=', 'Process-Load')
                 ->orWhereNull('status');
-        })->whereNull('slug')->get();
+        })->get();
 
         $containers_info = ContainerPlanload::where('job_id', $id)->whereNull('slug')->get();
 
 
 
         $container_batal = ContainerPlanload::where('job_id', $id)->where(function($query) {
-            $query->where('status', 'Batal-Muat')
+            $query->where('status', 'Batal-Muat');
+            // ->whereNull('slug');
                 ;
-        })->whereNull('slug')->get();
+        })->get();
 
         $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->whereNull('slug')->get();
         $select_biaya = ContainerPlanload::where('job_id', $id)->where('total_biaya_lain', 0)->whereNotNull('status')->whereNull('slug')->get();
@@ -232,9 +235,6 @@ class ProcessLoadController extends Controller
         $new_container = collect($new_container)->whereNull('slug');
         $new_container_biaya = collect($new_container_biaya)->whereNull('slug');
         $new_container_alih = collect($new_container_alih)->whereNull('slug')->whereNotNull('harga_alih');
-
-
-
 
 
         //

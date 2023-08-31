@@ -906,7 +906,7 @@
         </form>
     </div>
 
-    <div class="modal fade" id="modal-job">
+    <div class="modal fade" id="modal-job" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_job" id="valid_job">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -1166,7 +1166,7 @@
                             <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                             <select data-bs-toggle="tooltip" id="seal" multiple="multiple" name="seal"
-                                class="form-select" placeholde="Silahkan Pilih Seal" required>
+                                class="form-select" placeholder="Silahkan Pilih Seal" required>
                                 @foreach ($seals as $seal)
                                     <option value="{{ $seal->kode_seal }}">
                                         {{ $seal->kode_seal }}</option>
@@ -1320,7 +1320,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-job-update">
+    <div class="modal fade" id="modal-job-update" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_job_update" id="valid_job_update">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -1742,7 +1742,7 @@
 
         </div>
     </div>
-    <div class="modal fade" id="modal-job-disabled">
+    <div class="modal fade" id="modal-job-disabled" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_job_disabled" id="valid_job_disabled">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2112,7 +2112,7 @@
 
 
 
-    <div class="modal fade" id="modal-job-tambah">
+    <div class="modal fade" id="modal-job-tambah" data-bs-backdrop="static"> 
         <div class="modal-dialog modal-dialog-scrollable">
             <form action="#" class="modal-dialog-scrollable" name="valid_job_tambah" id="valid_job_tambah">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2529,7 +2529,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_biaya_lainnya">
+    <div class="modal fade" id="modal_biaya_lainnya" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_biaya_lainnya" id="valid_biaya_lainnya">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2608,7 +2608,7 @@
 
         </div>
     </div>
-    <div class="modal fade" id="modal_biaya_lainnya_edit">
+    <div class="modal fade" id="modal_biaya_lainnya_edit" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_biaya_lainnya_edit"
                 id="valid_biaya_lainnya_edit">
@@ -2673,7 +2673,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_detail_barang">
+    <div class="modal fade" id="modal_detail_barang" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_detail_barang" id="valid_detail_barang">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2730,7 +2730,7 @@
 
         </div>
     </div>
-    <div class="modal fade" id="modal_detail_barang_edit">
+    <div class="modal fade" id="modal_detail_barang_edit" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_detail_barang_edit" id="valid_detail_barang_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2788,7 +2788,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_batal_muat">
+    <div class="modal fade" id="modal_batal_muat" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_batal_muat" id="valid_batal_muat">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -2862,7 +2862,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_batal_muat_edit">
+    <div class="modal fade" id="modal_batal_muat_edit" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_batal_muat_edit"
                 id="valid_batal_muat_edit">
@@ -2934,8 +2934,8 @@
         </div>
     </div>
 
-
-    <div class="modal fade" id="modal_alih_kapal">
+ 
+    <div class="modal fade" id="modal_alih_kapal" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_alih_kapal" id="valid_alih_kapal">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -3074,7 +3074,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_alih_kapal_edit">
+    <div class="modal fade" id="modal_alih_kapal_edit" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_alih_kapal_edit"
                 id="valid_alih_kapal_edit">
@@ -3217,7 +3217,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_edit_jobplanload">
+    <div class="modal fade" id="modal_edit_jobplanload" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form class="modal-dialog-scrollable" action="#" name="valid_job_edit_load"
                 id="valid_job_edit_load">

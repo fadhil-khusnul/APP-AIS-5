@@ -32,7 +32,7 @@
                             <div class="widget13-text"> Hi <strong>User</strong>
                             </div>
                             <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-info widget13-avatar">
+                            <div class="avatar avatar-primary widget13-avatar">
                                 <div class="avatar-display">
                                     <i class="fa fa-user-alt"></i>
                                 </div>
@@ -86,7 +86,7 @@
         <div class="header-holder header-holder-mobile">
             <div class="header-container container-fluid g-5">
                 <div class="header-wrap">
-                    <button class="btn btn-flat-primary btn-icon" data-toggle="aside">
+                    <button class="btn btn-flat-success btn-icon" data-toggle="aside">
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
@@ -110,7 +110,7 @@
                             <div class="widget13-text"> Hi <strong>User</strong>
                             </div>
                             <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-info widget13-avatar">
+                            <div class="avatar avatar-primary widget13-avatar">
                                 <div class="avatar-display">
                                     <i class="fa fa-user-alt"></i>
                                 </div>

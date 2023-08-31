@@ -32,40 +32,45 @@
             </div>
         </div>
         <form class="row row-cols-lg-12 g-3" id="valid_planload" name="valid_planload">
-            <div class=" col-md-6">
+            <div class=" col-md-4">
                 <div class="portlet">
 
                     <div class="portlet-body row">
                         <!-- BEGIN Form -->
 
-                            {{-- <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Date</label>
-                                <input type="text" class="form-control data-date-end-date="0d"" placeholder="Select Date" id="tanggal_planload"
-                                    name="tanggal_planload">
-                            </div> --}}
-
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Nomor DO</label>
-                                <input name="nomor_do" id="nomor_do" class="form-control">
+                           
+                            <div class=" row mb-3">
+                                <label for="inputAddress2" class="col-sm-4 col-form-label">Nomor DO</label>
+            
+                                <div class="col-sm-8 validation-container">
+                                    <input name="nomor_do" id="nomor_do" class="form-control">
+                                </div>
                             </div>
-
-                            <div class="col-6 validation-container">
-                            <label for="inputAddress2" class="form-label">Tanggal Tiba Kapal</label>
+                            <div class=" row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 col-form-label">Tanggal Tiba Kapal</label>
+                            <div class="col-sm-8 validation-container">
                                 <input name="tanggal_tiba" id="tanggal_tiba" class="form-control">
                             </div>
+                            </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel/Voyage</label>
+                            <div class=" row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel/Voyage</label>
+                            <div class="col-sm-8 validation-container">
                                 <input name="vessel" id="vessel" class="form-control">
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="inputAddress2" class="form-label">Vessel Code</label>
-                                <input name="vessel_code" id="vessel_code" class="form-control">
                             </div>
 
+                            <div class=" row mb-3">
 
-                            <div class="col-md-6 validation-container">
-                                <label for="company" class="form-label">Shipping Company</label>
+                            <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel Code</label>
+                            <div class="col-sm-8 validation-container">
+                                <input name="vessel_code" id="vessel_code" class="form-control">
+                            </div>
+                            </div>
+
+                            <div class=" row mb-3">
+                            <label for="company" class="col-sm-4 col-form-label">Shipping Company</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Company</option>
                                     @foreach ($shippingcompany as $shippingcompany)
@@ -73,9 +78,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Pengirim</label>
+                            <div class=" row mb-3">
+
+                            <label for="POL" class="col-sm-4 col-form-label">Pengirim</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="Pengirim_1" name="Pengirim_1" class="form-select">
                                     <option selected disabled value="0">Pilih Pengirim</option>
                                     @foreach ($pengirim as $pengirim)
@@ -83,9 +91,11 @@
                                     @endforeach
                                 </select>
                             </div>
+                            </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">Penerima</label>
+                            <div class=" row mb-3">
+                            <label for="POL" class="col-sm-4 col-form-label">Penerima</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="penerima_1" name="penerima_1" class="form-select">
                                     <option selected disabled value="0">Pilih Penerima</option>
                                     @foreach ($penerima as $penerima)
@@ -93,9 +103,11 @@
                                     @endforeach
                                 </select>
                             </div>
+                            </div>
 
-                            <div class="col-md-6 validation-container">
-                                <label for="" class="form-label">Activity</label>
+                            <div class=" row mb-3">
+                            <label for="" class="col-sm-4 col-form-label">Activity</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled value="0">Pilih Activity</option>
                                     @foreach ($activity as $activity)
@@ -103,8 +115,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POL</label>
+                            </div>
+                            <div class=" row mb-3">
+                            <label for="POL" class="col-sm-4 col-form-label">POL</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="POL_1" name="POL_1" class="form-select">
                                     <option selected disabled value="0">Pilih POL</option>
                                     @foreach ($pol as $pol)
@@ -113,9 +127,11 @@
                                     @endforeach
                                 </select>
                             </div>
+                            </div>
+                            <div class=" row mb-3">
 
-                            <div class="col-md-6 validation-container">
-                                <label for="POL" class="form-label">POD</label>
+                            <label for="POL" class="col-sm-4 col-form-label">POD</label>
+                            <div class="col-sm-8 validation-container">
                                 <select id="POD_1" name="POD_1" class="form-select">
                                     <option selected disabled value="0">Pilih POD</option>
                                     @foreach ($pod as $pod)
@@ -123,6 +139,7 @@
                                             {{ $pod->nama_pelabuhan }}</option>
                                     @endforeach
                                 </select>
+                            </div>
                             </div>
 
 
@@ -133,7 +150,8 @@
 
                 <!-- END Portlet -->
             </div>
-            <div class="col-md-6 ">
+
+            <div class="col-md-8 ">
                 <div class="portlet">
 
                     <div class="portlet-body">
@@ -151,10 +169,10 @@
                             <thead class="table-warning" id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Jumlah Kontainer</th>
-                                    <th></th>
                                     <th class="text-center">Size</th>
                                     <th class="text-center">Type</th>
+                                    <th class="text-center">Nomor Kontainer</th>
+                                    <th class="text-center">Seal Kontainer</th>
                                     <th class="text-center">Nama Barang (CARGO)</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
@@ -182,10 +200,13 @@
 
                 <!-- END Portlet -->
             </div>
+          
         </form>
 
 
     </div>
+
+   
 
 
 

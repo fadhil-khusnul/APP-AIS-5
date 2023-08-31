@@ -191,9 +191,9 @@
                                 <thead class="table-danger text-nowrap text-center">
                                     <tr>
                                         <th>No</th>
+                                        <th></th>
                                         <th>SI</th>
                                         <th>Receiving OK</th>
-                                        <th></th>
                                         <th>POD</th>
                                         <th>POT</th>
                                         <th>Nomor Kontainer</th>
@@ -212,6 +212,29 @@
                                     @foreach ($containers as $container)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
+
+                                            <td class="text-nowrap">
+                                                @if ($container->ok == 1 || $container->status != "Realisasi")
+                                                -
+                                                @else
+                                                <div class="dropdown">
+                                                    <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown" @if ($container->slug == null) disabled readonly @endif>
+                                                        <i class="fa fa-ellipsis-h"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
+                                                        <button class="dropdown-item" value="{{$container->id}}" onclick="ok_load(this)">
+                                                            <div class="dropdown-icon">
+                                                                <i class="fa fa-check"></i>
+                                                            </div>
+                                                            <span class="dropdown-content">Receiving Ok</span>
+                                                        </button>
+
+                                                    </div>
+                                                </div>
+                                                @endif
+
+
+                                            </td>
 
                                             <td>
                                                 @if ($container->status != 'Realisasi')
@@ -256,28 +279,7 @@
 
 
                                             </td>
-                                            <td class="text-nowrap">
-                                                @if ($container->ok == 1 || $container->status != "Realisasi")
-                                                -
-                                                @else
-                                                <div class="dropdown">
-                                                    <button class="btn btn-text-success btn-icon" data-bs-toggle="dropdown" @if ($container->slug == null) disabled readonly @endif>
-                                                        <i class="fa fa-ellipsis-h"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
-                                                        <button class="dropdown-item" value="{{$container->id}}" onclick="ok_load(this)">
-                                                            <div class="dropdown-icon">
-                                                                <i class="fa fa-check"></i>
-                                                            </div>
-                                                            <span class="dropdown-content">Receiving Ok</span>
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                                @endif
-
-
-                                            </td>
+                                            
 
 
 
@@ -1564,36 +1566,7 @@
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
-        $(document).ready(function() {
-            var check = $(".check-container");
-
-            $("#submit-id").attr("disabled", "disabled");
-            check.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#submit-id").removeAttr("disabled");
-                } else {
-                    $("#submit-id").attr("disabled", "disabled");
-                }
-            });
-
-            var check = $(".check-container1");
-            var ids = []
-
-
-
-
-
-
-
-            $("#submit-id1").attr("disabled", "disabled");
-            check.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#submit-id1").removeAttr("disabled");
-                } else {
-                    $("#submit-id1").attr("disabled", "disabled");
-                }
-            });
-        });
+        
 
 
         $('.modal>.modal-dialog').draggable({

@@ -26,7 +26,6 @@ $(function () {
 
     var options = {
          format: "DD, dd-MM-yyyy",
-         oldFormat: "DD, dd-MM-yyyy",
          todayBtn: "linked",
          clearBtn: true,
          todayHighlight: true,
@@ -37,7 +36,6 @@ $(function () {
          weekStart: 1,
          "language" : "indonesian",
          locale : "id",
-         dateformat: "DD, dd-MM-yyyy",
 
 
     };

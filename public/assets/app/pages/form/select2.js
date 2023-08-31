@@ -37,10 +37,11 @@ $("#pilih_size_in").select2
     dropdownAutoWidth:true,
     allowClear:true,
     placeholder:"Size Container",
+    stateSave: true,
 
 
 
-});
+})
 $("#pilih_type_in").select2
 ({
     dropdownAutoWidth:true,

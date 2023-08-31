@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('seal_containers', function (Blueprint $table) {
             $table->id();
-            $table->string('job_id');
-            $table->string('kontainer_id');
-            $table->string('seal_kontainer');
+            $table->string('job_id')->nullable();
+            $table->string('job_id_discharge')->nullable();
+            $table->string('job_id_trucking')->nullable();
+            $table->string('kontainer_id')->nullable();
+            $table->string('kontainer_id_discharge')->nullable();
+            $table->string('kontainer_id_trucking')->nullable();
+            $table->string('seal_kontainer')->nullable();
             $table->timestamps();
         });
     }
