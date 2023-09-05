@@ -13,6 +13,7 @@
 
 
             </div>
+
             <div class="portlet-body">
 
 
@@ -44,7 +45,7 @@
                             <th>Activity</th>
                             <th>POL</th>
                             <th>POD</th>
-                            <th class="align-top">JUMLAH X (SIZE - TYPE - CARGO CONTAINER)</th>
+                            <th class="align-top">Jumlah Kontainer</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -88,27 +89,21 @@
                                 {{$plandischarge->pod}}
                             </td>
                             <td align="top" valign="top">
-                                <ol type="1">
-                                    @foreach ($containers as $container)
-                                        @if ($plandischarge->id == $container->job_id)
-                                        <li>
-                                            {{$container->jumlah_kontainer}} X ({{$container->size}} - {{$container->type}} - {{$container->cargo}})
-                                        </li>
-                                        @endif
-                                    @endforeach
-                                </ol>
-
+                                <b>
+                                    {{$containers->where("job_id", $plandischarge->id)->count()}} Kontainer
+                                </b>
+                                
                             </td>
 
 
                             <td class="text-center">
-                                @if ($plandischarge->status == 'Plan-Discharge')
-                                <a href="/plandischarge-edit/{{$plandischarge->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
+                                <a href="/plandischarge/{{$plandischarge->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
+                                {{-- @if ($plandischarge->status == 'Plan-Discharge')
 
                                 @else
                                 <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
 
-                                @endif
+                                @endif --}}
 
                                 {{-- <button onclick="deletePlanload(this)" value="{{$plandischarge->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                 class="fa fa-trash"></i></button> --}}

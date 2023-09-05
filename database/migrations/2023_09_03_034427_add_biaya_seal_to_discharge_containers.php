@@ -11,15 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('biaya_lainnyas', function (Blueprint $table) {
-            $table->id();
-            $table->string('job_id');
-            $table->string('kontainer_id');
-            $table->double('harga_biaya');
-            $table->text('keterangan');
-            $table->timestamps();
+        Schema::table('plan_discharge_containers', function (Blueprint $table) {
+            $table->double('biaya_seal')->nullable()->after('nomor_polisi');
         });
-
     }
 
     /**
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('biaya_lainnyas');
+        Schema::table('plan_discharge_containers', function (Blueprint $table) {
+            //
+        });
     }
 };

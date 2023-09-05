@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('detail_barang_loads', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('job_id');
-            $table->string('kontainer_id');
+            $table->string('job_id')->nullable();
+            $table->string('job_id_discharge')->nullable();
+            $table->string('job_id_trucking')->nullable();
+            $table->string('kontainer_id')->nullable();
+            $table->string('kontainer_id_discharge')->nullable();
+            $table->string('kontainer_id_trucking')->nullable();
             $table->text('detail_barang');
 
 

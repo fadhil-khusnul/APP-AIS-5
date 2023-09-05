@@ -110,9 +110,6 @@ class ProcessLoadController extends Controller
 
         $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
             $query
-            // ->where('status', '!=', 'Batal-Muat')
-            // ->where('status', '!=', 'Alih-Kapal')
-            // ->where('status', '!=', 'Realisasi-Alih')
             ->Where('status', '=', 'Process-Load')
                 ->orWhereNull('status');
         })->get();

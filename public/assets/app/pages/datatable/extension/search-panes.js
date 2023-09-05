@@ -102,7 +102,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15],
+            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             cascadePanes: false,
             viewTotal: true,
 
@@ -121,7 +121,7 @@
 
 
             },
-            targets: [1, 2, 3, 5, 6, 7, 9, 10, 15],
+            targets: [1, 3, 5, 6, 7, 8, 9, 10],
         }],
     });
     $("#processtrucking").DataTable({

@@ -825,7 +825,6 @@ function detail_update(e) {
         type: "GET",
         success: function (response) {
             let new_id = id;
-            // console.log(new_id);
 
             console.log(response);
 
@@ -838,17 +837,7 @@ function detail_update(e) {
             for (let i = 0; i < response.seal_containers.length; i++) {
                 seals[i] = response.seal_containers[i].seal_kontainer;
             }
-            // for (let i = 0; i < response.spks.length; i++) {
-            //     spk[i] = response.spks[i].spk_kontainer;
-            // }
-            // for (let i = 0; i < response.supirs.length; i++) {
-            //     supir +=
-            //         "<option value='" +
-            //         response.supirs[i].id +
-            //         "'>" +
-            //         response.supirs[i].nama_vendor +
-            //         "</option>";
-            // }
+           
             $("#modal-job-update").modal("show");
 
             $("#size_update").val(response.result.size);
@@ -1079,7 +1068,7 @@ function detail_update(e) {
             var old_tanggal_result = moment(
                 response.result.date_activity,
                 "YYYY-MM-DD"
-            ).format("dddd, DD MMMM YYYY");
+            ).format("dddd, DD-MMMM-YYYY");
             $("#date_activity_update").val(old_tanggal_result);
             $("#lokasi_update")
                 .val(response.result.lokasi_depo)
@@ -1203,20 +1192,11 @@ function detail_update(e) {
                     let date_activity = document.getElementById(
                         "date_activity_update"
                     ).value;
-                    var tempDate;
-                    var formattedDate;
 
+                    date_activity = moment(date_activity, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
                     console.log(date_activity);
 
-                    tempDate = new Date(date_activity);
-                    console.log(tempDate);
-                    formattedDate = [
-                        tempDate.getFullYear(),
-                        tempDate.getMonth() + 1,
-                        tempDate.getDate(),
-                    ].join("-");
-
-                    console.log(formattedDate);
+                  
 
                     $.ajax({
                         url: "/detail-kontainer-edit/" + new_id,
@@ -1232,7 +1212,7 @@ function detail_update(e) {
                             seal: $("#seal_update").val(),
                             seal_old: seals,
                             spk_old: spk,
-                            date_activity: formattedDate,
+                            date_activity: date_activity,
                             lokasi: $("#lokasi_update").val(),
                             pod_container: $("#pod_container_update").val(),
                             pot_container: $("#pot_container_update").val(),

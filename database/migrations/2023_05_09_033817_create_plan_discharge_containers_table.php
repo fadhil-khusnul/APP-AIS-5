@@ -35,7 +35,7 @@ return new class extends Migration
             $table->double('biaya_trucking')->nullable();
             $table->double('ongkos_supir')->nullable();
             $table->double('biaya_thc')->nullable();
-            $table->double('biaya_demurrage')->nullable();
+            $table->double('total_biaya_lain')->nullable();
             $table->string('nomor_surat')->nullable();
             $table->integer('tahun')->nullable();
             $table->string('status')->nullable();

@@ -186,13 +186,23 @@ Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fe
 //DISCHARGE
 Route::get('/plandischarge', [PlanDischargeController::class, 'index']);
 Route::get('/plandischarge/create', [PlanDischargeController::class, 'create']);
-Route::get('/plandischarge-edit/{slug}', [PlanDischargeController::class, 'edit']);
-Route::post('/update-job-plandischarge', [PlanDischargeController::class, 'update']);
+Route::get('/plandischarge/{slug}', [PlanDischargeController::class, 'edit']);
+Route::get('/detail-kontainer-discharge/{id}/input', [PlanDischargeController::class, 'input']);
 
 Route::post('/create-job-plandischarge', [PlanDischargeController::class, 'create_job_plandischarge']);
+Route::post('/update-job-plandischarge', [PlanDischargeController::class, 'update']);
+Route::post('/tambah-kontainer-plandischarge', [PlanDischargeController::class, 'input_tambah']);
+Route::put('/plandischarge-kontainer/{id}', [PlanDischargeController::class, 'input_edit']);
+
+
 Route::get('/processdischarge', [PlanDischargeController::class, 'process']);
 Route::get('/processdischarge-create/{slug}', [PlanDischargeController::class, 'create_process']);
-Route::post('/create-job-processdischarge', [PlanDischargeController::class, 'store_process']);
+Route::put('/detaildischarge-kontainer-update/{id}', [PlanDischargeController::class, 'detail']);
+Route::put('/detaildischarge-kontainer-edit/{id}', [PlanDischargeController::class, 'detail_edit']);
+Route::post('/detaildischarge-kontainer-tambah', [PlanDischargeController::class, 'detail_tambah']);
+Route::delete('/discharge-container-delete/{id}', [PlanDischargeController::class, 'detail_destroy']);
+
+
 Route::get('/realisasi-discharge', [PlanDischargeController::class, 'realisasi']);
 Route::get('/realisasidischarge-create/{slug}', [PlanDischargeController::class, 'realisasi_create']);
 Route::post('/create-job-realisasidischarge', [PlanDischargeController::class, 'store_realisasi']);

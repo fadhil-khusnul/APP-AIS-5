@@ -87,8 +87,7 @@
                                 <th>No</th>
                                 <th>Status Seal</th>
                                 <th>Kode Seal</th>
-                                <th>Nomor Kontainer</th>
-
+                                <th>Kontainer (Load)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,21 +118,23 @@
                                     <td> @if ($seal->status == "Container")
                                             @foreach ($sealsc as $c)
                                                 @if ($c->seal_kontainer === $seal->kode_seal)
-                                                    {{$c->container_planloads->nomor_kontainer}}
+                                                    @if($c->kontainer_id != null && $c->kontainer_id_discharge == null)
+                                                        {{$c->container_planloads->nomor_kontainer}}
+                                                    @elseif($c->kontainer_id == null && $c->kontainer_id_discharge != null)
+                                                        {{ $c->container_planloads_discharge->nomor_kontainer }}
+                                                    @else
+                                                        -
+                                                    @endif
                                                 @endif
-                                                {{-- @if ($c->seal_kontainer === $seal->kode_seal || $c->kontainer_id_discharge !== null)
-                                                {{$c->container_planloads_discharge->nomor_kontainer}}
-                                                @endif --}}
+                                            
                                             @endforeach
                                         @else
                                         -
                                         @endif
 
                                     </td>
-
-
-
-
+                      
+          
 
                                 </tr>
                             @endforeach

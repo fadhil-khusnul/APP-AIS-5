@@ -116,7 +116,7 @@
 
                             <div class="col-12 text-center mt-3">
                                 <button value="{{ $planload->id }}" type="button" onclick="edit_planloaad_job(this)"
-                                    class="btn btn-outline-primary">Edit Detail Kapal Load <i
+                                    class="btn btn-label-primary">Detail Kapal <i
                                         class="fa fa-pencil"></i></button>
                             </div>
 
@@ -192,7 +192,6 @@
                                         <th class="text-center">Nomor Kontainer</th>
                                         <th class="text-center">POT Kontainer</th>
                                         <th class="text-center">POD Kontainer</th>
-                                        <th class="text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_detail" class="text-center">
@@ -204,6 +203,19 @@
                                                     class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
                                                     value="{{ $container->id }}" onclick="delete_kontainerDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
+                                           
+                                                @if ($container->nomor_kontainer != null)
+                                                    <button type="button" id="btn_detail" name="btn_detail"
+                                                        class="btn btn-label-primary btn-sm text-nowrap"
+                                                        value="{{ $container->id }}" onclick="detail_update(this)">Edit <i class="fa fa-eye"></i></button>
+                                                @else
+                                                    <button type="button" id="btn_detail" name="btn_detail"
+                                                        class="btn btn-label-success btn-sm text-nowrap"
+                                                        value="{{ $container->id }}" onclick="detail(this)">Input
+                                                        <i class="fa fa-pencil"></i></button>
+                                                @endif
+
+
                                             </td>
                                             <td>
 
@@ -236,20 +248,7 @@
                                                     -
                                                 @endif
                                             </td>
-                                            <td>
-                                                @if ($container->nomor_kontainer != null)
-                                                    <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-primary btn-sm text-nowrap"
-                                                        value="{{ $container->id }}" onclick="detail_update(this)">Edit Kontainer <i class="fa fa-eye"></i></button>
-                                                @else
-                                                    <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-success btn-sm text-nowrap"
-                                                        value="{{ $container->id }}" onclick="detail(this)">Input
-                                                        Kontainer <i class="fa fa-pencil"></i></button>
-                                                @endif
-
-
-                                            </td>
+                                            
                                         </tr>
                                     @endforeach
 
@@ -261,7 +260,7 @@
 
                         <div class="mb-5 mt-5 text-center">
                             <button id="detail_kontainer" type="button" onclick="detail_tambah()"
-                                class="btn btn-outline-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
                                 @if ($planload->status == 'Process-Load' || $planload->status == 'Realisasi')
                                 <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
                                 class="btn btn-success">Realisasi POL <i class="fa fa-arrow-right"></i></button>
@@ -1428,7 +1427,7 @@
                                     <option disabled>Pilih Size</option>
                                     @foreach ($sizes as $size)
                                         <option value="{{ $size->size_container }}"
-                                            @if ($size->size_container) selected @endif>
+                                            >
                                             {{ $size->size_container }}</option>
                                     @endforeach
                                 </select>
@@ -1445,8 +1444,7 @@
                                     @readonly(true) required>
                                     <option disabled>Pilih Type</option>
                                     @foreach ($types as $type)
-                                        <option value="{{ $type->type_container }}"
-                                            @if ($type->type_container) selected @endif>
+                                        <option value="{{ $type->type_container }}">
                                             {{ $type->type_container }}</option>
                                     @endforeach
                                 </select>

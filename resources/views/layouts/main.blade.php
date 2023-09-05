@@ -21,7 +21,7 @@
     
     
     <title>{{$title}} | AIS-ONLINE</title>
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
 
 </head>
 

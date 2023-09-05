@@ -142,6 +142,12 @@
                             </div>
                             </div>
 
+                            <div class="col-12 text-center">
+                                {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
+                                <button type="submit"  onclick="CreateJobPlanDischarge()"
+                                    class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
+                            </div>
+
 
 
                     </div>
@@ -182,17 +188,16 @@
                             </tbody>
                         </table>
                         <div class="mt-5 mb-5">
-                            <button id="add_container" onclick="tambah_kontener()" type="button"
+                            <button disabled id="add_container" onclick="tambah_kontener()" type="button"
                                 class="btn btn-label-primary btn-icon"> <i class="fa fa-plus"></i></button>
                         </div>
 
 
 
-                        <div class="col-12 text-end">
-                            {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
-                            <button type="submit" onclick="CreateJobPlanDischarge()"
-                                class="btn btn-primary">Proccess</button>
-                        </div>
+                        {{-- <div class="col-12 text-end">
+                            <button type="submit" onclick="ToProcess()"
+                                class="btn btn-success">ke Proses <i class="fa fa-arrow-right"></i></button>
+                        </div> --}}
                         <!-- END Form -->
                     </div>
                 </div>
@@ -207,11 +212,12 @@
     </div>
 
    
-
-
-
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script> --}}
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/discharge-plan.js"></script>
+
 @endsection

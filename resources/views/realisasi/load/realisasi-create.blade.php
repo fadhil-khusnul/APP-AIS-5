@@ -1570,8 +1570,8 @@
 
 
         $('.modal>.modal-dialog').draggable({
-                cursor: 'move',
-                handle: '.modal-header, .modal-footer'
+            cursocr: 
+            e: '.modal-header, .modal-footer'
         });
         $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
