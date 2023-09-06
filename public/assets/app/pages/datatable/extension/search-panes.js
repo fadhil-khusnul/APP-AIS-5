@@ -8,7 +8,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [1, 3, 4, 5, 6, 7, 8, 9, 10],
+            columns: [1, 3, 4, 5, 6, 7],
             cascadePanes: false,
             viewTotal: true,
 
@@ -27,7 +27,7 @@
 
 
             },
-            targets: [1, 3, 4, 6, 7, 8],
+            targets: [1, 3, 4, 6, 7],
         }],
     });
     $("#plandischarge").DataTable({

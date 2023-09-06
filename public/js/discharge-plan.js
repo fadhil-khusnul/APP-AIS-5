@@ -1,6 +1,5 @@
 "use strict";
 
-
 function CreateJobPlanDischarge() {
     var swal = Swal.mixin({
         customClass: {
@@ -97,9 +96,8 @@ function CreateJobPlanDischarge() {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        
+
         submitHandler: function (form) {
-           
             let token = $("#csrf").val();
             let activity = document.getElementById("activity").value;
             let select_company =
@@ -118,7 +116,6 @@ function CreateJobPlanDischarge() {
                 "YYYY-MM-DD"
             );
 
-
             var fd = new FormData();
             fd.append("_token", token);
             fd.append("tanggal_tiba", tanggal_tiba);
@@ -131,7 +128,6 @@ function CreateJobPlanDischarge() {
             fd.append("pengirim", pengirim);
             fd.append("penerima", penerima);
             fd.append("nomor_do", nomor_do);
-
 
             // for (var i = 0; i < tambah; i++) {
             //     size[i] = document.getElementById(
@@ -188,7 +184,8 @@ function CreateJobPlanDischarge() {
                                 timer: 2e3,
                                 showConfirmButton: false,
                             });
-                            window.location.href = "/plandischarge/"+ response.slug;
+                            window.location.href =
+                                "/plandischarge/" + response.slug;
                         },
                     });
                 } else {
@@ -204,7 +201,6 @@ function CreateJobPlanDischarge() {
         },
     });
 }
-
 
 function UpdateteJobPlanDischarge() {
     var swal = Swal.mixin({
@@ -318,11 +314,7 @@ function UpdateteJobPlanDischarge() {
 
             // let biaya_do = 0;
 
-           
-
             var fd = new FormData();
-
-
 
             fd.append("_token", token);
             fd.append("activity", activity);
@@ -338,7 +330,6 @@ function UpdateteJobPlanDischarge() {
             // fd.append("biaya_do", biaya_do);
 
             fd.append("old_slug", old_slug);
-
 
             swal.fire({
                 title: "Apakah anda yakin?",
@@ -366,11 +357,12 @@ function UpdateteJobPlanDischarge() {
                                 timer: 9e3,
                                 showConfirmButton: false,
                             });
-                            window.location.href = "/plandischarge/"+response.slug;
+                            window.location.href =
+                                "/plandischarge/" + response.slug;
                         },
                         error: function (response) {
                             console.log(response);
-                            
+
                             swal.fire({
                                 title: "Ada yang Salah, Silahkan Cek Kembali Data Anda !!!",
                                 text: response.error,
@@ -378,7 +370,7 @@ function UpdateteJobPlanDischarge() {
                                 timer: 10e3,
                                 showConfirmButton: false,
                             });
-                        }
+                        },
                     });
                 } else {
                     swal.fire({
@@ -394,8 +386,6 @@ function UpdateteJobPlanDischarge() {
     });
 }
 
-
-
 function modal_tambah() {
     $("#modal_tambah").modal("show");
     var swal = Swal.mixin({
@@ -407,8 +397,6 @@ function modal_tambah() {
         buttonsStyling: false,
     });
 
-    
-
     $("#seal_tambah")
         .select2({
             dropdownAutoWidth: true,
@@ -418,7 +406,8 @@ function modal_tambah() {
             maximumSelectionLength: 4,
             dropdownParent: $("#modal_tambah"),
         })
-        .off("select2:select").on("select2:select", function (e) {
+        .off("select2:select")
+        .on("select2:select", function (e) {
             var selected_element = $(e.currentTarget);
             var select_val = selected_element.val();
             // console.log(select_val);
@@ -499,7 +488,8 @@ function modal_tambah() {
             maximumSelectionLength: 4,
             dropdownParent: $("#modal_tambah"),
         })
-        .off("select2:unselect").on("select2:unselect", function (e) {
+        .off("select2:unselect")
+        .on("select2:unselect", function (e) {
             // var seal = $("#seal").val();
             // console.log(seal);
             // var last_seal = seal[seal.length - 1];
@@ -539,7 +529,6 @@ function modal_tambah() {
             });
         });
 
-
     $("#valid_job_tambah").validate({
         ignore: "select[type=hidden]",
 
@@ -574,7 +563,6 @@ function modal_tambah() {
                 cargo: $("#cargo_tambah").val(),
                 seal: $("#seal_tambah").val(),
                 biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
-
             };
 
             $.ajax({
@@ -597,8 +585,8 @@ function modal_tambah() {
 }
 
 function modal_edit(e) {
-   
     let id = e.value;
+    // console.log(id);
     // console.log(id);
 
     var swal = Swal.mixin({
@@ -611,39 +599,45 @@ function modal_edit(e) {
     });
     let token = $("#csrf").val();
 
-
     $.ajax({
         url: "/detail-kontainer-discharge/" + id + "/input",
         data: {
             _token: token,
         },
         type: "GET",
-        async:false,
+        async: false,
         cache: false,
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response);
+            // console.log(response);
             let new_id = id;
-            var seals = [""];
-            
+            var seals = [];
 
             for (let i = 0; i < response.seal_discharge.length; i++) {
                 seals[i] = response.seal_discharge[i].seal_kontainer;
             }
-            
-            $("#seal_old").val(response.result.size);
-           
+            // console.log(seals);
+
+            // $("#seal_old").val(response.result.size);
+
             $("#modal_edit").modal("show");
+            // if($('#modal_edit').is(':visible')) {
+            //     console.log("terbuka");
+            // } else {
+            //     console.log("tertutup");
+            // }
 
             $("#size_edit").val(response.result.size);
-           
+
             $("#type_edit").val(response.result.type);
             $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
             $("#no_container_edit").val(response.result.nomor_kontainer);
             $("#cargo_edit").val(response.result.cargo);
             $("#biaya_seal_edit").val(response.result.biaya_seal);
             $("#seal_old").val(seals);
+            // var seal_old = document.getElementById("seal_old").value;
+            // console.log(seal_old);
 
             $("#seal_edit")
                 .val(seals)
@@ -655,7 +649,8 @@ function modal_edit(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal_edit"),
                 })
-                .off("select2:select").on("select2:select", function (e) {
+                .off("select2:select")
+                .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
                     // console.log(select_val);
@@ -750,7 +745,8 @@ function modal_edit(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal_edit"),
                 })
-                .off("select2:unselect").on("select2:unselect", function (e) {
+                .off("select2:unselect")
+                .on("select2:unselect", function (e) {
                     // var seal = $("#seal").val();
                     // console.log(seal);
                     // var last_seal = seal[seal.length - 1];
@@ -799,7 +795,8 @@ function modal_edit(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal_edit"),
                 })
-                .off("select2:select").on("select2:select", function (e) {
+                .off("select2:select")
+                .on("select2:select", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
                     // console.log(select_val);
@@ -812,7 +809,6 @@ function modal_edit(e) {
                     $element.detach();
                     $(this).append($element);
                     $(this).trigger("change");
-
                 });
             $("#seal_old")
                 .val(seals)
@@ -824,8 +820,8 @@ function modal_edit(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal_edit"),
                 })
-                .off("select2:unselect").on("select2:unselect", function (e) {
-
+                .off("select2:unselect")
+                .on("select2:unselect", function (e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
 
@@ -837,10 +833,11 @@ function modal_edit(e) {
                     $element.detach();
                     $(this).append($element);
                     $(this).trigger("change");
-
-                    
                 });
-          
+
+            // var seal_old = document.getElementById("seal_edit").selectedOptions;
+            // seal_old = Array.from(seal_old).map(({ value }) => value);
+            // console.log(seal_old);
 
             $("#new_id_edit").val(response.result.id);
             $("#valid_job_edit").validate({
@@ -876,39 +873,70 @@ function modal_edit(e) {
                 // console.log();
                 submitHandler: function (form) {
                     var new_id = document.getElementById("new_id_edit").value;
-                    console.log(seals);
-
-                    // var seal_old = document.getElementById("seal_old").value;
-                    var token = $("#csrf").val();
+                    // console.log(new_id);
 
                     $.ajax({
-                        url: "/plandischarge-kontainer/" + new_id,
-                        type: "PUT",
+                        url: "/detail-kontainer-discharge/" + new_id + "/input",
                         data: {
                             _token: token,
-                            job_id: $("#job_id").val(),
-                            size: $("#size_edit").val(),
-                            type: $("#type_edit").val(),
-                            nomor_kontainer: $("#nomor_kontainer_edit").val(),
-                            cargo: $("#cargo_edit").val(),
-                            seal: $("#seal_edit").val(),
-                            biaya_seal: $("#biaya_seal_edit").val().replace(/\./g, ""),
-                            seal_old: seals,
                         },
+                        type: "GET",
+                        async: false,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
                         success: function (response) {
-                            swal.fire({
-                                icon: "success",
-                                title: "Detail Kontainer Berhasil DIUPDATE",
-                                showConfirmButton: false,
-                                timer: 2e3,
-                            }).then((result) => {
-                                location.reload();
+                            var seal_old = [];
+
+                            for (
+                                let i = 0;
+                                i < response.seal_discharge.length;
+                                i++
+                            ) {
+                                seal_old[i] =
+                                    response.seal_discharge[i].seal_kontainer;
+                            }
+                            // console.log(seal_old);
+
+                            var token = $("#csrf").val();
+
+                            $.ajax({
+                                url: "/plandischarge-kontainer/" + new_id,
+                                type: "PUT",
+                                data: {
+                                    _token: token,
+                                    job_id: $("#job_id").val(),
+                                    size: $("#size_edit").val(),
+                                    type: $("#type_edit").val(),
+                                    nomor_kontainer: $(
+                                        "#nomor_kontainer_edit"
+                                    ).val(),
+                                    cargo: $("#cargo_edit").val(),
+                                    seal: $("#seal_edit").val(),
+                                    biaya_seal: $("#biaya_seal_edit")
+                                        .val()
+                                        .replace(/\./g, ""),
+                                    seal_old: seal_old,
+                                },
+                                success: function (response) {
+                                    swal.fire({
+                                        icon: "success",
+                                        title: "Detail Kontainer Berhasil DIUPDATE",
+                                        showConfirmButton: false,
+                                        timer: 2e3,
+                                    }).then((result) => {
+                                        location.reload();
+                                    });
+                                },
                             });
                         },
                     });
+                    // console.log(seals);
+                    // console.log(seal_old);
+
+                    // var seal_old = document.getElementById("seal_old").value;
                 },
             });
-
         },
     });
 }

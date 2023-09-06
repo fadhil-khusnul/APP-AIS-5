@@ -192,6 +192,9 @@ Route::get('/detail-kontainer-discharge/{id}/input', [PlanDischargeController::c
 Route::post('/create-job-plandischarge', [PlanDischargeController::class, 'create_job_plandischarge']);
 Route::post('/update-job-plandischarge', [PlanDischargeController::class, 'update']);
 Route::post('/tambah-kontainer-plandischarge', [PlanDischargeController::class, 'input_tambah']);
+Route::post('/detailbarang-kontainer-discharge', [PlanDischargeController::class, 'detailbarang']);
+Route::post('/cetak-packing-list-discharge', [PlanDischargeController::class, 'cetak_detail']);
+
 Route::put('/plandischarge-kontainer/{id}', [PlanDischargeController::class, 'input_edit']);
 
 
@@ -199,6 +202,18 @@ Route::get('/processdischarge', [PlanDischargeController::class, 'process']);
 Route::get('/processdischarge-create/{slug}', [PlanDischargeController::class, 'create_process']);
 Route::put('/detaildischarge-kontainer-update/{id}', [PlanDischargeController::class, 'detail']);
 Route::put('/detaildischarge-kontainer-edit/{id}', [PlanDischargeController::class, 'detail_edit']);
+Route::put('/detailbarang-update-discharge/{id}', [PlanDischargeController::class, 'detailbarang_update']);
+Route::delete('/detailbarang-delete-discharge/{id}', [ProcessLoadController::class, 'destroy_detailbarang_discharge']);
+Route::post('/biayalain-kontainer-discharge', [PlanDischargeController::class, 'biayalain']);
+Route::get('/biayalainnya-edit-discharge/{id}', [PlanDischargeController::class, 'biayalain_edit']);
+Route::put('/biayalainnya-update-discharge/{id}', [PlanDischargeController::class, 'biayalain_update']);
+Route::delete('/biayalainnya-delete-discharge/{id}', [PlanDischargeController::class, 'destroy_biaya']);
+
+
+
+
+
+
 Route::post('/detaildischarge-kontainer-tambah', [PlanDischargeController::class, 'detail_tambah']);
 Route::delete('/discharge-container-delete/{id}', [PlanDischargeController::class, 'detail_destroy']);
 

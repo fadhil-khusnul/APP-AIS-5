@@ -788,10 +788,12 @@ class ProcessLoadController extends Controller
     {
 
         $detail = DetailBarangLoad::where('kontainer_id', $id)->get();
+        $detail_discharge = DetailBarangLoad::where('kontainer_id_discharge', $id)->get();
         // dd($detail);
 
         return response()->json([
             'result' => $detail,
+            'detail_discharge' => $detail_discharge,
         ]);
     }
 
@@ -813,8 +815,19 @@ class ProcessLoadController extends Controller
     }
     public function destroy_detailbarang(Request $request)
     {
+        
         DetailBarangLoad::where('kontainer_id', $request->id)->delete();
 
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+    public function destroy_detailbarang_discharge(Request $request)
+    {
+       
+        DetailBarangLoad::where('kontainer_id_discharge', $request->id)->delete();
 
         return response()->json([
             'success'   => true

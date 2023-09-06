@@ -3349,13 +3349,6 @@
                 $(this).attr('data-bs-original-title', $txt);
             })
 
-            // $('.modal-content').resizable({
-            //     minHeight: 300,
-            //     minWidth: 300
-            // });
-
-
-
         });
 
         $('.modal>.modal-dialog').draggable({
