@@ -981,3 +981,52 @@ function process_page(slug) {
         }
     });
 }
+
+function delete_kontainerDB(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus CONTAINER INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/discharge-container-delete/" + deleteid,
+                data: data,
+                success: function (response) {
+                    swal.fire({
+                        title: "Container BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Container TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: true,
+            });
+        }
+    });
+}

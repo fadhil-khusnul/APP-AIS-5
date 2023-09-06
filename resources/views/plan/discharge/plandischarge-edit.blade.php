@@ -194,7 +194,7 @@
                                     <td>{{$loop->iteration}}</td>
 
                                     <td>
-                                    <button id="deleterow{{$loop->iteration}}" value="{{ $container->id }}" onclick="delete_container(this)" type="button"
+                                    <button id="deleterow{{$loop->iteration}}" value="{{ $container->id }}" onclick="delete_kontainerDB(this)" type="button"
                                         class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                             class="fa fa-trash"></i></button>
                                     <button id="editrow{{$loop->iteration}}" value="{{ $container->id }}" onclick="modal_edit(this)" type="button"
