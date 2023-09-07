@@ -10,7 +10,7 @@
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
-                        <input type="hidden" name="old_slug" id="old_slug" value="{{$planload->slug}}">
+                        <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                         <div class="breadcrumb breadcrumb-transparent mb-0">
@@ -40,45 +40,51 @@
                     <div class="portlet-body row px-5 py-5">
                         <!-- BEGIN Form -->
 
-                            <div class="row mb-3">
-                                <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel/Voyage :</label>
-                                <div class="col-sm-8 validation-container">
-                                <input name="vessel" id="vessel" class="form-control" value="{{ old('vessel', $planload->vessel) }}" >
-                                </div>
+                        <div class="row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel/Voyage :</label>
+                            <div class="col-sm-8 validation-container">
+                                <input name="vessel" id="vessel" class="form-control"
+                                    value="{{ old('vessel', $planload->vessel) }}">
                             </div>
-                            <div class="row mb-3">
-                                <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel Code :</label>
-                                <div class="col-sm-8 validation-container">
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel Code :</label>
+                            <div class="col-sm-8 validation-container">
 
-                                <input name="vessel_code" id="vessel_code" class="form-control" value="{{ old('vessel_code', $planload->vessel_code) }}" >
-                                </div>
+                                <input name="vessel_code" id="vessel_code" class="form-control"
+                                    value="{{ old('vessel_code', $planload->vessel_code) }}">
                             </div>
-                            <div class="row mb-3">
-                                <label for="company" class="col-sm-4 col-form-label">Shipping Company :</label>
-                                <div class="col-sm-8 validation-container">
+                        </div>
+                        <div class="row mb-3">
+                            <label for="company" class="col-sm-4 col-form-label">Shipping Company :</label>
+                            <div class="col-sm-8 validation-container">
 
                                 <select id="select_company" name="select_company" class="form-select">
                                     <option selected disabled>Pilih Company</option>
                                     @foreach ($shippingcompany as $shippingcompany)
-                                        <option value="{{ $shippingcompany->nama_company }}" @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>{{ $shippingcompany->nama_company }}</option>
+                                        <option value="{{ $shippingcompany->nama_company }}"
+                                            @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>
+                                            {{ $shippingcompany->nama_company }}</option>
                                     @endforeach
                                 </select>
-                                </div>
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="" class="col-sm-4 col-form-label">Activity :</label>
-                                <div class="col-sm-8 validation-container">
+                        <div class="row mb-3">
+                            <label for="" class="col-sm-4 col-form-label">Activity :</label>
+                            <div class="col-sm-8 validation-container">
 
                                 <select id="activity" name="activity" class="form-select">
                                     <option selected disabled>Pilih Activity</option>
                                     @foreach ($activity as $activity)
-                                        <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}</option>
+                                        <option value="{{ $activity->kegiatan }}"
+                                            @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}
+                                        </option>
                                     @endforeach
                                 </select>
-                                </div>
                             </div>
-                            {{-- <div class="row mb-3">
+                        </div>
+                        {{-- <div class="row mb-3">
                                 <label for="POL" class="col-sm-4 col-form-label">Pengirim</label>
                                 <div class="col-sm-8 validation-container">
 
@@ -91,7 +97,7 @@
                                 </div>
                             </div> --}}
 
-                            {{-- <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                                 <label for="POL" class="col-sm-4 col-form-label">Penerima</label>
                                 <div class="col-sm-8 validation-container">
 
@@ -108,20 +114,22 @@
 
 
 
-                            <div class="row mb-3">
-                                <label for="POL" class="col-sm-4 col-form-label">POL :</label>
-                                <div class="col-sm-8 validation-container">
+                        <div class="row mb-3">
+                            <label for="POL" class="col-sm-4 col-form-label">POL :</label>
+                            <div class="col-sm-8 validation-container">
 
                                 <select id="POL_1" name="POL_1" class="form-select">
                                     <option selected disabled>Pilih POL</option>
                                     @foreach ($pol as $pol)
-                                        <option value="{{ $pol->nama_pelabuhan }}" @if ($pol->nama_pelabuhan == $planload->pol) selected @endif>{{ $pol->area_code }} - {{ $pol->nama_pelabuhan }}
+                                        <option value="{{ $pol->nama_pelabuhan }}"
+                                            @if ($pol->nama_pelabuhan == $planload->pol) selected @endif>{{ $pol->area_code }} -
+                                            {{ $pol->nama_pelabuhan }}
                                         </option>
                                     @endforeach
                                 </select>
-                                </div>
                             </div>
-                            {{-- <div class="row mb-3">
+                        </div>
+                        {{-- <div class="row mb-3">
                                 <label for="POL" class="col-sm-4 col-form-label">POT :</label>
                                 <div class="col-sm-8 validation-container">
 
@@ -134,7 +142,7 @@
                                 </select>
                                 </div>
                             </div> --}}
-                            {{-- <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                                 <label for="POL" class="col-sm-4 col-form-label">POD :</label>
                                 <div class="col-sm-8 validation-container">
 
@@ -183,47 +191,56 @@
                             </thead>
                             <tbody class="text-center" id="tbody_container">
                                 @foreach ($containers as $container)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="validation-container">
+                                                <input type="text" id="jumlah-container[{{ $loop->iteration }}]"
+                                                    name="jumlah-container[{{ $loop->iteration }}]"
+                                                    class="form-control jumlah-container" required
+                                                    value="{{ $container->jumlah_kontainer }}">
+                                            </div>
+                                        </td>
+                                        <td>X</td>
+                                        <td>
+                                            <div class="validation-container">
+                                                <select id="size[{{ $loop->iteration }}]"
+                                                    name="size[{{ $loop->iteration }}]" class="form-select"
+                                                    onchange="change_container(this)" required>
+                                                    <option selected disabled>Pilih Size</option>
+                                                    @foreach ($sizes as $size)
+                                                        <option value="{{ $size->size_container }}"
+                                                            @if ($size->size_container == $container->size) selected @endif>
+                                                            {{ $size->size_container }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="validation-container">
+                                                <select id="type[{{ $loop->iteration }}]"
+                                                    name="type[{{ $loop->iteration }}]" class="form-select"
+                                                    onchange="change_container(this)" required>
+                                                    <option selected disabled>Pilih Kontainer</option>
+                                                    @foreach ($types as $type)
+                                                        <option value="{{ $type->type_container }}"
+                                                            @if ($type->type_container == $container->type) selected @endif>
+                                                            {{ $type->type_container }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="validation-container">
+                                                <textarea name="" id="cargo[{{ $loop->iteration }}]" name="cargo[{{ $loop->iteration }}]"
+                                                    class="form-control" required>{{ $container->cargo }}</textarea>
+                                            </div>
+                                        </td>
+                                        <td><button id="deleterow{{ $loop->iteration }}" onclick="delete_container(this)"
+                                                type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                                    class="fa fa-trash"></i></button></td>
 
-                                <tr>
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <input type="text" id="jumlah-container[{{$loop->iteration}}]" name="jumlah-container[{{$loop->iteration}}]" class="form-control jumlah-container" required value="{{ $container->jumlah_kontainer }}">
-                                        </div>
-                                    </td>
-                                    <td>X</td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <select id="size[{{$loop->iteration}}]" name="size[{{$loop->iteration}}]" class="form-select"
-                                                onchange="change_container(this)" required>
-                                                <option selected disabled>Pilih Size</option>
-                                                @foreach ($sizes as $size)
-                                                    <option value="{{$size->size_container}}" @if ($size->size_container == $container->size) selected @endif>
-                                                        {{ $size->size_container }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td> <div class="validation-container">
-                                        <select id="type[{{$loop->iteration}}]" name="type[{{$loop->iteration}}]" class="form-select"
-                                            onchange="change_container(this)" required>
-                                            <option selected disabled>Pilih Kontainer</option>
-                                            @foreach ($types as $type)
-                                                <option value="{{$type->type_container}}" @if ($type->type_container == $container->type) selected @endif>
-                                                    {{ $type->type_container }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    </td>
-                                    <td> <div class="validation-container">
-                                        <textarea name="" id="cargo[{{$loop->iteration}}]" name="cargo[{{$loop->iteration}}]" class="form-control" required >{{$container->cargo}}</textarea>
-                                    </div>
-                                    </td>
-                                    <td><button id="deleterow{{$loop->iteration}}" onclick="delete_container(this)" type="button"
-                                            class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                                class="fa fa-trash"></i></button></td>
-
-                                </tr>
+                                    </tr>
                                 @endforeach
 
                             </tbody>

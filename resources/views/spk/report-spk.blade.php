@@ -93,7 +93,7 @@
                                     <td>
                                         {{ $spk->kode_spk }}
                                     </td>
-                                    <td> @if ($spk->status == "Container")
+                                    <td> @if ($spk->status == "Container" && $spk->container_planloads->spk != null)
                                         {{$spk->container_planloads->nomor_kontainer}}
                                         {{-- @foreach ($spksc as $c)
                                             @if ($c->spk_kontainer === $spk->kode_spk)

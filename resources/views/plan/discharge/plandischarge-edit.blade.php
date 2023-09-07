@@ -10,7 +10,7 @@
                     <i class="header-divider"></i>
                     <div class="header-wrap header-wrap-block justify-content-start">
                         <!-- BEGIN Breadcrumb -->
-                        <input type="hidden" name="old_slug" id="old_slug" value="{{$planload->slug}}">
+                        <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
 
                         <div class="breadcrumb breadcrumb-transparent mb-0">
@@ -43,116 +43,133 @@
 
                             <label for="inputAddress2" class="col-sm-4 form-label">Nomor DO</label>
                             <div class="col-md-8 validation-container">
-                                <input required name="nomor_do" id="nomor_do" class="form-control" value="{{old('nomor_do', $planload->nomor_do)}}">
+                                <input required name="nomor_do" id="nomor_do" class="form-control"
+                                    value="{{ old('nomor_do', $planload->nomor_do) }}">
                             </div>
                         </div>
 
-                            <div class="row mb-3">
-                                <label for="inputAddress2" class="col-sm-4 form-label">Tanggal Tiba Kapal</label>
-                                <div class="col-sm-8 validation-container">
-                                        <input required name="tanggal_tiba" id="tanggal_tiba" class="form-control" value="{{old('tanggal_tiba', $planload->tanggal_tiba)}}">
-                                </div>
+                        <div class="row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 form-label">Tanggal Tiba Kapal</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required name="tanggal_tiba" id="tanggal_tiba" class="form-control"
+                                    value="{{ old('tanggal_tiba', $planload->tanggal_tiba) }}">
                             </div>
-                            <div class="row mb-3">
+                        </div>
+                        <div class="row mb-3">
 
-                                <label for="inputAddress2" class="col-sm-4 form-label">Vessel/Voyage</label>
-                                <div class="col-sm-8 validation-container">
-                                    <input required name="vessel" id="vessel" class="form-control" value="{{ old('vessel', $planload->vessel) }}" >
-                                </div>
+                            <label for="inputAddress2" class="col-sm-4 form-label">Vessel/Voyage</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required name="vessel" id="vessel" class="form-control"
+                                    value="{{ old('vessel', $planload->vessel) }}">
                             </div>
-                            <div class="row mb-3">
-                                <label for="inputAddress2" class="col-sm-4 form-label">Vessel Code</label>
-                                <div class="col-sm-8 validation-container">
-                                    <input required name="vessel_code" id="vessel_code" class="form-control" value="{{ old('vessel_code', $planload->vessel_code) }}" >
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 form-label">Vessel Code</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required name="vessel_code" id="vessel_code" class="form-control"
+                                    value="{{ old('vessel_code', $planload->vessel_code) }}">
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="company" class="col-sm-4 form-label">Shipping Company</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="select_company" name="select_company" class="form-select">
-                                        <option selected disabled>Pilih Company</option>
-                                        @foreach ($shippingcompany as $shippingcompany)
-                                            <option value="{{ $shippingcompany->nama_company }}" @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>{{ $shippingcompany->nama_company }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="row mb-3">
+                            <label for="company" class="col-sm-4 form-label">Shipping Company</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="select_company" name="select_company" class="form-select">
+                                    <option selected disabled>Pilih Company</option>
+                                    @foreach ($shippingcompany as $shippingcompany)
+                                        <option value="{{ $shippingcompany->nama_company }}"
+                                            @if ($shippingcompany->nama_company == $planload->select_company) selected @endif>
+                                            {{ $shippingcompany->nama_company }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="row mb-3">
+                        </div>
+                        <div class="row mb-3">
 
-                                <label for="POL" class="col-sm-4 form-label">Pengirim</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="Pengirim_1" name="Pengirim_1" class="form-select">
-                                        <option selected disabled>Pilih Pengirim</option>
-                                        @foreach ($pengirim as $pengirim)
-                                            <option value="{{ $pengirim->nama_costumer }}" @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <label for="POL" class="col-sm-4 form-label">Pengirim</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="Pengirim_1" name="Pengirim_1" class="form-select">
+                                    <option selected disabled>Pilih Pengirim</option>
+                                    @foreach ($pengirim as $pengirim)
+                                        <option value="{{ $pengirim->nama_costumer }}"
+                                            @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="row mb-3">
-                                <label for="POL" class="col-sm-4 form-label">Penerima</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="Penerima_1" name="Penerima_1" class="form-select">
-                                        <option selected disabled>Pilih Penerima</option>
-                                        @foreach ($penerima as $penerima)
-                                            <option value="{{ $penerima->nama_penerima }}" @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="POL" class="col-sm-4 form-label">Penerima</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="Penerima_1" name="Penerima_1" class="form-select">
+                                    <option selected disabled>Pilih Penerima</option>
+                                    @foreach ($penerima as $penerima)
+                                        <option value="{{ $penerima->nama_penerima }}"
+                                            @if ($penerima->nama_penerima == $planload->penerima) selected @endif>
+                                            {{ $penerima->nama_penerima }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="" class="col-sm-4 form-label">Activity</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="activity" name="activity" class="form-select">
-                                        <option selected disabled>Pilih Activity</option>
-                                        @foreach ($activity as $activity)
-                                            <option value="{{ $activity->kegiatan }}" @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="row mb-3">
+                            <label for="" class="col-sm-4 form-label">Activity</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="activity" name="activity" class="form-select">
+                                    <option selected disabled>Pilih Activity</option>
+                                    @foreach ($activity as $activity)
+                                        <option value="{{ $activity->kegiatan }}"
+                                            @if ($activity->kegiatan == $planload->activity) selected @endif>{{ $activity->kegiatan }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="POL" class="col-sm-4 form-label">POL</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="POL_1" name="POL_1" class="form-select">
-                                        <option selected disabled>Pilih POL</option>
-                                        @foreach ($pol as $pol)
-                                            <option value="{{ $pol->nama_pelabuhan }}" @if ($pol->nama_pelabuhan == $planload->pol) selected @endif>{{ $pol->area_code }} - {{ $pol->nama_pelabuhan }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="row mb-3">
+                            <label for="POL" class="col-sm-4 form-label">POL</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="POL_1" name="POL_1" class="form-select">
+                                    <option selected disabled>Pilih POL</option>
+                                    @foreach ($pol as $pol)
+                                        <option value="{{ $pol->nama_pelabuhan }}"
+                                            @if ($pol->nama_pelabuhan == $planload->pol) selected @endif>{{ $pol->area_code }} -
+                                            {{ $pol->nama_pelabuhan }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="POL" class="col-sm-4 form-label">POD</label>
-                                <div class="col-sm-8 validation-container">
-                                    <select required id="POD_1" name="POD_1" class="form-select">
-                                        <option selected disabled>Pilih POD</option>
-                                        @foreach ($pod as $pod)
-                                            <option value="{{ $pod->nama_pelabuhan }}" @if ($pod->nama_pelabuhan == $planload->pod) selected @endif>{{ $pod->area_code }} -
-                                                {{ $pod->nama_pelabuhan }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="row mb-3">
+                            <label for="POL" class="col-sm-4 form-label">POD</label>
+                            <div class="col-sm-8 validation-container">
+                                <select required id="POD_1" name="POD_1" class="form-select">
+                                    <option selected disabled>Pilih POD</option>
+                                    @foreach ($pod as $pod)
+                                        <option value="{{ $pod->nama_pelabuhan }}"
+                                            @if ($pod->nama_pelabuhan == $planload->pod) selected @endif>{{ $pod->area_code }} -
+                                            {{ $pod->nama_pelabuhan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-12 text-center">
-                                <!-- BEGIN Form Check -->
-                                <div class="form-check">
-                                    <input class="form-check-input float-none" type="checkbox" id="check" name="check">
-                                    <label class="form-check-label" for="agreement">Checklis Jika Ada yang ingin diubah</label>
-                                </div>
-                                <!-- END Form Check -->
+                        </div>
+                        <div class="col-12 text-center">
+                            <!-- BEGIN Form Check -->
+                            <div class="form-check">
+                                <input class="form-check-input float-none" type="checkbox" id="check"
+                                    name="check">
+                                <label class="form-check-label" for="agreement">Checklis Jika Ada yang ingin
+                                    diubah</label>
                             </div>
+                            <!-- END Form Check -->
+                        </div>
 
-                            <div class="col-12 text-center">
-                                {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
-                                <button disabled type="submit" id="submit"  onclick="UpdateteJobPlanDischarge()"
-                                    class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
-                            </div>
+                        <div class="col-12 text-center">
+                            {{-- <button onclick="CreateJobPlanload()" class="btn btn-primary">Proccess</button> --}}
+                            <button disabled type="submit" id="submit" onclick="UpdateteJobPlanDischarge()"
+                                class="btn btn-success">Simpan <i class="fa fa-save"></i></button>
+                        </div>
 
 
 
@@ -189,46 +206,46 @@
                             </thead>
                             <tbody class="text-center" id="tbody_container">
                                 @foreach ($containers as $container)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
 
-                                <tr>
-                                    <td>{{$loop->iteration}}</td>
+                                        <td>
+                                            <button id="deleterow{{ $loop->iteration }}" value="{{ $container->id }}"
+                                                onclick="delete_kontainerDB(this)" type="button"
+                                                class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                                    class="fa fa-trash"></i></button>
+                                            <button id="editrow{{ $loop->iteration }}" value="{{ $container->id }}"
+                                                onclick="modal_edit(this)" type="button"
+                                                class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
+                                                    class="fa fa-pencil"></i></button>
+                                        </td>
 
-                                    <td>
-                                    <button id="deleterow{{$loop->iteration}}" value="{{ $container->id }}" onclick="delete_kontainerDB(this)" type="button"
-                                        class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                            class="fa fa-trash"></i></button>
-                                    <button id="editrow{{$loop->iteration}}" value="{{ $container->id }}" onclick="modal_edit(this)" type="button"
-                                        class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
-                                            class="fa fa-pencil"></i></button>
-                                    </td>
-
-                                    <td>{{$container->size}}</td>
-                                    <td>{{$container->type}}</td>
-                                    <td>{{$container->nomor_kontainer}}</td>
-                                    <td>
-                                        @if ($sealsc->count() == 1)
-                                            @foreach ($sealsc as $seal)
-                                            @if ($seal->kontainer_id_discharge == $container->id)
-                                                    {{ $seal->seal_kontainer }}
-
-                                            @endif
-                                            @endforeach
-                                        @else
-                                        <ol type="1.">
-
-                                            @foreach ($sealsc as $seal)
-                                                @if ($seal->kontainer_id_discharge == $container->id)
-                                                    <li id="seal[{{ $container->id }}]">
+                                        <td>{{ $container->size }}</td>
+                                        <td>{{ $container->type }}</td>
+                                        <td>{{ $container->nomor_kontainer }}</td>
+                                        <td>
+                                            @if ($sealsc->count() == 1)
+                                                @foreach ($sealsc as $seal)
+                                                    @if ($seal->kontainer_id_discharge == $container->id)
                                                         {{ $seal->seal_kontainer }}
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ol>
-                                        @endif
-                                    </td>
-                                    <td>{{$container->cargo}}</td>
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                <ol type="1.">
 
-                                </tr>
+                                                    @foreach ($sealsc as $seal)
+                                                        @if ($seal->kontainer_id_discharge == $container->id)
+                                                            <li id="seal[{{ $container->id }}]">
+                                                                {{ $seal->seal_kontainer }}
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ol>
+                                            @endif
+                                        </td>
+                                        <td>{{ $container->cargo }}</td>
+
+                                    </tr>
                                 @endforeach
 
                             </tbody>
@@ -237,12 +254,13 @@
                             <button id="add_container" onclick="modal_tambah()" type="button"
                                 class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
                             @if (count($containers) > 1)
-                            <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button" onclick="process_page(this)"
-                            class="btn btn-success">ke Process <i class="fa fa-arrow-right"></i></button>
+                                <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button"
+                                    onclick="process_page(this)" class="btn btn-success">ke Process <i
+                                        class="fa fa-arrow-right"></i></button>
                             @endif
                         </div>
 
-                        
+
 
                         <!-- END Form -->
                     </div>
@@ -256,7 +274,7 @@
 
     </div>
 
-    <div class="modal fade" id="modal_tambah" data-bs-backdrop="static"> 
+    <div class="modal fade" id="modal_tambah" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form action="#" class="modal-dialog-scrollable" name="valid_job_tambah" id="valid_job_tambah">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -270,8 +288,8 @@
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
-                   
-                      
+
+
                         <div class="row">
 
                             <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
@@ -291,7 +309,8 @@
 
                         <div class="row">
 
-                            <label for="" class="col-sm-4 col-form-label">Type :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Type :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <select data-bs-toggle="tooltip" id="type_tambah" name="type_tambah" class="form-select"
@@ -307,26 +326,44 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <input data-bs-toggle="tooltip" type="text" class="form-control nomor_kontainer"
                                     id="nomor_kontainer_tambah" minlength="11" name="nomor_kontainer_tambah"
-                                    onblur="blur_no_container(this)" required placeholder="XXXX0000000"
-                                 >
+                                    onblur="blur_no_container(this)" required placeholder="XXXX0000000">
                             </div>
                         </div>
 
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                                 <input data-bs-toggle="tooltip" type="text" class="form-control" id="cargo_tambah"
                                     name="cargo_tambah" required>
                             </div>
-
-
                         </div>
-                        <div class="row">
+                        <div id="div_detail" class="row">
+                            <div id="body_detail[1]" class="row row-cols">
+                                <label id="id_tombol" name="id_tombol" class="col-sm-4 col-form-label">
+                                    <a id="tambah_seal" name="tambah_seal" class="btn btn-sm btn-label-success btn-sm"
+                                        onclick="tambah_seal()">Seal <i class="fa fa-plus"></i>
+                                    </a>
+                                </label>
+                                <div id="div_textarea" name="div_textarea" class="col-sm-6 gap-3 validation-container"
+                                    style="margin-left: 6px">
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control" id="seal_tambah[1]"
+                                        name="seal_tambah[1]" placeholder="Seal..." required>
+                                </div>
+                                <div id="div_button" name="div_button" class="col-sm-1">
+                                    {{-- <a id="delete_seal[1]" name="delete_seal"
+                                        class="btn btn-sm btn-label-danger btn-icon" onclick="delete_seal(this)"><i
+                                            class="fa fa-trash"></i></a> --}}
+                                </div>
+                            </div>
+                        </div>
+                        {{-- <div class="row">
                             <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
@@ -339,9 +376,9 @@
                                 </select>
 
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
@@ -355,7 +392,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
 
 
@@ -371,7 +408,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_edit" data-bs-backdrop="static"> 
+    <div class="modal fade" id="modal_edit" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-scrollable">
             <form action="#" class="modal-dialog-scrollable" name="valid_job_edit" id="valid_job_edit">
                 <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
@@ -384,15 +421,13 @@
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
-                   
-                      
                         <div class="row">
 
                             <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
-                                <select required data-bs-toggle="tooltip" id="size_edit" name="size_edit" class="form-select"
-                                    @readonly(true)>
+                                <select required data-bs-toggle="tooltip" id="size_edit" name="size_edit"
+                                    class="form-select" @readonly(true)>
                                     <option selected disabled>Pilih Size</option>
                                     @foreach ($sizes as $size)
                                         <option value="{{ $size->size_container }}">
@@ -405,7 +440,8 @@
 
                         <div class="row">
 
-                            <label for="" class="col-sm-4 col-form-label">Type :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Type :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <select data-bs-toggle="tooltip" id="type_edit" name="type_edit" class="form-select"
@@ -421,18 +457,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <input data-bs-toggle="tooltip" type="text" class="form-control nomor_kontainer"
                                     id="nomor_kontainer_edit" minlength="11" name="nomor_kontainer_edit"
-                                    onblur="blur_no_container(this)" required placeholder="XXXX0000000"
-                                 >
+                                    onblur="blur_no_container(this)" required placeholder="XXXX0000000">
                             </div>
                         </div>
 
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                                 <input data-bs-toggle="tooltip" type="text" class="form-control" id="cargo_edit"
                                     name="cargo_edit" required>
@@ -440,8 +477,26 @@
 
 
                         </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span class="text-danger">*</span></label>
+                        <div id="edit_div_detail" class="row">
+                            {{-- <div id="edit_body_detail[1]" class="row row-cols">
+                                <label id="edit_id_tombol" name="edit_id_tombol" class="col-sm-4 col-form-label">
+                                    <a id="edit_tambah_seal" name="edit_tambah_seal" class="btn btn-sm btn-label-success btn-sm"
+                                        onclick="edit_tambah_seal()">Seal <i class="fa fa-plus"></i>
+                                    </a>
+                                </label>
+                                <div id="edit_div_textarea" name="edit_div_textarea" class="col-sm-6 gap-3 validation-container"
+                                    style="margin-left: 6px">
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control" id="edit_seal_tambah[1]"
+                                        name="edit_seal_tambah[1]" placeholder="Seal..." required>
+                                </div>
+                                <div id="edit_div_button" name="edit_div_button" class="col-sm-1">
+                                   
+                                </div>
+                            </div> --}}
+                        </div>
+                        {{-- <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <select data-bs-toggle="tooltip" id="seal_edit" multiple="multiple" name="seal_edit"
@@ -451,7 +506,7 @@
                                             {{ $seal->kode_seal }}</option>
                                     @endforeach
                                 </select>
-                               
+
 
                             </div>
                         </div>
@@ -463,14 +518,12 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="biaya_seal_edit" name="biaya_seal_edit" placeholder="Biaya Seal..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="biaya_seal_edit" name="biaya_seal_edit" placeholder="Biaya Seal..." required>
 
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
 
 
@@ -488,7 +541,6 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -502,12 +554,19 @@
             checkboxes.click(function() {
                 submitButt.attr("disabled", !checkboxes.is(":checked"));
             });
-            
+
 
 
         });
 
-
+        $('.modal>.modal-dialog').draggable({
+            cursor: 'move',
+            handle: '.modal-header, .modal-footer'
+        });
+        $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
+        $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
     </script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
+
     <script type="text/javascript" src="{{ asset('/') }}./js/discharge-plan.js"></script>
 @endsection

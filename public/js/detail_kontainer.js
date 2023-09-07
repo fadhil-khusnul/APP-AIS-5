@@ -3183,7 +3183,7 @@ function tambah_barang() {
     textarea.setAttribute("data-bs-toggle", "tooltip");
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "detail_barang[" + urutan_detail + "]");
-    textarea.setAttribute("name", "detail_barang");
+    textarea.setAttribute("name", "detail_barang[" + urutan_detail + "]");
     textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);
     div3.append(textarea);
@@ -3235,7 +3235,7 @@ function edit_tambah_barang() {
     textarea.setAttribute("data-bs-toggle", "tooltip");
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "edit_detail_barang[" + edit_urutan_detail + "]");
-    textarea.setAttribute("name", "edit_detail_barang");
+    textarea.setAttribute("name", "edit_detail_barang[" + edit_urutan_detail + "]");
     textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);
     div3.append(textarea);
@@ -3368,7 +3368,7 @@ function tambah_keterangan_biaya() {
     textarea.setAttribute("data-bs-toggle", "tooltip");
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "keterangan_biaya[" + urutan_biaya + "]");
-    textarea.setAttribute("name", "keterangan_biaya");
+    textarea.setAttribute("name", "keterangan_biaya[" + urutan_biaya + "]");
     textarea.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
     textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);
@@ -3420,7 +3420,7 @@ function edit_tambah_biaya() {
     textarea.setAttribute("data-bs-toggle", "tooltip");
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "edit_keterangan_biaya[" + edit_urutan_biaya + "]");
-    textarea.setAttribute("name", "edit_keterangan_biaya");
+    textarea.setAttribute("name", "edit_keterangan_biaya[" + edit_urutan_biaya + "]");
     textarea.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
     textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);

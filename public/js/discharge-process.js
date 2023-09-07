@@ -1491,7 +1491,7 @@ function detail_barang_edit(e) {
                     "id",
                     "edit_detail_barang[" + (i + 1) + "]"
                 );
-                textarea.setAttribute("name", "edit_detail_barang");
+                textarea.setAttribute("name", "edit_detail_barang[" + (i + 1) + "]");
                 textarea.setAttribute("style", "margin-left: 10px");
                 textarea.setAttribute("required", true);
                 div3.append(textarea);
@@ -1681,7 +1681,7 @@ function tambah_barang() {
     textarea.setAttribute("data-bs-toggle", "tooltip");
     textarea.setAttribute("class", "form-control");
     textarea.setAttribute("id", "detail_barang[" + urutan_detail + "]");
-    textarea.setAttribute("name", "detail_barang");
+    textarea.setAttribute("name", "detail_barang[" + urutan_detail + "]");
     textarea.setAttribute("style", "margin-left: 10px");
     textarea.setAttribute("required", true);
     div3.append(textarea);

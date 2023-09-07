@@ -397,143 +397,18 @@ function modal_tambah() {
         buttonsStyling: false,
     });
 
-    $("#seal_tambah")
-        .select2({
-            dropdownAutoWidth: true,
-            // tags: true,
-            placeholder: "Silahkan Pilih",
-            // allowClear:true,
-            maximumSelectionLength: 4,
-            dropdownParent: $("#modal_tambah"),
-        })
-        .off("select2:select")
-        .on("select2:select", function (e) {
-            var selected_element = $(e.currentTarget);
-            var select_val = selected_element.val();
-            // console.log(select_val);
+    
 
-            var element = e.params.data.element;
-            var $element = $(element);
-
-            $element.detach();
-            $(this).append($element);
-            $(this).trigger("change");
-
-            let token = $("#csrf").val();
-
-            $.ajax({
-                url: "/getSealProcessLoad",
-                type: "post",
-                async: false,
-                data: {
-                    _token: token,
-                },
-                success: function (response) {
-                    var seal = $("#seal_tambah").val();
-                    var last_seal = seal[seal.length - 1];
-                    // console.log(seal, last_seal);
-                    var count_seal = response.length;
-                    var seal_already = [];
-                    for (var i = 0; i < count_seal; i++) {
-                        seal_already[i] = response[i].seal_kontainer;
-                    }
-
-                    if (seal_already.includes(last_seal)) {
-                        swal.fire({
-                            title: "Seal Kontainer Sudah Ada",
-                            text: "Silakan Masukkan Seal yang Lain",
-                            icon: "error",
-                            timer: 10e3,
-                            showConfirmButton: true,
-                        }).then(() => {
-                            var wanted_option = $(
-                                '#seal_tambah option[value="' + last_seal + '"]'
-                            );
-
-                            wanted_option.prop("selected", false);
-                            $("#seal_tambah").trigger("change.select2");
-                        });
-                    } else {
-                        $.ajax({
-                            url: "/getSealKontainer",
-                            type: "post",
-                            data: {
-                                _token: token,
-                                seal: last_seal,
-                            },
-                            success: function (response) {
-                                var harga_seal = document
-                                    .getElementById("biaya_seal_tambah")
-                                    .value.replace(/\./g, "");
-                                harga_seal = parseFloat(harga_seal);
-
-                                if (isNaN(harga_seal)) {
-                                    harga_seal = 0;
-                                }
-
-                                var harga_seal_now = harga_seal + response;
-                                $("#biaya_seal_tambah").val(harga_seal_now);
-                            },
-                        });
-                    }
-                },
-            });
-        });
-    $("#seal_tambah")
-        .select2({
-            dropdownAutoWidth: true,
-            // tags: true,
-            placeholder: "Silahkan Pilih Seal",
-            // allowClear:true,
-            maximumSelectionLength: 4,
-            dropdownParent: $("#modal_tambah"),
-        })
-        .off("select2:unselect")
-        .on("select2:unselect", function (e) {
-            // var seal = $("#seal").val();
-            // console.log(seal);
-            // var last_seal = seal[seal.length - 1];
-
-            var selected_element = $(e.currentTarget);
-            var select_val = selected_element.val();
-
-            var element = e.params.data.element;
-            var $element = $(element);
-
-            let token = $("#csrf").val();
-
-            $element.detach();
-            $(this).append($element);
-            $(this).trigger("change");
-
-            $.ajax({
-                url: "/getSealKontainer",
-                type: "post",
-                data: {
-                    _token: token,
-                    seal: element.value,
-                },
-                success: function (response) {
-                    var harga_seal = document
-                        .getElementById("biaya_seal_tambah")
-                        .value.replace(/\./g, "");
-                    harga_seal = parseFloat(harga_seal);
-
-                    if (isNaN(harga_seal)) {
-                        harga_seal = 0;
-                    }
-
-                    var harga_seal_now = harga_seal - response;
-                    $("#biaya_seal_tambah").val(harga_seal_now);
-                },
-            });
-        });
-
-    $("#valid_job_tambah").validate({
-        ignore: "select[type=hidden]",
+    $("#valid_job_tambah").submit(function (e) {
+        e.preventDefault();
+    }).validate({
+        // ignore: "select[type=hidden]",
 
         rules: {
-            size: {
+            size_tambah: {
+                required: true,
+            },
+            seal_tambah: {
                 required: true,
             },
         },
@@ -550,9 +425,15 @@ function modal_tambah() {
             element.closest(".validation-container").append(error);
         },
 
-        // console.log();
         submitHandler: function (form) {
+            // console.log(urutan_detail);
             var token = $("#csrf").val();
+
+            var seal = [];
+
+            for(let i = 0; i < urutan_detail; i++) {
+                seal[i] = document.getElementById("seal_tambah[" + (i + 1) + "]").value;
+            }
 
             var data = {
                 _token: token,
@@ -561,8 +442,8 @@ function modal_tambah() {
                 type: $("#type_tambah").val(),
                 nomor_kontainer: $("#nomor_kontainer_tambah").val(),
                 cargo: $("#cargo_tambah").val(),
-                seal: $("#seal_tambah").val(),
-                biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
+                seal: seal,
+                // biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
             };
 
             $.ajax({
@@ -584,10 +465,10 @@ function modal_tambah() {
     });
 }
 
+var edit_urutan_detail = 1;
+
 function modal_edit(e) {
     let id = e.value;
-    // console.log(id);
-    // console.log(id);
 
     var swal = Swal.mixin({
         customClass: {
@@ -610,333 +491,164 @@ function modal_edit(e) {
         processData: false,
         contentType: false,
         success: function (response) {
-            // console.log(response);
-            let new_id = id;
-            var seals = [];
-
-            for (let i = 0; i < response.seal_discharge.length; i++) {
-                seals[i] = response.seal_discharge[i].seal_kontainer;
-            }
-            // console.log(seals);
-
-            // $("#seal_old").val(response.result.size);
-
-            $("#modal_edit").modal("show");
-            // if($('#modal_edit').is(':visible')) {
-            //     console.log("terbuka");
-            // } else {
-            //     console.log("tertutup");
-            // }
-
+            console.log(response);
             $("#size_edit").val(response.result.size);
-
             $("#type_edit").val(response.result.type);
             $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
             $("#no_container_edit").val(response.result.nomor_kontainer);
             $("#cargo_edit").val(response.result.cargo);
-            $("#biaya_seal_edit").val(response.result.biaya_seal);
-            $("#seal_old").val(seals);
-            // var seal_old = document.getElementById("seal_old").value;
-            // console.log(seal_old);
 
-            $("#seal_edit")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal_edit"),
-                })
-                .off("select2:select")
-                .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
-                    let token = $("#csrf").val();
-
-                    $.ajax({
-                        url: "/getSealProcessLoad",
-                        type: "post",
-                        async: false,
-                        data: {
-                            _token: token,
-                        },
-                        success: function (response) {
-                            // console.log(seals);
-                            var seal = $("#seal_edit").val();
-                            var last_seal = seal[seal.length - 1];
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].seal_kontainer;
-                            }
-
-                            if (seals.includes(last_seal) == false) {
-                                if (seal_already.includes(last_seal)) {
-                                    swal.fire({
-                                        title: "Seal Kontainer Sudah Dipakai",
-                                        icon: "error",
-                                        timer: 10e3,
-                                        async: false,
-                                        showConfirmButton: true,
-                                    }).then(() => {
-                                        var wanted_option = $(
-                                            '#seal_edit option[value="' +
-                                                last_seal +
-                                                '"]'
-                                        );
-                                        wanted_option.prop("selected", false);
-                                        // $(this).trigger("change.select2");
-                                        $("#seal_edit").trigger(
-                                            "change.select2"
-                                        );
-                                    });
-                                } else {
-                                    $.ajax({
-                                        url: "/getSealKontainer",
-                                        type: "post",
-                                        data: {
-                                            _token: token,
-                                            seal: last_seal,
-                                        },
-                                        success: function (response) {
-                                            var harga_seal = document
-                                                .getElementById(
-                                                    "biaya_seal_edit"
-                                                )
-                                                .value.replace(/\./g, "");
-                                            harga_seal = parseFloat(harga_seal);
-
-                                            if (isNaN(harga_seal)) {
-                                                harga_seal = 0;
-                                            }
-
-                                            var harga_seal_now =
-                                                harga_seal + response;
-                                            $("#biaya_seal_edit").val(
-                                                harga_seal_now
-                                            );
-                                        },
-                                    });
-                                }
-                            }
-                        },
-                    });
-                });
-            $("#seal_edit")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih Seal",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal_edit"),
-                })
-                .off("select2:unselect")
-                .on("select2:unselect", function (e) {
-                    // var seal = $("#seal").val();
-                    // console.log(seal);
-                    // var last_seal = seal[seal.length - 1];
-
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    let token = $("#csrf").val();
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
-                    $.ajax({
-                        url: "/getSealKontainer",
-                        type: "post",
-                        data: {
-                            _token: token,
-                            seal: element.value,
-                        },
-                        success: function (response) {
-                            var harga_seal = document
-                                .getElementById("biaya_seal_edit")
-                                .value.replace(/\./g, "");
-                            harga_seal = parseFloat(harga_seal);
-
-                            if (isNaN(harga_seal)) {
-                                harga_seal = 0;
-                            }
-
-                            var harga_seal_now = harga_seal - response;
-                            $("#biaya_seal_edit").val(harga_seal_now);
-                        },
-                    });
-                });
-            $("#seal_old")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal_edit"),
-                })
-                .off("select2:select")
-                .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-                });
-            $("#seal_old")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih Seal",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal_edit"),
-                })
-                .off("select2:unselect")
-                .on("select2:unselect", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    let token = $("#csrf").val();
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-                });
-
-            // var seal_old = document.getElementById("seal_edit").selectedOptions;
-            // seal_old = Array.from(seal_old).map(({ value }) => value);
-            // console.log(seal_old);
+            $("#modal_edit").modal("show");
+            document.getElementById("edit_div_detail").innerHTML = "";
 
             $("#new_id_edit").val(response.result.id);
-            $("#valid_job_edit").validate({
-                ignore: "select[type=hidden]",
 
-                rules: {
-                    size: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    size: {
-                        required: "Silakan Pilih Size",
-                    },
-                },
-                highlight: function highlight(element, errorClass, validClass) {
-                    $(element).addClass("is-invalid");
-                    $(element).removeClass("is-valid");
-                },
-                unhighlight: function unhighlight(
-                    element,
-                    errorClass,
-                    validClass
-                ) {
-                    $(element).removeClass("is-invalid");
-                    $(element).addClass("is-valid");
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    error.addClass("invalid-feedback");
-                    element.closest(".validation-container").append(error);
-                },
+            edit_urutan_detail = response.seal_discharge.length;
 
-                // console.log();
-                submitHandler: function (form) {
-                    var new_id = document.getElementById("new_id_edit").value;
-                    // console.log(new_id);
+            var div1 = document.getElementById("edit_div_detail");
 
-                    $.ajax({
-                        url: "/detail-kontainer-discharge/" + new_id + "/input",
-                        data: {
-                            _token: token,
-                        },
-                        type: "GET",
-                        async: false,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            var seal_old = [];
+            var div2 = document.createElement("div");
+            div2.setAttribute("class", "row row-cols");
+            div2.setAttribute("id", "edit_body_detail[1]");
 
-                            for (
-                                let i = 0;
-                                i < response.seal_discharge.length;
-                                i++
-                            ) {
-                                seal_old[i] =
-                                    response.seal_discharge[i].seal_kontainer;
-                            }
-                            // console.log(seal_old);
+            var label1 = document.createElement("label");
+            label1.setAttribute("id", "edit_id_tombol");
+            label1.setAttribute("name", "edit_id_tombol");
+            label1.setAttribute("class", "col-sm-4 col-form-label");
 
-                            var token = $("#csrf").val();
+            var a1 = document.createElement("a");
+            a1.setAttribute("id", "edit_tambah_seal");
+            a1.setAttribute("name", "edit_tambah_seal");
+            a1.setAttribute("class", "btn btn-sm btn-label-success btn-sm");
+            a1.setAttribute("onclick", "edit_tambah_seal()");
+            a1.innerHTML = "Seal <i class='fa fa-plus'></i>";
 
-                            $.ajax({
-                                url: "/plandischarge-kontainer/" + new_id,
-                                type: "PUT",
-                                data: {
-                                    _token: token,
-                                    job_id: $("#job_id").val(),
-                                    size: $("#size_edit").val(),
-                                    type: $("#type_edit").val(),
-                                    nomor_kontainer: $(
-                                        "#nomor_kontainer_edit"
-                                    ).val(),
-                                    cargo: $("#cargo_edit").val(),
-                                    seal: $("#seal_edit").val(),
-                                    biaya_seal: $("#biaya_seal_edit")
-                                        .val()
-                                        .replace(/\./g, ""),
-                                    seal_old: seal_old,
-                                },
-                                success: function (response) {
-                                    swal.fire({
-                                        icon: "success",
-                                        title: "Detail Kontainer Berhasil DIUPDATE",
-                                        showConfirmButton: false,
-                                        timer: 2e3,
-                                    }).then((result) => {
-                                        location.reload();
-                                    });
-                                },
-                            });
-                        },
-                    });
-                    // console.log(seals);
-                    // console.log(seal_old);
+            // var i1 = document.createElement("i");
+            // i1.setAttribute("class", "fa fa-plus");
 
-                    // var seal_old = document.getElementById("seal_old").value;
-                },
-            });
+
+            
+            // let new_id = id;
+            // var seals = [];
+
+            // for (let i = 0; i < response.seal_discharge.length; i++) {
+            //     seals[i] = response.seal_discharge[i].seal_kontainer;
+            // }
+            // // console.log(seals);
+
+            // // $("#seal_old").val(response.result.size);
+
+            // // if($('#modal_edit').is(':visible')) {
+            // //     console.log("terbuka");
+            // // } else {
+            // //     console.log("tertutup");
+            // // }
+
+
+            // $("#type_edit").val(response.result.type);
+            // $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
+            // $("#no_container_edit").val(response.result.nomor_kontainer);
+            // $("#cargo_edit").val(response.result.cargo);
+            // $("#biaya_seal_edit").val(response.result.biaya_seal);
+
+            // $("#new_id_edit").val(response.result.id);
+            // $("#valid_job_edit").validate({
+            //     ignore: "select[type=hidden]",
+
+            //     rules: {
+            //         size: {
+            //             required: true,
+            //         },
+            //     },
+            //     messages: {
+            //         size: {
+            //             required: "Silakan Pilih Size",
+            //         },
+            //     },
+            //     highlight: function highlight(element, errorClass, validClass) {
+            //         $(element).addClass("is-invalid");
+            //         $(element).removeClass("is-valid");
+            //     },
+            //     unhighlight: function unhighlight(
+            //         element,
+            //         errorClass,
+            //         validClass
+            //     ) {
+            //         $(element).removeClass("is-invalid");
+            //         $(element).addClass("is-valid");
+            //     },
+            //     errorPlacement: function errorPlacement(error, element) {
+            //         error.addClass("invalid-feedback");
+            //         element.closest(".validation-container").append(error);
+            //     },
+
+            //     // console.log();
+            //     submitHandler: function (form) {
+            //         var new_id = document.getElementById("new_id_edit").value;
+            //         // console.log(new_id);
+
+            //         $.ajax({
+            //             url: "/detail-kontainer-discharge/" + new_id + "/input",
+            //             data: {
+            //                 _token: token,
+            //             },
+            //             type: "GET",
+            //             async: false,
+            //             cache: false,
+            //             processData: false,
+            //             contentType: false,
+            //             success: function (response) {
+            //                 var seal_old = [];
+
+            //                 for (
+            //                     let i = 0;
+            //                     i < response.seal_discharge.length;
+            //                     i++
+            //                 ) {
+            //                     seal_old[i] =
+            //                         response.seal_discharge[i].seal_kontainer;
+            //                 }
+            //                 // console.log(seal_old);
+
+            //                 var token = $("#csrf").val();
+
+            //                 $.ajax({
+            //                     url: "/plandischarge-kontainer/" + new_id,
+            //                     type: "PUT",
+            //                     data: {
+            //                         _token: token,
+            //                         job_id: $("#job_id").val(),
+            //                         size: $("#size_edit").val(),
+            //                         type: $("#type_edit").val(),
+            //                         nomor_kontainer: $(
+            //                             "#nomor_kontainer_edit"
+            //                         ).val(),
+            //                         cargo: $("#cargo_edit").val(),
+            //                         seal: $("#seal_edit").val(),
+            //                         biaya_seal: $("#biaya_seal_edit")
+            //                             .val()
+            //                             .replace(/\./g, ""),
+            //                         seal_old: seal_old,
+            //                     },
+            //                     success: function (response) {
+            //                         swal.fire({
+            //                             icon: "success",
+            //                             title: "Detail Kontainer Berhasil DIUPDATE",
+            //                             showConfirmButton: false,
+            //                             timer: 2e3,
+            //                         }).then((result) => {
+            //                             location.reload();
+            //                         });
+            //                     },
+            //                 });
+            //             },
+            //         });
+            //         // console.log(seals);
+            //         // console.log(seal_old);
+
+            //         // var seal_old = document.getElementById("seal_old").value;
+            //     },
+            // });
         },
     });
 }
@@ -1028,5 +740,250 @@ function delete_kontainerDB(r) {
                 showConfirmButton: true,
             });
         }
+    });
+}
+
+var urutan_detail = 1;
+
+function tambah_seal() {
+    urutan_detail++;
+
+    var div1 = document.getElementById("div_detail");
+    div1.setAttribute("class", "row")
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols");
+    div2.setAttribute("id", "body_detail[" + urutan_detail + "]");
+    var label = document.createElement("label");
+    label.setAttribute("class", "col-sm-4 col-form-label");
+    label.setAttribute("id", "label_detail");
+    label.setAttribute("name", "label_detail");
+    div2.append(label);
+    var div3 = document.createElement("div");
+    div3.setAttribute("class", "col-sm-6 validation-container");
+    div3.setAttribute("id", "div_textarea");
+    div3.setAttribute("name", "div_textarea");
+    div3.setAttribute("style", "margin-left: 6px");
+    var input = document.createElement("input");
+    input.setAttribute("data-bs-toggle", "tooltip");
+    input.setAttribute("class", "form-control");
+    input.setAttribute("id", "seal_tambah[" + urutan_detail + "]");
+    input.setAttribute("name", "seal_tambah[" + urutan_detail + "]");
+    input.setAttribute("type", "text");
+    input.setAttribute("placeholder", "Seal..");
+    input.setAttribute("required", true);
+    input.setAttribute("data-rule-required", true);
+    div3.append(input);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("class", "col-sm-1");
+    div4.setAttribute("id", "div_button");
+    div4.setAttribute("name", "div_button");
+    var button = document.createElement("a");
+    button.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    button.setAttribute("id", "delete_seal[" + urutan_detail + "]");
+    button.setAttribute("name", "delete_seal");
+    button.setAttribute("onclick", "delete_seal(this)");
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fa fa-trash");
+    button.append(icon);
+    div4.append(button);
+
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+
+    // reindex_detail();
+}
+
+function reindex_detail() {
+    const ids = document.querySelectorAll("#label_detail");
+    ids.forEach((e, i) => {
+        
+    });
+}
+function delete_seal(ini) {
+    var urutan_delete = ini.parentNode.parentNode;
+    urutan_delete.remove();
+    urutan_detail--;
+
+    // var label = document.querySelectorAll("#label_detail");
+
+    // for (var i = 0; i < label.length; i++) {
+    //     label[i].innerHTML = "";
+    // }
+
+    var div1 = document.querySelectorAll("#div_textarea input");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "seal_tambah[" + (i + 1) + "]";
+    }
+
+    var div2 = document.querySelectorAll("#div_button button");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "delete_seal[" + (i + 1) + "]";
+    }
+
+    if (urutan_detail == 0) {
+        tambah_seal();
+    }
+
+    // reindex_detail();
+}
+
+function detail_barang_edit(e) {
+    let id = e.value;
+    // console.log(id);
+
+    $.ajax({
+        url: "/detailbarang-edit/" + id,
+        type: "GET",
+        success: function (response) {
+            $("#modal_detail_barang_edit").modal("show");
+            document.getElementById("edit_div_detail").innerHTML = "";
+            console.log(response);
+            $("#old_id_container_detail").val(response.result[0].kontainer_id);
+            $("#kontainer_detail_edit")
+                .val(response.result[0].kontainer_id)
+                .is(":selected");
+            console.log(response.result[0].kontainer_id, id);
+
+            edit_urutan_detail = response.result.length;
+            console.log(edit_urutan_detail);
+
+            var div1 = document.getElementById("edit_div_detail");
+
+
+            for (var i = 0; i < edit_urutan_detail; i++) {
+                var div2 = document.createElement("div");
+                div2.setAttribute("class", "row row-cols g-3");
+                div2.setAttribute("id", "edit_body_detail[" + (i + 1) + "]");
+
+                var label = document.createElement("label");
+                label.setAttribute("class", "col-sm-4 col-form-label");
+                label.setAttribute("id", "edit_label_detail");
+                label.setAttribute("name", "edit_label_detail");
+
+                var div3 = document.createElement("div");
+                div3.setAttribute(
+                    "class",
+                    "col-sm-6 validation-container d-grid gap-3"
+                );
+                div3.setAttribute("id", "edit_div_textarea");
+                div3.setAttribute("name", "edit_div_textarea");
+                var textarea = document.createElement("textarea");
+                textarea.setAttribute("data-bs-toggle", "tooltip");
+                textarea.setAttribute("class", "form-control");
+                textarea.setAttribute(
+                    "id",
+                    "edit_detail_barang[" + (i + 1) + "]"
+                );
+                textarea.setAttribute("name", "edit_detail_barang");
+                textarea.setAttribute("style", "margin-left: 10px");
+                textarea.setAttribute("required", true);
+                div3.append(textarea);
+
+                var div4 = document.createElement("div");
+                div4.setAttribute("class", "col-sm-2 py-4");
+                div4.setAttribute("id", "edit_div_button");
+                div4.setAttribute("name", "edit_div_button");
+                var button = document.createElement("a");
+                button.setAttribute(
+                    "class",
+                    "btn btn-sm btn-label-danger btn-icon"
+                );
+                button.setAttribute(
+                    "id",
+                    "edit_delete_detail[" + (i + 1) + "]"
+                );
+                button.setAttribute("name", "edit_delete_detail");
+                button.setAttribute("style", "margin-left: 10px;");
+                button.setAttribute("onclick", "edit_delete_detail(this)");
+                icon = document.createElement("i");
+                icon.setAttribute("class", "fa fa-trash");
+                button.append(icon);
+                div4.append(button);
+
+                div2.append(label);
+                div2.append(div3);
+                div2.append(div4);
+
+                div1.appendChild(div2);
+
+                reindex_edit_detail();
+            }
+
+            for(var i = 0; i < edit_urutan_detail; i++) {
+                document.getElementById("edit_detail_barang[" + (i + 1) + "]").value = response.result[i].detail_barang;
+            }
+
+
+            // reindex_detail();
+
+            // var div2 = document.createElement("div");
+            // $("#detail_barang_edit").val(response.result.detail_barang);
+
+            $("#valid_detail_barang_edit").validate({
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var old_id_container_detail = document.getElementById(
+                        "old_id_container_detail"
+                    ).value;
+
+                    var detail_barang = [];
+
+                    for (let i = 0; i < edit_urutan_detail; i++) {
+                        detail_barang[i] = document.getElementById(
+                            "edit_detail_barang[" + (i + 1) + "]"
+                        ).value;
+                    }
+
+                    // console.log(id_lama_detail);
+                    var token = $("#csrf").val();
+
+                    var data = {
+                        _token: token,
+                        job_id: $("#job_id").val(),
+                        kontainer_id: $("#kontainer_detail_edit").val(),
+                        old_id_container_detail: old_id_container_detail,
+                        detail_barang: detail_barang,
+                    };
+
+                    $.ajax({
+                        url: "/detailbarang-update/" + old_id_container_detail,
+                        type: "PUT",
+                        data: data,
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Detail Barang Berhasil Diupdate",
+                                showConfirmButton: false,
+                                timer: 2e3,
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+                },
+            });
+        },
     });
 }

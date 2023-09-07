@@ -262,7 +262,7 @@ class PlanDischargeController extends Controller
             'type' => $request->type,
             'nomor_kontainer' => $request->nomor_kontainer,
             'cargo' => $request->cargo,
-            'biaya_seal' => $request->biaya_seal,
+            // 'biaya_seal' => $request->biaya_seal,
             "status" => "Process",
 
         ];
@@ -279,15 +279,15 @@ class PlanDischargeController extends Controller
 
             SealContainer::create($seal);
         }
-        for ($i=0; $i <count($request->seal) ; $i++) {
+        // for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $data1 = [
-                "status" => "Container",
+        //     $data1 = [
+        //         "status" => "Container",
 
-            ];
+        //     ];
 
-            Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        }
+        //     Seal::where("kode_seal", $request->seal[$i])->update($data1);
+        // }
 
 
 
