@@ -824,7 +824,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish3" class="btn btn-outline-success">Buatkan Invoice</button>
+                        <button type="submit" id="btnFinish3" class="btn btn-success">Buatkan Invoice</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -868,7 +868,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-outline-success">Simpan</button>
+                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>

@@ -279,17 +279,7 @@ class PlanDischargeController extends Controller
 
             SealContainer::create($seal);
         }
-        // for ($i=0; $i <count($request->seal) ; $i++) {
-
-        //     $data1 = [
-        //         "status" => "Container",
-
-        //     ];
-
-        //     Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        // }
-
-
+      
 
         return response()->json(['success' => true]);
     }
@@ -331,26 +321,6 @@ class PlanDischargeController extends Controller
             SealContainer::create($seal);
         }
 
-        for ($i=0; $i <count($request->seal_old) ; $i++) {
-
-            $data2 = [
-                "status" => "input",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal_old[$i])->update($data2);
-        }
-
-
-        for ($i=0; $i <count($request->seal) ; $i++) {
-
-            $data1 = [
-                "status" => "Container",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        }
         $planload->update($load);
         $container->update($data);
 
@@ -618,27 +588,31 @@ class PlanDischargeController extends Controller
 
             SealContainer::create($seal);
         }
-        for ($i=0; $i <count($request->seal_old) ; $i++) {
-
-            $data2 = [
-                "status" => "input",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal_old[$i])->update($data2);
-        }
-
-        for ($i=0; $i <count($request->seal) ; $i++) {
-
-            $data1 = [
-                "status" => "Container",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        }
+       
 
 
+        return response()->json(['success' => true]);
+    }
+    public function tambah_mty(Request $request, $id)
+    {
+        // dd($request);
+        $container = PlanDischargeContainer::findOrFail($id);
+        $planload = PlanDischarge::findOrFail($request->job_id);
+
+
+        $status = "Process";
+
+        $load = [
+            'status' => $status,
+        ];
+
+        $data = [
+            
+            'tanggal_mty' => $request->tanggal_mty,
+            'lokasi_mty' => $request->lokasi_mty,
+        ];
+        $planload->update($load);
+        $container->update($data);
         return response()->json(['success' => true]);
     }
 
@@ -693,25 +667,7 @@ class PlanDischargeController extends Controller
             SealContainer::create($seal);
         }
 
-        for ($i=0; $i <count($request->seal_old) ; $i++) {
-
-            $data2 = [
-                "status" => "input",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal_old[$i])->update($data2);
-        }
-
-        for ($i=0; $i <count($request->seal) ; $i++) {
-
-            $data1 = [
-                "status" => "Container",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        }
+      
 
         return response()->json(['success' => true]);
     }
@@ -766,15 +722,7 @@ class PlanDischargeController extends Controller
         }
 
 
-        for ($i=0; $i <count($request->seal) ; $i++) {
-
-            $data1 = [
-                "status" => "Container",
-
-            ];
-
-            Seal::where("kode_seal", $request->seal[$i])->update($data1);
-        }
+       
 
         return response()->json(['success' => true]);
     }
@@ -1008,33 +956,109 @@ class PlanDischargeController extends Controller
 
     public function realisasi_create(Request $request)
     {
-        $id = PlanDischarge::where('slug', $request->slug)->value('id');
 
+        $id = PlanDischarge::where('slug', $request->slug)->value('id');
+        $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
         $shipping_company = ShippingCompany::all();
-        $pol = Pelabuhan::all();
-        $pot = Pelabuhan::all();
-        $pod = Pelabuhan::all();
-        $pengirim = Pengirim::all();
-        $penerima = Penerima::all();
-        $kontainer = Container::all();
-        $lokasis = Depo::all();
-        $seals = Seal::all();
-        //
+        $pol = Pelabuhan::orderBy('id','DESC')->get();
+        $pot = Pelabuhan::orderBy('id','DESC')->get();
+        $pod = Pelabuhan::orderBy('id','DESC')->get();
+        $pengirim = Pengirim::orderBy('id','DESC')->get();
+        $penerima = Penerima::orderBy('id','DESC')->get();
+        $kontainer = Container::orderBy('id','DESC')->get();
+        $lokasis = Depo::orderBy('id','DESC')->get();
+        $seals = Seal::orderBy('id','DESC')->get();
+
+        $sizes = Container::orderBy('id','DESC')->get();
+        $types = TypeContainer::orderBy('id','DESC')->get();
+        $containers = PlanDischargeContainer::where('job_id', $id)->get();
+        $containers_info = PlanDischargeContainer::where('job_id', $id)->whereNull('slug')->get();
+        $pelabuhans = Pelabuhan::orderBy('id', 'DESC')->get();
+
+        $sealsc = SealContainer::where('job_id_discharge', $id)->get();
+        $vendors = SupirMobil::orderBy('id', 'DESC')->get();
+        $vendors2 = VendorMobil::orderBy('id', 'DESC')->get();
+
+        $kontainer_id = DetailBarangLoad::where("job_id_discharge", $id)->distinct()->get('kontainer_id_discharge');
+
+        $containers_barang = [];
+        $new_container = [];
+        if ($kontainer_id != null) {
+            for ($i=0; $i <count($kontainer_id) ; $i++) {
+                $containers_barang[$i] = PlanDischargeContainer::where('id', $kontainer_id[$i]->kontainer_id_discharge)->get();
+            }
+
+
+            for($i = 0; $i < count($containers_barang); $i++) {
+                $new_container[$i] = [
+                    'id' => $containers_barang[$i][0]->id,
+                    'job_id' => $containers_barang[$i][0]->job_id,
+                    'size' => $containers_barang[$i][0]->size,
+                    'type' => $containers_barang[$i][0]->type,
+                    'nomor_kontainer' => $containers_barang[$i][0]->nomor_kontainer,
+                    'penerima' => $containers_barang[$i][0]->penerima,
+                    'tanggal_kembali' => $containers_barang[$i][0]->tanggal_kembali,
+                    'slug' => $containers_barang[$i][0]->slug,
+
+                ];
+
+            }
+        }
+
+        $id_biaya = BiayaLainnya::where("job_id_discharge", $id)->distinct()->get('kontainer_id_discharge');
+
+        // dd($id_biaya);
+        $containers_biaya = [];
+        $new_container_biaya = [];
+        if ($id_biaya != null) {
+            for ($i=0; $i <count($id_biaya) ; $i++) {
+                $containers_biaya[$i] = PlanDischargeContainer::where('id', $id_biaya[$i]->kontainer_id_discharge)->get();
+            }
+
+
+            for($i = 0; $i < count($containers_biaya); $i++) {
+                $new_container_biaya[$i] = [
+                    'id' => $containers_biaya[$i][0]->id,
+                    'job_id_discharge' => $containers_biaya[$i][0]->job_id,
+                    'size' => $containers_biaya[$i][0]->size,
+                    'type' => $containers_biaya[$i][0]->type,
+                    'nomor_kontainer' => $containers_biaya[$i][0]->nomor_kontainer,
+                    'total_biaya_lain' => $containers_biaya[$i][0]->total_biaya_lain,
+                    'penerima' => $containers_biaya[$i][0]->penerima,
+                    'tanggal_kembali' => $containers_biaya[$i][0]->tanggal_kembali,
+                    'slug' => $containers_biaya[$i][0]->slug
+
+                ];
+
+            }
+        }
+
+        $new_container = collect($new_container)->whereNull('slug');
+        $new_container_biaya = collect($new_container_biaya)->whereNull('slug');
+        $select_barang = PlanDischargeContainer::where('job_id', $id)->whereNull('status_barang')->whereNotNull('tanggal_kembali')->whereNull('slug')->get();
+        $containers_realisasi = PlanDischargeContainer::where('job_id', $id)->whereNotNull('tanggal_kembali')->whereNull('slug')->get();
+        $select_batal_edit = PlanDischargeContainer::where('job_id', $id)->whereNotNull('tanggal_kembali')->whereNull('slug')->get();
+        $select_biaya = PlanDischargeContainer::where('job_id', $id)->whereNull('total_biaya_lain')->whereNotNull('tanggal_kembali')->whereNull('slug')->get();
+
         return view('realisasi.discharge.realisasi-create',[
-            'title' => 'Buat Discharge-Realisasi',
+            'title' => 'Realisasi-Discharge',
             'active' => 'Realisasi',
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
             'pod' => $pod,
             'pengirim' => $pengirim,
-            'penerima' => $penerima,
-            'kontainers' => $kontainer,
+            'sizes' => $sizes,
+            'types' => $types,
+            'penerimas' => $penerima,
             'lokasis' => $lokasis,
+            'pelabuhans' => $pelabuhans,
+            'containers' => $containers,
+            'containers_info' => $containers_info,
+            'containers_realisasi' => $containers_realisasi,
             'seals' => $seals,
-            'planload' => PlanDischarge::find($id),
-            'containers' => PlanDischargeContainer::where('job_id', $id)->get(),
-            'biayas' => BiayaLainDischarge::where('job_id', $id)->get(),
+            'sealsc' => $sealsc,
+            'plandischarge' => PlanDischarge::find($id),
 
         ]);
     }

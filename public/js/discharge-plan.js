@@ -397,72 +397,74 @@ function modal_tambah() {
         buttonsStyling: false,
     });
 
-    
+    $("#valid_job_tambah")
+        .submit(function (e) {
+            e.preventDefault();
+        })
+        .validate({
+            // ignore: "select[type=hidden]",
 
-    $("#valid_job_tambah").submit(function (e) {
-        e.preventDefault();
-    }).validate({
-        // ignore: "select[type=hidden]",
-
-        rules: {
-            size_tambah: {
-                required: true,
-            },
-            seal_tambah: {
-                required: true,
-            },
-        },
-        highlight: function highlight(element, errorClass, validClass) {
-            $(element).addClass("is-invalid");
-            $(element).removeClass("is-valid");
-        },
-        unhighlight: function unhighlight(element, errorClass, validClass) {
-            $(element).removeClass("is-invalid");
-            $(element).addClass("is-valid");
-        },
-        errorPlacement: function errorPlacement(error, element) {
-            error.addClass("invalid-feedback");
-            element.closest(".validation-container").append(error);
-        },
-
-        submitHandler: function (form) {
-            // console.log(urutan_detail);
-            var token = $("#csrf").val();
-
-            var seal = [];
-
-            for(let i = 0; i < urutan_detail; i++) {
-                seal[i] = document.getElementById("seal_tambah[" + (i + 1) + "]").value;
-            }
-
-            var data = {
-                _token: token,
-                job_id: $("#job_id").val(),
-                size: $("#size_tambah").val(),
-                type: $("#type_tambah").val(),
-                nomor_kontainer: $("#nomor_kontainer_tambah").val(),
-                cargo: $("#cargo_tambah").val(),
-                seal: seal,
-                // biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
-            };
-
-            $.ajax({
-                url: "/tambah-kontainer-plandischarge",
-                type: "POST",
-                data: data,
-                success: function (response) {
-                    swal.fire({
-                        icon: "success",
-                        title: "Detail Kontainer Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
-                    }).then((result) => {
-                        location.reload();
-                    });
+            rules: {
+                size_tambah: {
+                    required: true,
                 },
-            });
-        },
-    });
+                seal_tambah: {
+                    required: true,
+                },
+            },
+            highlight: function highlight(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+                $(element).removeClass("is-valid");
+            },
+            unhighlight: function unhighlight(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+                $(element).addClass("is-valid");
+            },
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".validation-container").append(error);
+            },
+
+            submitHandler: function (form) {
+                // console.log(urutan_detail);
+                var token = $("#csrf").val();
+
+                var seal = [];
+
+                for (let i = 0; i < urutan_detail; i++) {
+                    seal[i] = document.getElementById(
+                        "seal_tambah[" + (i + 1) + "]"
+                    ).value;
+                }
+
+                var data = {
+                    _token: token,
+                    job_id: $("#job_id").val(),
+                    size: $("#size_tambah").val(),
+                    type: $("#type_tambah").val(),
+                    nomor_kontainer: $("#nomor_kontainer_tambah").val(),
+                    cargo: $("#cargo_tambah").val(),
+                    seal: seal,
+                    // biaya_seal: $("#biaya_seal_tambah").val().replace(/\./g, ""),
+                };
+
+                $.ajax({
+                    url: "/tambah-kontainer-plandischarge",
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            icon: "success",
+                            title: "Detail Kontainer Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    },
+                });
+            },
+        });
 }
 
 var edit_urutan_detail = 1;
@@ -491,7 +493,7 @@ function modal_edit(e) {
         processData: false,
         contentType: false,
         success: function (response) {
-            console.log(response);
+            console.log(response.seal_discharge[0].seal_kontainer);
             $("#size_edit").val(response.result.size);
             $("#type_edit").val(response.result.type);
             $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
@@ -507,148 +509,171 @@ function modal_edit(e) {
 
             var div1 = document.getElementById("edit_div_detail");
 
-            var div2 = document.createElement("div");
-            div2.setAttribute("class", "row row-cols");
-            div2.setAttribute("id", "edit_body_detail[1]");
+            for (var i = 0; i < edit_urutan_detail; i++) {
+                if(i == 0) {
+                    var div2 = document.createElement("div");
+                    div2.setAttribute("class", "row row-cols");
+                    div2.setAttribute("id", "edit_body_detail[" + (i + 1) + "]");
+        
+                    var label1 = document.createElement("label");
+                    label1.setAttribute("id", "edit_id_tombol");
+                    label1.setAttribute("name", "edit_id_tombol");
+                    label1.setAttribute("class", "col-sm-4 col-form-label");
+        
+                    var a1 = document.createElement("a");
+                    a1.setAttribute("id", "edit_tambah_seal");
+                    a1.setAttribute("name", "edit_tambah_seal");
+                    a1.setAttribute("class", "btn btn-sm btn-label-success btn-sm");
+                    a1.setAttribute("onclick", "edit_tambah_seal()");
+                    a1.innerHTML = "Seal <i class='fa fa-plus'></i>";
+        
+                    label1.append(a1);
+        
+                    var div3 = document.createElement("div");
+                    div3.setAttribute("id", "edit_div_textarea");
+                    div3.setAttribute("name", "edit_div_textarea");
+                    div3.setAttribute("class", "col-sm-6 gap-3 validation-container");
+                    div3.setAttribute("style", "margin-left: 6px");
+        
+                    var input1 = document.createElement("input");
+                    input1.setAttribute("data-bs-toggle", "tooltip");
+                    input1.setAttribute("type", "text");
+                    input1.setAttribute("class", "form-control");
+                    input1.setAttribute("id", "edit_seal_tambah[" + (i + 1) + "]");
+                    input1.setAttribute("name", "edit_seal_tambah[" + (i + 1) + "]");
+                    input1.setAttribute("placeholder", "Seal...");
+                    input1.setAttribute("required", true);
+        
+                    div3.append(input1);
+        
+                    var div4 = document.createElement("div");
+                    div4.setAttribute("id", "edit_div_button");
+                    div4.setAttribute("name", "edit_div_button");
+                    div4.setAttribute("class", "col-sm-1");
+        
+                    div2.append(label1);
+                    div2.append(div3);
+                    div2.append(div4);
+        
+                    div1.appendChild(div2);  
+                } else {
+                    var div2 = document.createElement("div");
+                    div2.setAttribute("class", "row row-cols");
+                    div2.setAttribute("id", "edit_body_detail[" + (i + 1) + "]");
+        
+                    var label1 = document.createElement("label");
+                    label1.setAttribute("id", "edit_id_tombol");
+                    label1.setAttribute("name", "edit_id_tombol");
+                    label1.setAttribute("class", "col-sm-4 col-form-label");
+        
+        
+                    var div3 = document.createElement("div");
+                    div3.setAttribute("id", "edit_div_textarea");
+                    div3.setAttribute("name", "edit_div_textarea");
+                    div3.setAttribute("class", "col-sm-6 gap-3 validation-container");
+                    div3.setAttribute("style", "margin-left: 6px");
+        
+                    var input1 = document.createElement("input");
+                    input1.setAttribute("data-bs-toggle", "tooltip");
+                    input1.setAttribute("type", "text");
+                    input1.setAttribute("class", "form-control");
+                    input1.setAttribute("id", "edit_seal_tambah[" + (i + 1) + "]");
+                    input1.setAttribute("name", "edit_seal_tambah[" + (i + 1) + "]");
+                    input1.setAttribute("placeholder", "Seal...");
+                    input1.setAttribute("required", true);
+        
+                    div3.append(input1);
+        
+                    var div4 = document.createElement("div");
+                    div4.setAttribute("id", "edit_div_button");
+                    div4.setAttribute("name", "edit_div_button");
+                    div4.setAttribute("class", "col-sm-1");
 
-            var label1 = document.createElement("label");
-            label1.setAttribute("id", "edit_id_tombol");
-            label1.setAttribute("name", "edit_id_tombol");
-            label1.setAttribute("class", "col-sm-4 col-form-label");
+                    var a2 = document.createElement("a");
+                    a2.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+                    a2.setAttribute("id", "edit_delete_seal[" + (i + 1) + "]");
+                    a2.setAttribute("name", "edit_delete_seal");
+                    a2.setAttribute("onclick", "edit_delete_seal(this)");
 
-            var a1 = document.createElement("a");
-            a1.setAttribute("id", "edit_tambah_seal");
-            a1.setAttribute("name", "edit_tambah_seal");
-            a1.setAttribute("class", "btn btn-sm btn-label-success btn-sm");
-            a1.setAttribute("onclick", "edit_tambah_seal()");
-            a1.innerHTML = "Seal <i class='fa fa-plus'></i>";
+                    var i1 = document.createElement("i");
+                    i1.setAttribute("class", "fa fa-trash");
 
-            // var i1 = document.createElement("i");
-            // i1.setAttribute("class", "fa fa-plus");
+                    a2.append(i1);
+                    div4.append(a2);
+        
+                    div2.append(label1);
+                    div2.append(div3);
+                    div2.append(div4);
+        
+                    div1.appendChild(div2);  
+                }
+            }
 
+            for(var i = 0; i < edit_urutan_detail; i++) {
+                document.getElementById("edit_seal_tambah[" + (i + 1) + "]").value = response.seal_discharge[i].seal_kontainer;
+            }
 
-            
-            // let new_id = id;
-            // var seals = [];
+        $("#valid_job_edit")
+        .submit(function (e) {
+            e.preventDefault();
+        })
+        .validate({
+            ignore: "select[type=hidden]",
+            highlight: function highlight(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+                $(element).removeClass("is-valid");
+            },
+            unhighlight: function unhighlight(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+                $(element).addClass("is-valid");
+            },
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".validation-container").append(error);
+            },
 
-            // for (let i = 0; i < response.seal_discharge.length; i++) {
-            //     seals[i] = response.seal_discharge[i].seal_kontainer;
-            // }
-            // // console.log(seals);
+            submitHandler: function (form) {
+                // console.log(urutan_detail);
+                var token = $("#csrf").val();
+                var new_id_edit = $("#new_id_edit").val();
 
-            // // $("#seal_old").val(response.result.size);
+                var seal = [];
 
-            // // if($('#modal_edit').is(':visible')) {
-            // //     console.log("terbuka");
-            // // } else {
-            // //     console.log("tertutup");
-            // // }
+                for (let i = 0; i < edit_urutan_detail; i++) {
+                    seal[i] = document.getElementById(
+                        "edit_seal_tambah[" + (i + 1) + "]"
+                    ).value;
+                }
 
+                var data = {
+                    _token: token,
+                    job_id: $("#job_id").val(),
+                    size: $("#size_edit").val(),
+                    type: $("#type_edit").val(),
+                    nomor_kontainer: $("#nomor_kontainer_edit").val(),
+                    cargo: $("#cargo_edit").val(),
+                    seal: seal,
+                };
 
-            // $("#type_edit").val(response.result.type);
-            // $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
-            // $("#no_container_edit").val(response.result.nomor_kontainer);
-            // $("#cargo_edit").val(response.result.cargo);
-            // $("#biaya_seal_edit").val(response.result.biaya_seal);
+                $.ajax({
+                    url: "/plandischarge-kontainer/"+ new_id_edit,
+                    type: "PUT",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            icon: "success",
+                            title: "Detail Kontainer Berhasil Diupdate",
+                            showConfirmButton: false,
+                            timer: 2e3,
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    },
+                });
+            },
+        });
 
-            // $("#new_id_edit").val(response.result.id);
-            // $("#valid_job_edit").validate({
-            //     ignore: "select[type=hidden]",
-
-            //     rules: {
-            //         size: {
-            //             required: true,
-            //         },
-            //     },
-            //     messages: {
-            //         size: {
-            //             required: "Silakan Pilih Size",
-            //         },
-            //     },
-            //     highlight: function highlight(element, errorClass, validClass) {
-            //         $(element).addClass("is-invalid");
-            //         $(element).removeClass("is-valid");
-            //     },
-            //     unhighlight: function unhighlight(
-            //         element,
-            //         errorClass,
-            //         validClass
-            //     ) {
-            //         $(element).removeClass("is-invalid");
-            //         $(element).addClass("is-valid");
-            //     },
-            //     errorPlacement: function errorPlacement(error, element) {
-            //         error.addClass("invalid-feedback");
-            //         element.closest(".validation-container").append(error);
-            //     },
-
-            //     // console.log();
-            //     submitHandler: function (form) {
-            //         var new_id = document.getElementById("new_id_edit").value;
-            //         // console.log(new_id);
-
-            //         $.ajax({
-            //             url: "/detail-kontainer-discharge/" + new_id + "/input",
-            //             data: {
-            //                 _token: token,
-            //             },
-            //             type: "GET",
-            //             async: false,
-            //             cache: false,
-            //             processData: false,
-            //             contentType: false,
-            //             success: function (response) {
-            //                 var seal_old = [];
-
-            //                 for (
-            //                     let i = 0;
-            //                     i < response.seal_discharge.length;
-            //                     i++
-            //                 ) {
-            //                     seal_old[i] =
-            //                         response.seal_discharge[i].seal_kontainer;
-            //                 }
-            //                 // console.log(seal_old);
-
-            //                 var token = $("#csrf").val();
-
-            //                 $.ajax({
-            //                     url: "/plandischarge-kontainer/" + new_id,
-            //                     type: "PUT",
-            //                     data: {
-            //                         _token: token,
-            //                         job_id: $("#job_id").val(),
-            //                         size: $("#size_edit").val(),
-            //                         type: $("#type_edit").val(),
-            //                         nomor_kontainer: $(
-            //                             "#nomor_kontainer_edit"
-            //                         ).val(),
-            //                         cargo: $("#cargo_edit").val(),
-            //                         seal: $("#seal_edit").val(),
-            //                         biaya_seal: $("#biaya_seal_edit")
-            //                             .val()
-            //                             .replace(/\./g, ""),
-            //                         seal_old: seal_old,
-            //                     },
-            //                     success: function (response) {
-            //                         swal.fire({
-            //                             icon: "success",
-            //                             title: "Detail Kontainer Berhasil DIUPDATE",
-            //                             showConfirmButton: false,
-            //                             timer: 2e3,
-            //                         }).then((result) => {
-            //                             location.reload();
-            //                         });
-            //                     },
-            //                 });
-            //             },
-            //         });
-            //         // console.log(seals);
-            //         // console.log(seal_old);
-
-            //         // var seal_old = document.getElementById("seal_old").value;
-            //     },
-            // });
+          
         },
     });
 }
@@ -749,7 +774,6 @@ function tambah_seal() {
     urutan_detail++;
 
     var div1 = document.getElementById("div_detail");
-    div1.setAttribute("class", "row")
     var div2 = document.createElement("div");
     div2.setAttribute("class", "row row-cols");
     div2.setAttribute("id", "body_detail[" + urutan_detail + "]");
@@ -796,12 +820,66 @@ function tambah_seal() {
     // reindex_detail();
 }
 
+function edit_tambah_seal() {
+    edit_urutan_detail++;
+
+    var div1 = document.getElementById("edit_div_detail");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("class", "row row-cols");
+    div2.setAttribute("id", "edit_body_detail[" + edit_urutan_detail + "]");
+
+    var label1 = document.createElement("label");
+    label1.setAttribute("id", "edit_id_tombol");
+    label1.setAttribute("name", "edit_id_tombol");
+    label1.setAttribute("class", "col-sm-4 col-form-label");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("id", "edit_div_textarea");
+    div3.setAttribute("name", "edit_div_textarea");
+    div3.setAttribute("class", "col-sm-6 gap-3 validation-container");
+    div3.setAttribute("style", "margin-left: 6px");
+
+    var input1 = document.createElement("input");
+    input1.setAttribute("data-bs-toggle", "tooltip");
+    input1.setAttribute("type", "text");
+    input1.setAttribute("class", "form-control");
+    input1.setAttribute("id", "edit_seal_tambah[" + edit_urutan_detail + "]");
+    input1.setAttribute("name", "edit_seal_tambah[" + edit_urutan_detail + "]");
+    input1.setAttribute("placeholder", "Seal...");
+    input1.setAttribute("required", true);
+
+    div3.append(input1);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("id", "edit_div_button");
+    div4.setAttribute("name", "edit_div_button");
+    div4.setAttribute("class", "col-sm-1");
+
+    var a2 = document.createElement("a");
+    a2.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    a2.setAttribute("id", "edit_delete_seal[" + edit_urutan_detail + "]");
+    a2.setAttribute("name", "edit_delete_seal");
+    a2.setAttribute("onclick", "edit_delete_seal(this)");
+
+    var i1 = document.createElement("i");
+    i1.setAttribute("class", "fa fa-trash");
+
+    a2.append(i1);
+    div4.append(a2);
+
+    div2.append(label1);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+}
+
 function reindex_detail() {
     const ids = document.querySelectorAll("#label_detail");
-    ids.forEach((e, i) => {
-        
-    });
+    ids.forEach((e, i) => {});
 }
+
 function delete_seal(ini) {
     var urutan_delete = ini.parentNode.parentNode;
     urutan_delete.remove();
@@ -825,9 +903,27 @@ function delete_seal(ini) {
         div2[i].id = "delete_seal[" + (i + 1) + "]";
     }
 
-    if (urutan_detail == 0) {
-        tambah_seal();
+    // reindex_detail();
+}
+
+
+function edit_delete_seal(ini) {
+    var edit_urutan_delete = ini.parentNode.parentNode;
+    edit_urutan_delete.remove();
+    edit_urutan_detail--;
+
+    var div1 = document.querySelectorAll("#edit_div_textarea input");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "edit_seal_tambah[" + (i + 1) + "]";
     }
+
+    var div2 = document.querySelectorAll("#edit_div_button button");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "edit_delete_seal[" + (i + 1) + "]";
+    }
+
 
     // reindex_detail();
 }
@@ -853,7 +949,6 @@ function detail_barang_edit(e) {
             console.log(edit_urutan_detail);
 
             var div1 = document.getElementById("edit_div_detail");
-
 
             for (var i = 0; i < edit_urutan_detail; i++) {
                 var div2 = document.createElement("div");
@@ -914,10 +1009,11 @@ function detail_barang_edit(e) {
                 reindex_edit_detail();
             }
 
-            for(var i = 0; i < edit_urutan_detail; i++) {
-                document.getElementById("edit_detail_barang[" + (i + 1) + "]").value = response.result[i].detail_barang;
+            for (var i = 0; i < edit_urutan_detail; i++) {
+                document.getElementById(
+                    "edit_detail_barang[" + (i + 1) + "]"
+                ).value = response.result[i].detail_barang;
             }
-
 
             // reindex_detail();
 

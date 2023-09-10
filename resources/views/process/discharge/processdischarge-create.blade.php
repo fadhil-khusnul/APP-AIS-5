@@ -103,8 +103,18 @@
                                     <td>:</td>
                                     <td>{{ $plandischarge->pol }}</td>
                                 </tr>
-
-
+                                <tr>
+                                    <td>POT (Port of Transit)</td>
+                                    <td>:</td>
+                                    <td>
+                                        @if ($plandischarge->pot == null)
+                                        -
+                                        @else
+                                            
+                                        {{ $plandischarge->pot }}
+                                        @endif
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>POD (Port of Discharge)</td>
                                     <td>:</td>
@@ -177,9 +187,6 @@
 
                         </div>
                         <div class="table-responsive">
-
-
-
                             <table id="table_biaya1" class="table table-bordered table-hover autosize"
                                 style="width: 100% !important">
                                 <thead id="" class="table-success">
@@ -692,7 +699,33 @@
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
 
-                        <div class="row">
+                        <table>
+                            <tr>
+                                <td width="35%">Nomor Kontainer</td>
+                                <td width="5%">:</td>
+                                <td width="60%" id="nomor_kontainer"></td>
+                            </tr>
+                            <tr>
+                                <td width="35%">Size/Type</td>
+                                <td width="5%">:</td>
+                                <td width="60%" id="size_type"></td>
+                            </tr>
+                            <tr>
+                                <td width="35%">Barang (Cargo)</td>
+                                <td width="5%">:</td>
+                                <td width="60%" id="cargo">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="35%" valign="top">Seal Kontainer</td>
+                                <td width="5%" valign="top">:</td>
+                                <td width="60%" id="seal_html">
+                                    
+                                </td>
+                            </tr>
+                        </table>
+
+                        {{-- <div class="row">
                             <label for="email" class="col-sm-4 col-form-label">Size :<span
                                     class="text-danger">*</span></label>
 
@@ -750,9 +783,9 @@
                             </div>
 
 
-                        </div>
+                        </div> --}}
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <input type="hidden" name="seal_old" id="seal_old">
                             <label for="" class="col-sm-4 col-form-label">Seal-Container :<span
                                     class="text-danger">*</span></label>
@@ -767,7 +800,7 @@
                                 </select>
 
                             </div>
-                        </div>
+                        </div> --}}
 
 
                         <div class="row ">
@@ -2079,6 +2112,8 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/discharge-process.js"></script>
+
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -2097,5 +2132,6 @@
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
     </script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/discharge-process.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/export_filter_kontainer.js"></script>
+
 @endsection

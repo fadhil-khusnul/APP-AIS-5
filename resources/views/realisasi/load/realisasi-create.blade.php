@@ -103,7 +103,7 @@
                             <div class="text-center mt-3">
                                 <a href="/processload-create/{{ $planload->slug }}"
                                     class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Back to Process
+                                    class="fa fa-arrow-left"></i> ke Process
                                 </a>
                             </div>
 

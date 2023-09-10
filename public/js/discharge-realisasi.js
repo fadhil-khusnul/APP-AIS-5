@@ -1,5 +1,113 @@
+function detail(e) {
+    let id = e.value;
+    // console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    $.ajax({
+        url: "/detail-kontainer-discharge/" + id + "/input",
+        type: "GET",
+        async: false,
+        success: function (response) {
+            let new_id = id;
+
+            var seals = [];
+
+            for (let i = 0; i < response.seal_discharge.length; i++) {
+                seals[i] = response.seal_discharge[i].seal_kontainer;
+            }
+
+            $("#modal-job").modal("show");
+            let tanggal_mty = response.result.tanggal_mty;
+            console.log(tanggal_mty);
+            if (tanggal_mty !== null) {     
+                let tanggal_mty_moment = moment(
+                    tanggal_mty,
+                    "YYYY-MM-DD"
+                ).format("dddd, DD-MMMM-YYYY");
+                $("#tanggal_mty").val(tanggal_mty_moment);
+            }
 
 
+            $("#size").val(response.result.size);
+            $("#size_type").html(response.result.size+"/"+response.result.type);
+            $("#nomor_kontainer").html(response.result.nomor_kontainer);
+            // console.log($("#nomor_kontainer").val(response.result.nomor_kontainer));
+            $("#cargo").html(response.result.cargo);
+            $("#new_id").val(response.result.id);
+
+            $("#lokasi_mty").val(response.result.lokasi_mty)
+            .select2({
+                dropdownAutoWidth: true,
+                placeholder: "Silahkan Pilih Lokasi Pickup",
+                allowClear: true,
+                dropdownParent: $("#modal-job"),
+            });
+            $("#valid_job").validate({
+                ignore: "select[type=hidden]",
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function (form) {
+                    var new_id = document.getElementById("new_id").value;
+
+                    var token = $("#csrf").val();
+
+                    let tanggal_mty =
+                        document.getElementById("tanggal_mty").value;
+                    tanggal_mty = moment(
+                        tanggal_mty,
+                        "dddd, DD-MMMM-YYYY"
+                    ).format("YYYY-MM-DD");
+                    console.log(tanggal_mty);
+
+                    $.ajax({
+                        url: "/tambah-tanggal-mty/" + new_id,
+                        type: "PUT",
+                        data: {
+                            _token: token,
+                            job_id: $("#job_id").val(),
+                            tanggal_mty: tanggal_mty,
+                            lokasi_mty: $("#lokasi_mty").val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Detail Kontainer Berhasil Diinput",
+                                showConfirmButton: false,
+                                timer: 2e3,
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+        
+                },
+            });
+        },
+    });
+}
 
 function CreateRealisasi() {
     var swal = Swal.mixin({

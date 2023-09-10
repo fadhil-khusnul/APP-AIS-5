@@ -353,8 +353,8 @@
                                 </label>
                                 <div id="div_textarea" name="div_textarea" class="col-sm-6 gap-3 validation-container"
                                     style="margin-left: 6px">
-                                    <input data-bs-toggle="tooltip" type="text" class="form-control" id="seal_tambah[1]"
-                                        name="seal_tambah[1]" placeholder="Seal..." required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control"
+                                        id="seal_tambah[1]" name="seal_tambah[1]" placeholder="Seal..." required>
                                 </div>
                                 <div id="div_button" name="div_button" class="col-sm-1">
                                     {{-- <a id="delete_seal[1]" name="delete_seal"
@@ -478,54 +478,9 @@
 
                         </div>
                         <div id="edit_div_detail" class="row">
-                            {{-- <div id="edit_body_detail[1]" class="row row-cols">
-                                <label id="edit_id_tombol" name="edit_id_tombol" class="col-sm-4 col-form-label">
-                                    <a id="edit_tambah_seal" name="edit_tambah_seal" class="btn btn-sm btn-label-success btn-sm"
-                                        onclick="edit_tambah_seal()">Seal <i class="fa fa-plus"></i>
-                                    </a>
-                                </label>
-                                <div id="edit_div_textarea" name="edit_div_textarea" class="col-sm-6 gap-3 validation-container"
-                                    style="margin-left: 6px">
-                                    <input data-bs-toggle="tooltip" type="text" class="form-control" id="edit_seal_tambah[1]"
-                                        name="edit_seal_tambah[1]" placeholder="Seal..." required>
-                                </div>
-                                <div id="edit_div_button" name="edit_div_button" class="col-sm-1">
-                                   
-                                </div>
-                            </div> --}}
+                            
                         </div>
-                        {{-- <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <select data-bs-toggle="tooltip" id="seal_edit" multiple="multiple" name="seal_edit"
-                                    class="form-select seals" placeholde="Silahkan Pilih Seal" required>
-                                    @foreach ($seals_edit as $seal)
-                                        <option value="{{ $seal->kode_seal }}">
-                                            {{ $seal->kode_seal }}</option>
-                                    @endforeach
-                                </select>
-
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Biaya Seal :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text" for="">Rp.</span>
-
-                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="biaya_seal_edit" name="biaya_seal_edit" placeholder="Biaya Seal..." required>
-
-                                </div>
-                            </div>
-                        </div> --}}
-
-
+                       
 
                     </div>
                     <div class="modal-footer">

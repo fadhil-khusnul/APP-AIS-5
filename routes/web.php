@@ -201,6 +201,7 @@ Route::put('/plandischarge-kontainer/{id}', [PlanDischargeController::class, 'in
 Route::get('/processdischarge', [PlanDischargeController::class, 'process']);
 Route::get('/processdischarge-create/{slug}', [PlanDischargeController::class, 'create_process']);
 Route::put('/detaildischarge-kontainer-update/{id}', [PlanDischargeController::class, 'detail']);
+Route::put('/tambah-tanggal-mty/{id}', [PlanDischargeController::class, 'tambah_mty']);
 Route::put('/detaildischarge-kontainer-edit/{id}', [PlanDischargeController::class, 'detail_edit']);
 Route::put('/detailbarang-update-discharge/{id}', [PlanDischargeController::class, 'detailbarang_update']);
 Route::delete('/detailbarang-delete-discharge/{id}', [ProcessLoadController::class, 'destroy_detailbarang_discharge']);

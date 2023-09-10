@@ -469,6 +469,8 @@ function pdf_invoice() {
                                             .append(error);
                                     },
                                     submitHandler: function (form) {
+                                        document.getElementById("loading-wrapper").style.cursor ="wait";
+                                        document.getElementById("btnFinish3").setAttribute("disabled", true);
                                         $.ajax({
                                             url: "/getInvoice",
                                             type: "post",
@@ -557,7 +559,7 @@ function pdf_invoice() {
                                                             );
                                                         link.download =
                                                             "" +
-                                                            old_slugl +
+                                                            old_slug +
                                                             dformat +
                                                             ".pdf";
                                                         link.click();
