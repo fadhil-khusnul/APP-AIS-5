@@ -581,10 +581,10 @@
                         </div>
 
                         <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
-                            <thead id="thead_alih" class="table-danger">
+                            <thead id="thead_alih" class="table-danger text-center">
                                 <tr>
                                     <th class="">No</th>
-                                    <th class="">Preview</th>
+                                    <th class=""></th>
                                     <th class="">Input</th>
                                     <th class="">Status Approve</th>
                                     <th class="">Status BL</th>
@@ -597,7 +597,6 @@
 
 
 
-                                    <th class="text-end"></th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_alih" class="">
@@ -614,6 +613,10 @@
                                             <a type="button" href="/preview-si/{{ $pdf->path }}"
                                                 class="btn btn-primary btn-sm ">Preview SI <i
                                                     class="fa fa-eye"></i></a>
+                                            
+                                            <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
+                                                class="btn btn-danger btn-sm "><i
+                                                    class="fa fa-trash"></i></button>
 
 
 
@@ -711,11 +714,7 @@
 
 
 
-                                        <td>
-                                            <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                class="btn btn-danger btn-sm "><i
-                                                    class="fa fa-trash"></i></button>
-                                        </td>
+                                       
                                     </tr>
                                 @endforeach
 

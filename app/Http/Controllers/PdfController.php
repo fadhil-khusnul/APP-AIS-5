@@ -235,6 +235,7 @@ class PdfController extends Controller
     public function create_si_alih(Request $request)
     {
         $random = Str::random(15);
+        $random_time = $random.time();
 
         $id_alih = $request->chek_container;
 

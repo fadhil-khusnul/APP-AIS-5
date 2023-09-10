@@ -323,7 +323,7 @@
                             </div>
                             <div class="table-responsive">
 
-                            <table id="table_alih_kapal_realisasi" class="table mb-0">
+                            <table id="table_alih_kapal_realisasi" class="table table-bordered table-hover mb-0 seratus">
                                 <thead id="thead_alih" class="table-danger tex-nowrao">
                                     <tr>
                                         <th class="text-center">No</th>
@@ -454,7 +454,7 @@
                                 <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
                             </div>
 
-                            <table id="tabel_si" class="table mb-0">
+                            <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th class="">No</th>

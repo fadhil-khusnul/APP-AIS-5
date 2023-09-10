@@ -132,7 +132,7 @@
                         </div>
                         <div class="table-responsive">
 
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered mb-0">
+                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
@@ -286,7 +286,7 @@
                             <div class="table-responsive">
 
 
-                                <table id="table_alih_kapal_realisasi" class="table mb-0">
+                                <table id="table_alih_kapal_realisasi" class="table table-bordered table-hover mb-0 seratus">
                                     <thead id="thead_alih" class="table-danger">
                                         <tr>
                                             <th class="text-center">No</th>
@@ -476,7 +476,7 @@
                             <div class="table-responsive">
 
 
-                            <table id="tabel_si" class="table mb-0">
+                            <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th>No</th>

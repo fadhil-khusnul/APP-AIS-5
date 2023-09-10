@@ -7,6 +7,22 @@ var realisasiload_create = $("#realisasiload_create").DataTable({
     },
     // scroller: true,
 
+
+});
+
+var tabel_si = $("#tabel_si").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
 });
 function biaya_do(e) {
     var id = e.value;
