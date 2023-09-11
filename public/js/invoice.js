@@ -412,10 +412,12 @@ function pdf_invoice() {
                     pod: check_container,
                 },
                 success: function (response) {
+                    console.log(response.pod);
                     var pod_1 = [...new Set(response.pod)];
                     var nomor_invoice = [...new Set(response.nomor_invoice)];
                     if (pod_1.length == 1 && nomor_invoice.length == 1) {
-                        var pod = response[0];
+                        var pod = response.pod;
+                        console.log(pod);
                         swal.fire({
                             title: " Buat Invoice Untuk Container ini?",
                             text: "Silahkan Periksa Semua Data yang ada Sebelum invoice.",
@@ -471,6 +473,7 @@ function pdf_invoice() {
                                     submitHandler: function (form) {
                                         document.getElementById("loading-wrapper").style.cursor ="wait";
                                         document.getElementById("btnFinish3").setAttribute("disabled", true);
+                                        console.log(pod);
                                         $.ajax({
                                             url: "/getInvoice",
                                             type: "post",
@@ -481,7 +484,7 @@ function pdf_invoice() {
                                                 tahun: d.getFullYear(),
                                             },
                                             success: function (response) {
-                                                // console.log(response);
+                                                console.log(response);
 
                                                 var yth = $("#yth").val();
                                                 var km = $("#km").val();

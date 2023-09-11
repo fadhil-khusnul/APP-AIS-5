@@ -67,9 +67,12 @@
 
 
                         <div class="col-md-12 text-center mb-3">
+                            <h1 style="margin-left: auto !important; margin-right:auto !important"
+                            class="portlet-title text-center">KAPAL :
+                            </h1>
                             <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"> {{ $planload->vessel }} ( {{ $planload->select_company }}
-                                )</h3>
+                                class="portlet-title text-center"><u> {{ $planload->vessel }} ( {{ $planload->select_company }}
+                                )</u></h3>
                         </div>
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto">
@@ -139,7 +142,7 @@
 
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>KONTAINER <b class="text-success">NON</b> ALIH-KAPAL:</b></label>
+                            <label for="inputState" class="form-label"><u><b>DETAIL KONTAINER :</b></u></label>
                         </div>
 
                         <div class="row row-cols-lg-auto py-5 g-3">
@@ -319,7 +322,7 @@
                         <div class="portlet-body">
                             <!-- BEGIN Form -->
                             <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>KONTAINER ALIH KAPAL</b></label>
+                                <label for="inputState" class="form-label"><u><b>KONTAINER ALIH KAPAL</b></u></label>
                             </div>
                             <div class="table-responsive">
 
@@ -451,7 +454,7 @@
                             <!-- BEGIN Form -->
 
                             <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>SI/BL/DO</b></label>
+                                <label for="inputState" class="form-label"><u><b>SI/BL/DO</b></u></label>
                             </div>
 
                             <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">

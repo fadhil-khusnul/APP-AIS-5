@@ -60,9 +60,12 @@
 
 
                         <div class="col-md-12 text-center mb-3">
+                            <h1 style="margin-left: auto !important; margin-right:auto !important"
+                            class="portlet-title text-center">KAPAL :
+                            </h1>
                             <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"> {{ $planload->vessel }} ( {{ $planload->select_company }}
-                                )</h3>
+                                class="portlet-title text-center"><u> {{ $planload->vessel }} ( {{ $planload->select_company }}
+                                )</u></h3>
                         </div>
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto">
@@ -92,11 +95,7 @@
                                     <td>:</td>
                                     <td>{{ $planload->pol }}</td>
                                 </tr>
-                                <tr>
-                                    <td>POT (Port of Transit)</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->pot }}</td>
-                                </tr>
+                                
 
 
                             </table>
@@ -128,7 +127,7 @@
 
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>DETAIL KONTAINER :</b></label>
+                            <label for="inputState" class="form-label"><u><b>DETAIL KONTAINER :</b></u></label>
                         </div>
                         <div class="table-responsive">
 
@@ -136,8 +135,8 @@
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Input</th>
                                         <th class="text-center"> </th>
+                                        <th class="text-center">Input</th>
                                         <th class="text-center">NOMOR INVOICE</th>
                                         <th class="text-center">UNIT PRICE</th>
                                         <th class="text-center">KONDISI</th>
@@ -157,19 +156,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
 
-                                            <td>
-                                                @if ($container->price_invoice != null )
-                                                    <button type="button" value="{{ $container->id }}" type="button"
-                                                        onclick="update_invoice(this)"
-                                                        class="btn btn-primary btn-sm "><i
-                                                            class="fa fa-pencil"></i></button>
-                                                @else
-                                                    <button type="button" value="{{ $container->id }}" type="button"
-                                                        onclick="input_invoice(this)"
-                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
-                                                            class="fa fa-pencil"></i></button>
-                                                @endif
-                                            </td>
+                                           
                                             <td>
                                                 @if ($container->price_invoice != null && $container->status_invoice == null || $container->invoices->tanggal_invoice == null)
                                                     <div class="validation-container">
@@ -185,6 +172,19 @@
                                                         id="kontainer_check[{{ $loop->iteration }}]">
                                                 @elseif ($container->price_invoice == null)
                                                     -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($container->price_invoice != null )
+                                                    <button type="button" value="{{ $container->id }}" type="button"
+                                                        onclick="update_invoice(this)"
+                                                        class="btn btn-primary btn-sm "><i
+                                                            class="fa fa-pencil"></i></button>
+                                                @else
+                                                    <button type="button" value="{{ $container->id }}" type="button"
+                                                        onclick="input_invoice(this)"
+                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
+                                                            class="fa fa-pencil"></i></button>
                                                 @endif
                                             </td>
                                             <td>{{$container->status_invoice}}</td>
@@ -281,7 +281,7 @@
                             <!-- BEGIN Form -->
 
                             <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>ALIH KAPAL</b></label>
+                                <label for="inputState" class="form-label"><u><b>ALIH KAPAL</b></u></label>
                             </div>
                             <div class="table-responsive">
 
@@ -290,8 +290,8 @@
                                     <thead id="thead_alih" class="table-danger">
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th class="text-center">Input</th>
                                             <th class="text-center"></th>
+                                            <th class="text-center">Input</th>
                                             <th class="text-center">Nomor Kontainer</th>
                                             <th class="text-center">Pelayaran (Shipping Company)</th>
                                             <th class="text-center">POT</th>
@@ -300,7 +300,6 @@
                                             <th class="text-center">Code Vessel/Voyage</th>
                                             <th class="text-center">Biaya Alih Kapal</th>
                                             <th class="text-center">Keterangan</th>
-                                            <th class="text-center"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody_alih" class="text-center">
@@ -308,21 +307,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
 
-                                                <td>
-                                                    @if ($alih->container_planloads->price_invoice != null)
-                                                        <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
-                                                            onclick="update_invoice(this)"
-                                                            class="btn btn-primary btn-sm "><i
-                                                                class="fa fa-pencil"></i></button>
-                                                    @else
-                                                        <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
-                                                            onclick="input_invoice(this)"
-                                                            class="btn btn-success btn-sm text-nowrap ">Input <i
-                                                                class="fa fa-pencil"></i></button>
-                                                    @endif
-
-
-                                                </td>
+                          
 
                                                 <td>
                                                     @if ($alih->container_planloads->status_invoice == 'ready')
@@ -340,6 +325,21 @@
                                                     @elseif ($alih->container_planloads->status_invoice == null)
                                                         -
                                                     @endif
+                                                </td>
+                                                <td>
+                                                    @if ($alih->container_planloads->price_invoice != null)
+                                                        <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
+                                                            onclick="update_invoice(this)"
+                                                            class="btn btn-primary btn-sm "><i
+                                                                class="fa fa-pencil"></i></button>
+                                                    @else
+                                                        <button type="button" value="{{ $alih->container_planloads->id }}" type="button"
+                                                            onclick="input_invoice(this)"
+                                                            class="btn btn-success btn-sm text-nowrap ">Input <i
+                                                                class="fa fa-pencil"></i></button>
+                                                    @endif
+
+
                                                 </td>
 
                                                 <td>
@@ -376,14 +376,7 @@
                                                         {{ $alih->keterangan_alih_kapal }}</label>
 
                                                 </td>
-                                                <td>
-                                                    <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-info btn-sm text-nowrap"
-                                                        value="{{ $alih->kontainer_alih }}"
-                                                        onclick="detail_update(this)">Detail Kontainer <i
-                                                            class="fa fa-eye"></i></button>
-
-                                                </td>
+                                                
 
                                             </tr>
                                         @endforeach
@@ -470,7 +463,7 @@
                             </div>
 
                             <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><b>INVOICE</b></label>
+                                <label for="inputState" class="form-label"><u><b>INVOICE</b></u></label>
                             </div>
 
                             <div class="table-responsive">
@@ -480,7 +473,7 @@
                                 <thead id="thead_alih" class="table-danger">
                                     <tr>
                                         <th>No</th>
-                                        <th>Preview</th>
+                                        <th></th>
                                         <th></th>
                                         <th>Jenis Invoice</th>
                                         <th>Tanggal Invoice</th>
@@ -490,7 +483,6 @@
                                         <th>TOTAL</th>
                                         <th>TERBAYAR</th>
                                         <th>SELISIH</th>
-                                        <th class="text-end"></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_alih" class="">
@@ -501,15 +493,6 @@
 
                                             <td>
                                                 {{ $loop->iteration }}
-                                            </td>
-
-                                            <td class="text-nowrap">
-
-
-                                                <a type="button" href="/preview-invoice/{{ $pdf->path }}"
-                                                    class="btn btn-primary btn-sm ">Preview Invoice <i
-                                                        class="fa fa-eye"></i></a>
-
                                             </td>
                                             <td class="text-nowrap">
 
@@ -530,14 +513,30 @@
 
                                             </td>
 
+                                            <td class="text-nowrap">
 
-                                            <td>
 
-                                                @if ($pdf->status == 'Default')
-                                                    <span class="badge badge-label-success">NORMAL</span>
+                                                <a type="button" href="/preview-invoice/{{ $pdf->path }}"
+                                                    class="btn btn-primary btn-sm ">Preview Invoice <i
+                                                        class="fa fa-eye"></i></a>
+                                                <button type="button" value="{{ $pdf->id }}"
+                                                    onclick="delete_invoice(this)" class="btn btn-danger btn-sm "><i
+                                                        class="fa fa-trash"></i></button>
+
+                                            </td>
+                                           
+
+
+                                            <td class="align-middle text-nowrap">
+                                                @if ($pdf->status == "Alih-Kapal" || $pdf->status == "Realisasi-Alih" )
+                                                <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
+                                                @elseif ($pdf->status == "Batal-Muat")
+                                                <i class="marker marker-dot text-danger"></i>BATAL-MUAT
                                                 @else
-                                                    <span class="badge badge-label-primary">ALIH-KAPAL</span>
+                                                <i class="marker marker-dot text-success"></i> BIASA
                                                 @endif
+    
+    
                                             </td>
                                             <td>
                                                 @if ($pdf->tanggal_invoice != null)
@@ -573,11 +572,7 @@
 
                                             </td>
 
-                                            <td>
-                                                <button type="button" value="{{ $pdf->id }}"
-                                                    onclick="delete_invoice(this)" class="btn btn-danger btn-sm "><i
-                                                        class="fa fa-trash"></i></button>
-                                            </td>
+                                        
                                         </tr>
                                         @endif
 

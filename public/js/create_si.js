@@ -37,6 +37,14 @@ tabel_container.$(".check-container",{ page: "all"},).click(function() {
         $("#submit-id").attr("disabled", "disabled");
     }
 });
+$("#submit_ok").attr("disabled", "disabled");
+tabel_container.$(".check_job",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit_ok").removeAttr("disabled");
+    } else {
+        $("#submit_ok").attr("disabled", "disabled");
+    }
+});
 
 
 
@@ -362,17 +370,6 @@ function pdf_si_alih() {
 
     $("#valid_realisasi").validate({
         ignore: "select[type=hidden]",
-        rules: {
-            letter: {
-                required: true,
-            },
-        },
-        messages: {
-            letter: {
-                required: "Silakan Pilih Minimal 1 Container",
-            },
-        },
-
         highlight: function highlight(element, errorClass, validClass) {
             $(element).addClass("is-invalid");
             $(element).removeClass("is-valid");
@@ -383,7 +380,7 @@ function pdf_si_alih() {
         errorPlacement: function errorPlacement(error, element) {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
-            if (element.attr("name") == "letter") {
+            if (element.attr("name") == "letter1") {
                 error.appendTo("#checkboxerror");
             } else {
                 error.insertAfter(element);
@@ -599,21 +596,19 @@ function input_bl(e) {
                     var csrf = $("#csrf").val();
                     var nomor_bl = $("#nomor_bl").val();
                     var tanggal_bl = $("#tanggal_bl").val();
+                    tanggal_bl = moment(tanggal_bl, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    
+                    var tanggal_do_pol = $("#tanggal_do_pol").val();
+                    tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
                     var biaya_do_pol = $("#biaya_do_pol").val().replace(/\./g, "");
 
-
-                    tempDate = new Date(tanggal_bl);
-                    formattedDate = [
-                        tempDate.getFullYear(),
-                        tempDate.getMonth() + 1,
-                        tempDate.getDate(),
-                    ].join("-");
 
                     var data = {
                         _token: csrf,
                         id: id,
                         nomor_bl: nomor_bl,
-                        tanggal_bl: formattedDate,
+                        tanggal_bl: tanggal_bl,
+                        tanggal_do_pol: tanggal_do_pol,
                         biaya_do_pol: biaya_do_pol,
                     };
 
@@ -686,8 +681,14 @@ function update_bl(e) {
             var old_tanggal_result = moment(
                 response.result.tanggal_bl,
                 "YYYY-MM-DD"
-            ).format("dddd, DD MM YYYY");
+            ).format("dddd, DD-MM-YYYY");
             $("#tanggal_bl_edit").val(old_tanggal_result);
+
+            var old_tanggal_do_pol = moment(
+                response.result.tanggal_do_pol,
+                "YYYY-MM-DD"
+            ).format("dddd, DD-MM-YYYY");
+            $("#tanggal_do_pol_edit").val(old_tanggal_do_pol);
 
             $("#biaya_do_pol_edit").val(response.result.biaya_do_pol);
 
@@ -719,21 +720,23 @@ function update_bl(e) {
                     var nomor_bl = $("#nomor_bl_edit").val();
                     var id_container = $("#id_container").val();
                     var tanggal_bl = $("#tanggal_bl_edit").val();
+                    tanggal_bl = moment(tanggal_bl, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+
+                    var tanggal_do_pol = $("#tanggal_do_pol_edit").val();
+                    tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    console.log(tanggal_do_pol);
+
                     var biaya_do_pol = $("#biaya_do_pol_edit").val().replace(/\./g, "");
 
-                    tempDate = new Date(tanggal_bl);
-                    formattedDate = [
-                        tempDate.getFullYear(),
-                        tempDate.getMonth() + 1,
-                        tempDate.getDate(),
-                    ].join("-");
+                   
 
                     var data = {
                         _token: csrf,
                         id: id_container,
                         nomor_bl: nomor_bl,
                         biaya_do_pol: biaya_do_pol,
-                        tanggal_bl: formattedDate,
+                        tanggal_bl: tanggal_bl,
+                        tanggal_do_pol: tanggal_do_pol,
                     };
 
                     $.ajax({
@@ -1322,6 +1325,34 @@ function countCheck() {
     });
     document.getElementById("nomor").innerHTML = ids.length;
 }
+function countCheck1() {
+    // var search = "";
+
+    // tabel_container.search(search).draw();
+    // var count = $('input[name="letter"]:checked').length;
+
+    var ids = []
+
+    var rowcollection =  tabel_container.$('input[name="letter1"]:checked', {"page": "all"});
+    rowcollection.each(function (index, elem) {
+        ids.push($(elem).val());
+    });
+    document.getElementById("nomor1").innerHTML = ids.length;
+}
+function countCheck_delivery() {
+    // var search = "";
+
+    // tabel_container.search(search).draw();
+    // var count = $('input[name="letter"]:checked').length;
+
+    var ids = []
+
+    var rowcollection =  tabel_container.$('input[name="delivery"]:checked', {"page": "all"});
+    rowcollection.each(function (index, elem) {
+        ids.push($(elem).val());
+    });
+    document.getElementById("nomor_delivery").innerHTML = ids.length;
+}
 
 function ok_load(ini) {
     var swal = Swal.mixin({
@@ -1335,10 +1366,16 @@ function ok_load(ini) {
 
     let token = $("#csrf").val();
 
-    var container_id = ini.value;
+    var check_job = []
+
+    var rowcollection =  tabel_container.$(".check_job:checked", {"page": "all"});
+    rowcollection.each(function (index, elem) {
+        check_job.push($(elem).val());
+    });
+
     var data = {
         _token: token,
-        container_id: container_id,
+        check_job: check_job,
     };
 
         swal.fire({

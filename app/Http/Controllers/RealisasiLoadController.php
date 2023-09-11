@@ -239,7 +239,9 @@ class RealisasiLoadController extends Controller
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
-            'alihs' => AlihKapal::where('job_id', $id)->get(),
+            'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
+                $q->whereNotNull('slug');
+            })->get(),
             'pdfs' => $pdfs,
             'batals' => BatalMuat::where('job_id', $id)->get(),
             'details' => DetailBarangLoad::where('job_id', $id)->get(),
@@ -308,13 +310,18 @@ class RealisasiLoadController extends Controller
     {
         # code...
 
-        $container =ContainerPlanload::findOrFail($request->container_id);
-        $data = [
+        // dd($request);
 
-            "ok" => 1,
-        ];
+        for ($i=0; $i <count($request->check_job) ; $i++) { 
+            
+            $data = [
+    
+                "ok" => 1,
+            ];
+            ContainerPlanload::where("id", $request->check_job[$i])->update($data);
+        }
 
-        $container->update($data);
+
 
         return response()->json(['success' => true]);
 

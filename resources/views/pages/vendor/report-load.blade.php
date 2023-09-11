@@ -125,8 +125,8 @@
                 </div>
                 <div class="portlet-body">
                     <hr>
-                    <div class="row row-cols-lg-auto py-5 g-3">
-                        <label for="" class="col-form-label">Filter Tabel :</label>
+                    <label for="" class="col-form-label">Filter Tabel :</label>
+                    <div class="row row-cols-lg-auto py-3 px-4">
                         {{-- <div class="col-sm-5 col-lg-4">
                             <input class="form-control" type="text" id="daterangepicker_vendor">
                         </div> --}}
@@ -145,6 +145,14 @@
                             </div>
                         </div>
                         <div class="col-6">
+                            <select multiple id="pilih_vessel" name="pilih_vessel" class="form-select" onchange="filter_vessel(this)">
+                                @foreach ($vessels as $vessel)
+                                    <option value="{{ $vessel->vessel }}">{{ $vessel->vessel }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+                        <div class="col-4">
                             <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
                                 @foreach ($vendors as $vendor)
                                     <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
@@ -152,9 +160,9 @@
                             </select>
 
                         </div>
+                        
                         <div class="col-6">
                             <select id="pilih_status" name="pilih_status" class="form-select" onchange="filter_status(this)">
-                                <option selected disabled>Pilih Status Bayar</option>
                                 <option value="Belum Lunas">Belum Lunas</option>
                                 <option value="Sudah Lunas">Sudah Lunas</option>
 
@@ -163,12 +171,14 @@
                         </div>
 
 
-                        <div style="" class="">
-                            <button id="add_biaya" type="button" onclick="bayar()"
-                            class="btn btn-success">Bayar <i class="fa fa-arrow-right"></i></button>
-                        </div>
+                       
 
 
+                    </div>
+
+                    <div style="" class="text-center">
+                        <button id="add_biaya" type="button" onclick="bayar()"
+                        class="btn btn-success">Bayar <i class="fa fa-arrow-right"></i></button>
                     </div>
 
                     <!-- BEGIN Datatable -->
@@ -319,6 +329,48 @@
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3">
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Tanggal Bayar :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input data-bs-toggle="tooltip" type="text" class="form-control"
+                                    id="tanggal_bayar" name="tanggal_bayar"
+                                    placeholder="Tanggal Bayar..." required>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Dibayarkan ke :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <textarea data-bs-toggle="tooltip" class="form-control" id="dibayarkan_ke" name="dibayarkan_ke"
+                                required></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <label for="" class="col-sm-4 col-form-label">Pilih Cara Bayar :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <select data-bs-toggle="tooltip" id="cara_bayar" name="cara_bayar"
+                                    class="form-select" required>
+                                    <option disabled selected>Pilih Cara Bayar</option>
+                                    <option value="Tunai">Tunai</option>
+                                    <option value="Transfer Bank">Transfer Bank</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Masukkan Keterangan (Jika Memilih Transfer)</label>
+                            <div class="col-sm-8 validation-container">
+
+                                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_transfer" name="keterangan_transfer" placeholder="(ex. Tranfer Bank ke Bank BNI a.n. Pemilik Rekening)"></textarea>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Nominal :<span
                                     class="text-danger">*</span></label>

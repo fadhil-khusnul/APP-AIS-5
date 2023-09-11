@@ -49,11 +49,11 @@
 
                         <div class="col-md-12 text-center mb-3">
                             <h1 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"> DETAIL KAPAL :
+                                class="portlet-title text-center">KAPAL :
                             </h1>
                             <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center">
-                                {{ $planload->vessel }} ( {{ $planload->select_company }})</h3>
+                                class="portlet-title text-center"><u>
+                                {{ $planload->vessel }} ( {{ $planload->select_company }})</u></h3>
                         </div>
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto;">
@@ -116,7 +116,7 @@
 
                             <div class="col-12 text-center mt-3">
                                 <button value="{{ $planload->id }}" type="button" onclick="edit_planloaad_job(this)"
-                                    class="btn btn-label-primary">Detail Kapal <i
+                                    class="btn btn-primary">Detail Kapal <i
                                         class="fa fa-pencil"></i></button>
                             </div>
 
@@ -148,7 +148,7 @@
                         <!-- BEGIN Form -->
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>INPUT KONTAINER :</b></label>
+                            <label for="inputState" class="form-label"><b><u>INPUT KONTAINER :</u></b></label>
                         </div>
 
                         <div class="row row-cols-lg-auto py-3 g-3">
@@ -185,8 +185,8 @@
                             <table id="table_biaya1" class="table table-bordered table-hover autosize" style="width: 100% !important">
                                 <thead id="" class="table-success">
                                     <tr>
-                                        <th class="text-center"></th>
                                         <th class="text-center">No</th>
+                                        <th class="text-center"></th>
                                         <th class="text-center">Size Kontainer</th>
                                         <th class="text-center">Type Kontainer</th>
                                         <th class="text-center">Nomor Kontainer</th>
@@ -198,29 +198,30 @@
                                     @foreach ($containers as $container)
                                         <tr>
                                             <td>
+
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td>
                                                 <button id="button_kontainer[{{ $loop->iteration }}]"
                                                     name="button_kontainer[{{ $loop->iteration }}]"
-                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
+                                                    class="btn btn-danger btn-icon btn-sm" type="button"
                                                     value="{{ $container->id }}" onclick="delete_kontainerDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
                                            
                                                 @if ($container->nomor_kontainer != null)
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-primary btn-sm text-nowrap"
+                                                        class="btn btn-primary btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail_update(this)">Edit <i class="fa fa-eye"></i></button>
                                                 @else
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-success btn-sm text-nowrap"
+                                                        class="btn btn-success btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail(this)">Input
                                                         <i class="fa fa-pencil"></i></button>
                                                 @endif
 
 
                                             </td>
-                                            <td>
-
-                                                {{ $loop->iteration }}
-                                            </td>
+                                            
                                             <td>
                                                 {{ $container->size }}
                                             </td>
@@ -258,11 +259,11 @@
                         </div>
 
 
-                        <div class="mb-5 mt-5 text-center">
+                        <div class="mb-5 mt-5">
                             <button id="detail_kontainer" type="button" onclick="detail_tambah()"
-                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                                class="btn btn-success btn-icon"><i class="fa fa-plus"></i></button>
                                 @if ($planload->status == 'Process-Load' || $planload->status == 'Realisasi')
-                                <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
+                                <button style="float: right" value="{{ $planload->slug }}" type="button" onclick="realisasi_page(this)"
                                 class="btn btn-success">Realisasi POL <i class="fa fa-arrow-right"></i></button>
                                 @endif
                         </div>
@@ -277,12 +278,354 @@
                 <!-- END Portlet -->
             </div>
 
+           
+
+
+            <div class="col-md-6">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>DETAIL BARANG/KONTAINER</b></u></label>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="table_biaya2" class="table mb-0" style="width: 100% !important">
+                                <thead id="" class="table-success">
+                                    <tr>
+                                        <th>No</th>
+                                        <th></th>
+                                        <th>Pengirim</th>
+                                        <th>Size/Type</th>
+                                        <th>Nomor Kontainer</th>
+                                        <th>POD</th>
+                                        <th>Deskripsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody  class="">
+                                    @foreach ($containers_barang as $container)
+                                        <tr>
+                                            <td align="center">{{$loop->iteration}}.</td>
+
+                                            <td class="text-center">
+                                                <button id="delete_detail" name="delete_detail"
+                                                    class="btn btn-danger btn-icon btn-sm" type="button"
+                                                    value="{{ $container['id'] }}" onclick="delete_detailbarangDB(this)"
+                                                    @readonly(true)><i class="fa fa-trash"></i></button>
+                                                <button id="edit_detail" name="edit_detail"
+                                                    class="btn btn-primary btn-icon btn-sm" type="button"
+                                                    value="{{ $container['id'] }}" onclick="detail_barang_edit(this)"
+                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
+                                            </td>
+                                            <td>{{$container['pengirim']}}</td>
+                                            <td>{{$container['size']}}/{{$container['type']}}</td>
+                                            <td>{{$container['nomor_kontainer']}}</td>
+                                            <td>{{$container['pod_container']}}</td>
+                                            <td class="text-nowrap">
+                                                <ol type="1.">
+                                                @foreach ($details as $detail)
+                                                    @if ($detail->kontainer_id == $container['id'])
+                                                    <li>
+                                                        {{ $detail->detail_barang }}
+                                                    </li>
+                                                    @endif
+                                                @endforeach
+                                                </ol>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mb-5 mt-5">
+                            <button id="add_biaya" type="button" onclick="detail_barang()"
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
+                            <button style="float: right" id="add_biaya" type="button" onclick="cetak_packing()"
+                                    class="btn btn-primary">Cetak List <i class="fa fa-print"></i></button>
+                        </div>
+
+                        <!-- END Form -->
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+            <div class="col-md-6">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>BIAYA LAIN KONTAINER (JIKA ADA)</b></u></label>
+                        </div>
+
+                        <div class="table-responsive">
+
+
+                        <table id="table_biaya3" class="table mb-0" style="width: 100% !important">
+                            <thead id="" class="table-success">
+                                <tr>
+                                    <th>No</th>
+                                    <th></th>
+                                    <th>Pengirim</th>
+                                    <th>Size/Type</th>
+                                    <th>Nomor Kontainer</th>
+                                    <th>POD</th>
+                                    <th>Total Biaya Lainnya</th>
+                                    <th>Keterangan Biaya</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_biaya" class="">
+                                @foreach ($new_container_biaya as $biaya)
+                                    <tr>
+                                        <td align="center">
+
+                                            {{ $loop->iteration }}
+                                        </td>
+
+                                        <td class="text-center">
+                                            <button id="delete_biaya" name="delete_biaya"
+                                                class="btn btn-danger btn-icon btn-sm" type="button"
+                                                value="{{ $biaya['id'] }}" onclick="delete_laiannyaDB(this)"
+                                                @readonly(true)><i class="fa fa-trash"></i></button>
+                                            <button id="edit_biaya" name="edit_biaya"
+                                                class="btn btn-primary btn-icon btn-sm" type="button"
+                                                value="{{ $biaya['id'] }}" onclick="detail_biaya_lain_edit(this)"
+                                                @readonly(true)><i class="fa fa-pencil"></i></button>
+                                        </td>
+                                       
+                                        <td>
+                                            {{ $biaya['pengirim'] }}
+                                        </td>
+                                        <td>{{$biaya['size']}}/{{$biaya['type']}}</td>
+                                        <td>{{$biaya['nomor_kontainer']}}</td>
+                                        <td>{{$biaya['pod_container']}}</td>
+
+                                        <td>
+                                            @rupiah($biaya['total_biaya_lain'])
+                                        </td>
+                                        <td class="text-nowrap">
+                                            <ol type="1.">
+                                            @foreach ($biayas as $b)
+                                                @if ($b->kontainer_id == $biaya['id'])
+                                                <li>
+                                                    {{ $b->keterangan }}
+                                                </li>
+                                                @endif
+                                            @endforeach
+                                            </ol>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                        </div>
+
+                        <div class="mb-5 mt-5">
+                            <button id="add_biaya" type="button" onclick="detail_biaya_lain()"
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
+                        </div>
+
+                        <!-- END Form -->
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+            <div class="col-md-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>CONTAINER BATAL MUAT (JIKA ADA)</b></u></label>
+                        </div>
+
+                        <div class="table-responsive">
+
+
+                            <table id="table_batal_muat" class="table mb-0" style="width: 100% !important">
+                                <thead id="thead_batal_muat" class="table-success">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Pilih Nomor Container</th>
+                                        <th class="text-center">Biaya Batal Muat</th>
+                                        <th class="text-center">Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_batal_muat" class="text-center">
+                                    @foreach ($container_batal as $container)
+                                        <tr>
+                                            <td align="center">
+
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td class="text-center">
+                                                <button id="delete_batal" name="delete_batal"
+                                                    class="btn btn-info btn-icon btn-sm" type="button"
+                                                    value="{{ $container->id }}" onclick="delete_batalDB(this)"
+                                                    @readonly(true)><i class="fa fa-refresh"></i></button>
+                                                <button id="edit_batal" name="edit_batal"
+                                                    class="btn btn-primary btn-icon btn-sm" type="button"
+                                                    value="{{ $container->id }}" onclick="detail_batal_muat_edit(this)"
+                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
+                                            </td>
+                              
+                                            <td>
+                                                {{ $container->nomor_kontainer }}
+                                            </td>
+                                            <td>
+                                                @rupiah($container->harga_batal)
+                                            </td>
+                                            <td>
+                                                {{ $container->keterangan_batal }}
+                                            </td>
+
+                                            {{-- <td>
+                                                <button type="button" id="btn_detail" name="btn_detail"
+                                                    class="btn btn-label-primary btn-sm text-nowrap"
+                                                    value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
+                                                    Kontainer <i class="fa fa-eye"></i></button>
+
+                                            </td> --}}
+                                        </tr>
+                                    @endforeach
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="mb-5 mt-5">
+                            <button id="add_biaya" type="button" onclick="detail_batal_muat()"
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
+                        </div>
+
+
+                        <!-- END Form -->
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+            <div class="col-md-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>KONTAINER ALIH KAPAL (JIKA ADA)</b></u></label>
+                        </div>
+                        <div class="table-responsive">
+
+                            <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
+                                <thead id="thead_alih" class="table-success text-nowrap">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Pelayaran</th>
+                                        <th class="text-center">POT (Jika Ada)</th>
+                                        <th class="text-center">POD</th>
+                                        <th class="text-center">vessel/Voyage</th>
+                                        <th class="text-center">Kode vessel</th>
+                                        <th class="text-center">Biaya Alih Kapal</th>
+                                        <th class="text-center">Keterangan Alih Kapal</th>
+                                        {{-- <th class="text-center"></th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_alih" class="text-center">
+                                    @foreach ($new_container_alih as $alih)
+                                        <tr>
+                                            <td align="center">
+
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td class="text-center text-nowrap">
+                                                <button id="delete_alih" name="delete_alih"
+                                                    class="btn btn-info btn-icon btn-sm" type="button"
+                                                    value="{{ $alih->id}}" onclick="delete_alihDB(this)"
+                                                    @readonly(true)><i class="fa fa-refresh"></i></button>
+                                                <button id="edit_batal" name="edit_batal"
+                                                    class="btn btn-primary btn-icon btn-sm"
+                                                    type="button" value="{{ $alih->alihs->id}}"
+                                                    onclick="detail_alih_kapal_edit(this)" @readonly(true)><i
+                                                        class="fa fa-pencil"></i></button>
+                                            </td>
+                          
+                                            <td>
+                                                {{ $alih->nomor_kontainer}}
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->pelayaran_alih}}
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->pot_alih}}
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->pod_alih}}
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->vesseL_alih}}
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->code_vesseL_alih}}
+                                            </td>
+                                            <td>
+                                                @rupiah($alih->alihs->harga_alih_kapal)
+                                            </td>
+                                            <td>
+                                                {{ $alih->alihs->keterangan_alih_kapal}}
+                                            </td>
+                                            {{-- <td>
+                                                <button type="button" id="btn_detail" name="btn_detail"
+                                                    class="btn btn-label-primary btn-sm text-nowrap"
+                                                    value="{{ $alih->alihs->kontainer_alih}}" onclick="detail_disabled(this)">Detail
+                                                    Kontainer <i class="fa fa-eye"></i></button>
+
+                                            </td> --}}
+
+
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mb-5 mt-5">
+                            <button id="add_biaya" type="button" onclick="detail_alih_kapal()"
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
+                        </div>
+                        <!-- END Form -->
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+
             <div class="col-md-12 col-xl-12">
                 <div class="portlet">
                     <div class="portlet-body">
 
                         <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>INFORMASI KONTAINER :</b></label>
+                            <label for="inputState" class="form-label"><u><b>INFORMASI KONTAINER :</b></u></label>
                         </div>
 
                         <div class="row row-cols-lg-auto py-5 g-3">
@@ -550,12 +893,6 @@
 
 
                                     </tr>
-
-
-
-
-
-
                                         @endforeach
                                     </tbody>
 
@@ -563,342 +900,6 @@
                             </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="col-md-6">
-                <div class="portlet">
-
-                    <div class="portlet-body">
-
-                        <!-- BEGIN Form -->
-
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>DETAIL BARANG/KONTAINER</b></label>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table id="table_biaya2" class="table mb-0" style="width: 100% !important">
-                                <thead id="" class="table-success">
-                                    <tr>
-                                        <th></th>
-                                        <th>No</th>
-                                        <th>Pengirim</th>
-                                        <th>Size/Type</th>
-                                        <th>Nomor Kontainer</th>
-                                        <th>POD</th>
-                                        <th>Deskripsi</th>
-                                    </tr>
-                                </thead>
-                                <tbody  class="">
-                                    @foreach ($containers_barang as $container)
-                                        <tr>
-                                            <td class="text-center">
-                                                <button id="delete_detail" name="delete_detail"
-                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $container['id'] }}" onclick="delete_detailbarangDB(this)"
-                                                    @readonly(true)><i class="fa fa-trash"></i></button>
-                                                <button id="edit_detail" name="edit_detail"
-                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $container['id'] }}" onclick="detail_barang_edit(this)"
-                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
-                                            </td>
-                                            <td align="center">{{$loop->iteration}}.</td>
-                                            <td>{{$container['pengirim']}}</td>
-                                            <td>{{$container['size']}}/{{$container['type']}}</td>
-                                            <td>{{$container['nomor_kontainer']}}</td>
-                                            <td>{{$container['pod_container']}}</td>
-                                            <td class="text-nowrap">
-                                                <ol type="1.">
-                                                @foreach ($details as $detail)
-                                                    @if ($detail->kontainer_id == $container['id'])
-                                                    <li>
-                                                        {{ $detail->detail_barang }}
-                                                    </li>
-                                                    @endif
-                                                @endforeach
-                                                </ol>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="detail_barang()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
-                            <button style="float: right" id="add_biaya" type="button" onclick="cetak_packing()"
-                                    class="btn btn-label-primary">Cetak List <i class="fa fa-print"></i></button>
-                        </div>
-
-                        <!-- END Form -->
-                    </div>
-                </div>
-                <!-- BEGIN Portlet -->
-
-                <!-- END Portlet -->
-            </div>
-            <div class="col-md-6">
-                <div class="portlet">
-
-                    <div class="portlet-body">
-
-                        <!-- BEGIN Form -->
-
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>BIAYA LAIN KONTAINER (JIKA ADA)</b></label>
-                        </div>
-
-                        <div class="table-responsive">
-
-
-                        <table id="table_biaya3" class="table mb-0" style="width: 100% !important">
-                            <thead id="" class="table-success">
-                                <tr>
-                                    <th></th>
-                                    <th>No</th>
-                                    <th>Pengirim</th>
-                                    <th>Size/Type</th>
-                                    <th>Nomor Kontainer</th>
-                                    <th>POD</th>
-                                    <th>Total Biaya Lainnya</th>
-                                    <th>Keterangan Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_biaya" class="">
-                                @foreach ($new_container_biaya as $biaya)
-                                    <tr>
-                                        <td class="text-center">
-                                            <button id="delete_biaya" name="delete_biaya"
-                                                class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $biaya['id'] }}" onclick="delete_laiannyaDB(this)"
-                                                @readonly(true)><i class="fa fa-trash"></i></button>
-                                            <button id="edit_biaya" name="edit_biaya"
-                                                class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                value="{{ $biaya['id'] }}" onclick="detail_biaya_lain_edit(this)"
-                                                @readonly(true)><i class="fa fa-pencil"></i></button>
-                                        </td>
-                                        <td align="center">
-
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td>
-                                            {{ $biaya['pengirim'] }}
-                                        </td>
-                                        <td>{{$biaya['size']}}/{{$biaya['type']}}</td>
-                                        <td>{{$biaya['nomor_kontainer']}}</td>
-                                        <td>{{$biaya['pod_container']}}</td>
-
-                                        <td>
-                                            @rupiah($biaya['total_biaya_lain'])
-                                        </td>
-                                        <td class="text-nowrap">
-                                            <ol type="1.">
-                                            @foreach ($biayas as $b)
-                                                @if ($b->kontainer_id == $biaya['id'])
-                                                <li>
-                                                    {{ $b->keterangan }}
-                                                </li>
-                                                @endif
-                                            @endforeach
-                                            </ol>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
-                        </div>
-
-                        <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="detail_biaya_lain()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div>
-
-                        <!-- END Form -->
-                    </div>
-                </div>
-                <!-- BEGIN Portlet -->
-
-                <!-- END Portlet -->
-            </div>
-            <div class="col-md-12">
-                <div class="portlet">
-
-                    <div class="portlet-body">
-
-                        <!-- BEGIN Form -->
-
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>CONTAINER BATAL MUAT (JIKA ADA)</b></label>
-                        </div>
-
-                        <div class="table-responsive">
-
-
-                            <table id="table_batal_muat" class="table mb-0" style="width: 100% !important">
-                                <thead id="thead_batal_muat" class="table-success">
-                                    <tr>
-                                        <th class="text-center"></th>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Pilih Nomor Container</th>
-                                        <th class="text-center">Biaya Batal Muat</th>
-                                        <th class="text-center">Keterangan</th>
-                                        <th class="text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_batal_muat" class="text-center">
-                                    @foreach ($container_batal as $container)
-                                        <tr>
-                                            <td class="text-center">
-                                                <button id="delete_batal" name="delete_batal"
-                                                    class="btn btn-label-info btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $container->id }}" onclick="delete_batalDB(this)"
-                                                    @readonly(true)><i class="fa fa-refresh"></i></button>
-                                                <button id="edit_batal" name="edit_batal"
-                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $container->id }}" onclick="detail_batal_muat_edit(this)"
-                                                    @readonly(true)><i class="fa fa-pencil"></i></button>
-                                            </td>
-                                            <td>
-
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td>
-                                                {{ $container->nomor_kontainer }}
-                                            </td>
-                                            <td>
-                                                @rupiah($container->harga_batal)
-                                            </td>
-                                            <td>
-                                                {{ $container->keterangan_batal }}
-                                            </td>
-
-                                            <td>
-                                                <button type="button" id="btn_detail" name="btn_detail"
-                                                    class="btn btn-label-primary btn-sm text-nowrap"
-                                                    value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
-                                                    Kontainer <i class="fa fa-eye"></i></button>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="detail_batal_muat()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div>
-
-
-                        <!-- END Form -->
-                    </div>
-                </div>
-                <!-- BEGIN Portlet -->
-
-                <!-- END Portlet -->
-            </div>
-            <div class="col-md-12">
-                <div class="portlet">
-
-                    <div class="portlet-body">
-
-                        <!-- BEGIN Form -->
-
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><b>KONTAINER ALIH KAPAL (JIKA ADA)</b></label>
-                        </div>
-                        <div class="table-responsive">
-
-                            <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
-                                <thead id="thead_alih" class="table-success text-nowrap">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center"></th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Pelayaran</th>
-                                        <th class="text-center">POT (Jika Ada)</th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">vessel/Voyage</th>
-                                        <th class="text-center">Kode vessel</th>
-                                        <th class="text-center">Biaya Alih Kapal</th>
-                                        <th class="text-center">Keterangan Alih Kapal</th>
-                                        {{-- <th class="text-center"></th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="text-center">
-                                    @foreach ($new_container_alih as $alih)
-                                        <tr>
-                                            <td class="text-center text-nowrap">
-                                                <button id="delete_alih" name="delete_alih"
-                                                    class="btn btn-label-info btn-icon btn-circle btn-sm" type="button"
-                                                    value="{{ $alih->id}}" onclick="delete_alihDB(this)"
-                                                    @readonly(true)><i class="fa fa-refresh"></i></button>
-                                                <button id="edit_batal" name="edit_batal"
-                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm"
-                                                    type="button" value="{{ $alih->alihs->id}}"
-                                                    onclick="detail_alih_kapal_edit(this)" @readonly(true)><i
-                                                        class="fa fa-pencil"></i></button>
-                                            </td>
-                                            <td>
-
-                                                {{ $loop->iteration}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->nomor_kontainer}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->pelayaran_alih}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->pot_alih}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->pod_alih}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->vesseL_alih}}
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->code_vesseL_alih}}
-                                            </td>
-                                            <td>
-                                                @rupiah($alih->alihs->harga_alih_kapal)
-                                            </td>
-                                            <td>
-                                                {{ $alih->alihs->keterangan_alih_kapal}}
-                                            </td>
-                                            {{-- <td>
-                                                <button type="button" id="btn_detail" name="btn_detail"
-                                                    class="btn btn-label-primary btn-sm text-nowrap"
-                                                    value="{{ $alih->alihs->kontainer_alih}}" onclick="detail_disabled(this)">Detail
-                                                    Kontainer <i class="fa fa-eye"></i></button>
-
-                                            </td> --}}
-
-
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="mb-5 mt-5">
-                            <button id="add_biaya" type="button" onclick="detail_alih_kapal()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
-                        </div>
-                        <!-- END Form -->
-                    </div>
-                </div>
-                <!-- BEGIN Portlet -->
-
-                <!-- END Portlet -->
             </div>
 
 
@@ -3143,7 +3144,7 @@
                             <div class="col-sm-8 validation-container">
 
                             <select id="pod_alih_edit" name="pod_alih_edit" class="form-select" required>
-                                <option selected disabled>Pilih POT</option>
+                                <option selected disabled>Pilih POD</option>
                                 @foreach ($pelabuhans as $pot)
                                     <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
                                         {{ $pot->nama_pelabuhan }}

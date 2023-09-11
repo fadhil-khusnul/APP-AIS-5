@@ -21,6 +21,11 @@ class ContainerPlanload extends Model
     {
         return $this->belongsTo(OrderJobPlanload::class, 'job_id', 'id');
     }
+
+    public function si_pdf_containers()
+    {
+        return $this->belongsTo(SiPdfContainer::class, 'slug', 'container_id');
+    }
     public function mobils()
     {
         return $this->belongsTo(SupirMobil::class, 'driver', 'id');

@@ -9,9 +9,57 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
         [5, 10, 20, -1],
         [5, 10, 20, "All"],
     ],
+    dom: 'Bfrltip',
+    buttons:[
+    {
+        extend:"excel",
+        title: "Report Vendor" ,
+        className:"btn btn-flat-success",
+        exportOptions: {
+            columns: [0,2,3,4,5,6,7,8,9,10,11],
+        }
+
+    },
+    {
+            extend: 'pdf',
+            orientation: 'landscape',
+            className:"btn btn-flat-success",
+            className:"btn btn-flat-success",
+            pageSize : 'LEGAL',
+            title: "Report Vendor" ,
+            // customize : function(doc){
+            //     doc.defaultStyle.alignment = 'center';
+            //     doc.styles.tableHeader.alignment = 'center';
+            //     doc.styles.tableHeader.fillColor = '#00ad4c';
+            //     doc.content[1].table.widths = [15,50,50,50,50,50,50,50,50,70,50,50,50,50,50,50];;
+            // },
+            exportOptions: {
+                columns: [0,2,3,4,5,6,7,8,9,10,11],
+            }
+        },
+    ],
 
     // scroller: true,
 });
+
+
+
+$("#pilih_vessel").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Pilih vessel",
+    stateSave: true,
+
+
+
+})
+$("#pilih_status").select2
+({
+    dropdownAutoWidth:true,
+    allowClear:true,
+    placeholder:"Pilih status",
+})
 
 var check = tabelvendor.$(".check-container1", { page: "all" });
 
@@ -83,6 +131,22 @@ function filter_vendor(val) {
         tabelvendor
             .columns(6)
             .search(vendor.join("|"), true, false, true)
+            .draw();
+    }
+}
+function filter_vessel(val) {
+    var vessel = [];
+
+    vessel = $("#pilih_vessel").val();
+    // regex = '^' + vessel ;
+    console.log(vessel);
+
+    if (vessel == null) {
+        tabelvendor.columns(4).search("").draw();
+    } else {
+        tabelvendor
+            .columns(4)
+            .search(vessel.join("|"), true, false, true)
             .draw();
     }
 }
@@ -172,6 +236,16 @@ function bayar() {
 
                     console.log(id_container);
                     $("#modal_biaya_do").modal("show");
+
+                    $("#tanggal_bayar").datepicker({
+                        format: "DD, dd-MM-yyyy",
+                        changeMonth: true,
+                        changeYear: false,
+                        todayBtn: "linked",
+                        clearBtn: true,
+                        weekStart: 1,
+                        todayHighlight: true,
+                    });
                     $("#valid_pod").validate({
                         highlight: function highlight(
                             element,
@@ -202,17 +276,29 @@ function bayar() {
                             var dibayar = $("#dibayar")
                                 .val()
                                 .replace(/\./g, "");
-                            // var old_terbayar = $("#old_terbayar")
-                            //     .val()
-                            //     .replace(/\./g, "");
-                            // var old_selisih = $("#old_selisih")
-                            //     .val()
-                            //     .replace(/\./g, "");
+
+                            let tanggal_bayar = document.getElementById(
+                                "tanggal_bayar"
+                            ).value;
+                            tanggal_bayar = moment(
+                                tanggal_bayar,
+                                "dddd, DD-MMMM-YYYY"
+                            ).format("YYYY-MM-DD");
+                            console.log(tanggal_bayar);
+
+                            var dibayarkan_ke = $("#dibayarkan_ke").val();
+                            var cara_bayar = $("#cara_bayar").val();
+                            var keterangan_transfer = $("#keterangan_transfer").val();
+                            
 
                             var data = {
                                 _token: csrf,
                                 selisih: dibayar,
                                 id: id_container,
+                                cara_bayar: cara_bayar,
+                                tanggal_bayar: tanggal_bayar,
+                                dibayarkan_ke: dibayarkan_ke,
+                                keterangan_transfer: keterangan_transfer,
                             };
 
                             $.ajax({

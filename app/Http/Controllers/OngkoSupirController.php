@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
+use App\Models\ReportVendorTruck;
 
 class OngkoSupirController extends Controller
 {
@@ -47,6 +48,8 @@ class OngkoSupirController extends Controller
         $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->whereNotNull('biaya_trucking')->get();
 
         $vendors = VendorMobil::all();
+        $vessels = OrderJobPlanload::select('vessel')->distinct()->get();
+        // dd($vessels);
 
 
 
@@ -65,6 +68,7 @@ class OngkoSupirController extends Controller
             'active' => 'truck',
             "containers" => $containers,
             "vendors" => $vendors,
+            "vessels" => $vessels,
             "lunas_dibayar" => $lunas_dibayar,
             "belum_lunas" => $belum_lunas,
 
@@ -98,6 +102,7 @@ class OngkoSupirController extends Controller
 
     public function dibayar(Request $request)
     {
+        // dd($request);
         $container = [];
         for ($i = 0; $i < count($request->id); $i++) {
             $container[$i] = ContainerPlanLoad::find($request->id[$i]);
@@ -128,6 +133,25 @@ class OngkoSupirController extends Controller
                 break;
             }
         }
+
+        for ($i=0; $i <count($request->id) ; $i++) {
+            # code...
+
+            $reports= [
+                'job_id' => $request->job_id,
+                'kontainer_id' => $request->id[$i],
+                'dibayarkan_ke' => $request->dibayarkan_ke,
+                'cara_bayar' => $request->cara_bayar,
+                'keterangan_transfer' => $request->keterangan_transfer,
+                'tanggal_bayar' => $request->tanggal_bayar,
+                
+            ];
+
+            ReportVendorTruck::create($reports);
+        }
+
+
+
 
         return response()->json([
             'success'   => true

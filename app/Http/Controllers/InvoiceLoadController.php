@@ -89,7 +89,10 @@ class InvoiceLoadController extends Controller
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih')
-            ->whereNotNull('slug');
+            ->whereNotNull('slug')
+            ->whereNotNull('demurrage');
+        })->whereHas('si_pdf_containers',function($q) {
+            $q->whereNotNull('tanggal_do_pod');
         })->get();
 
         $sealsc = SealContainer::where('job_id', $id)->get();
@@ -126,7 +129,9 @@ class InvoiceLoadController extends Controller
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
-            'alihs' => AlihKapal::where('job_id', $id)->get(),
+            'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
+                $q->whereNotNull('demurrage');
+            })->get(),
             'pdfs' => InvoiceLoad::where('job_id', $id)->get(),
             'batals' => BatalMuat::where('job_id', $id)->get(),
             'details' => DetailBarangLoad::where('job_id', $id)->get(),
@@ -158,7 +163,7 @@ class InvoiceLoadController extends Controller
 
     public function pdf_invoice(Request $request)
     {
-        // dd($request->check_container);
+        // dd($request->nomor_invoice);
         $random = Str::random(15);
         $old_slug = $request->old_slug;
         $nomor_invoice = $request->nomor_invoice;
