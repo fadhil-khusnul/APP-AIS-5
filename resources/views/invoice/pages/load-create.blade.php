@@ -251,7 +251,7 @@
 
                             <div class="col-auto">
                                 <button id="submit-id" type="submit" onclick="pdf_invoice()"
-                                    class="btn btn-primary ">Cetak
+                                    class="btn btn-success ">Cetak
                                     Invoice <i class="fa fa-print"></i></button>
                             </div>
 
@@ -265,6 +265,171 @@
                     <!-- END Portlet -->
                 </div>
             </div>
+
+            @if (count($container_batal) > 0)
+            <div class="col-md-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <!-- BEGIN Form -->
+
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>KONTAINER BATAL MUAT</b></u></label>
+                        </div>
+                        <div class="table-responsive">
+
+
+                            <table id="table_batal" class="table table-bordered table-hover mb-0 seratus">
+                                <thead id="thead_alih" class="table-danger">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Input</th>
+                                        <th class="text-center">NOMOR INVOICE</th>
+                                        <th class="text-center">UNIT PRICE</th>
+                                        <th class="text-center">KONDISI</th>
+                                        <th class="text-center">KETERANGAN</th>
+                                        <th class="text-center">POD</th>
+                                        <th class="text-center">Pengirim</th>
+                                        <th class="text-center">Penerima</th>
+                                        <th class="text-center">Size/Type</th>
+                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Cargo (Nama Barang)</th>
+                                        <th class="text-center">Seal-Container</th>
+                                        <th class="text-center">Biaya Batal Muat Kapal</th>
+                                        <th class="text-center">Keterangan Batal Muat</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_alih" class="text-center">
+                                    @foreach ($container_batal as $batal)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+
+                      
+
+                                            <td>
+                                                @if ($batal->price_invoice != null && $batal->status_invoice == null || $batal->invoices->tanggal_invoice == null)
+                                                    <div class="validation-container">
+                                                        <input type="hidden" value="{{ $batal->status_invoice }}" class="{{ $batal->status_invoice }}">
+                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                            class="form-check-input check_kontainer_batal"
+                                                            id="kontainer_check[{{ $loop->iteration }}]" name="{{ $batal->status_invoice }}"
+                                                            value="{{ $batal->id }}" autofocus onclick="click_check(this)">
+                                                    </div>
+                                                @elseif ($batal->status_invoice != null)
+                                                    <input readonly disabled checked type="checkbox"
+                                                        class="form-check-input"
+                                                        id="kontainer_check[{{ $loop->iteration }}]">
+                                                @elseif ($batal->status_invoice == null)
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($batal->price_invoice != null)
+                                                    <button type="button" value="{{ $batal->id }}" type="button"
+                                                        onclick="update_invoice(this)"
+                                                        class="btn btn-primary btn-sm "><i
+                                                            class="fa fa-pencil"></i></button>
+                                                @else
+                                                    <button type="button" value="{{ $batal->id }}" type="button"
+                                                        onclick="input_invoice(this)"
+                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
+                                                            class="fa fa-pencil"></i></button>
+                                                @endif
+
+
+                                            </td>
+
+                                            <td>{{$batal->status_invoice}}</td>
+                                            <td>@rupiah($batal->price_invoice)</td>
+                                            <td>{{$batal->kondisi_invoice}}</td>
+                                            <td>{{$batal->keterangan_invoice}}</td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pod_container[{{ $batal->id }}]">{{ old('pod_container', $batal->pod_container) }}</label>
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="pengirim[{{ $batal->id }}]">{{ old('pengirim', $batal->pengirim) }}</label>
+
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="penerima[{{ $batal->id }}]">{{ old('penerima', $batal->penerima) }}</label>
+
+                                            </td>
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $batal->id }}]">{{ $batal->size }}/{{$batal->type}} </label>
+
+                                            </td>
+
+                                            <td>
+
+                                                <label disabled @readonly(true)
+                                                    id="nomor_kontainer[{{ $batal->id }}]">{{ old('nomor_kontainer', $batal->nomor_kontainer) }}</label>
+                                            </td>
+                                            <td>
+
+                                                <label disabled @readonly(true)
+                                                    id="cargo[{{ $batal->id }}]">{{ old('cargo', $batal->cargo) }}</label>
+
+                                            </td>
+                                             <td>
+                                                <ol type="1.">
+
+                                                    @foreach ($sealsc as $seal)
+                                                        @if ($seal->kontainer_id == $batal->id)
+                                                            <li id="seal[{{ $container->id }}]">
+                                                                {{ $seal->seal_kontainer }}
+
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ol>
+
+
+
+                                            </td>
+
+                                            <td>
+                                                <label id="harga_batal[{{ $loop->iteration }}]">
+                                                    @rupiah($batal->harga_batal)</label>
+
+                                            </td>
+                                            <td>
+                                                <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
+                                                    {{ $batal->keterangan_batal }}</label>
+
+                                            </td>
+                                            
+
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
+                            <div class="col-auto">
+                                <button id="submit_batal" type="submit" onclick="pdf_invoice_batal()"
+                                    class="btn btn-success ">Cetak Invoice Batal Muat <i class="fa fa-print"></i></button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+        @endif
 
 
 
@@ -310,14 +475,14 @@
                           
 
                                                 <td>
-                                                    @if ($alih->container_planloads->status_invoice == 'ready')
-                                                        <div class="validation-alih->container_planloads">
-                                                            <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                                class="form-check-input check-alih->container_planloads"
-                                                                id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                                value="{{ $alih->container_planloads->id }}" required autofocus>
-
-                                                        </div>
+                                                    @if ($alih->container_planloads->price_invoice != null && $alih->container_planloads->status_invoice == null || $alih->container_planloads->invoices->tanggal_invoice == null)
+                                                    <div class="validation-container">
+                                                        <input type="hidden" value="{{ $alih->container_planloads->status_invoice }}" class="{{ $alih->container_planloads->status_invoice }}">
+                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                            class="form-check-input check_alih"
+                                                            id="kontainer_check[{{ $loop->iteration }}]" name="{{ $alih->container_planloads->status_invoice }}"
+                                                            value="{{ $alih->container_planloads->id }}" autofocus onclick="click_check(this)">
+                                                    </div>
                                                     @elseif ($alih->container_planloads->status_invoice != null)
                                                         <input readonly disabled checked type="checkbox"
                                                             class="form-check-input"
@@ -389,8 +554,8 @@
 
                             <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
                                 <div class="col-auto">
-                                    <button id="submit-id1" type="submit" onclick="pdf_si_alih()"
-                                        class="btn btn-info ">Cetak Invoice Alih KAPAL <i class="fa fa-print"></i></button>
+                                    <button id="submit_alih" type="submit" onclick="pdf_invoice_alih()"
+                                        class="btn btn-success ">Cetak Invoice Alih KAPAL <i class="fa fa-print"></i></button>
                                 </div>
 
 
@@ -403,6 +568,8 @@
                     <!-- END Portlet -->
                 </div>
             @endif
+
+           
 
 
 

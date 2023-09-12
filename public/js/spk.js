@@ -71,6 +71,7 @@ function Tambah_SPK() {
         },
         submitHandler: function (form) {
             var code = document.getElementById("kode_spk").value;
+            var keterangan_spk = document.getElementById("keterangan_spk").value;
             var start_spk = document.getElementById("start_spk").value;
             start_spk = parseInt(start_spk);
             var touch_spk = document.getElementById("touch_spk").value;
@@ -85,6 +86,7 @@ function Tambah_SPK() {
             var data_start_spk = [];
             var data_touch_spk = [];
             var data_harga_spk = [];
+            var data_keterangan_spk = [];
             var data_select = [];
             let fd = new FormData();
             var result;
@@ -105,8 +107,13 @@ function Tambah_SPK() {
                         data_kode_spk[i] =
                             code + String(start_spk + i).padStart(6, "0");
                         fd.append("kode_spk[]", data_kode_spk[i]);
+                        
                         data_code[i] = code;
                         fd.append("code[]", data_code[i]);
+
+                        data_keterangan_spk[i] = keterangan_spk;
+                        fd.append("keterangan_spk[]", data_keterangan_spk[i]);
+
                         data_start_spk[i] = start_spk + i;
                         fd.append("start_spk[]", data_start_spk[i]);
                         data_touch_spk[i] = touch_spk;
@@ -199,6 +206,7 @@ function editspk(e) {
             $('#kode_spk_edit').val(response.result.kode_spk);
             $('#harga_spk_edit').val(response.result.harga_spk);
             $('#select_company_edit').val(response.result.pelayaran_id);
+            $('#keterangan_spk_edit').val(response.result.keterangan_spk);
 
             $('#valid_spk_edit').validate({
                 rules: {
@@ -240,6 +248,7 @@ function editspk(e) {
                             kode_spk: $('#kode_spk_edit').val(),
                             harga_spk: $('#harga_spk_edit').val().replace(/\./g, ""),
                             select_company: $('#select_company_edit').val(),
+                            keterangan_spk: $('#keterangan_spk_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({

@@ -40,6 +40,20 @@ var table_alih_kapal_realisasi = $("#table_alih_kapal_realisasi").DataTable({
 
     // scroller: true,P
 });
+var table_batal = $("#table_batal").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
+});
 
 $("#submit-id").attr("disabled", "disabled");
 realisasiload_create.$(".check-container",{ page: "all"},).click(function() {
@@ -51,12 +65,20 @@ realisasiload_create.$(".check-container",{ page: "all"},).click(function() {
 });
 
 
-$("#submit-id1").attr("disabled", "disabled");
-realisasiload_create.$(".check-container1",{ page: "all"},).click(function() {
+$("#submit_alih").attr("disabled", "disabled");
+table_alih_kapal_realisasi.$(".check_alih",{ page: "all"},).click(function() {
     if ($(this).is(":checked")) {
-        $("#submit-id1").removeAttr("disabled");
+        $("#submit_alih").removeAttr("disabled");
     } else {
-        $("#submit-id1").attr("disabled", "disabled");
+        $("#submit_alih").attr("disabled", "disabled");
+    }
+});
+$("#submit_batal").attr("disabled", "disabled");
+table_batal.$(".check_kontainer_batal",{ page: "all"},).click(function() {
+    if ($(this).is(":checked")) {
+        $("#submit_batal").removeAttr("disabled");
+    } else {
+        $("#submit_batal").attr("disabled", "disabled");
     }
 });
 
@@ -531,7 +553,519 @@ function pdf_invoice() {
                                                         .replace(/\./g, ""),
                                                     yth: yth,
                                                     km: km,
-                                                    status: "Default",
+                                                    status: "Realisasi",
+                                                };
+
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "/create-pdf-invoice-load",
+                                                    data: data,
+                                                    xhrFields: {
+                                                        responseType: "blob",
+                                                    },
+                                                    success: function (
+                                                        response
+                                                    ) {
+                                                        // console.log(response);
+                                                        toast.fire({
+                                                            icon: "success",
+                                                            title: "Invoice Berhasil Dibuat",
+                                                        });
+                                                        var blob = new Blob([
+                                                            response,
+                                                        ]);
+                                                        var link =
+                                                            document.createElement(
+                                                                "a"
+                                                            );
+                                                        link.href =
+                                                            window.URL.createObjectURL(
+                                                                blob
+                                                            );
+                                                        link.download =
+                                                            "" +
+                                                            old_slug +
+                                                            dformat +
+                                                            ".pdf";
+                                                        link.click();
+
+                                                        setTimeout(function () {
+                                                            window.location.reload();
+                                                        }, 10);
+                                                    },
+                                                });
+                                            },
+                                        });
+                                    },
+                                });
+                            } else {
+                                swal.fire({
+                                    titlxe: "Invoice Tidak Dibuat",
+                                    icon: "error",
+                                    timer: 2e3,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        });
+                    } else {
+                        swal.fire({
+                            title: "POD atau Nomor Invoice Harus Sama",
+                            text: "SIlakan Pilih Container yang POD-nya Sama",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        });
+                    }
+                },
+            });
+        },
+    });
+}
+function pdf_invoice_batal() {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    $("#valid_realisasi").validate({
+        ignore: "select[type=hidden]",
+        
+       
+
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+            if (element.attr("name") == "letter") {
+                error.appendTo("#checkboxerror");
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function (form) {
+            let token = $("#csrf").val();
+            var check_container = table_batal.$(".check_kontainer_batal:checked", {"page": "all"})
+                .map(function () {
+                    return this.value;
+                })
+                .get();
+            console.log(check_container);
+
+            var old_slug = $("#old_slug").val();
+
+            var d = new Date(),
+                dformat = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join(
+                    "-"
+                );
+
+            console.log(check_container);
+
+            $.ajax({
+                url: "/getPod",
+                type: "post",
+                data: {
+                    _token: token,
+                    pod: check_container,
+                },
+                success: function (response) {
+                    console.log(response.pod);
+                    var pod_1 = [...new Set(response.pod)];
+                    var nomor_invoice = [...new Set(response.nomor_invoice)];
+                    if (pod_1.length == 1 && nomor_invoice.length == 1) {
+                        var pod = response.pod;
+                        console.log(pod);
+                        swal.fire({
+                            title: " Buat Invoice Untuk Container ini?",
+                            text: "Silahkan Periksa Semua Data yang ada Sebelum invoice.",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Iya",
+                            cancelButtonText: "Tidak",
+                        }).then((willCreate) => {
+                            if (willCreate.isConfirmed) {
+                                $("#modal_pdf_invoice").modal("show");
+
+                                $("#valid_pdf_invoice").validate({
+                                    rules: {
+                                        yth: {
+                                            required: true,
+                                        },
+                                        km: {
+                                            required: true,
+                                        },
+                                    },
+                                    messages: {
+                                        yth: {
+                                            required: "Silakan Isi Tujuan",
+                                        },
+                                        km: {
+                                            required: "Silakan Isi KM",
+                                        },
+                                    },
+                                    highlight: function highlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).addClass("is-invalid");
+                                        $(element).removeClass("is-valid");
+                                    },
+                                    unhighlight: function unhighlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).removeClass("is-invalid");
+                                    },
+                                    errorPlacement: function errorPlacement(
+                                        error,
+                                        element
+                                    ) {
+                                        error.addClass("invalid-feedback");
+                                        element
+                                            .closest(".validation-container")
+                                            .append(error);
+                                    },
+                                    submitHandler: function (form) {
+                                        document.getElementById("loading-wrapper").style.cursor ="wait";
+                                        document.getElementById("btnFinish3").setAttribute("disabled", true);
+                                        console.log(pod);
+                                        $.ajax({
+                                            url: "/getInvoice",
+                                            type: "post",
+                                            data: {
+                                                _token: token,
+                                                old_slug: old_slug,
+                                                pod: pod,
+                                                tahun: d.getFullYear(),
+                                            },
+                                            success: function (response) {
+                                                console.log(response);
+
+                                                var yth = $("#yth").val();
+                                                var km = $("#km").val();
+
+                                                var invais = "INVAIS";
+                                                var nomor_invoice =
+                                                    invais +
+                                                    d.getFullYear() +
+                                                    "/" +
+                                                    romawi(d.getMonth() + 1) +
+                                                    "/" +
+                                                    response.pol +
+                                                    "-" +
+                                                    response.pod +
+                                                    "-" +
+                                                    response.vessel +
+                                                    "/" +
+                                                    String(
+                                                        response.jumlah
+                                                    ).padStart(5, "0");
+                                                var tahun = d.getFullYear();
+                                                var tanggal = dformat;
+
+                                                var data = {
+                                                    _token: token,
+                                                    check_container:
+                                                        check_container,
+                                                    old_slug: old_slug,
+                                                    nomor_invoice:
+                                                        nomor_invoice,
+                                                    tahun: tahun,
+                                                    tanggal: tanggal,
+                                                    ppn: $(
+                                                        "#ppn:checked"
+                                                    ).val(),
+                                                    materai:
+                                                        $(
+                                                            "#materai:checked"
+                                                        ).val(),
+                                                    value_materai: $(
+                                                        "#value_materai"
+                                                    )
+                                                        .val()
+                                                        .replace(/\./g, ""),
+                                                    yth: yth,
+                                                    km: km,
+                                                    status: "Batal-Muat",
+                                                };
+
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "/create-pdf-invoice-load",
+                                                    data: data,
+                                                    xhrFields: {
+                                                        responseType: "blob",
+                                                    },
+                                                    success: function (
+                                                        response
+                                                    ) {
+                                                        // console.log(response);
+                                                        toast.fire({
+                                                            icon: "success",
+                                                            title: "Invoice Berhasil Dibuat",
+                                                        });
+                                                        var blob = new Blob([
+                                                            response,
+                                                        ]);
+                                                        var link =
+                                                            document.createElement(
+                                                                "a"
+                                                            );
+                                                        link.href =
+                                                            window.URL.createObjectURL(
+                                                                blob
+                                                            );
+                                                        link.download =
+                                                            "" +
+                                                            old_slug +
+                                                            dformat +
+                                                            ".pdf";
+                                                        link.click();
+
+                                                        setTimeout(function () {
+                                                            window.location.reload();
+                                                        }, 10);
+                                                    },
+                                                });
+                                            },
+                                        });
+                                    },
+                                });
+                            } else {
+                                swal.fire({
+                                    titlxe: "Invoice Tidak Dibuat",
+                                    icon: "error",
+                                    timer: 2e3,
+                                    showConfirmButton: false,
+                                });
+                            }
+                        });
+                    } else {
+                        swal.fire({
+                            title: "POD atau Nomor Invoice Harus Sama",
+                            text: "SIlakan Pilih Container yang POD-nya Sama",
+                            icon: "error",
+                            timer: 2e3,
+                            showConfirmButton: false,
+                        });
+                    }
+                },
+            });
+        },
+    });
+}
+function pdf_invoice_alih() {
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    $("#valid_realisasi").validate({
+        ignore: "select[type=hidden]",
+        
+       
+
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+            if (element.attr("name") == "letter") {
+                error.appendTo("#checkboxerror");
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function (form) {
+            let token = $("#csrf").val();
+            var check_container = table_alih_kapal_realisasi.$(".check_alih:checked", {"page": "all"})
+                .map(function () {
+                    return this.value;
+                })
+                .get();
+            console.log(check_container);
+
+            var old_slug = $("#old_slug").val();
+
+            var d = new Date(),
+                dformat = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join(
+                    "-"
+                );
+
+            console.log(check_container);
+
+            $.ajax({
+                url: "/getPod",
+                type: "post",
+                data: {
+                    _token: token,
+                    pod: check_container,
+                },
+                success: function (response) {
+                    console.log(response.pod);
+                    var pod_1 = [...new Set(response.pod)];
+                    var nomor_invoice = [...new Set(response.nomor_invoice)];
+                    if (pod_1.length == 1 && nomor_invoice.length == 1) {
+                        var pod = response.pod;
+                        console.log(pod);
+                        swal.fire({
+                            title: " Buat Invoice Untuk Container ini?",
+                            text: "Silahkan Periksa Semua Data yang ada Sebelum invoice.",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonText: "Iya",
+                            cancelButtonText: "Tidak",
+                        }).then((willCreate) => {
+                            if (willCreate.isConfirmed) {
+                                $("#modal_pdf_invoice").modal("show");
+
+                                $("#valid_pdf_invoice").validate({
+                                    rules: {
+                                        yth: {
+                                            required: true,
+                                        },
+                                        km: {
+                                            required: true,
+                                        },
+                                    },
+                                    messages: {
+                                        yth: {
+                                            required: "Silakan Isi Tujuan",
+                                        },
+                                        km: {
+                                            required: "Silakan Isi KM",
+                                        },
+                                    },
+                                    highlight: function highlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).addClass("is-invalid");
+                                        $(element).removeClass("is-valid");
+                                    },
+                                    unhighlight: function unhighlight(
+                                        element,
+                                        errorClass,
+                                        validClass
+                                    ) {
+                                        $(element).removeClass("is-invalid");
+                                    },
+                                    errorPlacement: function errorPlacement(
+                                        error,
+                                        element
+                                    ) {
+                                        error.addClass("invalid-feedback");
+                                        element
+                                            .closest(".validation-container")
+                                            .append(error);
+                                    },
+                                    submitHandler: function (form) {
+                                        document.getElementById("loading-wrapper").style.cursor ="wait";
+                                        document.getElementById("btnFinish3").setAttribute("disabled", true);
+                                        console.log(pod);
+                                        $.ajax({
+                                            url: "/getInvoice",
+                                            type: "post",
+                                            data: {
+                                                _token: token,
+                                                old_slug: old_slug,
+                                                pod: pod,
+                                                tahun: d.getFullYear(),
+                                            },
+                                            success: function (response) {
+                                                console.log(response);
+
+                                                var yth = $("#yth").val();
+                                                var km = $("#km").val();
+
+                                                var invais = "INVAIS";
+                                                var nomor_invoice =
+                                                    invais +
+                                                    d.getFullYear() +
+                                                    "/" +
+                                                    romawi(d.getMonth() + 1) +
+                                                    "/" +
+                                                    response.pol +
+                                                    "-" +
+                                                    response.pod +
+                                                    "-" +
+                                                    response.vessel +
+                                                    "/" +
+                                                    String(
+                                                        response.jumlah
+                                                    ).padStart(5, "0");
+                                                var tahun = d.getFullYear();
+                                                var tanggal = dformat;
+
+                                                var data = {
+                                                    _token: token,
+                                                    check_container:
+                                                        check_container,
+                                                    old_slug: old_slug,
+                                                    nomor_invoice:
+                                                        nomor_invoice,
+                                                    tahun: tahun,
+                                                    tanggal: tanggal,
+                                                    ppn: $(
+                                                        "#ppn:checked"
+                                                    ).val(),
+                                                    materai:
+                                                        $(
+                                                            "#materai:checked"
+                                                        ).val(),
+                                                    value_materai: $(
+                                                        "#value_materai"
+                                                    )
+                                                        .val()
+                                                        .replace(/\./g, ""),
+                                                    yth: yth,
+                                                    km: km,
+                                                    status: "Alih-Kapal",
                                                 };
 
                                                 $.ajax({

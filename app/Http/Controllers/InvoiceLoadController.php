@@ -92,7 +92,12 @@ class InvoiceLoadController extends Controller
             ->whereNotNull('slug')
             ->whereNotNull('demurrage');
         })->whereHas('si_pdf_containers',function($q) {
-            $q->whereNotNull('tanggal_do_pod');
+            $q->whereNotNull('tanggal_do_pod');        
+        })->get();
+
+        $container_batal = ContainerPlanload::where('job_id', $id)->where(function($query) {
+            $query->where('status', 'Batal-Muat');
+                ;
         })->get();
 
         $sealsc = SealContainer::where('job_id', $id)->get();
@@ -128,6 +133,7 @@ class InvoiceLoadController extends Controller
             'spks' => $spks,
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
+            'container_batal' => $container_batal,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
                 $q->whereNotNull('demurrage');
@@ -224,11 +230,11 @@ class InvoiceLoadController extends Controller
         for ($i=0; $i < count($request->check_container) ; $i++) {
             if($no_incvoice[$i] == null) {
                 $container = [
-                    'status' => "Realisasi",
+                    'status' => $request->status,
                 ];
                 $container2 = [
                     'invoice' => $sis->id,
-                    'status' => "Realisasi",
+                    'status' => $request->status,
                     'status_invoice' => $nomor_invoice,
                 ];
     
@@ -236,11 +242,11 @@ class InvoiceLoadController extends Controller
                 ContainerPlanload::where('id',$request->check_container[$i])->update($container2);
             } else {
                 $container = [
-                    'status' => "Realisasi",
+                    'status' => $request->status,
                 ];
                 $container2 = [
                     'invoice' => $no_invoice_2,
-                    'status' => "Realisasi",
+                    'status' => $request->status,
                     'status_invoice' => $no_incvoice[$i],
                 ];
     
@@ -390,6 +396,7 @@ class InvoiceLoadController extends Controller
         $path = InvoiceLoad::where('id',$request->id)->value('path');
 
         $alihorno = ContainerPlanload::where('status_invoice', $nomor_invoice)->value('harga_alih');
+        $batal = ContainerPlanload::where('status_invoice', $nomor_invoice)->value('status');
 
         if ($alihorno != null) {
             $status1 = [
@@ -397,7 +404,15 @@ class InvoiceLoadController extends Controller
                 // "status_invoice"=> null,
             ];
 
-        } else {
+        } 
+        elseif ($batal == "Batal-Muat") {
+            $status1 = [
+                "status"=> "Batal-Muat",
+            ];
+
+        } 
+        
+        else {
             $status1 = [
                 "status"=> "Process-Load",
                 // "status_invoice"=> null,

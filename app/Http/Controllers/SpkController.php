@@ -59,6 +59,7 @@ class SpkController extends Controller
         $data = [
             "kode_spk" =>$request->kode_spk,
             "harga_spk" =>$request->harga_spk,
+            "keterangan_spk" =>$request->keterangan_spk,
             "pelayaran_id" =>$request->select_company,
         ];
         $Spk->update($data);
@@ -91,6 +92,7 @@ class SpkController extends Controller
                 'touch_spk' => $request->touch_spk[$i],
                 'harga_spk' => $request->harga_spk[$i],
                 'kode_spk' => $request->kode_spk[$i],
+                'keterangan_spk' => $request->keterangan_spk[$i],
                 'pelayaran_id' => $request->select_company[$i],
                 'status' => 'input',
             ];

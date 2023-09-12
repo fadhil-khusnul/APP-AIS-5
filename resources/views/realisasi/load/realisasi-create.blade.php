@@ -1093,7 +1093,7 @@
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO POL:</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_do_pol" name="tanggal_do_pol" type="text"
-                                placeholder="Masukkan Tanggal BL">
+                                placeholder="Tanggal DO POL">
                             </div>
                         </div>
 
@@ -1523,7 +1523,7 @@
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO POL:</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_do_pol_edit" name="tanggal_do_pol_edit" type="text"
-                                placeholder="Masukkan Tanggal BL">
+                                placeholder="Tanggal DO POL">
                             </div>
                         </div>
 
