@@ -8,6 +8,8 @@ use App\Models\VendorMobil;
 use App\Models\RekeningBank;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
+
 use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
@@ -43,13 +45,43 @@ class OngkoSupirController extends Controller
         ]);
     }
 
-    public function report_load()
+    public function index_load()
     {
-        $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->whereNotNull('biaya_trucking')->get();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->get();
+        $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
+        $sizez = ContainerPlanload::orderBy('id', 'DESC')->get('size');
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
 
+
+
+        // dd($containers_group);
+        $select_company =  OrderJobPlanload::all()->unique('select_company');
+        $vessel =  OrderJobPlanload::all()->unique('vessel');
+
+       
+        return view('pages.vendor.load',[
+            'title' => 'Report Vendor (Load)',
+            'active' => 'Load',
+            'planloads' => $planloads,
+            'containers' => $containers,
+            'containers_group' => $containers_group,
+            'select_company' => $select_company,
+            'vessel' => $vessel,
+
+        ]);
+    }
+
+    public function report_load($slug)
+    {
+        $id = OrderJobPlanload::where("slug", $slug)->value('id');
+
+        // dd($id);
+        $containers = ContainerPlanload::orderBy('updated_at', 'DESC')->where("job_id", $id)->whereNotNull('biaya_trucking')->get();
+
+        $planload = OrderJobPlanload::find($id);
         $vendors = VendorMobil::all();
         $vessels = OrderJobPlanload::select('vessel')->distinct()->get();
-        // dd($vessels);
+
 
 
 
@@ -60,13 +92,14 @@ class OngkoSupirController extends Controller
 
         $belum_lunas = $truck - $supir - $lunas_dibayar;
 
-
+        $reports = ReportVendorTruck::where()
 
         return view('pages.vendor.report-load', [
 
             'title' => 'Report Mobil Truck Load',
             'active' => 'truck',
             "containers" => $containers,
+            "planload" => $planload,
             "vendors" => $vendors,
             "vessels" => $vessels,
             "lunas_dibayar" => $lunas_dibayar,
@@ -74,6 +107,8 @@ class OngkoSupirController extends Controller
 
         ]);
     }
+
+
 
 
     /**
@@ -103,42 +138,48 @@ class OngkoSupirController extends Controller
     public function dibayar(Request $request)
     {
         // dd($request);
-        $container = [];
-        for ($i = 0; $i < count($request->id); $i++) {
-            $container[$i] = ContainerPlanLoad::find($request->id[$i]);
-        }
+        // $container = [];
+        // for ($i = 0; $i < count($request->id); $i++) {
+        //     $container[$i] = ContainerPlanLoad::find($request->id[$i]);
+        // }
 
-        $selisih = [];
-        for ($i = 0; $i < count($container); $i++) {
-            $selisih[$i] = $container[$i]->biaya_trucking - $container[$i]->ongkos_supir - (float)$container[$i]->dibayar;
-        }
+        // $selisih = [];
+        // for ($i = 0; $i < count($container); $i++) {
+        //     $selisih[$i] = $container[$i]->biaya_trucking - $container[$i]->ongkos_supir - (float)$container[$i]->dibayar;
+        // }
 
-        $total_selisih = (float)$request->selisih;
-        for ($i = 0; $i < count($selisih); $i++) {
-            $total_selisih -= $selisih[$i];
-            if ($total_selisih > 0) {
-                $terbayar = (float)$container[$i]->dibayar + $selisih[$i];
-                $dibayar = [
-                    "dibayar" => $terbayar
-                ];
+        // $total_selisih = (float)$request->selisih;
+        // for ($i = 0; $i < count($selisih); $i++) {
+        //     $total_selisih -= $selisih[$i];
+        //     if ($total_selisih > 0) {
+        //         $terbayar = (float)$container[$i]->dibayar + $selisih[$i];
+        //         $dibayar = [
+        //             "dibayar" => $terbayar
+        //         ];
 
-                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
-            } else {
-                $terbayar = (float)$container[$i]->dibayar + $selisih[$i] + $total_selisih;
-                $dibayar = [
-                    "dibayar" => $terbayar
-                ];
+        //         ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+        //     } else {
+        //         $terbayar = (float)$container[$i]->dibayar + $selisih[$i] + $total_selisih;
+        //         $dibayar = [
+        //             "dibayar" => $terbayar
+        //         ];
 
-                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
-                break;
-            }
-        }
+        //         ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+        //         break;
+        //     }
+        // }
 
-        for ($i=0; $i <count($request->id) ; $i++) {
-            # code...
+        $job_id = OrderJobPlanload::where("slug", $request->old_slug)->value('id');
+        $random = Str::random(15);
+        $random_time = $random.time();
 
+        $load = OrderJobPlanload::find($job_id);
+
+        
+        for ($i=0; $i <count($request->id) ; $i++) { 
             $reports= [
-                'job_id' => $request->job_id,
+                'job_id' => $job_id,
+                'path' => 'Report-'.$request->old_slug.'-'.$random_time,
                 'kontainer_id' => $request->id[$i],
                 'dibayarkan_ke' => $request->dibayarkan_ke,
                 'cara_bayar' => $request->cara_bayar,
@@ -146,16 +187,72 @@ class OngkoSupirController extends Controller
                 'tanggal_bayar' => $request->tanggal_bayar,
                 
             ];
+    
+            $report_container = ReportVendorTruck::create($reports);
+        }
 
-            ReportVendorTruck::create($reports);
+       
+        $checked = [];
+        $containers = [];
+        $get_container = [];
+
+
+        for($i = 0; $i < count($request->id); $i++) {
+            $checked[$i] =   $request->id[$i];
+        }
+        // dd($checked);
+
+         for($j = 0; $j < count($checked); $j++) {
+            $containers[$j] = [];
+            $get_container[$j] = ContainerPlanload::where('id', $checked[$j])->get();
+            // dd($get_container);
+            for ($k=0; $k < count($get_container[$j]) ; $k++) {
+                $containers[$j][$k] = ContainerPlanload::where('id',$get_container[$j][$k]->id)->get();
+            }
         }
 
 
 
+        $new_container = [];
 
-        return response()->json([
-            'success'   => true
+        for($i = 0; $i < count($containers); $i++) {
+            $new_container[$i] = [
+                'id' => $containers[$i][0][0]->id,
+                'job_id' => $containers[$i][0][0]->job_id,
+                'size' => $containers[$i][0][0]->size,
+                'type' => $containers[$i][0][0]->type,
+                'jumlah_kontainer' => $containers[$i][0][0]->jumlah_kontainer,
+                'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
+                'biaya_trucking' => $containers[$i][0][0]->biaya_trucking,
+                'ongkos_supir' => $containers[$i][0][0]->ongkos_supir,
+                'cargo' => $containers[$i][0][0]->cargo,
+
+            ];
+
+
+        }
+
+        $save1 = 'storage/report/Report-Vendor-'.$request->old_slug.'-'.$random_time.'.pdf';
+
+        $pdf1 = Pdf::loadview('pdf.vendors.report-vendor-load',[
+            "load" => $load,
+            "containers" => $new_container,
+            'dibayarkan_ke' => $request->dibayarkan_ke,
+            'cara_bayar' => $request->cara_bayar,
+            'keterangan_transfer' => $request->keterangan_transfer,
+            'tanggal_bayar' => $request->tanggal_bayar,
+
+
         ]);
+
+        $pdf1->save($save1);
+
+        return response()->download($save1);
+
+
+        // return response()->json([
+        //     'success'   => true
+        // ]);
     }
 
     /**

@@ -2,126 +2,115 @@
 
 @section('content')
     <div class="row">
-        {{-- <div class="col-md-4">
+     <div class="col-md-12 col-xl-12">
+            <!-- BEGIN Portlet -->
             <div class="portlet">
-                <div class="portlet-body">
-                    <!-- BEGIN Widget -->
-                    <div class="widget8">
-                        <div class="widget8-content">
-                            <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-label-info avatar-circle widget8-avatar">
-                                <div class="avatar-display mt-1">
-                                    <i class="fa fa-truck"></i>
+                <div class="portlet-header portlet-header-bordered">
+                    <h3 class="header-title">
+
+                        <a type="button" href="#" onclick="GoBackWithRefresh();return false;">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </h3>
+                    <i class="header-divider"></i>
+                    <div class="header-wrap header-wrap-block justify-content-start">
+                        <!-- BEGIN Breadcrumb -->
+
+                        <div class="breadcrumb breadcrumb-transparent mb-0">
+                            <a href="/report-vendor-load" class="breadcrumb-item">
+                                <div class="breadcrumb-icon">
+                                    <i class="text-primary fa fa-clone"></i>
                                 </div>
-                            </div>
-                            <!-- END Avatar -->
-                            <h4 class="widget8-highlight">{{count($containers)}}</h4>
-                            <h6 class="widget8-title">Total Container</h6>
+                                <span class="breadcrumb-text text-secondary">Report</span>
+                            </a>
+
+
+                            <a href="/report-vendor-load" class="breadcrumb-item">
+                                <span class="breadcrumb-text text-secondary">Load</span>
+                            </a>
+
+
                         </div>
+                        <!-- END Breadcrumb -->
                     </div>
-                    <!-- END Widget -->
                 </div>
             </div>
-
         </div>
-        <div class="col-md-4">
-            <div class="portlet">
-                <div class="portlet-body">
-                    <!-- BEGIN Widget -->
-                    <div class="widget8">
-                        <div class="widget8-content">
-                            <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-label-primary avatar-circle widget8-avatar">
-                                <div class="avatar-display mt-1">
-                                    <i class="fa fa-truck"></i>
-                                </div>
-                            </div>
-                            <!-- END Avatar -->
-                            <h4 class="widget8-highlight">{{$containers->whereNotNull("nomor_kontainer")->count()}}</h4>
-                            <h6 class="widget8-title">Container Beroperasi</h6>
+         <div class="col-md-12 col-xl-12">
+                <div class="portlet">
+
+                    <div class="portlet-body">
+
+                        <div class="col-md-12 text-center mb-3">
+                            <h1 style="margin-left: auto !important; margin-right:auto !important"
+                                class="portlet-title text-center">KAPAL :
+                            </h1>
+                            <h3 style="margin-left: auto !important; margin-right:auto !important"
+                                class="portlet-title text-center"><u>
+                                {{ $planload->vessel }} ( {{ $planload->select_company }})</u></h3>
                         </div>
-                    </div>
-                    <!-- END Widget -->
-                </div>
-            </div>
+                        <div class="col-md-12 mb-3 table-responsive">
+                            <table border="0" style="margin-left: auto; margin-right:auto;">
+                                <tr>
+                                    <td width="45%">Vessel/Voyage</td>
+                                    <td width="5%">:</td>
+                                    <td width="">
+                                        <label for="" id="nama_kapal">{{ $planload->vessel }}</label>
 
-        </div>
-        <div class="col-md-4">
-            <div class="portlet">
-                <div class="portlet-body">
-                    <!-- BEGIN Widget -->
-                    <div class="widget8">
-                        <div class="widget8-content">
-                            <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-label-secondary avatar-circle widget8-avatar">
-                                <div class="avatar-display mt-1">
-                                    <i class="fa fa-truck"></i>
-                                </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Vessel Code</td>
+                                    <td>:</td>
+                                    <td><label for="" id="kode_kapal">{{ $planload->vessel_code }}</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping Company</td>
+                                    <td>:</td>
+                                    <td> <label for="" id="">{{ $planload->select_company }}</label>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Activity</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->activity }}
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>POL (Port of Loading)</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->pol }}
+
+                                    </td>
+                                </tr>
+                               
+                            </table>
+
+                            <div class="col-12 text-center mt-3">
+                                <a href="/processload-create/{{ $planload->slug }}" type="button"
+                                    class="btn btn-success">ke Process <i
+                                        class="fa fa-arrow-right"></i></a>
                             </div>
-                            <!-- END Avatar -->
-                            <h4 class="widget8-highlight">{{$containers->whereNull("nomor_kontainer")->count()}}</h4>
-                            <h6 class="widget8-title">Container Tidak Beroperasi</h6>
-                        </div>
-                    </div>
-                    <!-- END Widget -->
-                </div>
-            </div>
 
-        </div>
-
-        <div class="col-md-6">
-            <div class="portlet">
-                <div class="portlet-body">
-                    <!-- BEGIN Widget -->
-                    <div class="widget8">
-                        <div class="widget8-content">
-                            <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-label-success avatar-circle widget8-avatar">
-                                <div class="avatar-display">
-                                    <i class="fa fa-check-circle"></i>
-                                </div>
-                            </div>
-                            <!-- END Avatar -->
-                            <h4 class="widget8-highlight">@rupiah($lunas_dibayar)</h4>
-                            <h6 class="widget8-title">Total Biaya Trucking Lunas</h6>
-
-                        </div>
-                    </div>
-                    <!-- END Widget -->
-                </div>
-            </div>
-
-        </div>
-        <div class="col-md-6">
-            <div class="portlet">
-                <div class="portlet-body">
-                    <!-- BEGIN Widget -->
-                    <div class="widget8">
-                        <div class="widget8-content">
-                            <!-- BEGIN Avatar -->
-                            <div class="avatar avatar-label-danger avatar-circle widget8-avatar">
-                                <div class="avatar-display">
-                                    <i class="fa fa-exclamation-circle"></i>
-                                </div>
-                            </div>
-                            <!-- END Avatar -->
-                            <h4 class="widget8-highlight">@rupiah($belum_lunas)</h4>
-                            <h6 class="widget8-title">Total Biaya Trucking Belum Lunas</h6>
 
                         </div>
+
+
+                        <!-- END Form -->
                     </div>
-                    <!-- END Widget -->
                 </div>
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
             </div>
-
-        </div> --}}
-
-
         <div class="col-md-12 col-xl-12">
 
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="portlet-title text-center">Tabel {{ $title }}</h3>
+                    <h3 class="portlet-title text-center"><u><b>KONTAINER</b></u></h3>
                 </div>
                 <div class="portlet-body">
                     <hr>
@@ -144,14 +133,7 @@
                                 
                             </div>
                         </div>
-                        <div class="col-6">
-                            <select multiple id="pilih_vessel" name="pilih_vessel" class="form-select" onchange="filter_vessel(this)">
-                                @foreach ($vessels as $vessel)
-                                    <option value="{{ $vessel->vessel }}">{{ $vessel->vessel }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
+                       
                         <div class="col-4">
                             <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
                                 @foreach ($vendors as $vendor)
@@ -182,14 +164,13 @@
                     </div>
 
                     <!-- BEGIN Datatable -->
-                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize" style="width: 100%">
+                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize mt-5" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th></th>
                                 <th>Status Pelunasan</th>
                                 <th>Tanggal Kegiatan</th>
-                                <th>Veseel</th>
                                 <th>Nomor Kontainer</th>
                                 <th>Vendor</th>
                                 <th>Supir/Nomor Polisi</th>
@@ -238,9 +219,7 @@
                                             {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
                                         @endif
                                     </td>
-                                    <td>
-                                        {{ $container->planload->vessel }}
-                                    </td>
+                                   
 
                                     <td>
                                         @if ($container->nomor_kontainer != null)
@@ -298,6 +277,180 @@
 
                         </tbody>
                     </table>
+
+                    
+                    <!-- END Datatable -->
+                </div>
+
+
+            </div>
+
+            <!-- END Portlet -->
+            <!-- BEGIN Portlet -->
+
+            <!-- END Portlet -->
+        </div>
+
+        <div class="col-md-12 col-xl-12">
+
+            <div class="portlet">
+                <div class="portlet-header portlet-header-bordered">
+                    <h3 class="portlet-title text-center"><u><b>TABEL PEMBAYARAN</b></u></h3>
+                </div>
+                <div class="portlet-body">
+                    <hr>
+                    <label for="" class="col-form-label">Filter Tabel :</label>
+                    <div class="row row-cols-lg-auto py-3 px-4">
+                        {{-- <div class="col-sm-5 col-lg-4">
+                            <input class="form-control" type="text" id="daterangepicker_vendor">
+                        </div> --}}
+
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="mb-2">
+                                <!-- BEGIN Input Group -->
+                                <div class="input-group input-daterange">
+                                    <input type="text" id="min" class="form-control" placeholder="From" onchange="filter_date()">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </span>
+                                    <input type="text" id="max" class="form-control" placeholder="To" onchange="filter_date()">
+                                </div>
+                                
+                            </div>
+                        </div>
+                       
+                        <div class="col-4">
+                            <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+                        
+                        <div class="col-6">
+                            <select id="pilih_status" name="pilih_status" class="form-select" onchange="filter_status(this)">
+                                <option value="Belum Lunas">Belum Lunas</option>
+                                <option value="Sudah Lunas">Sudah Lunas</option>
+
+                            </select>
+
+                        </div>
+
+
+                       
+
+
+                    </div>
+
+                   
+
+                    <!-- BEGIN Datatable -->
+                    <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize mt-5" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th></th>
+                                <th>Tanggal Bayar</th>
+                                <th>Dibayarkan ke</th>
+                                <th>Cara Bayar</th>
+                                <th>Keterangan Bayar</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($containers as $container)
+                                <tr>
+                                    <td>
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="text-nowrap">
+
+
+                                        <a type="button" href="/preview-invoice/{{ $pdf->path }}"
+                                            class="btn btn-primary btn-sm ">Preview Invoice <i
+                                                class="fa fa-eye"></i></a>
+                                        <button type="button" value="{{ $pdf->id }}"
+                                            onclick="delete_invoice(this)" class="btn btn-danger btn-sm "><i
+                                                class="fa fa-trash"></i></button>
+
+                                    </td>
+
+                                    <td>
+
+                                        @if (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) == 0)
+                                            <i class="marker marker-dot text-success"></i> Sudah Lunas
+                                        @elseif (($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar) > 0)
+                                            <i class="marker marker-dot text-danger"></i>Belum Lunas
+                                        @endif
+                                    </td>
+
+                                    <td>
+                                        @if ($container->date_activity != null)
+                                            <input type="hidden" id="date[{{ $loop->iteration }}]" name="date" value="{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}">
+                                            {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                                        @endif
+                                    </td>
+                                   
+
+                                    <td>
+                                        @if ($container->nomor_kontainer != null)
+                                            {{ $container->nomor_kontainer }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($container->nomor_polisi != null)
+                                            {{ $container->mobils->vendors->nama_vendor }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($container->nomor_polisi != null)
+                                            {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+
+                                    <td>
+                                        @if ($container->biaya_trucking != null)
+                                            @rupiah($container->biaya_trucking)
+                                            @else
+                                                -
+                                        @endif
+                                    </td>
+                            <td>
+                                @if ($container->biaya_trucking != null)
+                                    @rupiah($container->ongkos_supir)
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td>
+                                @if ($container->biaya_trucking != null)
+                                    @rupiah((float)$container->dibayar)
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td>
+                                @if ($container->biaya_trucking != null)
+                                    @rupiah(($container->biaya_trucking - $container->ongkos_supir - (float)$container->dibayar))
+                                    {{-- @rupiah($container->selisih) --}}
+                                @else
+                                -
+                                @endif
+                            </td>
+                            </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+
+                    
                     <!-- END Datatable -->
                 </div>
 
@@ -320,6 +473,7 @@
                 <input type="hidden" name="id_container" id="id_container">
                 <input type="hidden" name="old_terbayar" id="old_terbayar">
                 <input type="hidden" name="old_selisih" id="old_selisih">
+                <input type="hidden" name="old_slug" id="old_slug" value="{{$planload->slug}}">
 
                 <div class="modal-content">
                     <div class="modal-header">

@@ -289,13 +289,13 @@ function bayar() {
                             var dibayarkan_ke = $("#dibayarkan_ke").val();
                             var cara_bayar = $("#cara_bayar").val();
                             var keterangan_transfer = $("#keterangan_transfer").val();
-                            
 
                             var data = {
                                 _token: csrf,
                                 selisih: dibayar,
                                 id: id_container,
                                 cara_bayar: cara_bayar,
+                                old_slug: $("#old_slug").val(),
                                 tanggal_bayar: tanggal_bayar,
                                 dibayarkan_ke: dibayarkan_ke,
                                 keterangan_transfer: keterangan_transfer,
@@ -305,6 +305,9 @@ function bayar() {
                                 type: "POST",
                                 url: "/kontainer-dibayar",
                                 data: data,
+                                xhrFields: {
+                                    responseType: "blob",
+                                },
 
                                 success: function (response) {
                                     // console.log(response);
@@ -313,10 +316,18 @@ function bayar() {
                                             icon: "success",
                                             title: "Behasil Dibayar",
                                             timer: 2e3,
-                                        })
-                                        .then((result) => {
-                                            location.reload();
-                                        });
+                                        });  
+                                        var blob = new Blob([response]);
+                                        var link = document.createElement("a");
+                                        link.href =
+                                            window.URL.createObjectURL(blob);
+                                        link.download =
+                                            "" + tanggal_bayar + dibayarkan_ke + ".pdf";
+                                        link.click();
+
+                                        setTimeout(function () {
+                                            window.location.reload();
+                                        }, 10);
                                 },
                             });
                         },

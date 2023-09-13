@@ -1011,6 +1011,16 @@
                     </div>
                     <div class="modal-body d-grid gap-3">
                         <div class="row">
+                            <label for="" class="col-sm-4 col-form-label">Tanggal Bayar :<span class="text-danger">*</span></label>
+                            <div class="col-sm-8 validation-container">
+
+                                <input data-bs-toggle="tooltip" type="text" class="form-control date_activity"
+                                    id="tanggal_bayar" name="tanggal_bayar"
+                                    placeholder="Tanggal Bayar..." required>
+
+                            </div>
+                        </div>
+                        <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Nominal :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">

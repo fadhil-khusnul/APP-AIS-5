@@ -92,26 +92,7 @@
 
                                     </td>
                                 </tr>
-                                {{-- <tr>
-                                    <td>POT (Port of Transit)</td>
-                                    <td>:</td>
-                                    <td>
-                                        @if ($planload->pot != null)
-                                            {{ $planload->pot }}
-                                        @else
-                                            -
-                                        @endif
-
-                                    </td>
-                                </tr> --}}
-
-                                {{-- <tr>
-                                    <td>POD (Port of Discharge)</td>
-                                    <td>:</td>
-                                    <td>{{ $planload->pod }}
-
-                                    </td>
-                                </tr> --}}
+                               
                             </table>
 
                             <div class="col-12 text-center mt-3">

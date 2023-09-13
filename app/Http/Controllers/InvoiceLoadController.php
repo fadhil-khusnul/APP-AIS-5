@@ -27,6 +27,7 @@ use Illuminate\Support\Carbon;
 use App\Models\ShippingCompany;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\DetailBarangLoad;
+use App\Models\TanggalBayarInvoice;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Controllers\Controller;
@@ -504,10 +505,20 @@ class InvoiceLoadController extends Controller
     }
 
     public function dibayar(Request $request) {
-        // dd(count($request->id));
         $container = [];
         for ($i = 0; $i < count($request->id); $i++) {
             $container[$i] = InvoiceLoad::find($request->id[$i]);
+        }
+        
+        // dd($request);
+        for ($i = 0; $i < count($request->id); $i++) {
+            $tanggal_bayar_invoice = [
+                "invoice_id" => $container[$i]->id,
+                "pembayaran" => $request->selisih,
+                "tanggal_bayar" => $request->tanggal_bayar
+            ];
+            TanggalBayarInvoice::create($tanggal_bayar_invoice);
+            
         }
 
         $selisih = [];

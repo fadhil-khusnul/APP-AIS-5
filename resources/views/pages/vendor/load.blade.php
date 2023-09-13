@@ -26,10 +26,11 @@
                                     <th>Shipping Company</th>
                                     <th>Activity</th>
                                     <th>POL</th>
-                                    {{-- <th>POT</th> --}}
 
 
                                     <th class="align-top"> Jumlah Kontainer :</th>
+                                   
+
 
                                 </tr>
                             </thead>
@@ -56,9 +57,9 @@
                                             @endif
                                         </td>
                                         <td class="text-center text-nowrap">
-                                            <a href="/processload-create/{{ $planload->slug }}"
-                                                class="btn btn-success btn-sm">Process Load <i
-                                                    class="fa fa-pencil"></i>
+                                            <a href="/report-vendor-load/{{ $planload->slug }}"
+                                                class="btn btn-success btn-sm">Report <i
+                                                    class="fa fa-report"></i>
                                             </a>
 
 

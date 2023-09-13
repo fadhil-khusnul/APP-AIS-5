@@ -307,7 +307,8 @@ Route::delete('/rekening-bank/{id}', [OngkoSupirController::class, 'destroy_reke
 
 //supir
 Route::get('/supir-mobil', [OngkoSupirController::class, 'index_supir']);
-Route::get('/report-vendor-load', [OngkoSupirController::class, 'report_load']);
+Route::get('/report-vendor-load', [OngkoSupirController::class, 'index_load']);
+Route::get('/report-vendor-load/{slug}', [OngkoSupirController::class, 'report_load']);
 Route::get('/report-vendor-discharge', [OngkoSupirController::class, 'report_discharge']);
 Route::get('/report-vendor-trucking', [OngkoSupirController::class, 'report_trucking']);
 

@@ -1322,6 +1322,12 @@ function bayar() {
                             var dibayar = $("#terbayar")
                                 .val()
                                 .replace(/\./g, "");
+                            var tanggal_bayar = $("#tanggal_bayar").val();
+                            tanggal_bayar = moment(
+                                tanggal_bayar,
+                                "dddd, DD-MMMM-YYYY"
+                            ).format("YYYY-MM-DD");
+                            // console.log(tanggal_bayar);
                             // var old_terbayar = $("#old_terbayar")
                             //     .val()
                             //     .replace(/\./g, "");
@@ -1332,6 +1338,7 @@ function bayar() {
                             var data = {
                                 _token: csrf,
                                 selisih: dibayar,
+                                tanggal_bayar: tanggal_bayar,
                                 id: id_container,
                             };
 
