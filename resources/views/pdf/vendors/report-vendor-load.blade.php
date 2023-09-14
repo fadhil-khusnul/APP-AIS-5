@@ -110,10 +110,11 @@
                             <tr>
                                 <th>NO.</th>
                                 <th>NOMOR KONTAINER</th>
-                                <th>SIZE/TYPE KONTAINER</th>
+                                <th>SIZE/TYPE</th>
                                 <th>CARGO</th>
                                 <th>BIAYA TRUCKING</th>
                                 <th>ONGKOS SUPIR</th>
+                                <th>TAGIHAN</th>
                             </tr>
                         
                         </thead>
@@ -126,10 +127,26 @@
                                 <td align="center" valign="top">{{ $container['size'] }}/{{ $container['type'] }}</td>
                                 
                                 <td align="center" valign="top">{{ $container['cargo'] }}</td>
-                                <td align="center" valign="top">@rupiah($container['biaya_trucking'])</td>
-                                <td align="center" valign="top">@rupiah($container['ongkos_supir'])</td>
+                                <td align="right" valign="top">@rupiah($container['biaya_trucking'])</td>
+                                <td align="right" valign="top">@rupiah($container['ongkos_supir'])</td>
+                                <td align="right" valign="top">@rupiah($container['biaya_trucking'] - $container['ongkos_supir'])</td>
                             </tr>
                             @endforeach
+                            <tr>
+                                <td colspan="5">SELISIH</td>
+                                <td align="right">:</td>
+                                <td align="right">@rupiah($selisih)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">DIBAYAR</td>
+                                <td align="right">:</td>
+                                <td align="right">@rupiah($dibayar)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">SISA</td>
+                                <td align="right">:</td>
+                                <td align="right">@rupiah($selisih - $dibayar)</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

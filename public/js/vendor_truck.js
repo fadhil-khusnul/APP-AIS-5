@@ -10,23 +10,23 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
         [5, 10, 20, "All"],
     ],
     dom: 'Bfrltip',
-    buttons:[
-    {
-        extend:"excel",
-        title: "Report Vendor" ,
-        className:"btn btn-flat-success",
-        exportOptions: {
-            columns: [0,2,3,4,5,6,7,8,9,10,11],
-        }
+    buttons: [
+        {
+            extend: "excel",
+            title: "Report Vendor",
+            className: "btn btn-flat-success",
+            exportOptions: {
+                columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            }
 
-    },
-    {
+        },
+        {
             extend: 'pdf',
             orientation: 'landscape',
-            className:"btn btn-flat-success",
-            className:"btn btn-flat-success",
-            pageSize : 'LEGAL',
-            title: "Report Vendor" ,
+            className: "btn btn-flat-success",
+            className: "btn btn-flat-success",
+            pageSize: 'LEGAL',
+            title: "Report Vendor",
             // customize : function(doc){
             //     doc.defaultStyle.alignment = 'center';
             //     doc.styles.tableHeader.alignment = 'center';
@@ -34,7 +34,7 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
             //     doc.content[1].table.widths = [15,50,50,50,50,50,50,50,50,70,50,50,50,50,50,50];;
             // },
             exportOptions: {
-                columns: [0,2,3,4,5,6,7,8,9,10,11],
+                columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             }
         },
     ],
@@ -45,26 +45,26 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
 
 
 $("#pilih_vessel").select2
-({
-    dropdownAutoWidth:true,
-    allowClear:true,
-    placeholder:"Pilih vessel",
-    stateSave: true,
+    ({
+        dropdownAutoWidth: true,
+        allowClear: true,
+        placeholder: "Pilih vessel",
+        stateSave: true,
 
 
 
-})
+    })
 $("#pilih_status").select2
-({
-    dropdownAutoWidth:true,
-    allowClear:true,
-    placeholder:"Pilih status",
-})
+    ({
+        dropdownAutoWidth: true,
+        allowClear: true,
+        placeholder: "Pilih status",
+    })
 
 var check = tabelvendor.$(".check-container1", { page: "all" });
 
 $("#add_biaya").attr("disabled", "disabled");
-check.click(function() {
+check.click(function () {
     if ($(this).is(":checked")) {
         $("#add_biaya").removeAttr("disabled");
     } else {
@@ -273,6 +273,12 @@ function bayar() {
                         },
                         submitHandler: function (form) {
                             // var id_container = $("#id_container").val();
+
+                            var id_container_new = $(".check-container1:checked")
+                                .map(function () {
+                                    return this.value;
+                                })
+                                .get();
                             var dibayar = $("#dibayar")
                                 .val()
                                 .replace(/\./g, "");
@@ -293,12 +299,13 @@ function bayar() {
                             var data = {
                                 _token: csrf,
                                 selisih: dibayar,
-                                id: id_container,
+                                id: id_container_new,
                                 cara_bayar: cara_bayar,
                                 old_slug: $("#old_slug").val(),
                                 tanggal_bayar: tanggal_bayar,
                                 dibayarkan_ke: dibayarkan_ke,
                                 keterangan_transfer: keterangan_transfer,
+                                total_bayar: Selisih
                             };
 
                             $.ajax({
@@ -316,18 +323,18 @@ function bayar() {
                                             icon: "success",
                                             title: "Behasil Dibayar",
                                             timer: 2e3,
-                                        });  
-                                        var blob = new Blob([response]);
-                                        var link = document.createElement("a");
-                                        link.href =
-                                            window.URL.createObjectURL(blob);
-                                        link.download =
-                                            "" + tanggal_bayar + dibayarkan_ke + ".pdf";
-                                        link.click();
+                                        });
+                                    var blob = new Blob([response]);
+                                    var link = document.createElement("a");
+                                    link.href =
+                                        window.URL.createObjectURL(blob);
+                                    link.download =
+                                        "" + tanggal_bayar + dibayarkan_ke + ".pdf";
+                                    link.click();
 
-                                        setTimeout(function () {
-                                            window.location.reload();
-                                        }, 10);
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 10);
                                 },
                             });
                         },

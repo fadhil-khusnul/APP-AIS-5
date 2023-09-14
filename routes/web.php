@@ -311,6 +311,8 @@ Route::get('/report-vendor-load', [OngkoSupirController::class, 'index_load']);
 Route::get('/report-vendor-load/{slug}', [OngkoSupirController::class, 'report_load']);
 Route::get('/report-vendor-discharge', [OngkoSupirController::class, 'report_discharge']);
 Route::get('/report-vendor-trucking', [OngkoSupirController::class, 'report_trucking']);
+Route::get('/preview-vendor-load/{path}', [OngkoSupirController::class, 'preview_report']);
+Route::delete('/delete-report/{id}', [OngkoSupirController::class, 'delete_report']);
 
 Route::post('/add-supir', [OngkoSupirController::class, 'store_supir']);
 Route::get('/supir-mobil/{id}/edit', [OngkoSupirController::class, 'edit_supir']);
