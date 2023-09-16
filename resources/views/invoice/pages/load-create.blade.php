@@ -123,7 +123,7 @@
             <div class="col-md-12">
                 <div class="portlet">
 
-                    <div class="portlet-body">
+                    <Pdiv class="portlet-body">
 
 
                         <div class="col-md-12 text-center">
@@ -259,7 +259,7 @@
 
                         </div>
 
-                    </div>
+                    </Pdiv>
                     <!-- BEGIN Portlet -->
 
                     <!-- END Portlet -->
@@ -617,7 +617,7 @@
 
                                 <div style="" class="">
                                     <button id="add_total" type="button" onclick="bayar()"
-                                    class="btn btn-success">Bayar <i class="fa fa-arrow-right"></i></button>
+                                    class="btn btn-success">Dana Telah Terima <i class="fa fa-check"></i></button>
                                 </div>
 
 
