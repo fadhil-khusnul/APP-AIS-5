@@ -576,18 +576,18 @@ class PlanDischargeController extends Controller
         $planload->update($load);
         $container->update($data);
 
-        SealContainer::where('kontainer_id_discharge', $id)->delete();
+        // SealContainer::where('kontainer_id_discharge', $id)->delete();
 
-        for ($i=0; $i <count($request->seal) ; $i++) {
+        // for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $seal = [
-                "job_id_discharge" => $request->job_id,
-                "kontainer_id_discharge" => $id,
-                "seal_kontainer" => $request->seal[$i],
-            ];
+        //     $seal = [
+        //         "job_id_discharge" => $request->job_id,
+        //         "kontainer_id_discharge" => $id,
+        //         "seal_kontainer" => $request->seal[$i],
+        //     ];
 
-            SealContainer::create($seal);
-        }
+        //     SealContainer::create($seal);
+        // }
        
 
 
@@ -654,18 +654,18 @@ class PlanDischargeController extends Controller
         $planload->update($load);
         $container->update($data);
 
-        SealContainer::where('kontainer_id_discharge', $id)->delete();
+        // SealContainer::where('kontainer_id_discharge', $id)->delete();
 
-        for ($i=0; $i <count($request->seal) ; $i++) {
+        // for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $seal = [
-                "job_id_discharge" => $request->job_id,
-                "kontainer_id_discharge" => $id,
-                "seal_kontainer" => $request->seal[$i],
-            ];
+        //     $seal = [
+        //         "job_id_discharge" => $request->job_id,
+        //         "kontainer_id_discharge" => $id,
+        //         "seal_kontainer" => $request->seal[$i],
+        //     ];
 
-            SealContainer::create($seal);
-        }
+        //     SealContainer::create($seal);
+        // }
 
       
 
@@ -710,16 +710,16 @@ class PlanDischargeController extends Controller
         $container = PlanDischargeContainer::create($data);
 
 
-        for ($i=0; $i <count($request->seal) ; $i++) {
+        // for ($i=0; $i <count($request->seal) ; $i++) {
 
-            $seal = [
-                "job_id_discharge" => $request->job_id,
-                "kontainer_id_discharge" => $container->id,
-                "seal_kontainer" => $request->seal[$i],
-            ];
+        //     $seal = [
+        //         "job_id_discharge" => $request->job_id,
+        //         "kontainer_id_discharge" => $container->id,
+        //         "seal_kontainer" => $request->seal[$i],
+        //     ];
 
-            SealContainer::create($seal);
-        }
+        //     SealContainer::create($seal);
+        // }
 
 
        

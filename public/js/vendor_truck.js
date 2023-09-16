@@ -9,6 +9,7 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
         [5, 10, 20, -1],
         [5, 10, 20, "All"],
     ],
+    info : false,
     // dom: 'Bfrltip',
     // buttons: [
     //     {
@@ -85,6 +86,16 @@ check.click(function () {
     }
 });
 
+function countCheck() {
+    var ids = []
+
+    var rowcollection =  tabelvendor.$('input[name="letter"]:checked', {"page": "all"});
+    rowcollection.each(function (index, elem) {
+        ids.push($(elem).val());
+    });
+    document.getElementById("nomor_check").innerHTML = ids.length;
+}
+
 function filter_date() {
     var date_min = new Date($("#min").val());
     var seconds_min = Math.round(date_min.getTime() / 1000);
@@ -139,10 +150,10 @@ function filter_vendor(val) {
     console.log(vendor);
 
     if (vendor == null) {
-        tabelvendor.columns(6).search("").draw();
+        tabelvendor.columns(5).search("").draw();
     } else {
         tabelvendor
-            .columns(6)
+            .columns(5)
             .search(vendor.join("|"), true, false, true)
             .draw();
     }

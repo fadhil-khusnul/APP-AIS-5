@@ -198,7 +198,7 @@
                                             <div class="validation-container">
                                                 <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                     class="form-check-input check-container1"
-                                                    id="kontainer_check[{{ $loop->iteration }}]" name="letter"
+                                                    id="kontainer_check[{{ $loop->iteration }}]" onchange="countCheck()" name="letter"
                                                     value="{{ $container->id }}" required autofocus>
 
                                             </div>
@@ -279,10 +279,12 @@
 
                         </tbody>
                     </table>
+                    <label for="" class="" style="margin-left: 10px"><b id="nomor_check">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
 
 
                     <!-- END Datatable -->
                 </div>
+
 
 
             </div>

@@ -108,14 +108,13 @@ class ProcessLoadController extends Controller
         $spks_edit = Spk::where('pelayaran_id', $pelayaran_id)->where('status', 'input')->orWhere('status', 'Container')->get();
         $sealscontainer = SealContainer::where('job_id', $id)->select('job_id')->groupby('job_id')->get();
 
-        $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
+        $containers = ContainerPlanload::orderBy("id", "DESC")->where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
             $query
                 ->Where('status', '=', 'Process-Load')
                 ->orWhereNull('status');
         })->get();
 
-        $containers_info = ContainerPlanload::where('job_id', $id)->whereNull('slug')->get();
-
+        $containers_info = ContainerPlanload::orderBy("id", "DESC")->where('job_id', $id)->get();
 
 
         $container_batal = ContainerPlanload::where('job_id', $id)->where(function ($query) {
