@@ -113,7 +113,7 @@
                             <div class="text-center mt-3">
                                 <a href="/realisasi-load-create/{{ $planload->slug }}"
                                     class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Back to Realisasi (POL)
+                                    class="fa fa-arrow-left"></i> Realisasi (POL)
                                 </a>
                             </div>
 
@@ -458,11 +458,12 @@
                             </div>
 
                             <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
-                                <thead id="thead_alih" class="table-danger">
+                                <thead id="thead_alih" class="table-danger text-nowrap">
                                     <tr>
                                         <th class="">No</th>
-                                        <th class="">Preview SI</th>
-                                        <th class="">Input</th>
+                                        <th class=""></th>
+                                        <th class="">Jenis SI</th>
+
                                         <th class="">Shipper</th>
                                         <th class="">Consigne</th>
                                         <th class="">Tanggal BL</th>
@@ -470,13 +471,11 @@
 
                                         <th class="">Tanggal DO</th>
                                         <th class="">DO FEE</th>
-                                        <th class="">Jenis SI</th>
-                                        <th class=""></th>
 
 
                                     </tr>
                                 </thead>
-                                <tbody id="tbody_alih" class="">
+                                <tbody id="tbody_alih" class="text-nowrap">
                                     @foreach ($pdfs as $pdf)
                                         <tr>
 
@@ -484,28 +483,34 @@
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td class="text-center">
+                                                <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
+                                                    class="btn btn-danger btn-sm "><i
+                                                        class="fa fa-trash"></i></button>
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-primary btn-sm "><i
-                                                        class="fa fa-eye"></i> Preview SI</a>
+                                                    class="btn btn-info btn-sm ">SI <i
+                                                        class="fa fa-eye"></i></a>
+                                                        @if ($pdf->status == "POD")
 
-                                            <td>
-                                                @if ($pdf->status == "POD")
-
-                                                <button type="button" value="{{ $pdf->id }}" type="button"
-                                                    onclick="do_fee_edit(this)"
-                                                    class="btn btn-primary btn-sm ">Edit DO <i
-                                                    class="fa fa-pencil"></i></button>
-                                                @else
-                                                <button type="button" value="{{ $pdf->id }}" type="button"
-                                                    onclick="input_biaya_do(this)"
-                                                    class="btn btn-success btn-sm ">Input DO <i
-                                                    class="fa fa-pencil"></i></button>
-
-                                                @endif
-
-
+                                                        <button type="button" value="{{ $pdf->id }}" type="button"
+                                                            onclick="do_fee_edit(this)"
+                                                            class="btn btn-primary btn-sm ">Edit DO <i
+                                                            class="fa fa-pencil"></i></button>
+                                                        @else
+                                                        <button type="button" value="{{ $pdf->id }}" type="button"
+                                                            onclick="input_biaya_do(this)"
+                                                            class="btn btn-success btn-sm ">Input DO <i
+                                                            class="fa fa-pencil"></i></button>
+        
+                                                        @endif
                                             </td>
+                                            <td>
 
+                                                @if ($pdf->status_si == 'Default')
+                                                    <i class="marker marker-dot text-success"></i> BIASA
+                                                @else
+                                                        <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
+                                                @endif
+                                            </td>
 
                                             <td>
                                                 {{ $pdf->shipper }}
@@ -549,22 +554,10 @@
 
                                             </td>
 
-                                            <td>
-
-                                                @if ($pdf->status_si == 'Default')
-                                                    <i class="marker marker-dot text-success"></i> BIASA
-                                                @else
-                                                     <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
-                                                @endif
-                                            </td>
+           
 
 
-                                            <td class="no-indent">
-                                                <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                    class="btn btn-danger btn-sm "><i
-                                                        class="fa fa-trash"></i></button>
-
-                                            </td>
+                                           
 
 
                                         </tr>
@@ -574,10 +567,10 @@
                             </table>
 
                             <div class="text-center mt-3">
-                                <a href="/realisasi-load-create/{{ $planload->slug }}"
+                               
+                                <a href="/invoice-load-create/{{ $planload->slug }}"
                                     class="btn btn-success ">
-                                    <i class="fa fa-arrow-left"></i>
-                                    Realisasi POL
+                                    Invoice <i class="fa fa-arrow-right"></i>
                                 </a>
                             </div>
 

@@ -598,8 +598,8 @@ function input_bl(e) {
                     var tanggal_bl = $("#tanggal_bl").val();
                     tanggal_bl = moment(tanggal_bl, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
                     
-                    var tanggal_do_pol = $("#tanggal_do_pol").val();
-                    tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    // var tanggal_do_pol = $("#tanggal_do_pol").val();
+                    // tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
                     var biaya_do_pol = $("#biaya_do_pol").val().replace(/\./g, "");
 
 
@@ -608,7 +608,7 @@ function input_bl(e) {
                         id: id,
                         nomor_bl: nomor_bl,
                         tanggal_bl: tanggal_bl,
-                        tanggal_do_pol: tanggal_do_pol,
+                        // tanggal_do_pol: tanggal_do_pol,
                         biaya_do_pol: biaya_do_pol,
                     };
 
@@ -684,12 +684,7 @@ function update_bl(e) {
             ).format("dddd, DD-MM-YYYY");
             $("#tanggal_bl_edit").val(old_tanggal_result);
 
-            var old_tanggal_do_pol = moment(
-                response.result.tanggal_do_pol,
-                "YYYY-MM-DD"
-            ).format("dddd, DD-MM-YYYY");
-            $("#tanggal_do_pol_edit").val(old_tanggal_do_pol);
-
+           
             $("#biaya_do_pol_edit").val(response.result.biaya_do_pol);
 
             $("#valid_bl_edit").validate({
@@ -722,9 +717,9 @@ function update_bl(e) {
                     var tanggal_bl = $("#tanggal_bl_edit").val();
                     tanggal_bl = moment(tanggal_bl, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
 
-                    var tanggal_do_pol = $("#tanggal_do_pol_edit").val();
-                    tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
-                    console.log(tanggal_do_pol);
+                    // var tanggal_do_pol = $("#tanggal_do_pol_edit").val();
+                    // tanggal_do_pol = moment(tanggal_do_pol, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    // console.log(tanggal_do_pol);
 
                     var biaya_do_pol = $("#biaya_do_pol_edit").val().replace(/\./g, "");
 
@@ -736,7 +731,7 @@ function update_bl(e) {
                         nomor_bl: nomor_bl,
                         biaya_do_pol: biaya_do_pol,
                         tanggal_bl: tanggal_bl,
-                        tanggal_do_pol: tanggal_do_pol,
+                        // tanggal_do_pol: tanggal_do_pol,
                     };
 
                     $.ajax({

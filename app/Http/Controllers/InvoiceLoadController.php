@@ -32,6 +32,7 @@ use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 
 class InvoiceLoadController extends Controller
@@ -100,6 +101,7 @@ class InvoiceLoadController extends Controller
             $query->where('status', 'Batal-Muat');
                 ;
         })->get();
+        $container_si = ContainerPlanload::where('job_id', $id)->whereNotNull("slug")->get();
 
         $sealsc = SealContainer::where('job_id', $id)->get();
 
@@ -136,6 +138,16 @@ class InvoiceLoadController extends Controller
             }
         }
         //
+        $id_biaya = SiPdfContainer::where("job_id", $id)->distinct()->get('container_id');
+
+        dd($id_biaya);
+
+        $pdfs_si = SiPdfContainer::where('job_id', $id)->where(function($query) {
+            $query->where('status',"POD");
+        })->get();
+
+        // dd($pdfs_si);
+
         return view('invoice.pages.load-create',[
             'title' => 'Invoice LOAD',
             'active' => 'invoice',
@@ -149,6 +161,8 @@ class InvoiceLoadController extends Controller
             'kontainers' => $kontainer,
             'lokasis' => $lokasis,
             'seals' => $seals,
+            // 'modals' => $modals,
+            'pdfs_si' => $pdfs_si,
             'sizes' => $sizes,
             'types' => $types,
             'danas' => $danas,
@@ -158,6 +172,7 @@ class InvoiceLoadController extends Controller
             'spks' => $spks,
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
+            'container_si' => $container_si,
             'container_batal' => $container_batal,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
@@ -170,8 +185,48 @@ class InvoiceLoadController extends Controller
         ]);
     }
 
+    public function input_si($slug)
+    {
+        $biaya_stuffing = ContainerPlanload::where("slug", $slug)->sum("biaya_stuffing");
+        $biaya_trucking = ContainerPlanload::where("slug", $slug)->sum("biaya_trucking");
+        $biaya_thc = ContainerPlanload::where("slug", $slug)->sum("biaya_thc");
+        $biaya_seal = ContainerPlanload::where("slug", $slug)->sum("biaya_seal");
+        $freight = ContainerPlanload::where("slug", $slug)->sum("freight");
+        $lss = ContainerPlanload::where("slug", $slug)->sum("lss");
+        $thc_pod = ContainerPlanload::where("slug", $slug)->sum("thc_pod");
+        $lolo = ContainerPlanload::where("slug", $slug)->sum("lolo");
+        $dooring = ContainerPlanload::where("slug", $slug)->sum("dooring");
+        $demurrage = ContainerPlanload::where("slug", $slug)->sum("demurrage");
+        $total_biaya_lain = ContainerPlanload::where("slug", $slug)->sum("total_biaya_lain");
+
+        $get_total = (int) $biaya_stuffing + $biaya_trucking + $biaya_thc
+        + $biaya_seal + $freight + $lss
+        + $thc_pod + $lolo + $dooring
+        + $demurrage + $total_biaya_lain;
+
+        $biaya_do_pol = SiPdfContainer::where("container_id", $slug)->value("biaya_do_pol");
+        $biaya_do_pod = SiPdfContainer::where("container_id", $slug)->value("biaya_do_pod");
+
+        $total = (int) $get_total + $biaya_do_pol + $biaya_do_pod;
+
+        // dd($total);
+        $kontainer = ContainerPlanload::where("slug", $slug)->get();
+        $modals = SiPdfContainer::find($slug);
+
+        // $this->create_invoice($modals);
+       
+        return response()->json([
+            'total' => $total,
+            'kontainer' => $kontainer,
+            'modals' => $modals,
+           
+        ]);
+    }
+
+
     public function masukkan_invoice(Request $request)
     {
+        // dd($slug);
 
         $Container = ContainerPlanload::findOrFail($request->id);
         // $random = Str::random(15);
@@ -187,6 +242,32 @@ class InvoiceLoadController extends Controller
         ];
 
         $Container->update($data);
+
+        return response()->json(['success' => true]);
+
+    }
+    public function masukkan_invoice_si(Request $request ,$slug)
+    {
+        // dd($slug, $request);
+
+        $slugs = ContainerPlanload::where("slug", $slug)->get();
+
+        for ($i=0; $i <count($slugs) ; $i++) { 
+            $data = [
+    
+                "price_invoice" => $request->price_invoice,
+                "kondisi_invoice" => $request->kondisi_invoice,
+                "keterangan_invoice" => $request->keterangan_invoice,
+                // 'status_invoice' => $random.time(),
+    
+    
+            ];
+            ContainerPlanload::where("slug", $slugs[$i]->slug)->update($data);
+            
+        }
+
+
+
 
         return response()->json(['success' => true]);
 
@@ -207,17 +288,8 @@ class InvoiceLoadController extends Controller
             $no_incvoice[$i] = ContainerPlanLoad::where('id', $request->check_container[$i])->value('status_invoice');
         }
         $no_invoice_unique = array_unique($no_incvoice);
-        // dd($no_invoice_unique);
-
-        // for($i = 0; $i < count($request->check_container); $i++) {
-        //     if($no_incvoice[$i] == null) {
-
-        //     }
-        // }
-
-        // dd($no_incvoice);
+        
         $no_invoice_2 = InvoiceLoad::where('nomor_invoice', $no_invoice_unique[0])->value('id');
-        // dd($no_invoice_2);
 
         if($no_invoice_2 == null) {
             $si_pdf =[
@@ -542,11 +614,13 @@ class InvoiceLoadController extends Controller
 
         $pol_area_code = Pelabuhan::where('nama_pelabuhan', $order_job[0]->pol)->value('area_code');
         $vessel = $order_job[0]->vessel;
+        $vessel_code = $order_job[0]->vessel_code;
         $pod_area_code = Pelabuhan::where('nama_pelabuhan', $request->pod)->value('area_code');
 
         return response()->json([
             'pol' => $pol_area_code,
             'vessel' => $vessel,
+            'vessel_code' => $vessel_code,
             'pod' => $pod_area_code,
             'jumlah' => $sum_invoice_tahun
         ]);

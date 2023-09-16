@@ -435,7 +435,7 @@ class PdfController extends Controller
 
             "nomor_bl" => $request->nomor_bl,
             "tanggal_bl" => $request->tanggal_bl,
-            "tanggal_do_pol" => $request->tanggal_do_pol,
+            // "tanggal_do_pol" => $request->tanggal_do_pol,
             "biaya_do_pol" => $request->biaya_do_pol,
             "status" => "BL",
 

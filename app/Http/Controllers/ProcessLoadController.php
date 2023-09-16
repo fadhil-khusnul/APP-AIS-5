@@ -35,6 +35,7 @@ use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Requests\StoreProcessLoadRequest;
 use App\Http\Requests\UpdateProcessLoadRequest;
+use App\Models\SiPdfContainer;
 
 class ProcessLoadController extends Controller
 {
@@ -115,7 +116,7 @@ class ProcessLoadController extends Controller
         })->get();
 
         $containers_info = ContainerPlanload::orderBy("id", "DESC")->where('job_id', $id)->get();
-
+  
 
         $container_batal = ContainerPlanload::where('job_id', $id)->where(function ($query) {
             $query->where('status', 'Batal-Muat');
@@ -331,6 +332,43 @@ class ProcessLoadController extends Controller
             'seal_containers' => $seal_containers,
             'spks' => $spks,
             'supirs' => $supirs,
+        ]);
+    }
+    public function input_si($slug)
+    {
+        $biaya_stuffing = ContainerPlanload::where("slug", $slug)->sum("biaya_stuffing");
+        $biaya_trucking = ContainerPlanload::where("slug", $slug)->sum("biaya_trucking");
+        $biaya_thc = ContainerPlanload::where("slug", $slug)->sum("biaya_thc");
+        $biaya_seal = ContainerPlanload::where("slug", $slug)->sum("biaya_seal");
+        $freight = ContainerPlanload::where("slug", $slug)->sum("freight");
+        $lss = ContainerPlanload::where("slug", $slug)->sum("lss");
+        $thc_pod = ContainerPlanload::where("slug", $slug)->sum("thc_pod");
+        $lolo = ContainerPlanload::where("slug", $slug)->sum("lolo");
+        $dooring = ContainerPlanload::where("slug", $slug)->sum("dooring");
+        $demurrage = ContainerPlanload::where("slug", $slug)->sum("demurrage");
+        $total_biaya_lain = ContainerPlanload::where("slug", $slug)->sum("total_biaya_lain");
+
+        $get_total = (int) $biaya_stuffing + $biaya_trucking + $biaya_thc
+        + $biaya_seal + $freight + $lss
+        + $thc_pod + $lolo + $dooring
+        + $demurrage + $total_biaya_lain;
+
+        $biaya_do_pol = SiPdfContainer::where("container_id", $slug)->value("biaya_do_pol");
+        $biaya_do_pod = SiPdfContainer::where("container_id", $slug)->value("biaya_do_pod");
+
+        $total = (int) $get_total + $biaya_do_pol + $biaya_do_pod;
+
+        // dd($total);
+        $kontainer = ContainerPlanload::where("slug", $slug)->get();
+        $modals = SiPdfContainer::find($slug);
+
+        // $this->create_invoice($modals);
+       
+        return response()->json([
+            'total' => $total,
+            'kontainer' => $kontainer,
+            'modals' => $modals,
+           
         ]);
     }
 

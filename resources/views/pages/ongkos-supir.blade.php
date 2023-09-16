@@ -82,6 +82,7 @@
                                     <td>
                                         {{ $loop->iteration }}
                                     </td>
+                                 
                                     <td>
                                         {{ \Carbon\Carbon::parse($dana->tanggal_deposit)->isoFormat('dddd, DD MMMM YYYY') }}
                                     </td>
@@ -102,9 +103,14 @@
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
+                                        @if (\Carbon\Carbon::parse($dana->tanggal_deposit)->diffInDays() > 90)
+                                            
                                         <button onclick="deletedana(this)" value="{{ $dana->id }}" type="button"
                                             class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-trash"></i></button>
+
+                                        @endif
+
                                     </td>
 
 

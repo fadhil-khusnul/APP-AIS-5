@@ -275,6 +275,161 @@ function input_invoice(e) {
         }
     });
 }
+function input_invoice_si(e) {
+    var slug = e.value;
+    console.log(slug);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    swal.fire({
+        title: "Buatkan Invoice Untuk SI ini?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            $.ajax({
+                url: "/detail-si/" + slug,
+                type: "GET",
+                processData: false,
+                contentType: false,
+                xhrFields: {
+                    withCredentials: true
+                },
+  
+                success: function (response) {
+                    let new_id = slug;
+                    console.log(new_id);
+                    console.log(response);
+                    $("#modal_invoice_si").modal("show");
+
+
+                    // var id_kontainer_html = document.getElementById("kontainer_html")
+                    // id_kontainer_html.innerHTML ="";
+                    // let kontainers = [""];
+                    // for (let i = 0; i < response.kontainer.length; i++) {
+
+                    //     kontainers += ("<li>" + response.kontainer[i].nomor_kontainer +"</li>");
+                    // }
+                    // let ol_kontainer = document.createElement("ol");
+                    // console.log(kontainers);
+                    // ol_kontainer.setAttribute("type", "1.")
+                    // ol_kontainer.setAttribute("style", "padding-left: 7px;")
+                    // ol_kontainer.innerHTML = kontainers
+                    // id_kontainer_html.appendChild(ol_kontainer)
+
+                    
+                   
+                    $("#total_biaya_kontainer_si").val(response.total);
+                    $("#new_slug").val(slug);
+                    var neee = $("#new_slug1").val();
+                    console.log(neee);
+
+                    $("#valid_invoice_si").validate({
+                        highlight: function highlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).addClass("is-invalid");
+                            $(element).removeClass("is-valid");
+                        },
+                        unhighlight: function unhighlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).removeClass("is-invalid");
+                        },
+                        errorPlacement: function errorPlacement(
+                            error,
+                            element
+                        ) {
+                            error.addClass("invalid-feedback");
+                            element
+                                .closest(".validation-container")
+                                .append(error);
+                        },
+                        submitHandler: function (form) {
+                            console.log(form);
+                            document.getElementById(
+                                "loading-wrapper"
+                            ).style.cursor = "wait";
+                            document
+                                .getElementById("btnFinish1")
+                                .setAttribute("disabled", true);
+
+                            
+
+                            var csrf = $("#csrf").val();
+                            var new_slug = $("#new_slug").val();
+                            var id_container = $("#id_container_si").val();
+                            var price_invoice = $("#price_invoice_si")
+                                .val()
+                                .replace(/\./g, "");
+                            var kondisi_invoice = $("#kondisi_invoice_si").val();
+                            var keterangan_invoice = $(
+                                "#keterangan_invoice_si"
+                            ).val();
+
+                            var data = {
+                                _token: csrf,
+                                id: id_container,
+                                price_invoice: price_invoice,
+                                kondisi_invoice: kondisi_invoice,
+                                keterangan_invoice: keterangan_invoice,
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/masukkan-invoice-load/"+new_slug,
+                                data: data,
+
+                                success: function (response) {
+                                    // console.log(response);
+                                    toast
+                                        .fire({
+                                            icon: "success",
+                                            title: "Detail Invoice Dimasukkan",
+                                            timer: 2e3,
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                },
+                            });
+                        },
+                    });
+                },
+            });
+        } else {
+            toast.fire({
+                title: "Detail Invoice tidak dimasukkan",
+                icon: "error",
+                timer: 2e3,
+            });
+        }
+    });
+}
 function update_invoice(e) {
     var id = e.value;
     console.log(id);
@@ -310,6 +465,22 @@ function update_invoice(e) {
             $("#id_container_edit").val(response.result.id);
             $("#price_invoice_edit").val(response.result.price_invoice);
             $("#kondisi_invoice_edit").val(response.result.kondisi_invoice);
+            $("#nomor_kontainer_edit").html(
+                response.result.nomor_kontainer
+            );
+
+            var total_biaya_kontainer =
+            parseFloat(response.result.biaya_stuffing) +
+            parseFloat(response.result.biaya_trucking) +
+            parseFloat(response.result.ongkos_supir) +
+            parseFloat(response.result.total_biaya_lain) +
+            parseFloat(response.result.biaya_thc) +
+            parseFloat(response.result.biaya_seal) +
+            parseFloat(response.result.freight) +
+            parseFloat(response.result.lss);
+            $("#total_biaya_kontainer_edit").val(total_biaya_kontainer);
+
+
             $("#keterangan_invoice_edit").val(
                 response.result.keterangan_invoice
             );
@@ -536,7 +707,7 @@ function pdf_invoice() {
                                                     "-" +
                                                     response.pod +
                                                     "-" +
-                                                    response.vessel +
+                                                    response.vessel_code +
                                                     "/" +
                                                     String(
                                                         response.jumlah
@@ -792,7 +963,7 @@ function pdf_invoice_batal() {
                                                     "-" +
                                                     response.pod +
                                                     "-" +
-                                                    response.vessel +
+                                                    response.vessel_code +
                                                     "/" +
                                                     String(
                                                         response.jumlah
@@ -1465,6 +1636,22 @@ function blur_selisih(ini) {
     total_biaya_kontainer = parseFloat(total_biaya_kontainer);
     var selisih = unit_price - total_biaya_kontainer;
     $("#selisih_price").val(selisih);
+}
+function blur_selisih_si(ini) {
+    var unit_price = ini.value.replace(/\./g, "");
+    unit_price = parseFloat(unit_price);
+    var total_biaya_kontainer = $("#total_biaya_kontainer_si").val().replace(/\./g, "");
+    total_biaya_kontainer = parseFloat(total_biaya_kontainer);
+    var selisih = unit_price - total_biaya_kontainer;
+    $("#selisih_price_si").val(selisih);
+}
+function blur_selisih_edit(ini) {
+    var unit_price = ini.value.replace(/\./g, "");
+    unit_price = parseFloat(unit_price);
+    var total_biaya_kontainer = $("#total_biaya_kontainer_edit").val().replace(/\./g, "");
+    total_biaya_kontainer = parseFloat(total_biaya_kontainer);
+    var selisih = unit_price - total_biaya_kontainer;
+    $("#selisih_price_edit").val(selisih);
 }
 
 function click_check(ini) {

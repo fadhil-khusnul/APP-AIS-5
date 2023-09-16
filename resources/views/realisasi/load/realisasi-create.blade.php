@@ -359,7 +359,7 @@
                                 <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
                                     SI <i class="fa fa-print"></i></button> <label for="" class="" style="margin-left: "><b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                                 <button id="submit_ok" type="button" onclick="ok_load()" class="btn btn-success ">Buat Job
-                                    <i class="fa fa-check-square"></i></button> <label for="" class="" style="margin-left: "><b id="nomor_delivery">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
+                                    <i class="fa fa-check"></i></button> <label for="" class="" style="margin-left: "><b id="nomor_delivery">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                             </div>
                            
 
@@ -580,7 +580,7 @@
                                     <th class="">Consigne</th>
                                     <th class="">Tanggal BL</th>
                                     <th class="">Nomor BL</th>
-                                    <th class="">DO Fee</th>
+                                    <th class="">BL Fee</th>
 
 
 
@@ -599,7 +599,7 @@
                                                     class="fa fa-trash"></i></button>
 
                                             <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                class="btn btn-info btn-sm ">Preview SI <i
+                                                class="btn btn-info btn-sm ">SI <i
                                                     class="fa fa-eye"></i></a>
 
                                             
@@ -1085,22 +1085,22 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">DO Fee :</label>
+                            <label class="col-sm-4 col-form-label" for="text">BL Fee :</label>
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
                                     <input required class="form-control currency-rupiah" id="biaya_do_pol" name="biaya_do_pol" type="text"
-                                        placeholder="Masukkan DO Fee">
+                                        placeholder="Masukkan BL Fee">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO POL:</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_do_pol" name="tanggal_do_pol" type="text"
                                 placeholder="Tanggal DO POL">
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="modal-footer">
@@ -1515,22 +1515,22 @@
                         </div>
 
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="text">DO Fee :</label>
+                            <label class="col-sm-4 col-form-label" for="text">BL Fee :</label>
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
                                     <input required class="form-control currency-rupiah" id="biaya_do_pol_edit" name="biaya_do_pol_edit" type="text"
-                                        placeholder="Masukkan DO Fee">
+                                        placeholder="Masukkan BL Fee">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO POL:</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control date_activity" id="tanggal_do_pol_edit" name="tanggal_do_pol_edit" type="text"
                                 placeholder="Tanggal DO POL">
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="modal-footer">

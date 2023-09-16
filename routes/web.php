@@ -123,6 +123,7 @@ Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeCon
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::get('/detail-kontainer/{id}/input', [ProcessLoadController::class, 'input']);
+Route::get('/detail-si/{slug}', [ProcessLoadController::class, 'input_si']);
 Route::get('/detail-alihkapal/{id}', [ProcessLoadController::class, 'detail_alihkapal']);
 Route::put('/detail-kontainer-update/{id}', [ProcessLoadController::class, 'input_update']);
 Route::put('/detail-kontainer-edit/{id}', [ProcessLoadController::class, 'input_edit']);
@@ -358,6 +359,7 @@ Route::get('/pdfinvoice-trucking/{slug}', [ReportTruckingController::class, 'inv
 Route::get('/invoice-load', [InvoiceLoadController::class, 'invoice']);
 Route::get('/invoice-load-create/{slug}', [InvoiceLoadController::class, 'create_invoice']);
 Route::post('/masukkan-invoice-load', [InvoiceLoadController::class, 'masukkan_invoice']);
+Route::post('/masukkan-invoice-load/{slug}', [InvoiceLoadController::class, 'masukkan_invoice_si']);
 Route::post('/create-pdf-invoice-load', [InvoiceLoadController::class, 'pdf_invoice']);
 Route::post('/get-total-invoice-load', [InvoiceLoadController::class, 'selisih']);
 Route::post('/getPod', [InvoiceLoadController::class, 'getPod']);

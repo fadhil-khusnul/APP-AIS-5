@@ -552,10 +552,10 @@ class PlanDischargeController extends Controller
         ];
 
         $data = [
-            'size' => $request->size,
-            'type' => $request->type,
-            'nomor_kontainer' => $request->nomor_kontainer,
-            'cargo' => $request->cargo,
+            // 'size' => $request->size,
+            // 'type' => $request->type,
+            // 'nomor_kontainer' => $request->nomor_kontainer,
+            // 'cargo' => $request->cargo,
             'tanggal_kembali' => $request->tanggal_kembali,
             'lokasi_kembali' => $request->lokasi_kembali,
             'penerima' => $request->penerima,
@@ -630,10 +630,10 @@ class PlanDischargeController extends Controller
         ];
 
         $data = [
-            'size' => $request->size,
-            'type' => $request->type,
-            'nomor_kontainer' => $request->nomor_kontainer,
-            'cargo' => $request->cargo,
+            // 'size' => $request->size,
+            // 'type' => $request->type,
+            // 'nomor_kontainer' => $request->nomor_kontainer,
+            // 'cargo' => $request->cargo,
             'tanggal_kembali' => $request->tanggal_kembali,
             'lokasi_kembali' => $request->lokasi_kembali,
             'penerima' => $request->penerima,
@@ -685,10 +685,10 @@ class PlanDischargeController extends Controller
 
         $data = [
             'job_id' => $request->job_id,
-            'size' => $request->size,
-            'type' => $request->type,
-            'nomor_kontainer' => $request->nomor_kontainer,
-            'cargo' => $request->cargo,
+            // 'size' => $request->size,
+            // 'type' => $request->type,
+            // 'nomor_kontainer' => $request->nomor_kontainer,
+            // 'cargo' => $request->cargo,
             'tanggal_kembali' => $request->tanggal_kembali,
             'lokasi_kembali' => $request->lokasi_kembali,
             'penerima' => $request->penerima,
