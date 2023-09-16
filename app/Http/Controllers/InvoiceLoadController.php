@@ -140,7 +140,30 @@ class InvoiceLoadController extends Controller
         //
         $id_biaya = SiPdfContainer::where("job_id", $id)->distinct()->get('container_id');
 
-        dd($id_biaya);
+        // $containers_biaya = [];
+        // $new_container_biaya = [];
+        // if ($id_biaya != null) {
+        //     for ($i = 0; $i < count($id_biaya); $i++) {
+        //         $containers_biaya[$i] = ContainerPlanload::where('slug', $id_biaya[$i]->container_id)->get();
+        //     }
+
+
+        //     for ($i = 0; $i < count($containers_biaya); $i++) {
+        //         $new_container_biaya[$i] = [
+        //             'id' => $containers_biaya[$i][0]->id,
+        //             'job_id' => $containers_biaya[$i][0]->job_id,
+        //             'size' => $containers_biaya[$i][0]->size,
+        //             'type' => $containers_biaya[$i][0]->type,
+        //             'nomor_kontainer' => $containers_biaya[$i][0]->nomor_kontainer,
+        //             'total_biaya_lain' => $containers_biaya[$i][0]->total_biaya_lain,
+        //             'pengirim' => $containers_biaya[$i][0]->pengirim,
+        //             'pod_container' => $containers_biaya[$i][0]->pod_container,
+        //             'slug' => $containers_biaya[$i][0]->slug
+
+        //         ];
+        //     }
+        // }
+        // dd($new_container_biaya);
 
         $pdfs_si = SiPdfContainer::where('job_id', $id)->where(function($query) {
             $query->where('status',"POD");
