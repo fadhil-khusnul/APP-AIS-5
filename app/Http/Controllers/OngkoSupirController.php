@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\OngkoSupir;
 use App\Models\SupirMobil;
 use App\Models\VendorMobil;
+use Illuminate\Support\Str;
 use App\Models\RekeningBank;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Str;
 
 use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Models\ReportVendorTruck;
+use Illuminate\Support\Facades\Storage;
 
 class OngkoSupirController extends Controller
 {
@@ -95,7 +96,7 @@ class OngkoSupirController extends Controller
         // $reports = ReportVendorTruck::select("id", "tanggal_bayar", "job_id", "kontainer_id", "path", "dibayarkan_ke", "cara_bayar", "keterangan_transfer", "dibayar", "created_at")->where("job_id", $id)->groupBy("created_at")->get();
         // $reports = ReportVendorTruck::distinct()->where('job_id', $id)->groupBy('created_at')->get(['dibayarkan_ke', 'cara_bayar']);
 
-        $reports = ReportVendorTruck::orderBy('created_at')->get()->groupBy('created_at')->toArray();
+        $reports = ReportVendorTruck::orderBy('created_at')->where("job_id", $id)->get()->groupBy('created_at')->toArray();
 
         $newArray = [];
         foreach ($reports as $res) {
@@ -172,7 +173,7 @@ class OngkoSupirController extends Controller
 
     public function dibayar(Request $request)
     {
-        dd($request);
+        // dd($request);
         $container = [];
         for ($i = 0; $i < count($request->id); $i++) {
             $container[$i] = ContainerPlanLoad::find($request->id[$i]);
@@ -308,8 +309,50 @@ class OngkoSupirController extends Controller
         ]);
     }
 
-    public function delete_report(Request $request, $id)
+    public function delete_report(Request $request)
     {
+        // dd($request->path);
+        $path = $request->path;
+        $report_vendor = ReportVendorTruck::where('path', $path)->get();
+
+        $total_bayar = (int)$report_vendor[0]->dibayar;
+        // dd($total_bayar);
+
+        // $dibayar = [];
+        for($i = 0; $i < count($report_vendor); $i++) {
+            $dibayar = (int)ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->value('dibayar');
+
+            $total_bayar = $total_bayar - $dibayar;
+            $berbayar = [
+                "dibayar" => $total_bayar
+            ];
+            $report_vendor[$i]->update($berbayar);
+
+            if($total_bayar >= 0) {
+                $berbayar_container = [
+                    "dibayar" => 0
+                ];
+                ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->update($berbayar_container);
+            } else {
+                $berbayar_container = [
+                    "dibayar" => abs($total_bayar)
+                ];
+                ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->update($berbayar_container);
+                break;
+            }
+        }
+
+        ReportVendorTruck::where("path", $path)->delete();
+
+        Storage::delete('public/report/'.$path.'.pdf');
+
+
+
+
+        // dd($dibayar);
+
+        // $id - ReportVendorTruck::where()
+
 
     }
 

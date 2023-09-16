@@ -178,6 +178,7 @@ Route::get('/detail-pdf/{id}/input', [RealisasiLoadController::class, 'detail_pd
 Route::get('/realisasi-load-create/{slug}', [RealisasiLoadController::class, 'create']);
 Route::get('/realisasi-pod-create/{slug}', [RealisasiLoadController::class, 'create_pod']);
 Route::post('/ok-load', [RealisasiLoadController::class, 'ok_load']);
+Route::put('/remove-ok-load/{id}', [RealisasiLoadController::class, 'remove_ok_load']);
 Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
 Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fee']);
 
@@ -365,6 +366,7 @@ Route::post('/kontainer-dibayar-ii', [InvoiceLoadController::class, 'dibayar']);
 Route::post('/getNomorInvoice', [InvoiceLoadController::class, 'nomor_invoice']);
 Route::get('/preview-invoice/{path}', [InvoiceLoadController::class, 'preview_invoice']);
 Route::delete('/delete-invoice/{id}', [InvoiceLoadController::class, 'delete_invoice']);
+Route::delete('/delete-history-invoice/{slug}', [InvoiceLoadController::class, 'delete_history']);
 
 
 

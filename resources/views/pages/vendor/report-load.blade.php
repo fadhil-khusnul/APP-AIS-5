@@ -347,7 +347,7 @@
 
 
                         <!-- BEGIN Datatable -->
-                        <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize mt-5"
+                        <table id="tabel_history" class="table table-bordered table-striped table-hover autosize mt-5"
                             style="width: 100%">
                             <thead>
                                 <tr>
@@ -377,7 +377,7 @@
                                             <a type="button" href="/preview-vendor-load/{{ $report[0]->path }}"
                                                 class="btn btn-primary btn-sm ">Preview Report <i
                                                     class="fa fa-eye"></i></a>
-                                            <button type="button" value="{{ $report[0]->id }}"
+                                            <button type="button" value="{{ $report[0]->path }}"
                                                 onclick="delete_report(this)" class="btn btn-danger btn-sm "><i
                                                     class="fa fa-trash"></i></button>
 
@@ -392,8 +392,8 @@
                                         <td>
                                             @if ($report[0]->tanggal_bayar != null)
                                                 <input type="hidden" id="date[{{ $loop->iteration }}]" name="date"
-                                                    value="{{ \Carbon\Carbon::parse($container->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}">
-                                                {{ \Carbon\Carbon::parse($container->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}
+                                                    value="{{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}">
+                                                {{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}
                                             @endif
                                         </td>
                                         <td>

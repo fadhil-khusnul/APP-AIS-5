@@ -112,6 +112,29 @@ class InvoiceLoadController extends Controller
         $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
 
 
+        $reports = TanggalBayarInvoice::orderBy('slug')->where("job_id", $id)->get()->groupBy('slug')->toArray();
+
+        $newArray = [];
+        foreach ($reports as $res) {
+            $newArray[] = array_values($res);
+        }
+
+        // dd($newArray);
+
+        $reports_array = [];
+        for ($i=0; $i <count($newArray) ; $i++) { 
+            $reports_array[$i] = [];
+            for ($j=0; $j <count($newArray[$i]) ; $j++) { 
+                $reports_array[$i][$j] = new TanggalBayarInvoice([
+                    'id' => $newArray[$i][$j]['id'],
+                    'tanggal_bayar' => $newArray[$i][$j]['tanggal_bayar'],
+                    'job_id' => $newArray[$i][$j]['job_id'],
+                    'invoice_id' => $newArray[$i][$j]['invoice_id'],
+                    'slug' => $newArray[$i][$j]['slug'],
+                    'pembayaran' => $newArray[$i][$j]['pembayaran'],
+                ]);
+            }
+        }
         //
         return view('invoice.pages.load-create',[
             'title' => 'Invoice LOAD',
@@ -130,6 +153,7 @@ class InvoiceLoadController extends Controller
             'types' => $types,
             'danas' => $danas,
             'sealsc' => $sealsc,
+            'reports' => $reports_array,
             'vendors' => $vendors,
             'spks' => $spks,
             'planload' => OrderJobPlanload::find($id),
@@ -446,6 +470,51 @@ class InvoiceLoadController extends Controller
 
     }
 
+    public function delete_history(Request $request)
+    {
+        // dd($request->path);
+        $slug = $request->slug;
+        $report_vendor = TanggalBayarInvoice::where('slug', $slug)->get();
+
+        $total_bayar = (int)$report_vendor[0]->pembayaran;
+        // dd($total_bayar);
+
+        // $dibayar = [];
+        for($i = 0; $i < count($report_vendor); $i++) {
+            $dibayar = (int)InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->value('terbayar');
+
+            $total_bayar = $total_bayar - $dibayar;
+            $berbayar = [
+                "pembayaran" => $total_bayar
+            ];
+            $report_vendor[$i]->update($berbayar);
+
+            if($total_bayar >= 0) {
+                $berbayar_container = [
+                    "terbayar" => 0
+                ];
+                InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->update($berbayar_container);
+            } else {
+                $berbayar_container = [
+                    "terbayar" => abs($total_bayar)
+                ];
+                InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->update($berbayar_container);
+                break;
+            }
+        }
+
+        TanggalBayarInvoice::where("slug", $slug)->delete();
+
+        // Storage::delete('public/report/'.$path.'.pdf');
+
+        return response()->json([
+            'success'   => true
+        ]);
+
+
+
+    }
+
     public function getPod(Request $request){
         $pod = [];
         $nomor_invoice = [];
@@ -509,13 +578,21 @@ class InvoiceLoadController extends Controller
         for ($i = 0; $i < count($request->id); $i++) {
             $container[$i] = InvoiceLoad::find($request->id[$i]);
         }
+
+        $slug = Str::random(15).time();
+
+        $job_id = OrderJobPlanload::where("slug", $request->old_slug)->value("id");
+
+        // dd($slug);
         
         // dd($request);
         for ($i = 0; $i < count($request->id); $i++) {
             $tanggal_bayar_invoice = [
                 "invoice_id" => $container[$i]->id,
                 "pembayaran" => $request->selisih,
-                "tanggal_bayar" => $request->tanggal_bayar
+                "job_id" => $job_id,
+                "tanggal_bayar" => $request->tanggal_bayar,
+                "slug" => $slug
             ];
             TanggalBayarInvoice::create($tanggal_bayar_invoice);
             

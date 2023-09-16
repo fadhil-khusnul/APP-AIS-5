@@ -12,6 +12,20 @@ var tabel_invoice = $("#tabel_si").DataTable({
 
     // scroller: true,P
 });
+var tabel_bayar_invoice = $("#tabel_bayar_invoice").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
+});
 var realisasiload_create = $("#realisasiload_create").DataTable({
     responsive: true,
     paging: true,
@@ -1215,6 +1229,58 @@ function delete_invoice(r) {
     });
 }
 
+function delete_history(r) {
+    var slug = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus HISTORY INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                slug: slug,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/delete-history-invoice/" + slug,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "HISTORY BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "HISTORY TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
+
 function bayar() {
     var swal = Swal.mixin({
         customClass: {
@@ -1318,7 +1384,9 @@ function bayar() {
                                 .append(error);
                         },
                         submitHandler: function (form) {
-                            // var id_container = $("#id_container").val();
+                            document.getElementById("loading-wrapper").style.cursor = "wait";
+                            document.getElementById("btn_history").setAttribute("disabled", true);
+                           
                             var dibayar = $("#terbayar")
                                 .val()
                                 .replace(/\./g, "");
@@ -1327,19 +1395,15 @@ function bayar() {
                                 tanggal_bayar,
                                 "dddd, DD-MMMM-YYYY"
                             ).format("YYYY-MM-DD");
-                            // console.log(tanggal_bayar);
-                            // var old_terbayar = $("#old_terbayar")
-                            //     .val()
-                            //     .replace(/\./g, "");
-                            // var old_selisih = $("#old_selisih")
-                            //     .val()
-                            //     .replace(/\./g, "");
+
+                            var old_slug = $("#old_slug").val();
 
                             var data = {
                                 _token: csrf,
                                 selisih: dibayar,
                                 tanggal_bayar: tanggal_bayar,
                                 id: id_container,
+                                old_slug: old_slug,
                             };
 
                             $.ajax({

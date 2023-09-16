@@ -1,8 +1,8 @@
 {
     "calibri": {
-        "normal": "D:\\Kuliah\\Semester_8\\Projek\\APP-AIS-5\\storage\\fonts\/calibri_normal_aee85a9ef356427f92326dfa9f90cd4e",
-        "bold": "D:\\Kuliah\\Semester_8\\Projek\\APP-AIS-5\\storage\\fonts\/calibri_bold_fd5b9bacea24780ee3ea9f63d6dd830c",
-        "bold_italic": "D:\\Kuliah\\Semester_8\\Projek\\APP-AIS-5\\storage\\fonts\/calibri_bold_italic_baeeaf2d325ce663131460410e80ffd3",
-        "italic": "calibri_italic_0e68d4ec4f323e647df5d25be4b4b83a"
+        "normal": "C:\\laragon\\www\\APP-AIS-5\\storage\\fonts\/calibri_normal_da7cf5a7d7b7c659004adf249161c3a7",
+        "bold": "C:\\laragon\\www\\APP-AIS-5\\storage\\fonts\/calibri_bold_d462f34beab16fc8ea3189e295147905",
+        "bold_italic": "C:\\laragon\\www\\APP-AIS-5\\storage\\fonts\/calibri_bold_italic_e957c0eeada28ba66668333409dd177f",
+        "italic": "calibri_italic_419650bcacb8e5217ead83c7aa79c06d"
     }
 }

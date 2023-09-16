@@ -327,5 +327,25 @@ class RealisasiLoadController extends Controller
 
 
     }
+    public function remove_ok_load(Request $request, $id)
+    {
+        # code...
+
+        // dd($id);
+
+            
+        $data = [
+
+            "ok" => 0,
+        ];
+        ContainerPlanload::where("id", $id)->update($data);
+        
+
+
+
+        return response()->json(['success' => true]);
+
+
+    }
 
 }

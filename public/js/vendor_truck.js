@@ -9,40 +9,53 @@ var tabelvendor = $("#vendor_bayar_Load").DataTable({
         [5, 10, 20, -1],
         [5, 10, 20, "All"],
     ],
-    dom: 'Bfrltip',
-    buttons: [
-        {
-            extend: "excel",
-            title: "Report Vendor",
-            className: "btn btn-flat-success",
-            exportOptions: {
-                columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            }
+    // dom: 'Bfrltip',
+    // buttons: [
+    //     {
+    //         extend: "excel",
+    //         title: "Report Vendor",
+    //         className: "btn btn-flat-success",
+    //         exportOptions: {
+    //             columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    //         }
 
-        },
-        {
-            extend: 'pdf',
-            orientation: 'landscape',
-            className: "btn btn-flat-success",
-            className: "btn btn-flat-success",
-            pageSize: 'LEGAL',
-            title: "Report Vendor",
-            // customize : function(doc){
-            //     doc.defaultStyle.alignment = 'center';
-            //     doc.styles.tableHeader.alignment = 'center';
-            //     doc.styles.tableHeader.fillColor = '#00ad4c';
-            //     doc.content[1].table.widths = [15,50,50,50,50,50,50,50,50,70,50,50,50,50,50,50];;
-            // },
-            exportOptions: {
-                columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            }
-        },
-    ],
+    //     },
+    //     {
+    //         extend: 'pdf',
+    //         orientation: 'landscape',
+    //         className: "btn btn-flat-success",
+    //         className: "btn btn-flat-success",
+    //         pageSize: 'LEGAL',
+    //         title: "Report Vendor",
+    //         // customize : function(doc){
+    //         //     doc.defaultStyle.alignment = 'center';
+    //         //     doc.styles.tableHeader.alignment = 'center';
+    //         //     doc.styles.tableHeader.fillColor = '#00ad4c';
+    //         //     doc.content[1].table.widths = [15,50,50,50,50,50,50,50,50,70,50,50,50,50,50,50];;
+    //         // },
+    //         exportOptions: {
+    //             columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    //         }
+    //     },
+    // ],
 
     // scroller: true,
 });
 
+var tabel_history = $("#tabel_history").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
 
+    // scroller: true,P
+});
 
 $("#pilih_vessel").select2
     ({
@@ -273,7 +286,8 @@ function bayar() {
                         },
                         submitHandler: function (form) {
                             // var id_container = $("#id_container").val();
-
+                            document.getElementById("loading-wrapper").style.cursor = "wait";
+                            document.getElementById("btnFinish1").setAttribute("disabled", true);
                             var id_container_new = $(".check-container1:checked")
                                 .map(function () {
                                     return this.value;
@@ -305,7 +319,7 @@ function bayar() {
                                 tanggal_bayar: tanggal_bayar,
                                 dibayarkan_ke: dibayarkan_ke,
                                 keterangan_transfer: keterangan_transfer,
-                                total_bayar: Selisih
+                                total_bayar: Selisih.replace(/\./g, "")
                             };
 
                             $.ajax({
@@ -375,3 +389,56 @@ function blur_terbayar(ini) {
         });
     }
 }
+
+function delete_report(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus Dokumen INI ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                path: deleteid,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/delete-report/" + deleteid,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "REPORT BERHASIL DIHAPUS",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "REPORT TIDAK DIHAPUS",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
+

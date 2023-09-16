@@ -753,6 +753,126 @@
             @endif
 
 
+        @if (count($reports) > 0)
+            <div class="col-md-12 col-xl-12">
+
+                <div class="portlet">
+                    <div class="portlet-header portlet-header-bordered">
+                        <h3 class="portlet-title text-center"><u><b>HISTORY PEMBAYARAN</b></u></h3>
+                    </div>
+                    <div class="portlet-body">
+                        <hr>
+                        {{-- <label for="" class="col-form-label">Filter Tabel :</label>
+                    <div class="row row-cols-lg-auto py-3 px-4">
+                        
+
+                        <div class="col-sm-5 col-lg-4">
+                            <div class="mb-2">
+                                <!-- BEGIN Input Group -->
+                                <div class="input-group input-daterange">
+                                    <input type="text" id="min_bayar" class="form-control" placeholder="From" onchange="filter_date_bayar()">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-ellipsis-h"></i>
+                                    </span>
+                                    <input type="text" id="max_bayar" class="form-control" placeholder="To" onchange="filter_date_bayar()">
+                                </div>
+                                
+                            </div>
+                        </div>
+                       
+                        <div class="col-4">
+                            <select multiple id="pilih_vendor_bayar" name="pilih_vendor_bayar" class="form-select" onchange="filter_vendor_bayar(this)">
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+                        
+                        <div class="col-6">
+                            <select id="pilih_status_bayar" name="pilih_status_bayar" class="form-select" onchange="filter_status_bayar(this)">
+                                <option value="Belum Lunas">Belum Lunas</option>
+                                <option value="Sudah Lunas">Sudah Lunas</option>
+
+                            </select>
+
+                        </div>
+
+
+                       
+
+
+                    </div> --}}
+
+
+
+                        <!-- BEGIN Datatable -->
+                        <table id="tabel_bayar_invoice" class="table table-bordered table-striped table-hover autosize mt-5"
+                            style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th></th>
+                                    <th>Nomor Invoice</th>
+                                    <th>Tanggal Bayar</th>
+                                    <th>Total Dibayar</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($reports as $report)
+                                    {{-- @foreach ($report as $item) --}}
+
+                                    {{-- @endforeach --}}
+                                    <tr>
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                        <td class="text-nowrap text-center">
+                                            {{-- @foreach ($report as $item) --}}
+
+                                            
+                                            <button type="button" value="{{ $report[0]->slug }}"
+                                                onclick="delete_history(this)" class="btn btn-danger btn-sm "><i
+                                                    class="fa fa-trash"></i></button>
+
+
+                                            {{-- @endforeach --}}
+                                        </td>
+                                        <td>
+                                            @foreach ($report as $item)
+                                                <li>{{ $item->invoices->nomor_invoice }}</li>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @if ($report[0]->tanggal_bayar != null)
+                                                <input type="hidden" id="date[{{ $loop->iteration }}]" name="date"
+                                                    value="{{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}">
+                                                {{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}
+                                            @endif
+                                        </td>
+                                        
+                                        <td>
+                                            @rupiah($report[0]->pembayaran)
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- END Datatable -->
+                    </div>
+
+
+                </div>
+
+                <!-- END Portlet -->
+                <!-- BEGIN Portlet -->
+
+                <!-- END Portlet -->
+            </div>
+        @endif
+
+
 
         </form>
     </div>
@@ -1034,7 +1154,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" id="btnFinish1" class="btn btn-success">Simpan</button>
+                        <button type="submit" id="btn_history" class="btn btn-success">Simpan</button>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>

@@ -224,7 +224,7 @@
                                                             class="form-check-input check-container"
                                                             id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
                                                             value="{{ $container->id }}"  autofocus>
-
+                                                       
                                                     </div>
                                                 @else
                                                 <div class="">
@@ -242,10 +242,15 @@
                                         
                                             <td class="text-nowrap text-start">
                                                 @if ($container->ok == 1 )
-                                                <i class="marker marker-dot text-success"></i>Receiving OK
+                                                <i class="marker marker-dot text-success"></i>Delivery OK
                                                 <input readonly disabled checked type="checkbox"
                                                         class="form-check-input"
                                                         id="kontainer_check[{{ $loop->iteration }}]">
+                                                <button id="remove_ok_load_id" name="remove_ok_load_id"
+                                                        class="btn btn-label-danger btn-icon btn-sm" type="button"
+                                                        value="{{ $container->id }}" onclick="remove_ok_load(this)"
+                                                        @readonly(true)><i class="fa fa-refresh"></i></button>
+                                                
                                                
 
                                                 @else
