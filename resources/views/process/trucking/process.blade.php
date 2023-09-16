@@ -148,19 +148,12 @@
                                         </td>
 
                                         <td class="text-center text-nowrap">
-                                            @if ($plandischarge->status == 'Plan-Trucking')
                                             <a href="/truckingprocess-create/{{ $plandischarge->slug }}"
                                                 class="btn btn-label-success rounded-pill">Process Trucking <i
                                                     class="fa fa-pencil"></i>
 
                                             </a>
-                                            @else
-                                            <a href="/processdischarge-edit/{{ $plandischarge->slug }}"
-                                                class="btn btn-label-primary rounded-pill">Edit (Kontainer) <i
-                                                    class="fa fa-pencil"></i>
-
-                                            </a>
-
+                                           
                                             @endif
                                         </td>
 
