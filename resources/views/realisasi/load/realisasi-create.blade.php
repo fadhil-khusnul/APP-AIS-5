@@ -177,7 +177,7 @@
                             <div class="col-6">
                                 <select id="pilih_ok_input" name="pilih_ok_input" class="form-select" onchange="pilih_ok_input_fun(this)">
                                     <option selected value="">Pilih Status Container</option>
-                                    <option value="Receiving OK">Delivery OK</option>
+                                    <option value="Receiving OK">Receiving OK</option>
                                     <option value="Belum Buat JOB">Belum Buat JOB</option>
 
 
@@ -195,7 +195,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>SI</th>
-                                        <th>Delivery OK</th>
+                                        <th>Receiving OK</th>
                                         <th>POD</th>
                                         <th>POT</th>
                                         <th>Nomor Kontainer</th>
@@ -242,7 +242,7 @@
                                         
                                             <td class="text-nowrap text-start">
                                                 @if ($container->ok == 1 )
-                                                <i class="marker marker-dot text-success"></i>Delivery OK
+                                                <i class="marker marker-dot text-success"></i>Receiving OK
                                                 <input readonly disabled checked type="checkbox"
                                                         class="form-check-input"
                                                         id="kontainer_check[{{ $loop->iteration }}]">
