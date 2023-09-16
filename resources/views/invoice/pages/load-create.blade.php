@@ -642,7 +642,7 @@
                                         <th>YTH</th>
                                         <th>KM</th>
                                         <th>TOTAL</th>
-                                        <th>TERBAYAR</th>
+                                        <th>DITERIMA</th>
                                         <th>SELISIH</th>
                                     </tr>
                                 </thead>

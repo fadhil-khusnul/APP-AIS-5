@@ -205,7 +205,7 @@ function detail(e) {
                 .select2({
                     dropdownAutoWidth: true,
                     placeholder: "Silahkan Pilih",
-                    // allowClear:true,
+                    allowClear:true,
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job"),
                 })
@@ -527,6 +527,7 @@ function detail_tambah() {
         .select2({
             dropdownAutoWidth: true,
             placeholder: "Silahkan Pilih",
+            allowClear:true,
             // allowClear:true,
             maximumSelectionLength: 4,
             dropdownParent: $("#modal-job-tambah"),
@@ -1017,7 +1018,7 @@ function detail_update(e) {
                 .select2({
                     dropdownAutoWidth: true,
                     placeholder: "Silahkan Pilih",
-                    // allowClear:true,
+                    allowClear:true,
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
