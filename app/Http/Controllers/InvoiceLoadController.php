@@ -70,6 +70,9 @@ class InvoiceLoadController extends Controller
 
     public function create_invoice(Request $request)
     {
+        // dd($request);
+        $slug = SiPdfContainer::all();
+        // dd($slug);
         $id = OrderJobPlanload::where('slug', $request->slug)->value('id');
 
         $activity = Stuffing::all();
@@ -102,6 +105,7 @@ class InvoiceLoadController extends Controller
                 ;
         })->get();
         $container_si = ContainerPlanload::where('job_id', $id)->whereNotNull("slug")->get();
+        // dd($container_si);
 
         $sealsc = SealContainer::where('job_id', $id)->get();
 
@@ -168,6 +172,7 @@ class InvoiceLoadController extends Controller
         $pdfs_si = SiPdfContainer::where('job_id', $id)->where(function($query) {
             $query->where('status',"POD");
         })->get();
+        // dd($pdfs_si);
 
         // dd($pdfs_si);
 
@@ -201,15 +206,41 @@ class InvoiceLoadController extends Controller
             'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
                 $q->whereNotNull('demurrage');
             })->get(),
-            'pdfs' => InvoiceLoad::where('job_id', $id)->get(),
+            'pdfs' => InvoiceLoad::where('job_id', $id)->whereNotNull("path")->get(),
             'batals' => BatalMuat::where('job_id', $id)->get(),
             'details' => DetailBarangLoad::where('job_id', $id)->get(),
 
         ]);
     }
 
-    public function input_si($slug)
+    public function input_si(Request $req, $slug)
     {
+        // dd($req, $slug);
+
+        $containers = ContainerPlanload::where("slug", $slug)->get();
+        
+        $total_kontainer = [];
+        for ($i=0; $i <count($containers) ; $i++) { 
+            $total_container_array = [
+                "biaya_stuffing" => $containers[$i]->biaya_stuffing,
+                "biaya_trucking" => $containers[$i]->biaya_trucking,
+                "biaya_thc" => $containers[$i]->biaya_thc,
+                "biaya_seal" => $containers[$i]->biaya_seal,
+                "freight" => $containers[$i]->freight,
+                "lss" => $containers[$i]->lss,
+                "thc_pod" => $containers[$i]->thc_pod,
+                "lolo" => $containers[$i]->lolo,
+                "dooring" => $containers[$i]->dooring,
+                "demurrage" => $containers[$i]->demurrage,
+                "total_biaya_lain" => $containers[$i]->total_biaya_lain,
+            ];
+
+            $total_kontainer[$i] = array_sum($total_container_array);
+            
+        }
+
+        // dd($total_kontainer);
+
         $biaya_stuffing = ContainerPlanload::where("slug", $slug)->sum("biaya_stuffing");
         $biaya_trucking = ContainerPlanload::where("slug", $slug)->sum("biaya_trucking");
         $biaya_thc = ContainerPlanload::where("slug", $slug)->sum("biaya_thc");
@@ -236,13 +267,55 @@ class InvoiceLoadController extends Controller
         $kontainer = ContainerPlanload::where("slug", $slug)->get();
         $modals = SiPdfContainer::find($slug);
 
-        // $this->create_invoice($modals);
-       
+        $pod = [];
+        $nomor_invoice = [];
+
+        for($i = 0; $i < count($kontainer); $i++) {
+            $pod[$i] = ContainerPlanLoad::where('id', $kontainer[$i]->id)->value('pod_container');
+            $nomor_invoice[$i] = ContainerPlanLoad::where('id', $kontainer[$i]->id)->value('status_invoice');
+        }
+
+        $old_slug = $req->old_slug;
+
+        $invoice_tahun = InvoiceLoad::where('tahun_invoice', $req->tahun)->get();
+
+        $sum_invoice_tahun = count($invoice_tahun) + 1;
+
+        $order_job = OrderJobPlanLoad::where('slug', $old_slug)->get();
+
+        $pol_area_code = Pelabuhan::where('nama_pelabuhan', $order_job[0]->pol)->value('area_code');
+        $vessel = $order_job[0]->vessel;
+        $vessel_code = $order_job[0]->vessel_code;
+        $invoice = InvoiceLoad::where("container_id", $slug)->get();
+        $pod_area_code = Pelabuhan::where('nama_pelabuhan', $kontainer[0]->pod_container)->value('area_code');
+
+        $pod_alih = AlihKapal::where("kontainer_alih", $kontainer[0]->id)->value("pod_alih");
+        $pod_alih = Pelabuhan::where("nama_pelabuhan", $pod_alih)->value("area_code");
+        $vessel_alih = AlihKapal::where("kontainer_alih", $kontainer[0]->id)->value("code_vesseL_alih");
+        $id_alih_kapal = ContainerPlanLoad::where("slug", $slug)->get();
+
+        $biaya_container_alih = [];
+        
+        for($i = 0; $i < count($id_alih_kapal); $i++) {
+            $biaya_container_alih[$i] = AlihKapal::where("kontainer_alih", $id_alih_kapal[$i]->id)->value("harga_alih_kapal");
+        }
+        // dd($biaya_container_alih);
+
+              
         return response()->json([
             'total' => $total,
             'kontainer' => $kontainer,
             'modals' => $modals,
-           
+            'pol' => $pol_area_code,
+            'vessel' => $vessel,
+            'vessel_code' => $vessel_code,
+            'pod' => $pod_area_code,
+            'jumlah' => $sum_invoice_tahun,
+            'total_kontainer' => $total_kontainer,
+            'vessel_alih' => $vessel_alih,
+            'pod_alih' => $pod_alih,
+            'invoice' => $invoice,
+            'biaya_alih_kapal' => $biaya_container_alih
         ]);
     }
 
@@ -271,40 +344,215 @@ class InvoiceLoadController extends Controller
     }
     public function masukkan_invoice_si(Request $request ,$slug)
     {
-        // dd($slug, $request);
+        dd($request);
 
-        $slugs = ContainerPlanload::where("slug", $slug)->get();
+        //KET-INV
+        $containers = ContainerPlanload::where("slug", $slug)->get();
 
-        for ($i=0; $i <count($slugs) ; $i++) { 
-            $data = [
+        // dd($request->price_invoice);
+        $data = [];
+        for ($i=0; $i <count($containers) ; $i++) { 
+            $data[$i] = [
     
-                "price_invoice" => $request->price_invoice,
-                "kondisi_invoice" => $request->kondisi_invoice,
-                "keterangan_invoice" => $request->keterangan_invoice,
+                "kondisi_invoice" => $request->kondisi_invoice[$i],
+                "keterangan_invoice" => $request->keterangan_invoice[$i],
+                "price_invoice" => $request->price_invoice[$i],
                 // 'status_invoice' => $random.time(),
     
     
             ];
-            ContainerPlanload::where("slug", $slugs[$i]->slug)->update($data);
+            ContainerPlanload::where("id", $containers[$i]->id)->update($data[$i]);
             
+        }
+        // dd($containers);
+
+        //NOMOR INVOICE
+        $random = Str::random(15).time();
+        $old_slug = $request->old_slug;
+        $nomor_invoice = $request->nomor_invoice;
+        $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
+        // dd($old_id);
+        $loads = OrderJobPlanload::find($old_id);
+
+        $no_incvoice = [];
+        $containers_new = ContainerPlanload::where("slug",$slug)->get();
+        for($i = 0; $i < count($containers_new); $i++) {
+            $no_incvoice[$i] = ContainerPlanLoad::where('id', $containers_new[$i]->id)->value('status_invoice');
+        }
+
+        $no_invoice_unique = array_unique($no_incvoice);
+
+        $no_invoice_2 = InvoiceLoad::where('nomor_invoice', $no_invoice_unique[0])->value('id');
+
+        // dd($no_invoice_2);
+        if($no_invoice_2 == null) {
+            $si_pdf =[
+                'yth' => $request->yth,
+                'km' => $request->km,
+                'status' => $request->status,
+                'nomor_invoice' => $nomor_invoice,
+                'tahun_invoice' => $request->tahun,
+                'tanggal_invoice' => $request->tanggal,
+                'job_id' => $old_id,
+                'container_id' => $slug,
+                'path' => 'Invoice-'.$old_slug.'-'.$random,
+            ];
+            
+            $sis = InvoiceLoad::create($si_pdf);
+        } else {
+            $si_pdf = [
+                'yth' => $request->yth,
+                'km' => $request->km,
+                'status' => $request->status,
+                'nomor_invoice' => $no_invoice_unique[0],
+                'tahun_invoice' => $request->tahun,
+                'tanggal_invoice' => $request->tanggal,
+                'job_id' => $old_id,
+                'container_id' => $slug,
+                'path' => 'Invoice-'.$old_slug.'-'.$random,
+            ];
+
+            // dd($si_pdf);
+            $sis = InvoiceLoad::where('id', $no_invoice_2)->update($si_pdf);
+            // $sis = InvoiceLoad::where('id', $no_invoice_2)->get();
         }
 
 
+        for ($i=0; $i < count($containers_new) ; $i++) {
+            if($no_incvoice[$i] == null) {
+                $container = [
+                    'status' => $request->status,
+                ];
+                $container2 = [
+                    'invoice' => $sis->id,
+                    'status' => $request->status,
+                    'status_invoice' => $nomor_invoice,
+                ];
+    
+                OrderJobPlanload::where('id', $old_id)->update($container);
+                ContainerPlanload::where('id',$containers[$i]->id)->update($container2);
+            } else {
+                $container = [
+                    'status' => $request->status,
+                ];
+                $container2 = [
+                    'invoice' => $no_invoice_2,
+                    'status' => $request->status,
+                    'status_invoice' => $no_incvoice[$i],
+                ];
+    
+                OrderJobPlanload::where('id', $old_id)->update($container);
+                ContainerPlanload::where('id',$containers_new[$i]->id)->update($container2);
+            }
+        }
+
+        $new_container = [];
 
 
-        return response()->json(['success' => true]);
+        if((int)$request->ppn == 0) {
+            $ppn = 0;
+        } else {
+            $ppn = PPN::first()->value('ppn');
+        }
 
+        // dd($ppn);
+
+        if((int)$request->materai == 0) {
+            $materai = 0;
+        } else {
+            $materai = $request->value_materai;
+        }
+
+        $total = 0;
+        for($i = 0; $i < count($containers_new); $i++) {
+            $total += (Float)$containers_new[$i]->price_invoice;
+            $new_container[$i] = [
+                'id' => $containers_new[$i]->id,
+                'job_id' => $containers_new[$i]->job_id,
+                'pengirim' => $containers_new[$i]->pengirim,
+                'pod_container' => $containers_new[$i]->pod_container,
+                'nomor_kontainer' => $containers_new[$i]->nomor_kontainer,
+                'size' => $containers_new[$i]->size,
+                'kondisi_invoice' => $containers_new[$i]->kondisi_invoice,
+                'keterangan_invoice' => $containers_new[$i]->keterangan_invoice,
+                'price_invoice' => $containers_new[$i]->price_invoice,
+            ];
+        }
+
+        $total_with_ppn_materai = $total + round($total * ((Float)$ppn / (Float)100)) + (Float)$materai;
+        // dd($new_container);
+
+        $total_invoice = [
+            "total" => $total_with_ppn_materai,
+        ];
+        if($no_invoice_2 == null) {
+            InvoiceLoad::find($sis->id)->update($total_invoice);
+        } else {
+            InvoiceLoad::find($no_invoice_2)->update($total_invoice);
+        }
+
+
+        //PDF
+        $rekenings = RekeningBank::orderBy('id', 'DESC')->get();
+
+
+
+        $save1 = 'storage/load-invoice/Invoice-'.$old_slug.'-'.$random.'.pdf';
+
+        $alihs = AlihKapal::where("kontainer_alih", $containers[0]->id)->value("id");
+        $alihs = AlihKapal::find($alihs);
+
+
+        if($no_invoice_2 == null) {
+            $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
+                "load" => $loads,
+                "alihs" => $alihs,
+                "containers" => $new_container,
+                "yth" => $request->yth,
+                "nomor_invoice" => $nomor_invoice,
+                "km" => $request->km,
+                "report" => "MUATAN",
+                "status" => $request->status,
+                'rekenings' => $rekenings,
+                'ppn' => round($total * ((Float)$ppn / (Float)100)),
+                'persen_ppn' => $ppn,
+                'materai' => $materai,
+                'total' => $total_with_ppn_materai,
+            ]);
+    
+            $pdf1->save($save1);
+            return response()->download($save1);
+        } else {
+            $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
+                "load" => $loads,
+                "alihs" => $alihs,
+                "containers" => $new_container,
+                "yth" => $request->yth,
+                "nomor_invoice" => $no_invoice_unique[0],
+                "km" => $request->km,
+                "report" => "MUATAN",
+                "status" => $request->status,
+                'rekenings' => $rekenings,
+                'ppn' => round($total * ((Float)$ppn / (Float)100)),
+                'persen_ppn' => $ppn,
+                'materai' => $materai,
+                'total' => $total_with_ppn_materai,
+            ]);
+    
+            $pdf1->save($save1);
+            return response()->download($save1);
+        }
     }
 
     public function pdf_invoice(Request $request)
     {
-        // dd($request->nomor_invoice);
+        // dd($request);
         $random = Str::random(15);
         $old_slug = $request->old_slug;
         $nomor_invoice = $request->nomor_invoice;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
         // dd($old_id);
-        $loads = OrderJobPlanload::where('id', $old_id)->get();
+        $loads = OrderJobPlanload::find($old_id);
 
         $no_incvoice = [];
         for($i = 0; $i < count($request->check_container); $i++) {
@@ -313,6 +561,7 @@ class InvoiceLoadController extends Controller
         $no_invoice_unique = array_unique($no_incvoice);
         
         $no_invoice_2 = InvoiceLoad::where('nomor_invoice', $no_invoice_unique[0])->value('id');
+        // dd($no_invoice_unique);
 
         if($no_invoice_2 == null) {
             $si_pdf =[
@@ -345,6 +594,8 @@ class InvoiceLoadController extends Controller
             // $sis = InvoiceLoad::where('id', $no_invoice_2)->get();
         }
         // dd($no_invoice_2);
+
+
 
 
         for ($i=0; $i < count($request->check_container) ; $i++) {
@@ -431,7 +682,7 @@ class InvoiceLoadController extends Controller
         }
 
         $total_with_ppn_materai = $total + round($total * ((Float)$ppn / (Float)100)) + (Float)$materai;
-        // dd($new_container[0]['price_invoice']);
+        // dd($new_container);
 
         $total_invoice = [
             "total" => $total_with_ppn_materai,
@@ -451,6 +702,7 @@ class InvoiceLoadController extends Controller
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
         $save1 = 'storage/load-invoice/Invoice-'.$old_slug.'-'.$random.time().'.pdf';
+
 
         if($no_invoice_2 == null) {
             $pdf1 = Pdf::loadview('invoice.pdf.invoice-load',[
@@ -544,12 +796,12 @@ class InvoiceLoadController extends Controller
 
 
         $invoice = [
-            "job_id"=> null,
-            "container_id"=> null,
-            "tanggal_invoice"=> null,
+            // "job_id"=> null,
+            // "container_id"=> null,
+            // "tanggal_invoice"=> null,
             "path"=> null,
-            "yth"=> null,
-            "km"=> null,
+            // "yth"=> null,
+            // "km"=> null,
             "status"=> null,
 
         ];
@@ -617,6 +869,22 @@ class InvoiceLoadController extends Controller
         for($i = 0; $i < count($request->pod); $i++) {
             $pod[$i] = ContainerPlanLoad::where('id', $request->pod[$i])->value('pod_container');
             $nomor_invoice[$i] = ContainerPlanLoad::where('id', $request->pod[$i])->value('status_invoice');
+        }
+
+        return response()->json([
+            "pod" => $pod,
+            "nomor_invoice" => $nomor_invoice
+        ]);
+    }
+    public function getPodSi(Request $request){
+        $pod = [];
+        $nomor_invoice = [];
+
+        $containers = ContainerPlanload::where("slug", $request->slug)->get();
+
+        for($i = 0; $i < count($containers); $i++) {
+            $pod[$i] = ContainerPlanLoad::where('id', $containers[$i]->id)->value('pod_container');
+            $nomor_invoice[$i] = ContainerPlanLoad::where('id', $containers[$i]->id)->value('status_invoice');
         }
 
         return response()->json([

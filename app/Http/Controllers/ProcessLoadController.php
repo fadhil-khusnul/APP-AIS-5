@@ -336,6 +336,7 @@ class ProcessLoadController extends Controller
     }
     public function input_si($slug)
     {
+        
         $biaya_stuffing = ContainerPlanload::where("slug", $slug)->sum("biaya_stuffing");
         $biaya_trucking = ContainerPlanload::where("slug", $slug)->sum("biaya_trucking");
         $biaya_thc = ContainerPlanload::where("slug", $slug)->sum("biaya_thc");
@@ -362,7 +363,7 @@ class ProcessLoadController extends Controller
         $kontainer = ContainerPlanload::where("slug", $slug)->get();
         $modals = SiPdfContainer::find($slug);
 
-        // $this->create_invoice($modals);
+        $this->create_invoice($modals);
        
         return response()->json([
             'total' => $total,
@@ -583,7 +584,6 @@ class ProcessLoadController extends Controller
 
 
         if ($request->spk != null) {
-            # code...
 
             SpkContainer::where('kontainer_id', $id)->delete();
 
@@ -602,6 +602,23 @@ class ProcessLoadController extends Controller
             ];
 
             Spk::where("kode_spk", $request->spk)->update($data3);
+        } else {
+            // SpkContainer::where('kontainer_id', $id)->delete();
+
+
+            $data4 = [
+                "status" => "input",
+            ];
+            Spk::where("kode_spk", $request->spk_old)->update($data4);
+
+
+
+            // $data3 = [
+            //     "status" => "Container",
+
+            // ];
+
+            // Spk::where("kode_spk", $request->spk)->update($data3);
         }
 
 

@@ -218,21 +218,24 @@
                                             
                                             <td class="text-nowrap text-center">
 
-                                                @if ($container->status != 'Realisasi')
-                                                    <div class="validation-container">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check-container"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
-                                                            value="{{ $container->id }}"  autofocus>
-                                                       
+                                                @if ($container->slug != null)
+                                                    
+
+                                                    <div class="">
+
+                                                        <input readonly disabled checked type="checkbox"
+                                                            class="form-check-input"
+                                                            id="kontainer_check[{{ $loop->iteration }}]">
                                                     </div>
                                                 @else
-                                                <div class="">
-
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
+                                                <div class="validation-container">
+                                                    <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                        class="form-check-input check-container"
+                                                        id="kontainer_check[{{ $loop->iteration }}]" name="letter" onchange="countCheck()"
+                                                        value="{{ $container->id }}"  autofocus>
+                                                   
                                                 </div>
+            
                                                 @endif
 
                                                

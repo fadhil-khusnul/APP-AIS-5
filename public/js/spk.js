@@ -71,7 +71,7 @@ function Tambah_SPK() {
         },
         submitHandler: function (form) {
             var code = document.getElementById("kode_spk").value;
-            var keterangan_spk = document.getElementById("keterangan_spk").value;
+            // var keterangan_spk = document.getElementById("keterangan_spk").value;
             var start_spk = document.getElementById("start_spk").value;
             start_spk = parseInt(start_spk);
             var touch_spk = document.getElementById("touch_spk").value;
@@ -86,7 +86,7 @@ function Tambah_SPK() {
             var data_start_spk = [];
             var data_touch_spk = [];
             var data_harga_spk = [];
-            var data_keterangan_spk = [];
+            // var data_keterangan_spk = [];
             var data_select = [];
             let fd = new FormData();
             var result;
@@ -111,8 +111,8 @@ function Tambah_SPK() {
                         data_code[i] = code;
                         fd.append("code[]", data_code[i]);
 
-                        data_keterangan_spk[i] = keterangan_spk;
-                        fd.append("keterangan_spk[]", data_keterangan_spk[i]);
+                        // data_keterangan_spk[i] = keterangan_spk;
+                        // fd.append("keterangan_spk[]", data_keterangan_spk[i]);
 
                         data_start_spk[i] = start_spk + i;
                         fd.append("start_spk[]", data_start_spk[i]);
@@ -206,7 +206,7 @@ function editspk(e) {
             $('#kode_spk_edit').val(response.result.kode_spk);
             $('#harga_spk_edit').val(response.result.harga_spk);
             $('#select_company_edit').val(response.result.pelayaran_id);
-            $('#keterangan_spk_edit').val(response.result.keterangan_spk);
+            // $('#keterangan_spk_edit').val(response.result.keterangan_spk);
 
             $('#valid_spk_edit').validate({
                 rules: {
@@ -248,7 +248,7 @@ function editspk(e) {
                             kode_spk: $('#kode_spk_edit').val(),
                             harga_spk: $('#harga_spk_edit').val().replace(/\./g, ""),
                             select_company: $('#select_company_edit').val(),
-                            keterangan_spk: $('#keterangan_spk_edit').val(),
+                            // keterangan_spk: $('#keterangan_spk_edit').val(),
                         },
                         success: function (response) {
                             swal.fire({
@@ -326,6 +326,69 @@ function deletespk(id) {
                 });
             }
         });
+}
+
+function tambah_keterangan(id) {
+    id = id.value;
+
+    $.ajax({
+        url: 'spk/' + id + '/edit',
+        type: 'GET',
+        success: function (response) {
+            $('#modal-spk-edit').modal('show');
+
+            $('#kode_spk_edit').val(response.result.kode_spk);
+            $('#harga_spk_edit').val(response.result.harga_spk);
+            $('#select_company_edit').val(response.result.pelayaran_id);
+            $('#keterangan_spk_edit').val(response.result.keterangan_spk);
+
+            $('#valid_spk_edit').validate({
+        
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+        
+                // console.log();
+                submitHandler: function (form) {
+                    var token = $('#csrf').val();
+        
+                    $.ajax({
+                        url: 'spk-keterangan/' + id,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            keterangan_spk: $('#keterangan_spk_edit').val(),
+                        },
+                        success: function (response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Keterangan Spk Berhasil Dimasukkan",
+                                showConfirmButton: false,
+                                timer: 2e3,
+        
+                            })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+        }
+    });
+
+
+   
+    
 }
 
 

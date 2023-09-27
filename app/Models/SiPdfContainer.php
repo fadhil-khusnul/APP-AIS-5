@@ -11,4 +11,10 @@ class SiPdfContainer extends Model
 
     protected $guarded = [''];
 
+    public function containers(){
+        return $this->belongsTo(ContainerPlanload::class, 'container_id', 'slug');
+    }
+
+
+
 }

@@ -39,12 +39,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        {{-- <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Keterangan SPK :</label>
                                 <textarea name="keterangan_spk" id="keterangan_spk" class="form-control" required></textarea>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <div class="text-center">
 
@@ -111,7 +111,7 @@
                                 <th>Nama Shipping Company (Pelayaran)</th>
                                 <th>Kode SPK</th>
                                 <th>Harga SPK</th>
-                                <th>Keterangan SPK</th>
+                                {{-- <th>Keterangan SPK</th> --}}
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -130,13 +130,14 @@
                                     <td>
                                         @rupiah($spk->harga_spk)
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         {{ $spk->keterangan_spk }}
-                                    </td>
+                                    </td> --}}
                                     {{-- <td>
                                         {{ $spk-> }}
                                     </td> --}}
-                                    <td class="text-center"><button onclick="editspk(this)" value="{{ $spk->id }}"
+                                    <td class="text-center">
+                                        <button onclick="editspk(this)" value="{{ $spk->id }}"
                                             class="btn btn-label-info btn-icon btn-circle btn-sm"><i
                                                 class="fa fa-pencil"></i></button>
 
@@ -208,7 +209,7 @@
                             <input required class="form-control currency-rupiah" id="harga_spk_edit" name="harga_spk_edit" type="text">
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
 
 
                         <label class="col-sm-4 form-label" for="area_code">KETERANGAN SPK :</label>
@@ -216,7 +217,7 @@
                             <textarea name="keterangan_spk_edit" id="" cols="30" rows="10"></textarea>
                             <input class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
                         </div>
-                    </div>
+                    </div> --}}
 
 
                 </div>

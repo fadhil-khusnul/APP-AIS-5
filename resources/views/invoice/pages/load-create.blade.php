@@ -61,11 +61,12 @@
 
                         <div class="col-md-12 text-center mb-3">
                             <h1 style="margin-left: auto !important; margin-right:auto !important"
-                            class="portlet-title text-center">KAPAL :
+                                class="portlet-title text-center">KAPAL :
                             </h1>
                             <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"><u> {{ $planload->vessel }} ( {{ $planload->select_company }}
-                                )</u></h3>
+                                class="portlet-title text-center"><u> {{ $planload->vessel }} (
+                                    {{ $planload->select_company }}
+                                    )</u></h3>
                         </div>
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto">
@@ -95,7 +96,7 @@
                                     <td>:</td>
                                     <td>{{ $planload->pol }}</td>
                                 </tr>
-                                
+
 
 
                             </table>
@@ -120,151 +121,7 @@
                     <!-- END Portlet -->
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="portlet">
 
-                    <div class="portlet-body">
-
-
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><u><b>DETAIL KONTAINER :</b></u></label>
-                        </div>
-                        <div class="table-responsive">
-
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
-                                <thead class="table-danger text-nowrap">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center"> </th>
-                                        <th class="text-center">Input</th>
-                                        <th class="text-center">NOMOR INVOICE</th>
-                                        <th class="text-center">UNIT PRICE</th>
-                                        <th class="text-center">KONDISI</th>
-                                        <th class="text-center">KETERANGAN</th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">Pengirim</th>
-                                        <th class="text-center">Penerima</th>
-                                        <th class="text-center">Size/Type</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Cargo (Nama Barang)</th>
-                                        <th class="text-center">Seal-Container</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody class="text-center" id="tbody_container">
-                                    @foreach ($containers as $container)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-
-                                           
-                                            <td>
-                                                @if ($container->price_invoice != null && $container->status_invoice == null || $container->invoices->tanggal_invoice == null)
-                                                    <div class="validation-container">
-                                                        <input type="hidden" value="{{ $container->status_invoice }}" class="{{ $container->status_invoice }}">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check-container"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="{{ $container->status_invoice }}"
-                                                            value="{{ $container->id }}" autofocus onclick="click_check(this)">
-                                                    </div>
-                                                @elseif ($container->status_invoice != null)
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
-                                                @elseif ($container->price_invoice == null)
-                                                    -
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($container->price_invoice != null )
-                                                    <button type="button" value="{{ $container->id }}" type="button"
-                                                        onclick="update_invoice(this)"
-                                                        class="btn btn-primary btn-sm "><i
-                                                            class="fa fa-pencil"></i></button>
-                                                @else
-                                                    <button type="button" value="{{ $container->id }}" type="button"
-                                                        onclick="input_invoice(this)"
-                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
-                                                            class="fa fa-pencil"></i></button>
-                                                @endif
-                                            </td>
-                                            <td>{{$container->status_invoice}}</td>
-                                            <td>@rupiah($container->price_invoice)</td>
-                                            <td>{{$container->kondisi_invoice}}</td>
-                                            <td>{{$container->keterangan_invoice}}</td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pengirim[{{ $container->id }}]">{{ old('pengirim', $container->pengirim) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $container->id }}]">{{ $container->size }}/{{$container->type}} </label>
-
-                                            </td>
-
-                                            <td>
-
-                                                <label disabled @readonly(true)
-                                                    id="nomor_kontainer[{{ $container->id }}]">{{ old('nomor_kontainer', $container->nomor_kontainer) }}</label>
-                                            </td>
-                                            <td>
-
-                                                <label disabled @readonly(true)
-                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
-
-                                            </td>
-                                             <td>
-                                                <ol type="1.">
-
-                                                    @foreach ($sealsc as $seal)
-                                                        @if ($seal->kontainer_id == $container->id)
-                                                            <li id="seal[{{ $container->id }}]">
-                                                                {{ $seal->seal_kontainer }}
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-
-
-
-                                            </td>
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                        <!-- END Form -->
-                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
-
-                            <div class="col-auto">
-                                <button id="submit-id" type="submit" onclick="pdf_invoice()"
-                                    class="btn btn-success ">Cetak
-                                    Invoice <i class="fa fa-print"></i></button>
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            </div>
 
             @if (count($pdfs_si) > 0)
                 <div class="col-md-12">
@@ -280,9 +137,10 @@
 
                             <div class="row row-cols-lg-auto py-5 g-3">
                                 <label for="" class="col-form-label">Filter Tabel :</label>
-                               
+
                                 <div class="col-6">
-                                    <select id="pilih_status_si" name="pilih_status_si" class="form-select pilih" onchange="filter_status(this)">
+                                    <select id="pilih_status_si" name="pilih_status_si" class="form-select pilih"
+                                        onchange="filter_status(this)">
                                         <option selected disabled>Pilih Jenis SI</option>
                                         <option value="BIASA">BIASA</option>
                                         <option value="ALIH-KAPAL">ALIH-KAPAL</option>
@@ -299,6 +157,7 @@
                                         <th class="">No</th>
                                         <th class=""></th>
                                         <th class="">Jenis SI</th>
+                                        <th class="">Nomor Invoice</th>
                                         <th class="">Kontainer</th>
                                         <th class="">Shipper</th>
                                         <th class="">Consigne</th>
@@ -320,31 +179,46 @@
 
                                                 {{ $loop->iteration }}
                                             </td>
-                                            <td class="text-nowrap text-center">
-                                                <input type="hidden" name="container_id" id="container_id" value="{{ $pdf->container_id }}">
-                                                <button type="button" value="{{$pdf->id}}" onclick="refresh_si(this)"
-                                                    class="btn btn-danger btn-sm "><i
-                                                        class="fa fa-refresh"></i></button>
-                                                <button data-id="{{ $pdf->container_id }}" data-target="static" type="button" value="{{$pdf->container_id}}" onclick="input_invoice_si(this)"
-                                                    class="btn btn-success btn-sm ">Buat Invoice <i
-                                                        class="fa fa-pencil"></i></button>
+                                            <td class="text-nowrap">
+                                                <input type="hidden" name="container_id" id="container_id"
+                                                    value="{{ $pdf->container_id }}">
+                                                @if ($pdf->status_si == 'Default')
+                                                    <button data-id="{{ $pdf->container_id }}"
+                                                        data-bs-target="modal_invoice_si" type="button"
+                                                        value="{{ $pdf->container_id }}" onclick="input_invoice_si(this)"
+                                                        class="btn btn-success btn-sm ">Invoice <i
+                                                            class="fa fa-pencil"></i></button>
+                                                @else
+                                                    <button data-id="{{ $pdf->container_id }}"
+                                                        data-bs-target="modal_invoice_si" type="button"
+                                                        value="{{ $pdf->container_id }}" onclick="input_invoice_si_alih(this)"
+                                                        class="btn btn-success btn-sm ">Invoice Alih Kapal <i
+                                                            class="fa fa-pencil"></i></button>
+                                                @endif
+
 
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-info btn-sm ">SI <i
-                                                        class="fa fa-eye"></i></a>
+                                                    class="btn btn-info btn-sm ">SI <i class="fa fa-eye"></i></a>
 
-                                                
-                    
+
+
                                             </td>
 
                                             <td class="align-middle text-nowrap">
 
                                                 @if ($pdf->status_si == 'Default')
-                                                <i class="marker marker-dot text-success"></i>
-                                                BIASA
+                                                    <i class="marker marker-dot text-success"></i>
+                                                    BIASA
                                                 @else
-                                                <i class="marker marker-dot text-primary"></i>
-                                                ALIH-KAPAL
+                                                    <i class="marker marker-dot text-primary"></i>
+                                                    ALIH-KAPAL
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($pdf->containers->status_invoice == null)
+                                                    -
+                                                @else
+                                                    {{ $pdf->containers->status_invoice }}
                                                 @endif
                                             </td>
                                             <td>
@@ -358,7 +232,7 @@
                                                         @endif
                                                     @endforeach
                                                 </ol>
-                                                
+
 
                                             </td>
 
@@ -399,7 +273,6 @@
 
 
 
-                                        
                                         </tr>
                                     @endforeach
 
@@ -409,8 +282,7 @@
 
 
                             <div class="text-center mt-3">
-                                <a href="/realisasi-pod-create/{{ $planload->slug }}"
-                                    class="btn btn-success ">
+                                <a href="/realisasi-pod-create/{{ $planload->slug }}" class="btn btn-success ">
                                     Realisasi POD <i class="fa fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -425,168 +297,173 @@
             @endif
 
             @if (count($container_batal) > 0)
-            <div class="col-md-12">
-                <div class="portlet">
+                <div class="col-md-12">
+                    <div class="portlet">
 
-                    <div class="portlet-body">
+                        <div class="portlet-body">
 
-                        <!-- BEGIN Form -->
+                            <!-- BEGIN Form -->
 
-                        <div class="col-md-12 text-center">
-                            <label for="inputState" class="form-label"><u><b>KONTAINER BATAL MUAT</b></u></label>
-                        </div>
-                        <div class="table-responsive">
+                            <div class="col-md-12 text-center">
+                                <label for="inputState" class="form-label"><u><b>KONTAINER BATAL MUAT</b></u></label>
+                            </div>
+                            <div class="table-responsive">
 
 
-                            <table id="table_batal" class="table table-bordered table-hover mb-0 seratus">
-                                <thead id="thead_alih" class="table-danger text-nowrap">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center"></th>
-                                        <th class="text-center">Input</th>
-                                        <th class="text-center">NOMOR INVOICE</th>
-                                        <th class="text-center">UNIT PRICE</th>
-                                        <th class="text-center">KONDISI</th>
-                                        <th class="text-center">KETERANGAN</th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">Pengirim</th>
-                                        <th class="text-center">Penerima</th>
-                                        <th class="text-center">Size/Type</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Cargo (Nama Barang)</th>
-                                        <th class="text-center">Seal-Container</th>
-                                        <th class="text-center">Biaya Batal Muat Kapal</th>
-                                        <th class="text-center">Keterangan Batal Muat</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="text-center">
-                                    @foreach ($container_batal as $batal)
+                                <table id="table_batal" class="table table-bordered table-hover mb-0 seratus">
+                                    <thead id="thead_alih" class="table-danger text-nowrap">
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-
-                      
-
-                                            <td>
-                                                @if ($batal->price_invoice != null && $batal->status_invoice == null || $batal->invoices->tanggal_invoice == null)
-                                                    <div class="validation-container">
-                                                        <input type="hidden" value="{{ $batal->status_invoice }}" class="{{ $batal->status_invoice }}">
-                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                            class="form-check-input check_kontainer_batal"
-                                                            id="kontainer_check[{{ $loop->iteration }}]" name="{{ $batal->status_invoice }}"
-                                                            value="{{ $batal->id }}" autofocus onclick="click_check(this)">
-                                                    </div>
-                                                @elseif ($batal->status_invoice != null)
-                                                    <input readonly disabled checked type="checkbox"
-                                                        class="form-check-input"
-                                                        id="kontainer_check[{{ $loop->iteration }}]">
-                                                @elseif ($batal->status_invoice == null)
-                                                    -
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($batal->price_invoice != null)
-                                                    <button type="button" value="{{ $batal->id }}" type="button"
-                                                        onclick="update_invoice(this)"
-                                                        class="btn btn-primary btn-sm "><i
-                                                            class="fa fa-pencil"></i></button>
-                                                @else
-                                                    <button type="button" value="{{ $batal->id }}" type="button"
-                                                        onclick="input_invoice(this)"
-                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
-                                                            class="fa fa-pencil"></i></button>
-                                                @endif
-
-
-                                            </td>
-
-                                            <td>{{$batal->status_invoice}}</td>
-                                            <td>@rupiah($batal->price_invoice)</td>
-                                            <td>{{$batal->kondisi_invoice}}</td>
-                                            <td>{{$batal->keterangan_invoice}}</td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pod_container[{{ $batal->id }}]">{{ old('pod_container', $batal->pod_container) }}</label>
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="pengirim[{{ $batal->id }}]">{{ old('pengirim', $batal->pengirim) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="penerima[{{ $batal->id }}]">{{ old('penerima', $batal->penerima) }}</label>
-
-                                            </td>
-                                            <td>
-                                                <label disabled @readonly(true)
-                                                    id="size[{{ $batal->id }}]">{{ $batal->size }}/{{$batal->type}} </label>
-
-                                            </td>
-
-                                            <td>
-
-                                                <label disabled @readonly(true)
-                                                    id="nomor_kontainer[{{ $batal->id }}]">{{ old('nomor_kontainer', $batal->nomor_kontainer) }}</label>
-                                            </td>
-                                            <td>
-
-                                                <label disabled @readonly(true)
-                                                    id="cargo[{{ $batal->id }}]">{{ old('cargo', $batal->cargo) }}</label>
-
-                                            </td>
-                                             <td>
-                                                <ol type="1.">
-
-                                                    @foreach ($sealsc as $seal)
-                                                        @if ($seal->kontainer_id == $batal->id)
-                                                            <li>
-                                                                {{ $seal->seal_kontainer }}
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-
-
-
-                                            </td>
-
-                                            <td>
-                                                <label id="harga_batal[{{ $loop->iteration }}]">
-                                                    @rupiah($batal->harga_batal)</label>
-
-                                            </td>
-                                            <td>
-                                                <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
-                                                    {{ $batal->keterangan_batal }}</label>
-
-                                            </td>
-                                            
-
+                                            <th class="text-center">No</th>
+                                            <th class="text-center"></th>
+                                            <th class="text-center">Input</th>
+                                            <th class="text-center">NOMOR INVOICE</th>
+                                            <th class="text-center">UNIT PRICE</th>
+                                            <th class="text-center">KONDISI</th>
+                                            <th class="text-center">KETERANGAN</th>
+                                            <th class="text-center">POD</th>
+                                            <th class="text-center">Pengirim</th>
+                                            <th class="text-center">Penerima</th>
+                                            <th class="text-center">Size/Type</th>
+                                            <th class="text-center">Nomor Kontainer</th>
+                                            <th class="text-center">Cargo (Nama Barang)</th>
+                                            <th class="text-center">Seal-Container</th>
+                                            <th class="text-center">Biaya Batal Muat Kapal</th>
+                                            <th class="text-center">Keterangan Batal Muat</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody id="tbody_alih" class="text-center">
+                                        @foreach ($container_batal as $batal)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
 
-                                </tbody>
-                            </table>
-
-                        </div>
 
 
-                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
-                            <div class="col-auto">
-                                <button id="submit_batal" type="submit" onclick="pdf_invoice_batal()"
-                                    class="btn btn-success ">Cetak Invoice Batal Muat <i class="fa fa-print"></i></button>
+                                                <td>
+                                                    @if (($batal->price_invoice != null && $batal->status_invoice == null) || $batal->invoices->tanggal_invoice == null)
+                                                        <div class="validation-container">
+                                                            <input type="hidden" value="{{ $batal->status_invoice }}"
+                                                                class="{{ $batal->status_invoice }}">
+                                                            <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                                class="form-check-input check_kontainer_batal"
+                                                                id="kontainer_check[{{ $loop->iteration }}]"
+                                                                name="{{ $batal->status_invoice }}"
+                                                                value="{{ $batal->id }}" autofocus
+                                                                onclick="click_check(this)">
+                                                        </div>
+                                                    @elseif ($batal->status_invoice != null)
+                                                        <input readonly disabled checked type="checkbox"
+                                                            class="form-check-input"
+                                                            id="kontainer_check[{{ $loop->iteration }}]">
+                                                    @elseif ($batal->status_invoice == null)
+                                                        -
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($batal->price_invoice != null)
+                                                        <button type="button" value="{{ $batal->id }}"
+                                                            type="button" onclick="update_invoice(this)"
+                                                            class="btn btn-primary btn-sm "><i
+                                                                class="fa fa-pencil"></i></button>
+                                                    @else
+                                                        <button type="button" value="{{ $batal->id }}"
+                                                            type="button" onclick="input_invoice(this)"
+                                                            class="btn btn-success btn-sm text-nowrap ">Input <i
+                                                                class="fa fa-pencil"></i></button>
+                                                    @endif
+
+
+                                                </td>
+
+                                                <td>{{ $batal->status_invoice }}</td>
+                                                <td>@rupiah($batal->price_invoice)</td>
+                                                <td>{{ $batal->kondisi_invoice }}</td>
+                                                <td>{{ $batal->keterangan_invoice }}</td>
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="pod_container[{{ $batal->id }}]">{{ old('pod_container', $batal->pod_container) }}</label>
+                                                </td>
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="pengirim[{{ $batal->id }}]">{{ old('pengirim', $batal->pengirim) }}</label>
+
+                                                </td>
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="penerima[{{ $batal->id }}]">{{ old('penerima', $batal->penerima) }}</label>
+
+                                                </td>
+                                                <td>
+                                                    <label disabled @readonly(true)
+                                                        id="size[{{ $batal->id }}]">{{ $batal->size }}/{{ $batal->type }}
+                                                    </label>
+
+                                                </td>
+
+                                                <td>
+
+                                                    <label disabled @readonly(true)
+                                                        id="nomor_kontainer[{{ $batal->id }}]">{{ old('nomor_kontainer', $batal->nomor_kontainer) }}</label>
+                                                </td>
+                                                <td>
+
+                                                    <label disabled @readonly(true)
+                                                        id="cargo[{{ $batal->id }}]">{{ old('cargo', $batal->cargo) }}</label>
+
+                                                </td>
+                                                <td>
+                                                    <ol type="1.">
+
+                                                        @foreach ($sealsc as $seal)
+                                                            @if ($seal->kontainer_id == $batal->id)
+                                                                <li>
+                                                                    {{ $seal->seal_kontainer }}
+
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ol>
+
+
+
+                                                </td>
+
+                                                <td>
+                                                    <label id="harga_batal[{{ $loop->iteration }}]">
+                                                        @rupiah($batal->harga_batal)</label>
+
+                                                </td>
+                                                <td>
+                                                    <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
+                                                        {{ $batal->keterangan_batal }}</label>
+
+                                                </td>
+
+
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+
                             </div>
 
 
+                            <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
+                                <div class="col-auto">
+                                    <button id="submit_batal" type="submit" onclick="pdf_invoice_batal()"
+                                        class="btn btn-success ">Cetak Invoice Batal Muat <i
+                                            class="fa fa-print"></i></button>
+                                </div>
+
+
+                            </div>
+
                         </div>
-
                     </div>
-                </div>
-                <!-- BEGIN Portlet -->
+                    <!-- BEGIN Portlet -->
 
-                <!-- END Portlet -->
-            </div>
+                    <!-- END Portlet -->
+                </div>
             @endif
 
 
@@ -614,7 +491,8 @@
                                     <div class="mb-2">
                                         <!-- BEGIN Input Group -->
                                         <div class="input-group input-daterange">
-                                            <input type="text" id="min" class="form-control" placeholder="From">
+                                            <input type="text" id="min" class="form-control"
+                                                placeholder="From">
                                             <span class="input-group-text">
                                                 <i class="fa fa-ellipsis-h"></i>
                                             </span>
@@ -624,15 +502,18 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select" onchange="filter_vendor(this)">
+                                    <select multiple id="pilih_vendor" name="pilih_vendor" class="form-select"
+                                        onchange="filter_vendor(this)">
                                         @foreach ($vendors as $vendor)
-                                            <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}</option>
+                                            <option value="{{ $vendor->nama_vendor }}">{{ $vendor->nama_vendor }}
+                                            </option>
                                         @endforeach
                                     </select>
 
                                 </div>
                                 <div class="col-6">
-                                    <select id="pilih_status" name="pilih_status" class="form-select" onchange="filter_status(this)">
+                                    <select id="pilih_status" name="pilih_status" class="form-select"
+                                        onchange="filter_status(this)">
                                         <option selected disabled>Pilih Status Bayar</option>
                                         <option value="Belum Lunas">Belum Lunas</option>
                                         <option value="Sudah Lunas">Sudah Lunas</option>
@@ -643,8 +524,8 @@
 
 
                                 <div style="" class="">
-                                    <button id="add_total" type="button" onclick="bayar()"
-                                    class="btn btn-success">Dana Telah Terima <i class="fa fa-check"></i></button>
+                                    <button id="add_total" type="button" onclick="bayar()" class="btn btn-success">Dana
+                                        Telah Terima <i class="fa fa-check"></i></button>
                                 </div>
 
 
@@ -657,117 +538,115 @@
                             <div class="table-responsive">
 
 
-                            <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
-                                <thead id="thead_alih" class="table-danger">
-                                    <tr>
-                                        <th>No</th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>Jenis Invoice</th>
-                                        <th>Tanggal Invoice</th>
-                                        <th>Nomor Invoice</th>
-                                        <th>YTH</th>
-                                        <th>KM</th>
-                                        <th>TOTAL</th>
-                                        <th>DITERIMA</th>
-                                        <th>SELISIH</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="">
-                                    @foreach ($pdfs as $pdf_inv)
-                                    @if ($pdf_inv->tanggal_invoice != null)
-
+                                <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
+                                    <thead id="thead_alih" class="table-danger">
                                         <tr>
-
-                                            <td>
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td class="text-nowrap">
-
-                                                @if ($pdf_inv->total - $pdf_inv->terbayar == 0)
-                                                <input readonly disabled checked type="checkbox"
-                                                    class="form-check-input"
-                                                    id="kontainer_check[{{ $loop->iteration }}]">
-                                                @elseif ($pdf_inv->total - $pdf_inv->terbayar > 0)
-                                                <div class="validation-container">
-                                                    <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                        class="form-check-input check-container2"
-                                                        id="kontainer_check[{{ $loop->iteration }}]" name="letter"
-                                                        value="{{ $pdf_inv->id }}" autofocus>
-
-                                                </div>
-
-                                                @endif
-
-                                            </td>
-
-                                            <td class="text-nowrap">
-
-
-                                                <a type="button" href="/preview-invoice/{{ $pdf_inv->path }}"
-                                                    class="btn btn-primary btn-sm ">Preview Invoice <i
-                                                        class="fa fa-eye"></i></a>
-                                                <button type="button" value="{{ $pdf_inv->id }}"
-                                                    onclick="delete_invoice(this)" class="btn btn-danger btn-sm "><i
-                                                        class="fa fa-trash"></i></button>
-
-                                            </td>
-                                           
-
-
-                                            <td class="align-middle text-nowrap">
-                                                @if ($pdf_inv->status == "Alih-Kapal" || $pdf_inv->status == "Realisasi-Alih" )
-                                                <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
-                                                @elseif ($pdf_inv->status == "Batal-Muat")
-                                                <i class="marker marker-dot text-danger"></i>BATAL-MUAT
-                                                @else
-                                                <i class="marker marker-dot text-success"></i> BIASA
-                                                @endif
-    
-    
-                                            </td>
-                                            <td>
-                                                @if ($pdf_inv->tanggal_invoice != null)
-                                                    {{ \Carbon\Carbon::parse($pdf_inv->tanggal_invoice)->isoFormat('dddd, DD MMMM YYYY') }}
-                                                @else
-                                                    -
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                {{ $pdf_inv->nomor_invoice }}
-
-                                            </td>
-
-                                            <td>
-                                                {{ $pdf_inv->yth }}
-
-                                            </td>
-                                            <td>
-                                                {{ $pdf_inv->km }}
-
-                                            </td>
-                                            <td>
-                                                @rupiah($pdf_inv->total)
-
-                                            </td>
-                                            <td>
-                                                @rupiah($pdf_inv->terbayar)
-
-                                            </td>
-                                            <td>
-                                                @rupiah($pdf_inv->total - $pdf->terbayar)
-
-                                            </td>
-
-                                        
+                                            <th>No</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Jenis Invoice</th>
+                                            <th>Tanggal Invoice</th>
+                                            <th>Nomor Invoice</th>
+                                            <th>YTH</th>
+                                            <th>KM</th>
+                                            <th>TOTAL</th>
+                                            <th>DITERIMA</th>
+                                            <th>SELISIH</th>
                                         </tr>
-                                        @endif
+                                    </thead>
+                                    <tbody id="tbody_alih" class="">
+                                        @foreach ($pdfs as $pdf_inv)
+                                            @if ($pdf_inv->tanggal_invoice != null)
+                                                <tr>
 
-                                    @endforeach
+                                                    <td>
+                                                        {{ $loop->iteration }}
+                                                    </td>
+                                                    <td class="text-nowrap">
 
-                                </tbody>
-                            </table>
+                                                        @if ($pdf_inv->total - $pdf_inv->terbayar == 0)
+                                                            <input readonly disabled checked type="checkbox"
+                                                                class="form-check-input"
+                                                                id="kontainer_check[{{ $loop->iteration }}]">
+                                                        @elseif ($pdf_inv->total - $pdf_inv->terbayar > 0)
+                                                            <div class="validation-container">
+                                                                <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                                    class="form-check-input check-container2"
+                                                                    id="kontainer_check[{{ $loop->iteration }}]"
+                                                                    name="letter" value="{{ $pdf_inv->id }}" autofocus>
+
+                                                            </div>
+                                                        @endif
+
+                                                    </td>
+
+                                                    <td class="text-nowrap">
+
+
+                                                        <a type="button" href="/preview-invoice/{{ $pdf_inv->path }}"
+                                                            class="btn btn-info btn-sm ">Invoice <i
+                                                                class="fa fa-eye"></i></a>
+                                                        <button type="button" value="{{ $pdf_inv->id }}"
+                                                            onclick="delete_invoice(this)"
+                                                            class="btn btn-danger btn-sm "><i
+                                                                class="fa fa-trash"></i></button>
+
+                                                    </td>
+
+
+
+                                                    <td class="align-middle text-nowrap">
+                                                        @if ($pdf_inv->status == 'Alih-Kapal' || $pdf_inv->status == 'Realisasi-Alih')
+                                                            <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
+                                                        @elseif ($pdf_inv->status == 'Batal-Muat')
+                                                            <i class="marker marker-dot text-danger"></i>BATAL-MUAT
+                                                        @else
+                                                            <i class="marker marker-dot text-success"></i> BIASA
+                                                        @endif
+
+
+                                                    </td>
+                                                    <td>
+                                                        @if ($pdf_inv->tanggal_invoice != null)
+                                                            {{ \Carbon\Carbon::parse($pdf_inv->tanggal_invoice)->isoFormat('dddd, DD MMMM YYYY') }}
+                                                        @else
+                                                            -
+                                                        @endif
+
+                                                    </td>
+                                                    <td>
+                                                        {{ $pdf_inv->nomor_invoice }}
+
+                                                    </td>
+
+                                                    <td>
+                                                        {{ $pdf_inv->yth }}
+
+                                                    </td>
+                                                    <td>
+                                                        {{ $pdf_inv->km }}
+
+                                                    </td>
+                                                    <td>
+                                                        @rupiah($pdf_inv->total)
+
+                                                    </td>
+                                                    <td>
+                                                        @rupiah($pdf_inv->terbayar)
+
+                                                    </td>
+                                                    <td>
+                                                        @rupiah($pdf_inv->total - $pdf->terbayar)
+
+                                                    </td>
+
+
+                                                </tr>
+                                            @endif
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
                             </div>
 
 
@@ -780,83 +659,84 @@
             @endif
 
 
-        @if (count($reports) > 0)
-            <div class="col-md-12 col-xl-12">
+            @if (count($reports) > 0)
+                <div class="col-md-12 col-xl-12">
 
-                <div class="portlet">
-                    <div class="portlet-header portlet-header-bordered">
-                        <h3 class="portlet-title text-center"><u><b>HISTORY PEMBAYARAN</b></u></h3>
-                    </div>
-                    <div class="portlet-body">
-                        <hr>
-                        
+                    <div class="portlet">
+                        <div class="portlet-header portlet-header-bordered">
+                            <h3 class="portlet-title text-center"><u><b>HISTORY PEMBAYARAN</b></u></h3>
+                        </div>
+                        <div class="portlet-body">
+                            <hr>
 
 
-                        <!-- BEGIN Datatable -->
-                        <table id="tabel_bayar_invoice" class="table table-bordered table-striped table-hover autosize mt-5"
-                            style="width: 100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th></th>
-                                    <th>Nomor Invoice</th>
-                                    <th>Tanggal Bayar</th>
-                                    <th>Total Dibayar</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($reports as $report)
-                                    {{-- @foreach ($report as $item) --}}
-
-                                    {{-- @endforeach --}}
+                            <!-- BEGIN Datatable -->
+                            <table id="tabel_bayar_invoice"
+                                class="table table-bordered table-striped table-hover autosize mt-5" style="width: 100%">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class="text-nowrap text-center">
-                                            {{-- @foreach ($report as $item) --}}
+                                        <th>No</th>
+                                        <th></th>
+                                        <th>Nomor Invoice</th>
+                                        <th>Tanggal Bayar</th>
+                                        <th>Total Dibayar</th>
 
-                                            
-                                            <button type="button" value="{{ $report[0]->slug }}"
-                                                onclick="delete_history(this)" class="btn btn-danger btn-sm "><i
-                                                    class="fa fa-trash"></i></button>
-
-
-                                            {{-- @endforeach --}}
-                                        </td>
-                                        <td>
-                                            @foreach ($report as $item)
-                                                <li>{{ $item->invoices->nomor_invoice }}</li>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            @if ($report[0]->tanggal_bayar != null)
-                                                <input type="hidden" id="date[{{ $loop->iteration }}]" name="date"
-                                                    value="{{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}">
-                                                {{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}
-                                            @endif
-                                        </td>
-                                        
-                                        <td>
-                                            @rupiah($report[0]->pembayaran)
-                                        </td>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <!-- END Datatable -->
+                                </thead>
+                                <tbody>
+                                    @foreach ($reports as $report)
+                                        {{-- @foreach ($report as $item) --}}
+
+                                        {{-- @endforeach --}}
+                                        <tr>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                            <td class="text-nowrap text-center">
+                                                {{-- @foreach ($report as $item) --}}
+
+
+                                                <button type="button" value="{{ $report[0]->slug }}"
+                                                    onclick="delete_history(this)" class="btn btn-danger btn-sm "><i
+                                                        class="fa fa-trash"></i></button>
+
+
+                                                {{-- @endforeach --}}
+                                            </td>
+                                            <td>
+                                                @foreach ($report as $item)
+                                                    <li>{{ $item->invoices->nomor_invoice }}</li>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @if ($report[0]->tanggal_bayar != null)
+                                                    <input type="hidden" id="date[{{ $loop->iteration }}]"
+                                                        name="date"
+                                                        value="{{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}">
+                                                    {{ \Carbon\Carbon::parse($report[0]->tanggal_bayar)->isoFormat('dddd, DD MMMM YYYY') }}
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @rupiah($report[0]->pembayaran)
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <!-- END Datatable -->
+                        </div>
+
+
                     </div>
 
+                    <!-- END Portlet -->
+                    <!-- BEGIN Portlet -->
 
+                    <!-- END Portlet -->
                 </div>
-
-                <!-- END Portlet -->
-                <!-- BEGIN Portlet -->
-
-                <!-- END Portlet -->
-            </div>
-        @endif
+            @endif
 
 
 
@@ -875,13 +755,14 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Masukkan Detail Invoice Kontainer :</h5>
                         <br>
-                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_modal"></h5>
+                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_modal">
+                        </h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3">
-                       
+
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="">Unit Price :<span
                                     class="text-danger">*</span></label>
@@ -890,7 +771,8 @@
                                     <span class="input-group-text" for="">Rp.</span>
 
                                     <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="price_invoice" name="price_invoice" placeholder="Unit Price..." onblur="blur_selisih(this)" autofocus required>
+                                        id="price_invoice" name="price_invoice" placeholder="Unit Price..."
+                                        onblur="blur_selisih(this)" autofocus required>
 
                                 </div>
                             </div>
@@ -901,8 +783,9 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="total_biaya_kontainer" name="total_biaya_kontainer">
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="total_biaya_kontainer"
+                                        name="total_biaya_kontainer">
 
                                 </div>
                             </div>
@@ -914,8 +797,8 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="selisih_price" name="selisih_price">
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="selisih_price" name="selisih_price">
 
                                 </div>
                             </div>
@@ -955,7 +838,7 @@
         </div>
     </div>
 
-    <div class="modal fade" data-bs-backdrop="static" id="modal_invoice_si" data-target="{{ $pdf->container_id }}">
+    <div class="modal fade" data-bs-backdrop="static" id="modal_invoice_si">
         <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
 
             <form class="modal-content" id="valid_invoice_si" name="valid_invoice_si">
@@ -963,113 +846,62 @@
                 {{-- {{ csrf_field() }} --}}
 
 
-                {{-- <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}"> --}}
                 <input type="hidden" name="new_slug" id="new_slug">
-                <input type="hidden" name="new_slug1" id="new_slug1" value="{!! $pdf->container_id !!}">
 
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Masukkan Detail Invoice Kontainer :</h5>
                         <br>
-                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_modal"></h5>
+                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_modal">
+                        </h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3">
-                        <table>
-                            <tbody>
-                                <thead class="text-center">
-                                    <tr>
-
-                                        <th>No.</th>
-                                        <th>Nomor Kontainer</th>
-                                        <th>Size/Type</th>
-                                        <th>Unit Price</th>
-                                        <th>Kondisi</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                </thead>
-                                @foreach ($container_si as $container)
-                                @if ($container->slug)
+                        <table id="table_modal_container">
+                            <thead class="text-center">
                                 <tr>
-                                
-                                    
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $container->nomor_kontainer }}</td>
-                                    <td>{{ $container->size }}/{{ $container->type }}</td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text" for="">Rp.</span>
-            
-                                                <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                                    id="price_invoice_si" name="price_invoice_si" placeholder="Unit Price..." onblur="blur_selisih_si(this)" autofocus required>
-            
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <select data-bs-toggle="tooltip" id="kondisi_invoice_si" name="kondisi_invoice_si"
-                                                class="form-select" required>
-                                                <option value="DP" @if ('DP') selected @endif>Door to Port
-                                                </option>
-                                                <option value="DC" @if ('DC') selected @endif>Door to Cy
-                                                </option>
-                                                <option value="DD" @if ('DD') selected @endif>Door to Door
-                                                </option>
-                                            </select>
-            
-                                        </div>
 
-                                    </td>
-                                    <td>
-                                        <div class="validation-container">
-                                            <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_invoice_si" name="keterangan_invoice_si" required>{{ old('keterangan_invoice') }}</textarea>
-                                        </div>
-
-                                    </td>
-                                    
-                                    
+                                    <th>No.</th>
+                                    <th>Nomor Kontainer</th>
+                                    <th>Size/Type</th>
+                                    <th>Biaya/kontainer</th>
+                                    <th>Unit Price</th>
+                                    <th>Kondisi</th>
+                                    <th>Keterangan</th>
                                 </tr>
-                                    
-                                @endif
-                                    
-                                @endforeach
+                            </thead>
+                            <tbody id="tbody_modal_container">
 
-                                 {{-- <tr>
-                                
-                                    <td width="35%" valign="top">Kontainer </td>
-                                    <td width="5%" valign="top">:</td>
-                                    <td width="60%" id="kontainer_html">
-                                        
-                                    </td>
-                                </tr> --}}
+
                             </tbody>
-                           
+
                         </table>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Unit Price :<span
+                            <label class="col-sm-4 col-form-label" for="">Total Unit Price :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="price_invoice_si" name="price_invoice_si" placeholder="Unit Price..." onblur="blur_selisih_si(this)" autofocus required>
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="total_price_invoice_si"
+                                        name="total_price_invoice_si" placeholder="Total Unit Price..." autofocus
+                                        required>
 
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label" for="">Total Biaya Container :<span
+                            <label class="col-sm-4 col-form-label" for="">Total Biaya Kontainer :<span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="total_biaya_kontainer_si" name="total_biaya_kontainer_si">
+                                    <input autofocus required readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="total_biaya_kontainer_si"
+                                        name="total_biaya_kontainer_si">
 
                                 </div>
                             </div>
@@ -1081,36 +913,69 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="selisih_price_si" name="selisih_price_si">
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="selisih_price_si"
+                                        name="selisih_price_si">
 
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Pilih Kondisi:<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <select data-bs-toggle="tooltip" id="kondisi_invoice_si" name="kondisi_invoice_si"
-                                    class="form-select" required>
-                                    <option value="DP" @if ('DP') selected @endif>Door to Port
-                                    </option>
-                                    <option value="DC" @if ('DC') selected @endif>Door to Cy
-                                    </option>
-                                    <option value="DD" @if ('DD') selected @endif>Door to Door
-                                    </option>
-                                </select>
 
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">Ditagihkan ke :</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required class="form-control" id="yth_si" name="yth_si" type="text"
+                                    placeholder="Masukkan Kepda YTH....">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label" for="text">KM :</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required class="form-control" id="km_si" name="km_si" type="text"
+                                    placeholder="Masukkan KM">
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <label class="col-sm-4 col-form-label" for="text">PPN :</label>
+
+                            <div class="col-4 form-check g-3">
+                                <label class="form-check-label px-3" for="ppn">
+                                    <input class="form-check-input" type="radio" name="ppn_si" value="1"
+                                        id="ppn_si"> Yes
+
+                                </label>
+                                <label class="form-check-label px-4" for="ppn_si">
+                                    <input class="form-check-input" type="radio" name="ppn_si" value="0"
+                                        id="ppn_si" checked> No
+
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="row g-2">
+                            <label class="col-sm-4 col-form-label" for="text">METERAI :</label>
+
+                            <div class="col-4 form-check g-3">
+                                <label class="form-check-label px-3" for="ppn2">
+                                    <input class="form-check-input" type="radio" name="materai_si" id="materai_si"
+                                        value="1"
+                                        onclick="document.getElementById('value_materai_si').disabled = false;"> Yes
+
+                                </label>
+                                <label class="form-check-label px-4" for="flexRadioDefault2">
+                                    <input class="form-check-input" type="radio" name="materai_si" id="materai_si"
+                                        value="0" checked
+                                        onclick="document.getElementById('value_materai_si').disabled = true;"> No
+
+                                </label>
+                            </div>
+                            <div class="col-4">
+                                <input disabled class="form-control col-4 currency-rupiah" id="value_materai_si"
+                                    name="value_materai_si" type="text" placeholder="ex (10.000)">
                             </div>
                         </div>
 
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Keterangan :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_invoice_si" name="keterangan_invoice_si" required>{{ old('keterangan_invoice') }}</textarea>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <h5 id="total_biaya_kontainer" class="modal-title"></h5>
@@ -1132,7 +997,8 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Detail Invoice/Kontainer:</h5>
                         <br>
-                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_edit"></h5>
+                        <h5 class="modal-title" style="margin-left: 10px; margin-right:auto;" id="nomor_kontainer_edit">
+                        </h5>
 
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
@@ -1159,8 +1025,9 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="total_biaya_kontainer_edit" name="total_biaya_kontainer_edit">
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="total_biaya_kontainer_edit"
+                                        name="total_biaya_kontainer_edit">
 
                                 </div>
                             </div>
@@ -1172,8 +1039,9 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
-                                    <input readonly data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                                        id="selisih_price_edit" name="selisih_price_edit">
+                                    <input readonly data-bs-toggle="tooltip" type="text"
+                                        class="form-control currency-rupiah" id="selisih_price_edit"
+                                        name="selisih_price_edit">
 
                                 </div>
                             </div>
@@ -1240,7 +1108,7 @@
                             <label class="col-sm-4 col-form-label" for="text">KM :</label>
                             <div class="col-sm-8 validation-container">
                                 <input required class="form-control" id="km" name="km" type="text"
-                                placeholder="Masukkan KM">
+                                    placeholder="Masukkan KM">
                             </div>
                         </div>
                         <div class="row g-2">
@@ -1248,11 +1116,13 @@
 
                             <div class="col-4 form-check g-3">
                                 <label class="form-check-label px-3" for="ppn">
-                                    <input class="form-check-input" type="radio" name="ppn" value="1" id="ppn"> Yes
+                                    <input class="form-check-input" type="radio" name="ppn" value="1"
+                                        id="ppn"> Yes
 
                                 </label>
-								<label class="form-check-label px-4" for="ppn">
-                                    <input class="form-check-input" type="radio" name="ppn" value="0" id="ppn" checked> No
+                                <label class="form-check-label px-4" for="ppn">
+                                    <input class="form-check-input" type="radio" name="ppn" value="0"
+                                        id="ppn" checked> No
 
                                 </label>
                             </div>
@@ -1266,17 +1136,21 @@
 
                             <div class="col-4 form-check g-3">
                                 <label class="form-check-label px-3" for="ppn2">
-                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="1" onclick="document.getElementById('value_materai').disabled = false;"> Yes
+                                    <input class="form-check-input" type="radio" name="materai" id="materai"
+                                        value="1"
+                                        onclick="document.getElementById('value_materai').disabled = false;"> Yes
 
                                 </label>
-								<label class="form-check-label px-4" for="flexRadioDefault2">
-                                    <input class="form-check-input" type="radio" name="materai" id="materai" value="0" checked onclick="document.getElementById('value_materai').disabled = true;"> No
+                                <label class="form-check-label px-4" for="flexRadioDefault2">
+                                    <input class="form-check-input" type="radio" name="materai" id="materai"
+                                        value="0" checked
+                                        onclick="document.getElementById('value_materai').disabled = true;"> No
 
                                 </label>
                             </div>
                             <div class="col-4">
-                                <input class="form-control col-4 currency-rupiah" id="value_materai" name="value_materai" type="text"
-                                placeholder="ex (10.000)">
+                                <input class="form-control col-4 currency-rupiah" id="value_materai" name="value_materai"
+                                    type="text" placeholder="ex (10.000)">
                             </div>
                         </div>
 
@@ -1307,12 +1181,12 @@
                     </div>
                     <div class="modal-body d-grid gap-3">
                         <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Tanggal Bayar :<span class="text-danger">*</span></label>
+                            <label for="" class="col-sm-4 col-form-label">Tanggal Bayar :<span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <input data-bs-toggle="tooltip" type="text" class="form-control date_activity"
-                                    id="tanggal_bayar" name="tanggal_bayar"
-                                    placeholder="Tanggal Bayar..." required>
+                                    id="tanggal_bayar" name="tanggal_bayar" placeholder="Tanggal Bayar..." required>
 
                             </div>
                         </div>
@@ -1323,16 +1197,16 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="terbayar" name="terbayar" placeholder="Nominal..."
-                                        required onblur="blur_terbayar(this)">
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="terbayar" name="terbayar" placeholder="Nominal..." required
+                                        onblur="blur_terbayar(this)">
 
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-6 col-form-label" for="">Total Selisih : <label id="selisih" class="currency-rupiah"> </label></label>
+                            <label class="col-sm-6 col-form-label" for="">Total Selisih : <label id="selisih"
+                                    class="currency-rupiah"> </label></label>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1358,19 +1232,15 @@
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 
     <script>
-
         $("#modal_invoice_si").css("display", "none");
-       
+
 
         $('.modal>.modal-dialog').draggable({
-                cursor: 'move',
-                handle: '.modal-header, .modal-footer'
+            cursor: 'move',
+            handle: '.modal-header, .modal-footer'
         });
         $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
-
-
-
     </script>
 
 

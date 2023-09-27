@@ -1594,6 +1594,7 @@
                         <div class="row">
                             <label for="" class="col-sm-4 col-form-label">SPK-Container : </label>
                             <div class="col-sm-8 validation-container">
+                            <input type="hidden" id="old_spk" name="old_spk">
 
                             <select data-bs-toggle="tooltip" id="spk_update" name="spk_update"
                                 class="form-select" placeholde="Silahkan Pilih SPK">
@@ -2984,7 +2985,7 @@
                             <div class="col-sm-8 validation-container">
 
                             <select id="pod_alih" name="pod_alih" class="form-select" required>
-                                <option selected disabled>Pilih POT</option>
+                                <option selected disabled>Pilih POD</option>
                                 @foreach ($pelabuhans as $pot)
                                     <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
                                         {{ $pot->nama_pelabuhan }}

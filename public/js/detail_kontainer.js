@@ -1152,6 +1152,7 @@ function detail_update(e) {
                     allowClear: true,
                     dropdownParent: $("#modal-job-update"),
                 });
+            $("#old_spk").val(spk);
 
             $("#valid_job_update").validate({
                 ignore: "select[type=hidden]",
@@ -2351,6 +2352,12 @@ function delete_batalDB(r) {
 function detail_alih_kapal() {
     $("#modal_alih_kapal").modal("show");
 
+    $("#kontainer_alih").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Kontainer",
+        allowClear: true,
+        dropdownParent: $("#modal_alih_kapal"),
+    });
     $("#select_company_alih").select2({
         dropdownAutoWidth: true,
         placeholder: "Silahkan Pilih Pelayaran",

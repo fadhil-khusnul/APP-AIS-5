@@ -39,7 +39,6 @@
     <main>
         <h3>{{$nomor_invoice}}</h3>
 
-        @foreach ($loads as $load)
 
         <table width ="100%" class="header2">
             <tr>
@@ -60,7 +59,13 @@
             <tr>
                 <td>Pelayaran</td>
                 <td>:</td>
+                @if ($status === "Alih-Kapal")
+                    
+                <td>{{$alihs->pelayaran_alih}}</td>
+                @else
                 <td>{{$load->select_company}}</td>
+                    
+                @endif
             </tr>
             <tr>
                 <td>POL</td>
@@ -136,7 +141,6 @@
 
         </table>
 
-        @endforeach
 
 
 

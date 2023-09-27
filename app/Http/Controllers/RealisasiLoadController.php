@@ -194,12 +194,31 @@ class RealisasiLoadController extends Controller
             $query->where('status', '!=', 'Batal-Muat')
             ->where('status', '!=', 'Alih-Kapal')
             ->where('status', '!=', 'Realisasi-Alih')
-            ->where('status', 'Realisasi');
+            ->whereNotNull('slug');
         })->get();
         $pdfs = SiPdfContainer::where('job_id', $id)->where(function($query) {
             $query->where('status', 'BL')
             ->orWhere('status','POD');
         })->get();
+
+        // dd($pdfs);
+        $nomor_container = [];
+        for($i = 0; $i < count($pdfs); $i++) {
+            $nomor_container[$i] = ContainerPlanload::where('slug', $pdfs[$i]->container_id)->get();
+        }
+        $sum = [];
+        for($i = 0; $i < count($nomor_container); $i++) {
+            $sum[$i] = 0;
+            for($j = 0; $j < count($nomor_container[$i]); $j++) {
+                if($nomor_container[$i][$j]->demurrage == null) {
+                    $sum[$i] = null;
+                    break;
+                } else {
+                    $sum[$i] = $sum[$i] + $nomor_container[$i][$j]->demurrage;
+                }
+            }
+        }
+        // dd($sum);
 
 
         $sealsc = SealContainer::where('job_id', $id)->get();
@@ -234,6 +253,7 @@ class RealisasiLoadController extends Controller
             'sealsc' => $sealsc,
             'vendors' => $vendors,
             'spks' => $spks,
+            'sums' => $sum, 
 
 
             'planload' => OrderJobPlanload::find($id),

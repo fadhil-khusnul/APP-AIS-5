@@ -123,7 +123,7 @@ Route::post('/getSizeTypeContainer', [PlanLoadController::class, 'getSizeTypeCon
 Route::get('/processload-create/{slug}', [ProcessLoadController::class, 'create']);
 Route::get('/processload-edit/{slug}', [ProcessLoadController::class, 'edit']);
 Route::get('/detail-kontainer/{id}/input', [ProcessLoadController::class, 'input']);
-Route::get('/detail-si/{slug}', [ProcessLoadController::class, 'input_si']);
+Route::get('/detail-si/{slug}', [InvoiceLoadController::class, 'input_si']);
 Route::get('/detail-alihkapal/{id}', [ProcessLoadController::class, 'detail_alihkapal']);
 Route::put('/detail-kontainer-update/{id}', [ProcessLoadController::class, 'input_update']);
 Route::put('/detail-kontainer-edit/{id}', [ProcessLoadController::class, 'input_edit']);
@@ -265,6 +265,7 @@ Route::get('/spk', [SpkController::class, 'index']);
 Route::get('/spk/{id}/edit', [SpkController::class, 'edit']);
 Route::delete('/spk/{id}', [SpkController::class, 'destroy']);
 Route::put('/spk-update/{id}', [SpkController::class, 'update']);
+Route::put('/spk-keterangan/{id}', [SpkController::class, 'tambah_keterangan']);
 Route::get('/report-spk', [SpkController::class, 'index_report']);
 Route::post('/tambah-spk', [SpkController::class, 'store']);
 Route::post('/getSeal', [SpkController::class, 'getSpk']);
@@ -363,6 +364,7 @@ Route::post('/masukkan-invoice-load/{slug}', [InvoiceLoadController::class, 'mas
 Route::post('/create-pdf-invoice-load', [InvoiceLoadController::class, 'pdf_invoice']);
 Route::post('/get-total-invoice-load', [InvoiceLoadController::class, 'selisih']);
 Route::post('/getPod', [InvoiceLoadController::class, 'getPod']);
+Route::post('/getPodSi', [InvoiceLoadController::class, 'getPodSi']);
 Route::post('/getInvoice', [InvoiceLoadController::class, 'getInvoice']);
 Route::post('/kontainer-dibayar-ii', [InvoiceLoadController::class, 'dibayar']);
 Route::post('/getNomorInvoice', [InvoiceLoadController::class, 'nomor_invoice']);

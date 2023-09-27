@@ -68,11 +68,12 @@
 
                         <div class="col-md-12 text-center mb-3">
                             <h1 style="margin-left: auto !important; margin-right:auto !important"
-                            class="portlet-title text-center">KAPAL :
+                                class="portlet-title text-center">KAPAL :
                             </h1>
                             <h3 style="margin-left: auto !important; margin-right:auto !important"
-                                class="portlet-title text-center"><u> {{ $planload->vessel }} ( {{ $planload->select_company }}
-                                )</u></h3>
+                                class="portlet-title text-center"><u> {{ $planload->vessel }} (
+                                    {{ $planload->select_company }}
+                                    )</u></h3>
                         </div>
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto">
@@ -111,9 +112,8 @@
 
                             </table>
                             <div class="text-center mt-3">
-                                <a href="/realisasi-load-create/{{ $planload->slug }}"
-                                    class="btn btn-success "><i
-                                    class="fa fa-arrow-left"></i> Realisasi (POL)
+                                <a href="/realisasi-load-create/{{ $planload->slug }}" class="btn btn-success "><i
+                                        class="fa fa-arrow-left"></i> Realisasi (POL)
                                 </a>
                             </div>
 
@@ -149,40 +149,46 @@
                             <label for="" class="col-form-label">Filter Tabel :</label>
 
                             <div class="col-6">
-                                <select id="pilih_pod" name="pilih_pod" class="form-select pilih" onchange="filter_status(this)">
+                                <select id="pilih_pod" name="pilih_pod" class="form-select pilih"
+                                    onchange="filter_status(this)">
                                     <option selected disabled>Pilih POD</option>
                                     @foreach ($pelabuhans as $pelabuhan)
-                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                        <option value="{{ $pelabuhan->nama_pelabuhan }}">
+                                            {{ $pelabuhan->nama_pelabuhan }}/{{ $pelabuhan->area_code }}</option>
                                     @endforeach
 
                                 </select>
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_pot" name="pilih_pot" class="form-select pilih" onchange="filter_status(this)">
+                                <select id="pilih_pot" name="pilih_pot" class="form-select pilih"
+                                    onchange="filter_status(this)">
                                     <option selected disabled>Pilih POT</option>
                                     @foreach ($pelabuhans as $pelabuhan)
-                                    <option value="{{$pelabuhan->nama_pelabuhan}}">{{$pelabuhan->nama_pelabuhan}}/{{$pelabuhan->area_code}}</option>
+                                        <option value="{{ $pelabuhan->nama_pelabuhan }}">
+                                            {{ $pelabuhan->nama_pelabuhan }}/{{ $pelabuhan->area_code }}</option>
                                     @endforeach
 
                                 </select>
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_size" name="pilih_size" class="form-select pilih" onchange="filter_status(this)">
+                                <select id="pilih_size" name="pilih_size" class="form-select pilih"
+                                    onchange="filter_status(this)">
                                     <option selected disabled>Pilih Size</option>
                                     @foreach ($sizes as $size)
-                                    <option value="{{$size->size_container}}">{{$size->size_container}}</option>
+                                        <option value="{{ $size->size_container }}">{{ $size->size_container }}</option>
                                     @endforeach
 
                                 </select>
 
                             </div>
                             <div class="col-6">
-                                <select id="pilih_type" name="pilih_type" class="form-select pilih" onchange="filter_status(this)">
+                                <select id="pilih_type" name="pilih_type" class="form-select pilih"
+                                    onchange="filter_status(this)">
                                     <option selected disabled>Pilih Type</option>
                                     @foreach ($types as $type)
-                                    <option value="{{$type->type_container}}">{{$type->type_container}}</option>
+                                        <option value="{{ $type->type_container }}">{{ $type->type_container }}</option>
                                     @endforeach
 
                                 </select>
@@ -194,7 +200,8 @@
                         </div>
                         <div class="table-responsive">
 
-                            <table id="realisasiload_create" name="realisasiload_create" class="table table-bordered table-hover mb-0 seratus">
+                            <table id="realisasiload_create" name="realisasiload_create"
+                                class="table table-bordered table-hover mb-0 seratus">
                                 <thead class="table-danger text-nowrap">
                                     <tr>
                                         <th class="text-center">No</th>
@@ -216,15 +223,17 @@
                                             <td>{{ $loop->iteration }}</td>
 
                                             <td>
-                                                @if ($container->status_container == "POD")
-
-                                                <button type="button" class="btn btn-primary btn-sm" value="{{$container->id}}" onclick="edit_biaya_do(this)">Edit Biaya POD <i class="fa fa-pencil"></i>
-                                                </button>
-
+                                                @if ($container->status_container == 'POD')
+                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                        value="{{ $container->id }}" onclick="edit_biaya_do(this)">Edit
+                                                        Biaya POD <i class="fa fa-pencil"></i>
+                                                    </button>
                                                 @else
-                                                <button type="button" class="btn btn-success btn-sm" value="{{$container->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
+                                                    <button type="button" class="btn btn-success btn-sm"
+                                                        value="{{ $container->id }}" onclick="biaya_do(this)">Input Biaya
+                                                        POD <i class="fa fa-pencil"></i>
 
-                                                </button>
+                                                    </button>
                                                 @endif
                                             </td>
 
@@ -248,7 +257,7 @@
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
-                                                    id="type[{{ $container->id }}]">{{$container->type}}</label>
+                                                    id="type[{{ $container->id }}]">{{ $container->type }}</label>
                                             </td>
                                             <td>
                                                 <label disabled @readonly(true)
@@ -262,24 +271,23 @@
                                             <td>
                                                 @if ($sealsc->count() == 1)
                                                     @foreach ($sealsc as $seal)
-                                                    @if ($seal->kontainer_id == $container->id)
-                                                            {{ $seal->seal_kontainer }}
-
-                                                    @endif
-                                                    @endforeach
-                                                @elseif($sealsc->count() == 0)
-                                                -
-                                                @else
-                                                <ol type="1.">
-
-                                                    @foreach ($sealsc as $seal)
                                                         @if ($seal->kontainer_id == $container->id)
-                                                            <li id="seal[{{ $container->id }}]">
-                                                                {{ $seal->seal_kontainer }}
-                                                            </li>
+                                                            {{ $seal->seal_kontainer }}
                                                         @endif
                                                     @endforeach
-                                                </ol>
+                                                @elseif($sealsc->count() == 0)
+                                                    -
+                                                @else
+                                                    <ol type="1.">
+
+                                                        @foreach ($sealsc as $seal)
+                                                            @if ($seal->kontainer_id == $container->id)
+                                                                <li id="seal[{{ $container->id }}]">
+                                                                    {{ $seal->seal_kontainer }}
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ol>
                                                 @endif
 
 
@@ -326,109 +334,114 @@
                             </div>
                             <div class="table-responsive">
 
-                            <table id="table_alih_kapal_realisasi" class="table table-bordered table-hover mb-0 seratus">
-                                <thead id="thead_alih" class="table-danger tex-nowrao">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-center">Input Biaya POD</th>
-                                        <th class="text-center">Nomor Kontainer</th>
-                                        <th class="text-center">Pelayaran (Shipping Company)</th>
-                                        <th class="text-center">POT</th>
-                                        <th class="text-center">POD</th>
-                                        <th class="text-center">Vessel/Voyage</th>
-                                        <th class="text-center">Code Vessel/Voyage</th>
-                                        <th class="text-center">Biaya Alih Kapal</th>
-                                        <th class="text-center">Keterangan Alih Kapal</th>
-                                        <th class="text-center">Detail Barang Kontainer</th>
-                                        <th class="text-center">Biaya Lain Kontainer</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_alih" class="text-center text-nowrap">
-                                    @foreach ($alihs as $alih)
+                                <table id="table_alih_kapal_realisasi"
+                                    class="table table-bordered table-hover mb-0 seratus">
+                                    <thead id="thead_alih" class="table-danger tex-nowrao">
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-
-                                            <td>
-                                                @if ($alih->container_planloads->status_container == "POD")
-
-                                                <button type="button" class="btn btn-primary btn-sm" value="{{$alih->container_planloads->id}}" onclick="edit_biaya_do(this)">Edit Biaya POD <i class="fa fa-pencil"></i>
-                                                </button>
-
-                                                @else
-                                                <button type="button" class="btn btn-success btn-sm" value="{{$alih->container_planloads->id}}" onclick="biaya_do(this)">Input Biaya POD <i class="fa fa-pencil"></i>
-                                                </button>
-                                                @endif
-                                            </td>
-
-
-                                            <td>
-                                                <label id="kontainer_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->container_planloads->nomor_kontainer }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pelayaran_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pelayaran_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pot_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pot_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="pod_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->pod_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="vesseL_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->vesseL_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="code_vesseL_alih[{{ $loop->iteration }}]">
-                                                    {{ $alih->code_vesseL_alih }}</label>
-                                            </td>
-                                            <td>
-                                                <label id="harga_alih_kapal[{{ $loop->iteration }}]">
-                                                    @rupiah($alih->harga_alih_kapal)</label>
-
-                                            </td>
-                                            <td>
-                                                <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
-                                                    {{ $alih->keterangan_alih_kapal }}</label>
-
-                                            </td>
-
-                                            <td>
-                                                <ol type="1.">
-                                                    @foreach ($details as $detail)
-                                                        @if ($detail->kontainer_id == $alih->container_planloads->id)
-                                                            <li id="detail[{{ $alih->container_planloads->id }}]">
-                                                                {{ $detail->detail_barang }}
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-                                            </td>
-                                            <td>
-                                                <ol type="1.">
-                                                    @foreach ($biayas as $biaya)
-                                                        @if ($biaya->kontainer_id == $alih->container_planloads->id)
-                                                            <li id="biaya[{{ $alih->container_planloads->id }}]">
-                                                                @rupiah($biaya->harga_biaya) ({{$biaya->keterangan}})
-
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ol>
-
-                                            </td>
-
+                                            <th class="text-center">No</th>
+                                            <th class="text-center">Input Biaya POD</th>
+                                            <th class="text-center">Nomor Kontainer</th>
+                                            <th class="text-center">Pelayaran (Shipping Company)</th>
+                                            <th class="text-center">POT</th>
+                                            <th class="text-center">POD</th>
+                                            <th class="text-center">Vessel/Voyage</th>
+                                            <th class="text-center">Code Vessel/Voyage</th>
+                                            <th class="text-center">Biaya Alih Kapal</th>
+                                            <th class="text-center">Keterangan Alih Kapal</th>
+                                            <th class="text-center">Detail Barang Kontainer</th>
+                                            <th class="text-center">Biaya Lain Kontainer</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody id="tbody_alih" class="text-center text-nowrap">
+                                        @foreach ($alihs as $alih)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
 
-                                </tbody>
-                            </table>
+                                                <td>
+                                                    @if ($alih->container_planloads->status_container == 'POD')
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                            value="{{ $alih->container_planloads->id }}"
+                                                            onclick="edit_biaya_do(this)">Edit Biaya POD <i
+                                                                class="fa fa-pencil"></i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-success btn-sm"
+                                                            value="{{ $alih->container_planloads->id }}"
+                                                            onclick="biaya_do(this)">Input Biaya POD <i
+                                                                class="fa fa-pencil"></i>
+                                                        </button>
+                                                    @endif
+                                                </td>
 
-                             </div>
+
+                                                <td>
+                                                    <label id="kontainer_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->container_planloads->nomor_kontainer }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="pelayaran_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->pelayaran_alih }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="pot_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->pot_alih }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="pod_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->pod_alih }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="vesseL_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->vesseL_alih }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="code_vesseL_alih[{{ $loop->iteration }}]">
+                                                        {{ $alih->code_vesseL_alih }}</label>
+                                                </td>
+                                                <td>
+                                                    <label id="harga_alih_kapal[{{ $loop->iteration }}]">
+                                                        @rupiah($alih->harga_alih_kapal)</label>
+
+                                                </td>
+                                                <td>
+                                                    <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
+                                                        {{ $alih->keterangan_alih_kapal }}</label>
+
+                                                </td>
+
+                                                <td>
+                                                    <ol type="1.">
+                                                        @foreach ($details as $detail)
+                                                            @if ($detail->kontainer_id == $alih->container_planloads->id)
+                                                                <li id="detail[{{ $alih->container_planloads->id }}]">
+                                                                    {{ $detail->detail_barang }}
+
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                                <td>
+                                                    <ol type="1.">
+                                                        @foreach ($biayas as $biaya)
+                                                            @if ($biaya->kontainer_id == $alih->container_planloads->id)
+                                                                <li id="biaya[{{ $alih->container_planloads->id }}]">
+                                                                    @rupiah($biaya->harga_biaya) ({{ $biaya->keterangan }})
+
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ol>
+
+                                                </td>
+
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+
+                            </div>
 
 
 
@@ -483,32 +496,29 @@
                                                 {{ $loop->iteration }}
                                             </td>
                                             <td class="text-center">
-                                                <button type="button" value="{{$pdf->id}}" onclick="delete_SI(this)"
-                                                    class="btn btn-danger btn-sm "><i
+                                                <button type="button" value="{{ $pdf->id }}"
+                                                    onclick="delete_SI(this)" class="btn btn-danger btn-sm "><i
                                                         class="fa fa-trash"></i></button>
                                                 <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-info btn-sm ">SI <i
-                                                        class="fa fa-eye"></i></a>
-                                                        @if ($pdf->status == "POD")
-
-                                                        <button type="button" value="{{ $pdf->id }}" type="button"
-                                                            onclick="do_fee_edit(this)"
-                                                            class="btn btn-primary btn-sm ">Edit DO <i
+                                                    class="btn btn-info btn-sm ">SI <i class="fa fa-eye"></i></a>
+                                                @if ($pdf->status == 'POD')
+                                                    <button type="button" value="{{ $pdf->id }}" type="button"
+                                                        onclick="do_fee_edit(this)" class="btn btn-primary btn-sm ">Edit
+                                                        DO <i class="fa fa-pencil"></i></button>
+                                                {{-- @elseif ($pdf->containers->demurrage != null) --}}
+                                                @elseif ($sums[($loop->iteration - 1)] != null)
+                                                    <button type="button" value="{{ $pdf->id }}" type="button"
+                                                        onclick="input_biaya_do(this)"
+                                                        class="btn btn-success btn-sm ">Input DO <i
                                                             class="fa fa-pencil"></i></button>
-                                                        @else
-                                                        <button type="button" value="{{ $pdf->id }}" type="button"
-                                                            onclick="input_biaya_do(this)"
-                                                            class="btn btn-success btn-sm ">Input DO <i
-                                                            class="fa fa-pencil"></i></button>
-        
-                                                        @endif
+                                                @endif
                                             </td>
                                             <td>
 
                                                 @if ($pdf->status_si == 'Default')
                                                     <i class="marker marker-dot text-success"></i> BIASA
                                                 @else
-                                                        <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
+                                                    <i class="marker marker-dot text-primary"></i>ALIH-KAPAL
                                                 @endif
                                             </td>
 
@@ -554,10 +564,10 @@
 
                                             </td>
 
-           
 
 
-                                           
+
+
 
 
                                         </tr>
@@ -567,9 +577,8 @@
                             </table>
 
                             <div class="text-center mt-3">
-                               
-                                <a href="/invoice-load-create/{{ $planload->slug }}"
-                                    class="btn btn-success ">
+
+                                <a href="/invoice-load-create/{{ $planload->slug }}" class="btn btn-success ">
                                     Invoice <i class="fa fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -985,10 +994,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="thc_pod" name="thc_pod" placeholder="THC POD..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="thc_pod" name="thc_pod" placeholder="THC POD..." required>
 
                                 </div>
                             </div>
@@ -1000,10 +1007,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="lolo" name="lolo" placeholder="Biaya Lolo..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="lolo" name="lolo" placeholder="Biaya Lolo..." required>
 
                                 </div>
                             </div>
@@ -1016,10 +1021,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="dooring" name="dooring" placeholder="Biaya Dooring..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="dooring" name="dooring" placeholder="Biaya Dooring..." required>
 
                                 </div>
                             </div>
@@ -1032,10 +1035,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="demurrage" name="demurrage" placeholder="Biaya Demurrage..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="demurrage" name="demurrage" placeholder="Biaya Demurrage..." required>
 
                                 </div>
                             </div>
@@ -1075,10 +1076,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="thc_pod_edit" name="thc_pod_edit" placeholder="THC POD..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="thc_pod_edit" name="thc_pod_edit" placeholder="THC POD..." required>
 
                                 </div>
                             </div>
@@ -1090,10 +1089,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="lolo_edit" name="lolo_edit" placeholder="Biaya Lolo..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="lolo_edit" name="lolo_edit" placeholder="Biaya Lolo..." required>
 
                                 </div>
                             </div>
@@ -1106,10 +1103,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="dooring_edit" name="dooring_edit" placeholder="Biaya Dooring..."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="dooring_edit" name="dooring_edit" placeholder="Biaya Dooring..." required>
 
                                 </div>
                             </div>
@@ -1122,8 +1117,7 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
                                         id="demurrage_edit" name="demurrage_edit" placeholder="Biaya Demurrage..."
                                         required>
 
@@ -1164,10 +1158,8 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
-                                        id="biaya_do_pod" name="biaya_do_pod" placeholder="Nominal DO FEE.."
-                                        required>
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                                        id="biaya_do_pod" name="biaya_do_pod" placeholder="Nominal DO FEE.." required>
 
                                 </div>
                             </div>
@@ -1175,8 +1167,8 @@
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO</label>
                             <div class="col-sm-8 validation-container">
-                                <input required class="form-control date_activity" id="tanggal_do_pod" name="tanggal_do_pod" type="text"
-                                    placeholder="Masukkan Tanggal DO">
+                                <input required class="form-control date_activity" id="tanggal_do_pod"
+                                    name="tanggal_do_pod" type="text" placeholder="Masukkan Tanggal DO">
                             </div>
                         </div>
 
@@ -1212,8 +1204,7 @@
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
 
-                                    <input data-bs-toggle="tooltip"
-                                        type="text" class="form-control currency-rupiah"
+                                    <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
                                         id="biaya_do_pod_edit" name="biaya_do_pod_edit" placeholder="Nominal DO FEE.."
                                         required>
 
@@ -1223,8 +1214,8 @@
                         <div class="row">
                             <label class="col-sm-4 col-form-label" for="text">Tanggal DO</label>
                             <div class="col-sm-8 validation-container">
-                                <input required class="form-control date_activity" id="tanggal_do_pod_edit" name="tanggal_do_pod_edit" type="text"
-                                    placeholder="Masukkan Tanggal DO">
+                                <input required class="form-control date_activity" id="tanggal_do_pod_edit"
+                                    name="tanggal_do_pod_edit" type="text" placeholder="Masukkan Tanggal DO">
                             </div>
                         </div>
 
@@ -1249,7 +1240,8 @@
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/exportkontainer.js">
+    </script>
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
 
@@ -1287,14 +1279,10 @@
         });
 
         $('.modal>.modal-dialog').draggable({
-                cursor: 'move',
-                handle: '.modal-header, .modal-footer'
+            cursor: 'move',
+            handle: '.modal-header, .modal-footer'
         });
         $('.modal>.modal-dialog>.modal-content>.modal-header').css('cursor', 'move');
         $('.modal>.modal-dialog>.modal-content>.modal-footer').css('cursor', 'move');
-
-
-
-
     </script>
 @endsection

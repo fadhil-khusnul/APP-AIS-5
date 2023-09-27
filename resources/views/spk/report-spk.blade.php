@@ -67,6 +67,7 @@
                                 <th>Nama Shipping Company (Pelayaran)</th>
                                 <th>Kode SPK</th>
                                 <th>Nomor Kontainer</th>
+                                <th class="text-wrap">Keterangan SPK</th>
 
                             </tr>
                         </thead>
@@ -103,7 +104,18 @@
                                     -
                                     @endif
 
-                                </td>
+                                    </td>
+                                    <td>
+                                        {{ $spk->keterangan_spk }}
+                                        <div class="text-end">
+                                            <button onclick="tambah_keterangan(this)" value="{{ $spk->id }}"
+                                                class="btn btn-label-primary btn-icon"><i
+                                                    class="fa fa-pencil"></i></button>
+
+                                        </div>
+
+
+                                    </td>
 
 
 
@@ -122,6 +134,67 @@
             <!-- END Portlet -->
         </div>
 
+    </div>
+
+    <div class="modal fade" id="modal-spk-edit">
+        <div class="modal-dialog">
+            <form action="#" name="valid_spk_edit" id="valid_spk_edit">
+                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                <input type="hidden" name="old_id_spk" id="old_id_spk">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Keterangan Data SPK</h5>
+                    <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <label for="company" class="col-sm-4 form-label">Pilih Shipping Company (Pelayaran)</label>
+                        <div class="col-sm-8 validation-container">
+                            <select disabled id="select_company_edit" name="select_company_edit" class="form-select">
+                                <option selected disabled>Pilih Pelayaran</option>
+                                @foreach ($pelayarans as $shippingcompany)
+                                    <option value="{{ $shippingcompany->id }}">{{ $shippingcompany->nama_company }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <label class="col-sm-4 form-label" for="area_code">KODE SPK :</label>
+                        <div class="col-sm-8 validation-container">
+                            <input disabled class="form-control" id="kode_spk_edit" name="kode_spk_edit" type="text">
+                        </div>
+                    </div>
+
+                   
+                    <div class="row">
+
+
+                        <label class="col-sm-4 form-label" for="area_code">KETERANGAN SPK :</label>
+                        <div class="col-sm-8 validation-container">
+                            <textarea class="form-control" name="keterangan_spk_edit" id="keterangan_spk_edit"></textarea>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            </form>
+
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

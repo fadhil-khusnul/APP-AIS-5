@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('spks', function (Blueprint $table) {
             //
-            $table->string('keterangan_spk')->nullable()->after('harga_spk');
+            $table->longText('keterangan_spk')->nullable()->after('harga_spk');
 
         });
     }

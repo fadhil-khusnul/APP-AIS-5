@@ -31,6 +31,8 @@ class SpkController extends Controller
         $container = Spk::where('status', 'Container')->orderBy('id', 'DESC')->get();
         $spks = Spk::all();
         $spksc = SpkContainer::all();
+        $pelayarans = ShippingCompany::all();
+
         return view('spk.report-spk',[
             'title' => 'Report SPK',
             'active' => 'SPK',
@@ -38,7 +40,7 @@ class SpkController extends Controller
             'container' => $container,
             'spks' => $spks,
             'spksc' => $spksc,
-
+            'pelayarans' => $pelayarans,
         ]);
     }
 
@@ -59,7 +61,7 @@ class SpkController extends Controller
         $data = [
             "kode_spk" =>$request->kode_spk,
             "harga_spk" =>$request->harga_spk,
-            "keterangan_spk" =>$request->keterangan_spk,
+            // "keterangan_spk" =>$request->keterangan_spk,
             "pelayaran_id" =>$request->select_company,
         ];
         $Spk->update($data);
@@ -92,7 +94,7 @@ class SpkController extends Controller
                 'touch_spk' => $request->touch_spk[$i],
                 'harga_spk' => $request->harga_spk[$i],
                 'kode_spk' => $request->kode_spk[$i],
-                'keterangan_spk' => $request->keterangan_spk[$i],
+                // 'keterangan_spk/' => $request->keterangan_spk[$i],
                 'pelayaran_id' => $request->select_company[$i],
                 'status' => 'input',
             ];
@@ -103,6 +105,17 @@ class SpkController extends Controller
 
         return response()->json(['success' => true]);
 
+    }
+    public function tambah_keterangan(Request $request, $id) {
+        // dd($id, $request);
+        $Spk = Spk::findOrFail($id);
+
+        $data = [
+            "keterangan_spk" =>$request->keterangan_spk,
+        ];
+        $Spk->update($data);
+        return response()->json(['success' => true]);
+        
     }
 
     public function getSpk()
