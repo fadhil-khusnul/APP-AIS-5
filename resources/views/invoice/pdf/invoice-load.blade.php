@@ -103,6 +103,20 @@
             </thead>
 
             <tbody>
+                @if ($status == "Alih-Kapal")
+                    @foreach ($containers as $container)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$container['pengirim']}}</td>
+                        <td>{{$container['pod_alih'][($loop->iteration - 1)][0]->pod_alih}}</td>
+                        <td>{{$container['nomor_kontainer']}}</td>
+                        <td>{{$container['size']}}</td>
+                        <td>{{$container['kondisi_invoice']}}</td>
+                        <td>{{$container['keterangan_invoice']}}</td>
+                        <td align="right">@rupiah($container['price_invoice'])</td>
+                    </tr>
+                    @endforeach
+                @else
                 @foreach ($containers as $container)
                 <tr>
                     <td>{{$loop->iteration}}</td>
@@ -115,6 +129,8 @@
                     <td align="right">@rupiah($container['price_invoice'])</td>
                 </tr>
                 @endforeach
+                    
+                @endif
 
 
             </tbody>

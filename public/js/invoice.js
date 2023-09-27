@@ -669,8 +669,8 @@ function input_invoice_si(e) {
                                 success: function (response) {
                                     console.log(response);
 
-                                    console.log(slug_2);
-                                    console.log(response);
+                                    // console.log(slug_2);
+                                    // console.log(response);
                                     document.getElementById(
                                         "loading-wrapper"
                                     ).style.cursor = "wait";
@@ -724,6 +724,8 @@ function input_invoice_si(e) {
                                     console.log(nomor_invoice);
                                     var tahun = d.getFullYear();
                                     var tanggal = dformat;
+                                    // $("#status").val(response.kontainer[0].status);
+                                    var status2 = response.modals.status_si;
 
                                     var data = {
                                         _token: csrf,
@@ -739,7 +741,7 @@ function input_invoice_si(e) {
                                         tahun: tahun,
                                         tanggal: tanggal,
                                         old_slug: old_slug,
-                                        status: "Realisasi",
+                                        status: status2,
                                     };
 
                                     $.ajax({
@@ -1260,7 +1262,8 @@ function input_invoice_si_alih(e) {
                                     console.log(nomor_invoice);
                                     var tahun = d.getFullYear();
                                     var tanggal = dformat;
-                                    var status2 = "Alih-Kapal";
+                                    var status2 = response.modals.status_si
+                                    // var status2 = "Alih-Kapal";
 
                                     var data = {
                                         _token: csrf,

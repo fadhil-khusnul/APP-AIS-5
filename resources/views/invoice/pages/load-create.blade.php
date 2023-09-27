@@ -884,6 +884,7 @@
                             <div class="col-sm-8 validation-container">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text" for="">Rp.</span>
+                                    <input type="hidden" id="status" name="status">
 
                                     <input readonly data-bs-toggle="tooltip" type="text"
                                         class="form-control currency-rupiah" id="total_price_invoice_si"

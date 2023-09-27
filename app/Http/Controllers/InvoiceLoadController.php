@@ -265,7 +265,8 @@ class InvoiceLoadController extends Controller
 
         // dd($total);
         $kontainer = ContainerPlanload::where("slug", $slug)->get();
-        $modals = SiPdfContainer::find($slug);
+        $id_si = SiPdfContainer::where("container_id", $slug)->value("id");
+        $modals = SiPdfContainer::find($id_si);
 
         $pod = [];
         $nomor_invoice = [];
@@ -344,7 +345,7 @@ class InvoiceLoadController extends Controller
     }
     public function masukkan_invoice_si(Request $request ,$slug)
     {
-        dd($request);
+        // dd($request);
 
         //KET-INV
         $containers = ContainerPlanload::where("slug", $slug)->get();
@@ -462,6 +463,11 @@ class InvoiceLoadController extends Controller
         } else {
             $materai = $request->value_materai;
         }
+        $container_alih = [];
+
+        for ($i=0; $i <count($containers_new) ; $i++) { 
+            $container_alih[$i] = AlihKapal::where("kontainer_alih", $containers_new[$i]->id)->get();
+        }
 
         $total = 0;
         for($i = 0; $i < count($containers_new); $i++) {
@@ -476,8 +482,10 @@ class InvoiceLoadController extends Controller
                 'kondisi_invoice' => $containers_new[$i]->kondisi_invoice,
                 'keterangan_invoice' => $containers_new[$i]->keterangan_invoice,
                 'price_invoice' => $containers_new[$i]->price_invoice,
+                'pod_alih' => $container_alih,
             ];
         }
+        // dd($new_container);
 
         $total_with_ppn_materai = $total + round($total * ((Float)$ppn / (Float)100)) + (Float)$materai;
         // dd($new_container);
