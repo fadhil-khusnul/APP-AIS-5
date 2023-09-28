@@ -40,7 +40,7 @@ class ReportController extends Controller
 {
     public function report_load(Request $request){
 
-        $loads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
+        $loads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->orWhere("status", "Default")->get();
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $containers = ContainerPlanload::all();
 
