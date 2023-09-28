@@ -40,7 +40,7 @@ class InvoiceLoadController extends Controller
 
     public function invoice(Request $request){
 
-        $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
+        $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->orWhere('status', 'Default')->get();
         $containers = ContainerPlanload::all();
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  OrderJobPlanload::all()->unique('select_company');

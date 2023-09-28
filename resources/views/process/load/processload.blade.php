@@ -50,9 +50,9 @@
                                             <i class="marker marker-dot text-warning"></i>
                                                 {{ $planload->status }}
                                             @endif
-                                            @if ($planload->status == 'Realisasi')
+                                            @if ($planload->status == 'Realisasi' || $planload->status == 'Default')
                                             <i class="marker marker-dot text-danger"></i>
-                                                {{ $planload->status }}
+                                                Realisasi
                                             @endif
                                         </td>
                                         <td class="text-center text-nowrap">

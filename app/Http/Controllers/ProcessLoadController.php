@@ -44,7 +44,7 @@ class ProcessLoadController extends Controller
      */
     public function index()
     {
-        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->get();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->orWhere('status', 'Default')->get();
         $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
         $sizez = ContainerPlanload::orderBy('id', 'DESC')->get('size');
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();

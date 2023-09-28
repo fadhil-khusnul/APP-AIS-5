@@ -1,4 +1,18 @@
-var tabel_invoice = $("#tabel_si").DataTable({
+var tabel_si = $("#tabel_si").DataTable({
+    responsive: true,
+    paging: true,
+    fixedHeader: {
+        header: true,
+    },
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+
+    // scroller: true,P
+});
+var tabel_invoice = $("#tabel_invoice").DataTable({
     responsive: true,
     paging: true,
     fixedHeader: {

@@ -538,7 +538,7 @@
                             <div class="table-responsive">
 
 
-                                <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
+                                <table id="tabel_invoice" class="table table-bordered table-hover mb-0 seratus">
                                     <thead id="thead_alih" class="table-danger">
                                         <tr>
                                             <th>No</th>
@@ -636,7 +636,7 @@
 
                                                     </td>
                                                     <td>
-                                                        @rupiah($pdf_inv->total - $pdf->terbayar)
+                                                        @rupiah($pdf_inv->total - $pdf_inv->terbayar)
 
                                                     </td>
 
