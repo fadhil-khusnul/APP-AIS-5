@@ -732,6 +732,8 @@ function input_biaya_do(e) {
                             var biaya_do_pod = $("#biaya_do_pod").val().replace(/\./g, "");
                             var tanggal_do_pod = $("#tanggal_do_pod").val();
 
+                            tanggal_do_pod = moment(tanggal_do_pod, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+
                         tempDate = new Date(tanggal_do_pod);
                         formattedDate = [
                             tempDate.getFullYear(),
@@ -826,7 +828,7 @@ function do_fee_edit(e) {
             var old_tanggal_result = moment(
                 response.result.tanggal_do_pod,
                 "YYYY-MM-DD"
-            ).format("dddd, DD-MM-YYYY");
+            ).format("dddd, DD-MMMM-YYYY");
             $("#tanggal_do_pod_edit").val(old_tanggal_result);
 
             $("#valid_do_fee_edit").validate({
@@ -857,6 +859,8 @@ function do_fee_edit(e) {
                     var id_si_edit = $("#id_si_edit").val();
                     var biaya_do_pod = $("#biaya_do_pod_edit").val().replace(/\./g, "");
                     var tanggal_do_pod = $("#tanggal_do_pod_edit").val();
+
+                    tanggal_do_pod = moment(tanggal_do_pod, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
 
                     tempDate = new Date(tanggal_do_pod);
                     formattedDate = [
