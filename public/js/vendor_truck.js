@@ -97,21 +97,28 @@ function countCheck() {
 }
 
 function filter_date() {
-    var date_min = new Date($("#min").val());
+    var min = moment($("#min").val(), "dddd, DD MMMM YYYY").format("YYYY-MM-DD");
+    var date_min = new Date(min);
     var seconds_min = Math.round(date_min.getTime() / 1000);
-    var date_max = new Date($("#max").val());
+    var max = moment($("#max").val(), "dddd, DD MMMM YYYY").format("YYYY-MM-DD");
+    var date_max = new Date(max);
     console.log(date_max, date_min);
     var seconds_max = Math.round(date_max.getTime() / 1000);
 
     var tanggal = tabelvendor.$("input[name='date']", { page: "all" });
 
+    console.log(tanggal);
+
     var date = [];
+    var format_date = [];
     var seconds = [];
 
     for (var i = 0; i < tanggal.length; i++) {
-        date[i] = new Date(tanggal[i].value);
+        format_date[i] = moment(tanggal[i].value, "dddd, DD MMMM YYYY").format("YYYY-MM-DD")
+        date[i] = new Date(format_date[i]);
         seconds[i] = Math.round(date[i].getTime() / 1000);
     }
+    console.log(date, seconds);
 
     var search = [];
     for (var i = 0; i < seconds.length; i++) {
@@ -121,6 +128,7 @@ function filter_date() {
             search[i] = 1;
         }
     }
+    console.log(search);
 
     var tanggal_date = [];
     for (var i = 0; i < search.length; i++) {
@@ -131,6 +139,7 @@ function filter_date() {
     tanggal_date = tanggal_date.filter(function (el) {
         return el != null;
     });
+    console.log(tanggal_date);
 
     if (tanggal_date.length == 0) {
         tabelvendor.columns(3).search(null).draw();
@@ -414,7 +423,9 @@ function delete_report(r) {
     });
 
     swal.fire({
-        title: "Apakah anda yakin Ingin Menghapus Dokumen INI ?",
+        title: "Apakah anda yakin Ingin Membatalkan Tagihan ini ?",
+        text:"Dengan mengklik OK maka Dana TAGIHAN Akan dikembalikan/dibatalkan.",
+
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Iya",

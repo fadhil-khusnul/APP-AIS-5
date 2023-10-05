@@ -27,6 +27,7 @@ use App\Http\Controllers\OngkoSupirController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportDischargeController;
 use App\Http\Controllers\ReportTruckingController;
+use App\Http\Controllers\LoginController;
 
 
 /*
@@ -45,6 +46,10 @@ Route::get('/', [DataController::class, 'index']);
 Route::get('/data', [DataController::class, 'index']);
 Route::get('/ppn-edit/{id}', [DataController::class, 'ppn_edit']);
 Route::put('/ppn-update', [DataController::class, 'ppn_update']);
+
+//LOGIN
+Route::get('/login', [LoginController::class, 'login']);
+
 
 Route::post('/shipping-company', [ShippingController::class, 'store']);
 Route::get('/company/{id}/edit', [ShippingController::class, 'edit']);

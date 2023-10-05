@@ -88,10 +88,11 @@ $(function () {
     $(".input-daterange").datepicker({
         orientation: direction,
         todayHighlight: true,
-        format: "DD, dd MM yyyy",
+        format: "DD, dd-MM-yyyy",
         todayBtn: "linked",
         language:"id",
         locale:"id",
+        weekStart: 1,
         clearBtn: true,
         todayHighlight: true,
 

@@ -11,29 +11,9 @@
 </head>
 <body>
     <header>
-        <img class="header-invoice" src="{{ public_path('/') }}./assets/images/surat-jalan.png" alt="">
+        <img class="header-online" src="{{ public_path('/') }}./assets/images/online.png" alt="">
 
-        <table border="0" class="left" width="100%">
-
-            <tr class="title1">
-                <td>PT.AIS LOGISTIK MAKASSAR</td>
-            </tr>
-            <tr class="title2">
-                <td>Jl.PERUMAHAN GREEN RIVER VIEW VINCA RESIDENCE</td>
-            </tr>
-            <tr class="title2">
-                <td>BAROMBONG,TAMALATE-KOTA MAKASSAR SULAWESI SELATAN</td>
-            </tr>
-            <tr class="title3"><td>
-                0813 5570 7777 EMAIL <a href="">aislogisticmakassar@gmail.com</a>
-                </td>
-            </tr>
-
-        </table>
-
-
-        <img class="header-invoice3" src="{{ public_path('/') }}./assets/images/icon.png" alt="">
-
+        
     </header>
 
     <main>
@@ -80,8 +60,8 @@
                     <th>PENGIRIM</th>
                     <th>PENERIMA</th>
                     <th>TUJUAN</th>
-                    <th>JUMLAH Rp.</th>
-                    <th>KETERANGAN</th>
+                    <th align="right">JUMLAH (Rp.)</th>
+                    {{-- <th>KETERANGAN</th> --}}
 
                 </tr>
             </thead>
@@ -95,36 +75,36 @@
 
                     @foreach ($containers as $container)
                     <tr>
-                        <td align="center">{{$loop->iteration}}.</td>
-                        <td align="center">{{$container->nomor_kontainer}}</td>
-                        <td align="center">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
-                        <td align="center">
+                        <td align="left">{{$loop->iteration}}.</td>
+                        <td align="left">{{$container->nomor_kontainer}}</td>
+                        <td align="left">{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                        <td align="left">
                             @if ($container->nomor_polisi != null)
                                 {{ $container->mobils->nama_supir }}/{{ $container->mobils->nomor_polisi }}
 
                             @endif
                         </td>
-                        <td align="center">
+                        <td align="left">
                             @if ($container->nomor_polisi != null)
                                 {{ $container->mobils->nomor_polisi }}
 
                             @endif
                         </td>
 
-                        <td align="center">
+                        <td align="left">
                             @if ($container->nomor_polisi != null)
                                 {{ $container->mobils->vendors->nama_vendor }}
 
                             @endif
                         </td>
 
-                        <td align="center">{{$container->planload->vessel}}/{{$container->planload->vessel_code}}</td>
-                        <td align="center">{{$container->planload->activity}}</td>
-                        <td align="center">{{$container->pengirim}}</td>
-                        <td align="center">{{$container->penerima}}</td>
-                        <td align="center">{{$container->pod_container}}</td>
-                        <td>@rupiah($container->ongkos_supir)</td>
-                        <td align="center"></td>
+                        <td align="left">{{$container->planload->vessel}}/{{$container->planload->vessel_code}}</td>
+                        <td align="left">{{$container->planload->activity}}</td>
+                        <td align="left">{{$container->pengirim}}</td>
+                        <td align="left">{{$container->penerima}}</td>
+                        <td align="left">{{$container->pod_container}}</td>
+                        <td align="right">@rupiah($container->ongkos_supir)</td>
+                        {{-- <td align="center"></td> --}}
 
 
                     </tr>
@@ -136,11 +116,11 @@
 
             <tfoot>
                 <tr>
-                    <td colspan="11" align="right">Total Terpakai :</td>
+                    <td colspan="10" align="right">Total Terpakai :</td>
                     <td colspan="2" align="right">@rupiah($total_container)</td>
                 </tr>
                 <tr>
-                    <td colspan="11" align="right">Dana Tersisa :</td>
+                    <td colspan="10" align="right">Dana Tersisa :</td>
                     <td colspan="2" align="right">@rupiah($sisa)</td>
                 </tr>
 
@@ -151,11 +131,11 @@
         </table>
 
     </main>
-
+{{-- 
     <footer>
         <img class="footer-invoice" src="{{ public_path('/') }}./assets/images/footer.png" alt="">
 
-    </footer>
+    </footer> --}}
 
 </body>
 </html>

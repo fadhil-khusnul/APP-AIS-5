@@ -19,7 +19,6 @@
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
-                                    <th>Status</th>
                                     <th></th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
@@ -38,17 +37,7 @@
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="align-middle text-nowrap">
-                                        @if ($planload->status == 'Process-Load')
-                                        <i class="marker marker-dot text-success"></i>
-                                            {{ $planload->status }}
-                                        @endif
-                                        @if ($planload->status == 'Realisasi')
-                                        <i class="marker marker-dot text-danger"></i>
-                                            {{ $planload->status }}
-                                        @endif
-                                    </td>
-
+                                    
 
                                     <td class="text-center text-nowrap">
                                         <a href="/invoice-load-create/{{ $planload->slug }}"

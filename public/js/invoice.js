@@ -2086,10 +2086,11 @@ function delete_history(r) {
     });
 
     swal.fire({
-        title: "Apakah anda yakin Ingin Menghapus HISTORY INI ?",
+        title: "Apakah anda yakin ingin Membatalkan History Pembayaran ini ?",
+        text:"Dengan mengklik OK maka Dana DITERIMA INVOICE ini Akan dikembalikan/dibatalkan.",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Iya",
+        confirmButtonText: "Ok",
         cancelButtonText: "Tidak",
     }).then((willCreate) => {
         if (willCreate.isConfirmed) {
@@ -2106,7 +2107,7 @@ function delete_history(r) {
 
                 success: function (response) {
                     swal.fire({
-                        title: "HISTORY BERHASIL DIHAPUS",
+                        title: "HISTORY BERHASIL DIBATALKAN",
                         icon: "success",
                         timer: 9e3,
                         showConfirmButton: false,
@@ -2116,7 +2117,7 @@ function delete_history(r) {
             });
         } else {
             swal.fire({
-                title: "HISTORY TIDAK DIHAPUS",
+                title: "HISTORY TIDAK DIBATALKAN",
                 icon: "error",
                 timer: 10e3,
                 showConfirmButton: false,
@@ -2229,7 +2230,7 @@ function bayar() {
                         },
                         submitHandler: function (form) {
                             document.getElementById("loading-wrapper").style.cursor = "wait";
-                            document.getElementById("btn_history").setAttribute("disabled", true);
+                            // document.getElementById("btn_history").setAttribute("disabled", true);
 
                             var dibayar = $("#terbayar")
                                 .val()

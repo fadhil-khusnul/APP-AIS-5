@@ -192,8 +192,8 @@
                                                     <button data-id="{{ $pdf->container_id }}"
                                                         data-bs-target="modal_invoice_si" type="button"
                                                         value="{{ $pdf->container_id }}" onclick="input_invoice_si_alih(this)"
-                                                        class="btn btn-success btn-sm ">Invoice Alih Kapal <i
-                                                            class="fa fa-pencil"></i></button>
+                                                        class="btn btn-primary btn-sm ">Invoice Alih Kapal <i
+                                                            class="fa fa-ship"></i></button>
                                                 @endif
 
 
@@ -523,10 +523,7 @@
                                 </div>
 
 
-                                <div style="" class="">
-                                    <button id="add_total" type="button" onclick="bayar()" class="btn btn-success">Dana
-                                        Telah Terima <i class="fa fa-check"></i></button>
-                                </div>
+                                
 
 
                             </div>
@@ -649,6 +646,11 @@
                                 </table>
                             </div>
 
+                            <div style="" class="text-center">
+                                <button id="add_total" type="button" onclick="bayar()" class="btn btn-success">Dana
+                                    Telah Terima <i class="fa fa-check"></i></button>
+                            </div>
+
 
                         </div>
                         <!-- BEGIN Portlet -->
@@ -699,7 +701,7 @@
 
                                                 <button type="button" value="{{ $report[0]->slug }}"
                                                     onclick="delete_history(this)" class="btn btn-danger btn-sm "><i
-                                                        class="fa fa-trash"></i></button>
+                                                        class="fa fa-refresh"></i></button>
 
 
                                                 {{-- @endforeach --}}
@@ -866,7 +868,7 @@
                                     <th>No.</th>
                                     <th>Nomor Kontainer</th>
                                     <th>Size/Type</th>
-                                    <th>Biaya/kontainer</th>
+                                    <th>Biaya Kontainer</th>
                                     <th>Unit Price</th>
                                     <th>Kondisi</th>
                                     <th>Keterangan</th>

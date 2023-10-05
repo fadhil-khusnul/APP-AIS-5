@@ -47,7 +47,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" width="30%">SHIPPER</td>
+                        <td colspan="3" width="20%">SHIPPER</td>
                         <td width="4%">:</td>
                         <td colspan="3">{{ $shipper }}</td>
                     </tr>
@@ -160,7 +160,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" width="30%">SHIPPER</td>
+                        <td colspan="3" width="20%">SHIPPER</td>
                         <td width="4%">:</td>
                         <td colspan="3">{{ $shipper }}</td>
                     </tr>

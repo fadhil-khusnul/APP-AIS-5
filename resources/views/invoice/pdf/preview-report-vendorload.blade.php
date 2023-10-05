@@ -16,7 +16,7 @@
                                 <div class="breadcrumb-icon">
                                     <i class="text-primary fa fa-clone"></i>
                                 </div>
-                                <span class="breadcrumb-text text-primary">Reprt Vendor</span>
+                                <span class="breadcrumb-text text-primary">Report Vendor</span>
                             </a>
 
 

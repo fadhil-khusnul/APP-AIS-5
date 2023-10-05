@@ -380,7 +380,7 @@ function printdana(id) {
         .then((willCreate) => {
             if (willCreate.isConfirmed) {
 
-                var data = {
+            var data = {
                     "_token": $('input[name=_token]').val(),
                     'id': id_dana,
                 };

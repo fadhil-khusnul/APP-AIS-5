@@ -48,7 +48,7 @@ class OngkoSupirController extends Controller
 
     public function index_load()
     {
-        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->get();
+        $planloads = OrderJobPlanload::orderBy('id', 'DESC')->get();
         $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
         $sizez = ContainerPlanload::orderBy('id', 'DESC')->get('size');
         $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
@@ -174,36 +174,6 @@ class OngkoSupirController extends Controller
     public function dibayar(Request $request)
     {
         // dd($request);
-        $container = [];
-        for ($i = 0; $i < count($request->id); $i++) {
-            $container[$i] = ContainerPlanLoad::find($request->id[$i]);
-        }
-
-        $selisih = [];
-        for ($i = 0; $i < count($container); $i++) {
-            $selisih[$i] = $container[$i]->biaya_trucking - $container[$i]->ongkos_supir - (float)$container[$i]->dibayar;
-        }
-
-        $total_selisih = (float)$request->selisih;
-        for ($i = 0; $i < count($selisih); $i++) {
-            $total_selisih -= $selisih[$i];
-            if ($total_selisih > 0) {
-                $terbayar = (float)$container[$i]->dibayar + $selisih[$i];
-                $dibayar = [
-                    "dibayar" => $terbayar
-                ];
-
-                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
-            } else {
-                $terbayar = (float)$container[$i]->dibayar + $selisih[$i] + $total_selisih;
-                $dibayar = [
-                    "dibayar" => $terbayar
-                ];
-
-                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
-                break;
-            }
-        }
 
         $job_id = OrderJobPlanload::where("slug", $request->old_slug)->value('id');
         $random = Str::random(15);
@@ -225,8 +195,54 @@ class OngkoSupirController extends Controller
 
             ];
 
-            $report_container = ReportVendorTruck::create($reports);
+            $report_container[$i] = ReportVendorTruck::create($reports);
         }
+
+        $container = [];
+        for ($i = 0; $i < count($request->id); $i++) {
+            $container[$i] = ContainerPlanLoad::find($request->id[$i]);
+        }
+
+        $selisih = [];
+        for ($i = 0; $i < count($container); $i++) {
+            $selisih[$i] = $container[$i]->biaya_trucking - $container[$i]->ongkos_supir - (float)$container[$i]->dibayar;
+        }
+
+        $total_selisih = (float)$request->selisih;
+        for ($i = 0; $i < count($selisih); $i++) {
+            $total_selisih -= $selisih[$i];
+            if ($total_selisih > 0) {
+                $terbayar = (float)$container[$i]->dibayar + $selisih[$i];
+                $dibayar = [
+                    "dibayar" => $terbayar
+                ];
+
+                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+
+                $rincian = [
+                    "rincian" => $selisih[$i]
+                ];
+                ReportVendorTruck::where('id', $report_container[$i]->id)->update($rincian);
+            } else {
+                $terbayar = (float)$container[$i]->dibayar + $selisih[$i] + $total_selisih;
+                $selisih_2 = $selisih[$i] + $total_selisih;
+
+                $dibayar = [
+                    "dibayar" => $terbayar
+                ];
+
+                ContainerPlanload::where('id', $request->id[$i])->update($dibayar);
+                
+                $rincian = [
+                    "rincian" => $selisih_2
+                ];
+                ReportVendorTruck::where('id', $report_container[$i]->id)->update($rincian);
+           
+                break;
+            }
+        }
+
+       
 
 
         $checked = [];
@@ -262,6 +278,7 @@ class OngkoSupirController extends Controller
                 'nomor_kontainer' => $containers[$i][0][0]->nomor_kontainer,
                 'biaya_trucking' => $containers[$i][0][0]->biaya_trucking,
                 'ongkos_supir' => $containers[$i][0][0]->ongkos_supir,
+                'dibayar' => $containers[$i][0][0]->dibayar,
                 'cargo' => $containers[$i][0][0]->cargo,
 
             ];
@@ -315,30 +332,34 @@ class OngkoSupirController extends Controller
         $path = $request->path;
         $report_vendor = ReportVendorTruck::where('path', $path)->get();
 
-        $total_bayar = (int)$report_vendor[0]->dibayar;
+        $total_bayar = [];
+        for($i = 0; $i < count($report_vendor); $i++) {
+            $total_bayar[$i] = (int) $report_vendor[$i]->rincian;
+        }
+
+        // $total_bayar = (int)$report_vendor[0]->dibayar;
         // dd($total_bayar);
 
         // $dibayar = [];
         for($i = 0; $i < count($report_vendor); $i++) {
             $dibayar = (int)ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->value('dibayar');
 
-            $total_bayar = $total_bayar - $dibayar;
+            $total_bayar_2 = $dibayar - $total_bayar[$i];
             $berbayar = [
                 "dibayar" => $total_bayar
             ];
             $report_vendor[$i]->update($berbayar);
 
-            if($total_bayar >= 0) {
+            if($total_bayar == 0) {
                 $berbayar_container = [
                     "dibayar" => 0
                 ];
                 ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->update($berbayar_container);
             } else {
                 $berbayar_container = [
-                    "dibayar" => abs($total_bayar)
+                    "dibayar" => $total_bayar_2
                 ];
                 ContainerPlanload::where('id', $report_vendor[$i]->kontainer_id)->update($berbayar_container);
-                break;
             }
         }
 
@@ -605,7 +626,6 @@ class OngkoSupirController extends Controller
 
 
         ]);
-        $pdf1->setPaper('A4', 'landscape');
         $pdf1->save($save);
         return response()->download($save);
     }

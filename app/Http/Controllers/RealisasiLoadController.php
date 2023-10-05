@@ -164,7 +164,7 @@ class RealisasiLoadController extends Controller
             'containers' => $containers,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->get(),
-            'pdfs' => SiPdfContainer::where('job_id', $id)->get(),
+            'pdfs' => SiPdfContainer::orderBy("id", "DESC")->where('job_id', $id)->get(),
             'batals' => BatalMuat::where('job_id', $id)->get(),
             'details' => DetailBarangLoad::where('job_id', $id)->get(),
 
@@ -206,11 +206,12 @@ class RealisasiLoadController extends Controller
         for($i = 0; $i < count($pdfs); $i++) {
             $nomor_container[$i] = ContainerPlanload::where('slug', $pdfs[$i]->container_id)->get();
         }
+        // dd(null === null);
         $sum = [];
         for($i = 0; $i < count($nomor_container); $i++) {
             $sum[$i] = 0;
             for($j = 0; $j < count($nomor_container[$i]); $j++) {
-                if($nomor_container[$i][$j]->demurrage == null) {
+                if($nomor_container[$i][$j]->demurrage === null) {
                     $sum[$i] = null;
                     break;
                 } else {

@@ -12,8 +12,9 @@
 
 <body>
     <header class="">
-        <img class="header" src="{{ public_path('/') }}./assets/images/icon.png" alt="">
-        <table border="0" class="left">
+        {{-- <img class="header" src="{{ public_path('/') }}./assets/images/icon.png" alt=""> --}}
+        <img class="header-online" src="{{ public_path('/') }}./assets/images/online.png" alt="">
+        {{-- <table border="0" class="left">
 
             <tr class="title1">
                 <td>PT.AIS LOGISTIK MAKASSAR</td>
@@ -31,65 +32,65 @@
             </tr>
 
         </table>
-        <hr />
+        <hr /> --}}
     </header>
 
 
     <main>
     
                 <div>
-                    <table class="sub-judul" width="100%">
+                    <table class="sub-judul-online" width="100%">
                         <tr class="judul">
-                            <td colspan="7" class="judul">
+                            <td colspan="7" class="judul-online">
                                 REPORT VENDOR TRUCK
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="3" width="30%">TANGGAL BAYAR</td>
-                            <td width="4%">:</td>
+                            <td colspan="2" width="20%">TANGGAL BAYAR</td>
+                            <td width="2%">:</td>
                             <td>{{ \Carbon\Carbon::parse($tanggal_bayar)->isoFormat('dddd, DD-MMMM-YYYY') }}
 
                         </tr>
                         <tr>
-                            <td colspan="3">DIBAYARKAN KE</td>
+                            <td colspan="2">DIBAYARKAN KE</td>
                             <td>:</td>
-                            <td colspan="3">{{ $dibayarkan_ke }}</td>
+                            <td colspan="4">{{ $dibayarkan_ke }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">CARA BAYAR</td>
+                            <td colspan="2">CARA BAYAR</td>
                             <td>:</td>
-                            <td colspan="3">{{$cara_bayar}}</td>
+                            <td colspan="4">{{$cara_bayar}}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">KETERANGAN TRANSFER</td>
+                            <td colspan="2">KETERANGAN TRANSFER</td>
                             <td>:</td>
-                            <td colspan="3">{{ $keterangan_transfer }}</td>
+                            <td colspan="4">{{ $keterangan_transfer }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">VESSEL</td>
+                            <td colspan="2">VESSEL</td>
                             <td>:</td>
-                            <td colspan="3">{{ $load->vessel }}</td>
+                            <td colspan="4">{{ $load->vessel }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">VESSEL CODE</td>
+                            <td colspan="2">VESSEL CODE</td>
                             <td>:</td>
-                            <td colspan="3">{{ $load->vessel_code }}</td>
+                            <td colspan="4">{{ $load->vessel_code }}</td>
                         </tr>
                        
                        
       
                         <tr>
-                            <td colspan="3">PORT OF LANDING</td>
+                            <td colspan="2">PORT OF LANDING</td>
                             <td>:</td>
-                            <td colspan="3">
+                            <td colspan="4">
                                 {{ $load->pol }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td colspan="3">PORT OF TRANSIT</td>
+                            <td colspan="2">PORT OF TRANSIT</td>
                             <td>:</td>
-                            <td colspan="3">
+                            <td colspan="4">
                                 @if ($load->pot != null)
                                     {{ $load->pot }}
                                 @else
@@ -105,8 +106,9 @@
                 </div>
 
                 <div>
-                    <table class="report-container"
+                    <table class="report-container" width="100%">
                         <thead>
+
                             <tr>
                                 <th>NO.</th>
                                 <th>NOMOR KONTAINER</th>
@@ -114,6 +116,7 @@
                                 <th>CARGO</th>
                                 <th>BIAYA TRUCKING</th>
                                 <th>ONGKOS SUPIR</th>
+                                <th>TERBAYAR</th>
                                 <th>TAGIHAN</th>
                             </tr>
                         
@@ -129,25 +132,18 @@
                                 <td align="center" valign="top">{{ $container['cargo'] }}</td>
                                 <td align="right" valign="top">@rupiah($container['biaya_trucking'])</td>
                                 <td align="right" valign="top">@rupiah($container['ongkos_supir'])</td>
-                                <td align="right" valign="top">@rupiah($container['biaya_trucking'] - $container['ongkos_supir'])</td>
+                                <td align="right" valign="top">@rupiah($container['dibayar'])</td>
+                                <td align="right" valign="top">@rupiah($container['biaya_trucking'] - $container['ongkos_supir'] - $container['dibayar'])</td>
                             </tr>
                             @endforeach
+                        </tbody>
+                        <tfoot class="tfoot">
                             <tr>
-                                <td colspan="5">SELISIH</td>
-                                <td align="right">:</td>
-                                <td align="right">@rupiah($selisih)</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5">DIBAYAR</td>
-                                <td align="right">:</td>
-                                <td align="right">@rupiah($dibayar)</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5">SISA</td>
-                                <td align="right">:</td>
+                                <td colspan="7" align="right">TOTAL TAGIHAN :</td>
                                 <td align="right">@rupiah($selisih - $dibayar)</td>
                             </tr>
-                        </tbody>
+                            
+                        </tfoot>
                     </table>
                 </div>
     </main>

@@ -827,34 +827,37 @@ class InvoiceLoadController extends Controller
 
     public function delete_history(Request $request)
     {
-        // dd($request->path);
+        // dd($request);
         $slug = $request->slug;
         $report_vendor = TanggalBayarInvoice::where('slug', $slug)->get();
 
-        $total_bayar = (int)$report_vendor[0]->pembayaran;
-        // dd($total_bayar);
+        $total_bayar = [];
+        for($i = 0; $i < count($report_vendor); $i++) {
+            $total_bayar[$i] = (int) $report_vendor[$i]->rincian;
+        }
+        // $total_bayar_2 = (int)$report_vendor[0]->pembayaran;
+        // dd($report_vendor);
 
         // $dibayar = [];
         for($i = 0; $i < count($report_vendor); $i++) {
             $dibayar = (int)InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->value('terbayar');
 
-            $total_bayar = $total_bayar - $dibayar;
+            $total_bayar_2 = $dibayar - $total_bayar[$i];
             $berbayar = [
-                "pembayaran" => $total_bayar
+                "pembayaran" => $total_bayar_2
             ];
             $report_vendor[$i]->update($berbayar);
 
-            if($total_bayar >= 0) {
+            if($total_bayar_2 == 0) {
                 $berbayar_container = [
                     "terbayar" => 0
                 ];
                 InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->update($berbayar_container);
             } else {
                 $berbayar_container = [
-                    "terbayar" => abs($total_bayar)
+                    "terbayar" => $total_bayar_2
                 ];
                 InvoiceLoad::where('id', $report_vendor[$i]->invoice_id)->update($berbayar_container);
-                break;
             }
         }
 
@@ -956,26 +959,28 @@ class InvoiceLoadController extends Controller
 
         $job_id = OrderJobPlanload::where("slug", $request->old_slug)->value("id");
 
-        // dd($slug);
-        
         // dd($request);
+        
         for ($i = 0; $i < count($request->id); $i++) {
             $tanggal_bayar_invoice = [
                 "invoice_id" => $container[$i]->id,
                 "pembayaran" => $request->selisih,
                 "job_id" => $job_id,
                 "tanggal_bayar" => $request->tanggal_bayar,
+                // "rincian" => ,
                 "slug" => $slug
             ];
-            TanggalBayarInvoice::create($tanggal_bayar_invoice);
-            
+            $tanggal_create[$i] = TanggalBayarInvoice::create($tanggal_bayar_invoice);
         }
+
+        // dd($tanggal_create);
 
         $selisih = [];
         for ($i = 0; $i < count($container); $i++) {
             $selisih[$i] = $container[$i]->total - (float)$container[$i]->terbayar;
         }
-
+        // dd($selisih, $container, $request);
+        
         $total_selisih = (float)$request->selisih;
         for ($i = 0; $i < count($selisih); $i++) {
             $total_selisih -= $selisih[$i];
@@ -986,13 +991,23 @@ class InvoiceLoadController extends Controller
                 ];
 
                 InvoiceLoad::where('id', $request->id[$i])->update($dibayar);
+
+                $total_bayar_invoice_2 = [
+                    "rincian" => $selisih[$i]
+                ];
+                TanggalBayarInvoice::where('id', $tanggal_create[$i]->id)->update($total_bayar_invoice_2);
             } else {
                 $terbayar = (float)$container[$i]->terbayar + $selisih[$i] + $total_selisih;
+                $selisih_2 = $selisih[$i] + $total_selisih;
                 $dibayar = [
                     "terbayar" => $terbayar
                 ];
 
                 InvoiceLoad::where('id', $request->id[$i])->update($dibayar);
+                $total_bayar_invoice_2 = [
+                    "rincian" => $selisih_2
+                ];
+                TanggalBayarInvoice::where('id', $tanggal_create[$i]->id)->update($total_bayar_invoice_2);
                 break;
             }
         }

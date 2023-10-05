@@ -73,10 +73,10 @@ h3 {
     font-family: Calibri;
     font-weight: bold;
     font-style: normal;
-    font-size: 18px;
+    font-size: 12px;
     text-transform: uppercase;
     text-decoration: underline;
-    color:#102b5d;
+    color:#000000;
     text-align: center;
 
 
@@ -144,9 +144,23 @@ h3 {
     font-style: normal;
     font-size: 28px;
     color:#00ad4c;
-    color:#102b5d;
+    color:#000000;
 
     /* text-align: center; */
+}
+
+.header-online{
+    position: fixed;
+    /* float: right; */
+    right: -20px;
+    top: -1cm;
+    /* left: -50px; */
+    width: 20%;
+    margin-bottom: 20px;
+}
+.thead-online{
+    color: white;
+    background-color: #4caf50 ;
 }
 .h3 {
     font-family: Calibri;
@@ -186,8 +200,7 @@ h3 {
 .header2{
     margin-bottom: 10px;
     /* margin-top: -30px; */
-    color:#102b5d;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
 
@@ -241,49 +254,34 @@ h3 {
 
 .bank{
     /* margin-top: -20px; */
-    font-size: 14px;
+    font-size: 10px;
     text-align: left;
     border-collapse: collapse;
 
 }
 
-.bank td th{
-    border: 1px solid;
 
-}
 
 .bank thead tr:first-child {
-    background-color: #00ad4c;
-    color: #ffffff;
-    text-align: left;
-
-
-}
-.bank thead tr:nth-child(2) {
-    background-color: #00ad4c;
+    background-color: #4caf50;
     color: #ffffff;
     text-align: center;
 
 
 }
-.bank tbody tr:nth-child(even){
+
+/* .bank tbody tr:nth-child(even){
     background-color: #e6e6e6aa;
 
 
-}
-.bank tbody tr {
-    color: #0c341d;
+} */
 
-
-}
 .bank tfoot tr {
-    color: #0c341d;
     font-weight: bold;
     text-transform: uppercase;
-    background-color: #a5d6a7;
+    background-color: #e6e6e6aa;
+
     text-align: right;
-
-
 
 }
 

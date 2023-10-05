@@ -2959,7 +2959,7 @@ function validate_ongkos_supir(ini) {
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
     if (biaya_trucking > 0) {
-        if (ongkos_supir > biaya_trucking) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -2981,8 +2981,8 @@ function validate_ongkos_supir_update(ini) {
     biaya_trucking = parseFloat(biaya_trucking);
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
-    if (biaya_trucking > 0) {
-        if (ongkos_supir > biaya_trucking) {
+    if (biaya_trucking > 0 ) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -3005,7 +3005,7 @@ function validate_ongkos_supir_tambah(ini) {
     if (isNaN(biaya_trucking)) biaya_trucking = 0;
 
     if (biaya_trucking > 0) {
-        if (ongkos_supir > biaya_trucking) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Ongkos Supir Harus Lebih Kecil Daripada Biaya Trucking",
                 icon: "error",
@@ -3029,7 +3029,7 @@ function validate_biaya_trucking(ini) {
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
     if (ongkos_supir > 0) {
-        if (ongkos_supir > biaya_trucking) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",
@@ -3051,7 +3051,7 @@ function validate_biaya_trucking_update(ini) {
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
     if (ongkos_supir > 0) {
-        if (ongkos_supir > biaya_trucking) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",
@@ -3073,7 +3073,7 @@ function validate_biaya_trucking_tambah(ini) {
     if (isNaN(ongkos_supir)) ongkos_supir = 0;
 
     if (ongkos_supir > 0) {
-        if (ongkos_supir > biaya_trucking) {
+        if (ongkos_supir >= biaya_trucking) {
             swal.fire({
                 title: "Biaya Trucking Harus Lebih Besar Daripada Ongkos Supir",
                 icon: "error",

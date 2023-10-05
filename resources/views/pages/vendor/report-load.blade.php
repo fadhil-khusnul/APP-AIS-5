@@ -147,6 +147,7 @@
                         <div class="col-6">
                             <select id="pilih_status" name="pilih_status" class="form-select"
                                 onchange="filter_status(this)">
+                                <option value="" selected>Pilih Status</option>
                                 <option value="Belum Lunas">Belum Lunas</option>
                                 <option value="Sudah Lunas">Sudah Lunas</option>
 
@@ -160,10 +161,7 @@
 
                     </div>
 
-                    <div style="" class="text-center">
-                        <button id="add_biaya" type="button" onclick="bayar()" class="btn btn-success">Bayar <i
-                                class="fa fa-arrow-right"></i></button>
-                    </div>
+                    
 
                     <!-- BEGIN Datatable -->
                     <table id="vendor_bayar_Load" class="table table-bordered table-striped table-hover autosize mt-5"
@@ -180,7 +178,7 @@
                                 <th>Biaya Trucking</th>
                                 <th>Ongkos Supir</th>
                                 <th>Terbayar</th>
-                                <th>Selisih</th>
+                                <th>Tagihan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -283,7 +281,12 @@
 
 
                     <!-- END Datatable -->
+                    <div style="" class="text-center">
+                        <button id="add_biaya" type="button" onclick="bayar()" class="btn btn-success">Bayar <i
+                                class="fa fa-arrow-right"></i></button>
+                    </div>
                 </div>
+
 
 
 
@@ -381,7 +384,7 @@
                                                     class="fa fa-eye"></i></a>
                                             <button type="button" value="{{ $report[0]->path }}"
                                                 onclick="delete_report(this)" class="btn btn-danger btn-sm "><i
-                                                    class="fa fa-trash"></i></button>
+                                                    class="fa fa-refresh"></i></button>
 
 
                                             {{-- @endforeach --}}

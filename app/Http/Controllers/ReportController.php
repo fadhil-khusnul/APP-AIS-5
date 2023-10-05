@@ -134,6 +134,9 @@ class ReportController extends Controller
         // dd($path1);
 
         $containers = ContainerPlanload::where('job_id', $old_id)->get();
+
+        $seals = SealContainer::where("job_id", $old_id)->get();
+
         $date = ContainerPlanload::select('date_activity')->where('job_id', $old_id)->get()->toArray();
 
         $min_date = min($date);
@@ -142,13 +145,20 @@ class ReportController extends Controller
         $max_date = max($date);
         $max_date = implode('', $max_date);
 
+        $sum_alih = AlihKapal::where("job_id", $old_id)->sum("harga_alih_kapal");
+
+        // $sum_alih->sum("harga_alih_kapal");
+        // dd($sum_alih);
+
 
 
         $pdf = Pdf::loadview('pdf.load.pdf-cost-report',[
 
             "loads" => $loads,
             "containers" => $containers,
+            "seals" => $seals,
             "report" => $report,
+            "sum_alih" => $sum_alih,
             "min_date" => $min_date,
             "max_date" => $max_date,
 

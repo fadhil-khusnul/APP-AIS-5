@@ -55,18 +55,18 @@
                     <thead class="align-top">
                         <tr>
                             <th>No</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+
                             <th>Vessel</th>
                             <th>Vessel-Code</th>
                             <th>Shipping Company</th>
                             <th>Pemilik Barang</th>
                             <th>Activity</th>
                             <th>POL</th>
-                            {{-- <th>POT</th> --}}
-                            {{-- <th>POD</th> --}}
-                            <th class="align-top">JUMLAH X (SIZE - TYPE - CARGO CONTAINER)</th>
+                            
+                            <th class="align-top">Jumlah Kontainer</th>
 
-                            <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +74,29 @@
                         <tr>
                             <td>
                                 {{$loop->iteration}}
+                            </td>
+                            <td class="align-middle text-nowrap">
+                                @if ($planload->status == 'Process-Load')
+                                <i class="marker marker-dot text-success"></i>
+                                    {{ $planload->status }}
+                                @endif
+                                @if ($planload->status == 'Plan-Load')
+                                <i class="marker marker-dot text-warning"></i>
+                                    {{ $planload->status }}
+                                @endif
+                            </td>
+
+                            <td class="text-center">
+                                @if ($planload->status == 'Plan-Load')
+                                <a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
+
+                                @else
+                                <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
+
+                                @endif
+
+                                {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                class="fa fa-trash"></i></button> --}}
                             </td>
                             <td>
                                 {{$planload->vessel}}
@@ -90,27 +113,17 @@
                             <td>
                                 {{$planload->activity}}
                             </td>
-                            {{-- <td>
-                                {{$planload->pol}}
-                            </td>
-                            <td>
-                                {{$planload->pot}}
-                            </td> --}}
+                           
                             <td>
                                 {{$planload->pod}}
                             </td>
                             <td align="top" valign="top">
-                                <ol type="1">
-                                    @foreach ($containers as $container)
-                                        @if ($planload->id == $container->job_id)
-                                        <li>
-                                            {{$container->jumlah_kontainer}} X ({{$container->size}} - {{$container->type}} - {{$container->cargo}})
-                                        </li>
-                                        @endif
-                                    @endforeach
-                                </ol>
+                                <b>
+                                    {{$containers->where("job_id", $planload->id)->count()}} Kontainer
+                                </b>
 
                             </td>
+
                                 {{-- <td align="top" valign="top">
                                     <ol start="1">
                                     @foreach ($containers as $container)
@@ -135,29 +148,7 @@
                                     </ol>
 
                                 </td> --}}
-                                <td class="align-middle text-nowrap">
-                                    @if ($planload->status == 'Process-Load')
-                                    <i class="marker marker-dot text-success"></i>
-                                        {{ $planload->status }}
-                                    @endif
-                                    @if ($planload->status == 'Plan-Load')
-                                    <i class="marker marker-dot text-warning"></i>
-                                        {{ $planload->status }}
-                                    @endif
-                                </td>
-
-                                <td class="text-center">
-                                    @if ($planload->status == 'Plan-Load')
-                                    <a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
-
-                                    @else
-                                    <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
-
-                                    @endif
-
-                                    {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                    class="fa fa-trash"></i></button> --}}
-                                </td>
+                               
 
                         </tr>
 

@@ -47,6 +47,16 @@
     font-style: italic;
 }
 
+.header-online{
+    position: fixed;
+    /* float: right; */
+    right: -20px;
+    top: -1cm;
+    /* left: -50px; */
+    width: 20%;
+    margin-bottom: 20px;
+}
+
 .header-invoice {
     position: fixed;
     /* margin-top: 20px; */
@@ -116,7 +126,7 @@
     margin-left: 50px;
 }
 main {
-    font-size: 12px;
+    font-size: 11px;
 }
 .main {
     font-size: 16px;
@@ -138,14 +148,26 @@ padding: 4px;
     background-color: #f2f2f2
 }
 
-.table tfoot tr td{
+.table tfoot tr:first-child{
     text-align: right !important;
+    font-weight: bold;
+
+
+}
+.table tfoot tr:nth-child(2){
+    text-align: center !important;
     font-weight: bold;
 
 
 }
 .harga{
     text-align: right !important;
+
+}
+.center{
+    text-align: center !important;
+    align-items: center;
+    
 
 }
 
@@ -156,7 +178,7 @@ text-align: center;
 }
 
 .hijau {
-    background-color: #04AA6D;
+    background-color: #4caf50;
 }
 .biru {
     background-color: #4371c7;
