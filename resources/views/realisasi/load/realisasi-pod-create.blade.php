@@ -506,7 +506,7 @@
                                                         onclick="do_fee_edit(this)" class="btn btn-primary btn-sm ">Edit
                                                         DO <i class="fa fa-pencil"></i></button>
                                                 
-                                                @elseif ($sums[($loop->iteration - 1)] != null || $sums[($loop->iteration - 1)] === 0)
+                                                @elseif ($sums[($loop->iteration - 1)] != null || $sums[($loop->iteration - 1)] == 0)
                                                 <button type="button" value="{{ $pdf->id }}" type="button"
                                                     onclick="input_biaya_do(this)"
                                                     class="btn btn-success btn-sm ">Input DO <i

@@ -138,13 +138,15 @@
                             <td>{{ $container->cargo }}/{{ $container->type }}</td>
                             <td align="center" valign="top">
                                 @foreach ($seals as $seal)
-                                    @if ($container->id == $seal->kontainer_id)
-                                        @if ($loop->iteration < count($seals))
-                                            {{ $seal->seal_kontainer }}, &ensp;
-                                        @else
-                                            {{ $seal->seal_kontainer }}
+                                    @foreach ($seal as $seal_2)
+                                        @if ($container->id == $seal_2["kontainer_id"])
+                                            @if ($seal[(count($seal) - 1)] != $seal[($loop->iteration - 1)])
+                                                {{ $seal_2["seal_kontainer"] }}, &ensp;
+                                            @else
+                                                {{ $seal_2["seal_kontainer"] }}
+                                            @endif
                                         @endif
-                                    @endif
+                                    @endforeach
                                 @endforeach
                             </td>
                             <td class="harga">@rupiah2($container->ongkos_supir)</td>

@@ -147,8 +147,22 @@ class ReportController extends Controller
 
         $sum_alih = AlihKapal::where("job_id", $old_id)->sum("harga_alih_kapal");
 
+        $seals_2 = [];
+        for($i = 0; $i < count($containers); $i++) {
+            $seals_2[$i] = [];
+            for($j = 0; $j < count($seals); $j++) {
+                if($containers[$i]->id == $seals[$j]->kontainer_id){
+                    $seals_2[$i][$j] = [
+                        "kontainer_id" => $seals[$j]->kontainer_id,
+                        "seal_kontainer" => $seals[$j]->seal_kontainer
+                    ];
+                }
+            }
+            $seals_2[$i] = array_values($seals_2[$i]);
+        }
+        
+        // dd($containers , $seals, (count($containers) -1 ), $seals_2);
         // $sum_alih->sum("harga_alih_kapal");
-        // dd($sum_alih);
 
 
 
@@ -156,7 +170,7 @@ class ReportController extends Controller
 
             "loads" => $loads,
             "containers" => $containers,
-            "seals" => $seals,
+            "seals" => $seals_2,
             "report" => $report,
             "sum_alih" => $sum_alih,
             "min_date" => $min_date,
