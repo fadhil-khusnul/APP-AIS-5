@@ -34,7 +34,7 @@
             </div>
         </div>
         <form class="row row-cols-lg-12 g-3" id="valid_planload" name="valid_planload">
-            <div class=" col-md-6">
+            <div class=" col-md-4">
                 <div class="portlet">
 
                     <div class="portlet-body row px-5 py-5">
@@ -164,7 +164,7 @@
 
                 <!-- END Portlet -->
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-8">
                 <div class="portlet">
 
                     <div class="portlet-body">
@@ -177,7 +177,7 @@
                             <label for="inputState" class="col-sm-4 col-form-label"><b>Jumlah Kontainer :</b></label>
                         </div>
 
-                        <table class="table mb-0" id="table_container">
+                        <table class="table mb-0 seratus" id="table_container">
                             <thead class="table-warning" id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
@@ -267,10 +267,8 @@
 
     </div>
 
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
     <script type="text/javascript" src="{{ asset('/') }}./js/planload.js"></script>
 @endsection

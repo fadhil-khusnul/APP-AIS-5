@@ -23,19 +23,20 @@ use App\Models\ProcessLoad;
 use App\Models\VendorMobil;
 use Illuminate\Support\Str;
 use App\Models\BiayaLainnya;
+use App\Models\BiayaLainPod;
 use App\Models\SpkContainer;
 use Illuminate\Http\Request;
 use App\Models\SealContainer;
 use App\Models\TypeContainer;
+use App\Models\SiPdfContainer;
 use App\Models\ShippingCompany;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\DetailBarangLoad;
-
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Requests\StoreProcessLoadRequest;
 use App\Http\Requests\UpdateProcessLoadRequest;
-use App\Models\SiPdfContainer;
 
 class ProcessLoadController extends Controller
 {
@@ -325,6 +326,7 @@ class ProcessLoadController extends Controller
         $spks = ContainerPlanload::where("id", $id)->value('spk');
         $driver = ContainerPlanload::where('id', $id)->value('nomor_polisi');
         $supirs = VendorMobil::where("id", $driver)->get();
+        $biayalain = BiayaLainPod::where("kontainer_id", $id)->get();
 
         // dd($supirs[0]->nama_vendor);
         return response()->json([
@@ -332,6 +334,7 @@ class ProcessLoadController extends Controller
             'seal_containers' => $seal_containers,
             'spks' => $spks,
             'supirs' => $supirs,
+            'biayalain' => $biayalain,
         ]);
     }
     public function input_si($slug)

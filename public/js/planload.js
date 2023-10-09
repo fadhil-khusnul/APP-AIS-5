@@ -1,6 +1,17 @@
 "use strict";
 
 
+var table_container = $("#table_container").DataTable({
+    responsive: true,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    fixedHeader: {
+        header: true,
+    },
+});
 
 var tambah = 0;
 

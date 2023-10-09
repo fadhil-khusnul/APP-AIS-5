@@ -861,6 +861,7 @@ function detail_update(e) {
                     dropdownParent: $("#modal-job-update"),
                 });
             $("#type_update").val(response.result.type);
+            $("#nomor_kontainer_title").html(response.result.nomor_kontainer);
             $("#nomor_kontainer_update").val(response.result.nomor_kontainer);
             $("#no_container_edit").val(response.result.nomor_kontainer);
             $("#cargo_update").val(response.result.cargo);

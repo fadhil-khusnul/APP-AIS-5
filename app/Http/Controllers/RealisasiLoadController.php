@@ -2,33 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RealisasiLoad;
+use App\Models\Spk;
+use App\Models\Depo;
+use App\Models\Seal;
+use App\Models\Penerima;
+use App\Models\Pengirim;
+use App\Models\PlanLoad;
+use App\Models\Stuffing;
+use App\Models\AlihKapal;
+use App\Models\BatalMuat;
+use App\Models\Container;
+use App\Models\Pelabuhan;
+use App\Models\OngkoSupir;
 use App\Models\ProcessLoad;
+use App\Models\VendorMobil;
+use Illuminate\Support\Str;
+use App\Models\BiayaLainnya;
+use App\Models\BiayaLainPod;
+use Illuminate\Http\Request;
+use App\Models\RealisasiLoad;
+use App\Models\SealContainer;
+use App\Models\TypeContainer;
+use App\Models\SiPdfContainer;
+use App\Models\ShippingCompany;
+use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
 use App\Http\Requests\StoreProcessLoadRequest;
 use App\Http\Requests\UpdateProcessLoadRequest;
-use App\Models\PlanLoad;
-use App\Models\Stuffing;
-use App\Models\ShippingCompany;
-use App\Models\Pelabuhan;
-use App\Models\Pengirim;
-use App\Models\Penerima;
-use App\Models\Container;
-use App\Models\Depo;
-use App\Models\Seal;
-use App\Models\BiayaLainnya;
-use App\Models\OngkoSupir;
-use App\Models\TypeContainer;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\AlihKapal;
-use App\Models\BatalMuat;
-use App\Models\SealContainer;
-use App\Models\SiPdfContainer;
-use App\Models\DetailBarangLoad;
-use App\Models\VendorMobil;
-use App\Models\Spk;
 
 class RealisasiLoadController extends Controller
 {
@@ -136,6 +137,8 @@ class RealisasiLoadController extends Controller
         $pelayaran_id = ShippingCompany::where('nama_company', $select_company)->value('id');
         $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
 
+        $container_si = ContainerPlanload::where('job_id', $id)->whereNotNull("slug")->get();
+
 
         //
         return view('realisasi.load.realisasi-create',[
@@ -158,6 +161,7 @@ class RealisasiLoadController extends Controller
             'sealsc' => $sealsc,
             'vendors' => $vendors,
             'spks' => $spks,
+            'container_si' => $container_si,
 
 
             'planload' => OrderJobPlanload::find($id),
@@ -231,6 +235,8 @@ class RealisasiLoadController extends Controller
         $select_company = OrderJobPlanload::where('slug', $request->slug)->value('select_company');
         $pelayaran_id = ShippingCompany::where('nama_company', $select_company)->value('id');
         $spks = Spk::where('pelayaran_id', $pelayaran_id)->get();
+        $container_si = ContainerPlanload::where('job_id', $id)->whereNotNull("slug")->get();
+
 
 
         //
@@ -259,6 +265,7 @@ class RealisasiLoadController extends Controller
 
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
+            'container_si' => $container_si,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
             'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
                 $q->whereNotNull('slug');
@@ -275,18 +282,35 @@ class RealisasiLoadController extends Controller
         // dd($request);
         $Container = ContainerPlanload::findOrFail($request->id);
 
+
+
         $data = [
 
             "thc_pod" => $request->thc_pod,
             "lolo" => $request->lolo,
             "dooring" => $request->dooring,
             "demurrage" => $request->demurrage,
+            "total_biaya_lain_pod" => (int) $request->input_total_biaya_lain,
             "status_container" => "POD",
 
 
         ];
 
         $Container->update($data);
+
+        BiayaLainPod::where('kontainer_id', $request->id)->delete();
+
+
+
+        for ($i = 0; $i < count($request->keterangan_biaya); $i++) {
+            $data = [
+                'job_id' => $Container->job_id,
+                'harga_biaya' => 0,
+                'kontainer_id' => $request->id,
+                'keterangan' => $request->keterangan_biaya[$i],
+            ];
+            BiayaLainPod::create($data);
+        }
 
         return response()->json(['success' => true]);
 

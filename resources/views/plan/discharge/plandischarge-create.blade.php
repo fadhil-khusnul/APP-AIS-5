@@ -53,6 +53,22 @@
                             </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="inputAddress2" class="col-sm-4 form-label">Jumlah Free Time</label>
+                                <div class="col-sm-8 validation-container">
+                                    <input required name="tanggal_free" id="tanggal_free" value="0" class="form-control"
+                                        onblur="tambah_free_time()">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+    
+                                <label for="inputAddress2" class="col-sm-4 form-label">Total Tanggal Hari Free</label>
+                                <div class="col-sm-8 validation-container">
+                                    <input required readonly name="total_hari" id="total_hari" class="form-control"
+                                        value="">
+                                </div>
+                            </div>
+
                             <div class=" row mb-3">
                             <label for="inputAddress2" class="col-sm-4 col-form-label">Vessel/Voyage</label>
                             <div class="col-sm-8 validation-container">
@@ -171,8 +187,8 @@
                             <label for="inputState" class="form-label"><b>Detail Kontainer :</b></label>
                         </div>
 
-                        <table class="table mb-0" id="table_container">
-                            <thead class="table-warning" id="thead_container">
+                        <table class="table mb-0 seratus" id="table_container">
+                            <thead class="table-warning " id="thead_container">
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Size</th>

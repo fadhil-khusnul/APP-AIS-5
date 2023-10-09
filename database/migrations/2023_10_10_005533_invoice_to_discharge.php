@@ -12,12 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('plan_discharge_containers', function (Blueprint $table) {
-            //
-            $table->string('penerima')->nullable()->after('nomor_polisi');
-            $table->string('alamat_pengantaran')->nullable()->after('penerima');
-            $table->string('return_to')->nullable()->after('alamat_pengantaran');
-            $table->double('biaya_cleaning')->default(0)->after('jenis_mobil');
-            $table->double('biaya_retribusi')->default(0)->after('biaya_cleaning');
+            
+            $table->string('invoice')->nullable()->after('status_bayar');
 
         });
     }

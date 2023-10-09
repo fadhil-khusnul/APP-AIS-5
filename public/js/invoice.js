@@ -120,7 +120,7 @@ tabel_invoice.$(".check-container2", { page: "all" },).click(function () {
     }
 });
 
-{{  }}
+
 // var radiom = $("#materai")
 $("#value_materai").attr("disabled", "disabled");
 
@@ -204,6 +204,7 @@ function input_invoice(e) {
                         parseFloat(response.result.biaya_thc) +
                         parseFloat(response.result.biaya_seal) +
                         parseFloat(response.result.freight) +
+                        parseFloat(response.result.harga_batal) +
                         parseFloat(response.result.lss);
                     $("#total_biaya_kontainer").val(total_biaya_kontainer);
 
@@ -1404,8 +1405,10 @@ function update_invoice(e) {
                 parseFloat(response.result.biaya_thc) +
                 parseFloat(response.result.biaya_seal) +
                 parseFloat(response.result.freight) +
+                parseFloat(response.result.harga_batal) +
                 parseFloat(response.result.lss);
             $("#total_biaya_kontainer_edit").val(total_biaya_kontainer);
+            $("#selisih_price_edit").val(response.result.price_invoice - total_biaya_kontainer);
 
 
             $("#keterangan_invoice_edit").val(
@@ -1863,7 +1866,7 @@ function pdf_invoice_batal() {
                                     },
                                     submitHandler: function (form) {
                                         document.getElementById("loading-wrapper").style.cursor = "wait";
-                                        document.getElementById("btnFinish3").setAttribute("disabled", true);
+                                        // document.getElementById("btnFinish3").setAttribute("disabled", true);
                                         console.log(pod);
                                         $.ajax({
                                             url: "/getInvoice",
@@ -2364,43 +2367,7 @@ function click_check(ini) {
             if (count != 0) {
                 realisasiload_create.$('input[name="' + response + '"]', { "page": "all" }).prop('checked', ini.checked);
             }
-            // var html_nomor_invoice = document.getElementsByClassName(response);
-            // var nomor_invoice = [];
-
-            // for(var i = 0; i < html_nomor_invoice.length; i++) {
-            //     nomor_invoice[i] = html_nomor_invoice[i].value;
-            // }
-
-            // nomor_invoice = [...new Set(nomor_invoice)];
-
-            // $('input[name"'+ nomor_invoice +'"]:checkbox').prop('checked', ini.checked)
-            // console.log(nomor_invoice.length);
-            // if (ini.checked) {
-            //     for(var i = 0; i < nomor_invoice.length; i++) {
-            //         nomor_invoice[i].nextElementSibling.prop("checked", $(this).prop("checked"));
-            //     }
-            //     console.log("tercek");
-            // } else {
-            //     for(var i = 0; i < nomor_invoice.length; i++) {
-            //         nomor_invoice[i].nextElementSibling.removeAttribute('checked');
-            //     }
-            //     console.log("tidak");
-            // } 
-
-            // if(ini.prop('checked') == true) {
-            //     for(var i = 0; i < nomor_invoice.length; i++) {
-            //         nomor_invoice[i].nextElementSibling.setAttribute('checked', true);
-            //     }
-            // } else {
-
-            // }
-            // console.log(response);
-            // var nomor_invoice = document.querySelectorAll("td").textContent
         }
     })
-    // console.log(ini.parentNode.parentNode.nextElementSibling.innerHTML);
-    // console.log(ini.parentNode.parentNode.nextElementSibling);
-    // nomor_invoice = ini.parentNode.parentNode.nextElementSibling.innerHTML
-    // console.log(ini);
-    // ini.parentNodes
+   
 }

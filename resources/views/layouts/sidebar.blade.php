@@ -254,7 +254,7 @@
                     {{
                     Request::is('plandischarge') || Request::is('plandischarge/*') || Request::is('plandischarge-edit/*') ||
                     Request::is('processdischarge') || Request::is('processdischarge-create/*') ||
-                    Request::is('realisasi-discharge') || Request::is('realisasi-discharge-create/*')
+                    Request::is('realisasi-discharge') || Request::is('realisasidischarge-create/*')
                      ? 'active' : ''
 
                     }}">                        <div class="menu-item-icon">
@@ -280,7 +280,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/realisasi-discharge" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-discharge') || Request::is('realisasi-discharge-create/*') ? 'active' : '' }}">
+                            <a href="/realisasi-discharge" data-menu-path="" class="menu-item-link {{ Request::is('realisasi-discharge') || Request::is('realisasidischarge-create/*') ? 'active' : '' }}">
                                 <i class="menu-item-bullet"></i>
                                 <span class="menu-item-text">DISCHARGE-REALISASI</span>
                             </a>

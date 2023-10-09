@@ -15,4 +15,14 @@ class PlanDischargeContainer extends Model
         return $this->belongsTo(SupirMobil::class, 'driver', 'id');
     }
 
+    public function invoices()
+    {
+        return $this->belongsTo(InvoiceDischarge::class, 'status_invoice', 'nomor_invoice')->withDefault([
+            'tanggal_invoice' => ' ',
+
+        ]);
+    }
+
+
+
 }

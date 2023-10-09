@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('container_planloads', function (Blueprint $table) {
-            //
-            $table->double('harga_batal')->default(0)->after('slug');
-            $table->string('keterangan_batal')->nullable()->after('harga_batal');
-           
+            $table->double('total_biaya_lain_pod')->default(0)->after('total_biaya_lain');
 
+            //
         });
     }
 

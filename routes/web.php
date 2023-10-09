@@ -337,7 +337,6 @@ Route::get('/downloadcoload/{id}', [ReportController::class, 'download_coload'])
 Route::get('/invoice-load', [ReportController::class, 'invoice']);
 Route::get('/invoice-load-create/{slug}', [ReportController::class, 'create_invoice']);
 
-Route::get('/pdfinvoice-load/{slug}', [ReportController::class, 'invoice_download']);
 
 //REPORT-DISCHARGE
 Route::get('/summary-report-discharge', [ReportDischargeController::class, 'report_load']);
@@ -347,7 +346,15 @@ Route::get('/downloadcdischarge/{slug}', [ReportDischargeController::class, 'dow
 Route::get('/container-report-discharge', [ReportDischargeController::class, 'report_coload']);
 Route::get('/downloadcodischarge/{id}', [ReportDischargeController::class, 'download_coload']);
 Route::get('/invoice-discharge', [ReportDischargeController::class, 'invoice']);
-Route::get('/pdfinvoice-discharge/{slug}', [ReportDischargeController::class, 'invoice_download']);
+Route::get('/invoice-discharge-create/{slug}', [ReportDischargeController::class, 'invoice_create']);
+Route::post('/masukkan-invoice-discharge', [ReportDischargeController::class, 'masukkan_invoice']);
+Route::post('/getPod-Discharge', [ReportDischargeController::class, 'getPod']);
+Route::post('/getInvoice-Discharge', [ReportDischargeController::class, 'getInvoice']);
+Route::post('/create-pdf-invoice-discharge', [ReportDischargeController::class, 'pdf_invoice']);
+Route::get('/preview-invoice-discharge/{path}', [ReportDischargeController::class, 'preview_invoice']);
+Route::delete('/delete-invoice-discharge/{id}', [ReportDischargeController::class, 'delete_invoice']);
+Route::delete('/delete-history-invoice-discharge/{slug}', [ReportDischargeController::class, 'delete_history']);
+
 
 
 //REPORT-TRUCKING

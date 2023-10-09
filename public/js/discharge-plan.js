@@ -1,5 +1,52 @@
 "use strict";
 
+
+var table_container = $("#table_container").DataTable({
+    responsive: true,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    fixedHeader: {
+        header: true,
+    },
+});
+
+$("#tanggal_free").TouchSpin({
+    buttondown_class: "btn btn-label-success",
+    buttonup_class: "btn btn-label-success",
+    step: 1,
+
+});
+
+function tambah_free_time(e){
+    
+    var hari_tiba = $("#tanggal_tiba").val();
+    var hari_free_time = $("#tanggal_free").val()
+
+    hari_tiba = moment(hari_tiba, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD");
+    var someDate = new Date(hari_tiba);
+    var result = someDate.setDate(someDate.getDate() + parseInt(hari_free_time));
+    var hari_akhir = new Date(result);
+    // console.log(result);
+    hari_akhir = moment(hari_akhir, "YYYY-MM-DD").format("dddd, DD-MMMM-YYYY");
+
+    document.getElementById("total_hari").value = hari_akhir
+    
+    
+    // var max = moment($("#max").val(), "dddd, DD MMMM YYYY").format("YYYY-MM-DD");
+    // var date_max = new Date(max);
+    // console.log(date_max, date_min);
+    // var seconds_max = Math.round(date_max.getTime() / 1000);
+
+    // milis = milis.getHours();
+
+
+    // console.log(milis);
+}
+
+
 function CreateJobPlanDischarge() {
     var swal = Swal.mixin({
         customClass: {
@@ -109,10 +156,15 @@ function CreateJobPlanDischarge() {
             let pengirim = document.getElementById("Pengirim_1").value;
             let penerima = document.getElementById("penerima_1").value;
             let nomor_do = document.getElementById("nomor_do").value;
+            let tanggal_free = document.getElementById("tanggal_free").value;
+            let total_hari = document.getElementById("total_hari").value;
 
             let tanggal_tiba = document.getElementById("tanggal_tiba").value;
 
             tanggal_tiba = moment(tanggal_tiba, "dddd, DD-MMMM-YYYY").format(
+                "YYYY-MM-DD"
+            );
+            total_hari = moment(total_hari, "dddd, DD-MMMM-YYYY").format(
                 "YYYY-MM-DD"
             );
 
@@ -128,38 +180,10 @@ function CreateJobPlanDischarge() {
             fd.append("pengirim", pengirim);
             fd.append("penerima", penerima);
             fd.append("nomor_do", nomor_do);
+            fd.append("tanggal_free", tanggal_free);
+            fd.append("total_hari", total_hari);
 
-            // for (var i = 0; i < tambah; i++) {
-            //     size[i] = document.getElementById(
-            //         "size[" + (i + 1) + "]"
-            //     ).value;
-            //     type[i] = document.getElementById(
-            //         "type[" + (i + 1) + "]"
-            //     ).value;
-            //     nomor_container[i] = document.getElementById(
-            //         "nomor-container[" + (i + 1) + "]"
-            //     ).value;
-            //     seal[i] = document.getElementById(
-            //         "seal[" + (i + 1) + "]"
-            //     ).selectedOptions;
-            //     seal[i] = Array.from(seal[i]).map(({ value }) => value);
-            //     cargo[i] = document.getElementById(
-            //         "cargo[" + (i + 1) + "]"
-            //     ).value;
-
-            //     fd.append("size[]", size[i]);
-            //     fd.append("type[]", type[i]);
-            //     fd.append("nomor_container[]", nomor_container[i]);
-            //     fd.append("cargo[]", cargo[i]);
-
-            //     for (var j = 0; j < seal[i].length; j++) {
-            //         fd.append("seal[" + i + "][]", seal[i][j]);
-            //     }
-            // }
-            // console.log(seal);
-
-            // console.log(size, type, nomor_container, seal, cargo);
-
+           
             swal.fire({
                 title: "Apakah anda yakin?",
                 text: "Ingin Membuat Plan Discharge Ini",
@@ -306,9 +330,15 @@ function UpdateteJobPlanDischarge() {
             let penerima = document.getElementById("Penerima_1").value;
             let old_slug = document.getElementById("old_slug").value;
             let nomor_do = document.getElementById("nomor_do").value;
+            let tanggal_free = document.getElementById("tanggal_free").value;
 
             let tanggal_tiba = document.getElementById("tanggal_tiba").value;
             tanggal_tiba = moment(tanggal_tiba, "dddd, DD-MMMM-YYYY").format(
+                "YYYY-MM-DD"
+            );
+
+            let total_hari = document.getElementById("total_hari").value;
+            total_hari = moment(total_hari, "dddd, DD-MMMM-YYYY").format(
                 "YYYY-MM-DD"
             );
 
@@ -327,6 +357,8 @@ function UpdateteJobPlanDischarge() {
             fd.append("penerima", penerima);
             fd.append("tanggal_tiba", tanggal_tiba);
             fd.append("nomor_do", nomor_do);
+            fd.append("tanggal_free", tanggal_free);
+            fd.append("total_hari", total_hari);
             // fd.append("biaya_do", biaya_do);
 
             fd.append("old_slug", old_slug);
@@ -895,12 +927,14 @@ function delete_seal(ini) {
 
     for (var i = 0; i < div1.length; i++) {
         div1[i].id = "seal_tambah[" + (i + 1) + "]";
+        div1[i].name = "seal_tambah[" + (i + 1) + "]";
     }
 
     var div2 = document.querySelectorAll("#div_button button");
 
     for (var i = 0; i < div2.length; i++) {
         div2[i].id = "delete_seal[" + (i + 1) + "]";
+        div2[i].name = "delete_seal[" + (i + 1) + "]";
     }
 
     // reindex_detail();

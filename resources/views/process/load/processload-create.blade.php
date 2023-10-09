@@ -291,7 +291,7 @@
                                         <tr>
                                             <td align="center">{{$loop->iteration}}.</td>
 
-                                            <td class="text-center">
+                                            <td class="text-center text-nowrap">
                                                 <button id="delete_detail" name="delete_detail"
                                                     class="btn btn-danger btn-icon btn-sm" type="button"
                                                     value="{{ $container['id'] }}" onclick="delete_detailbarangDB(this)"
@@ -1309,7 +1309,7 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">EDIT DETAIL KONTAINER</h5>
+                        <h5 class="modal-title">EDIT DETAIL KONTAINER</h5> <h5 class="modal-title" id="nomor_kontainer_title"></h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>

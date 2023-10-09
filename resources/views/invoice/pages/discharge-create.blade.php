@@ -71,6 +71,16 @@
                         <div class="col-md-12 mb-3 table-responsive">
                             <table border="0" style="margin-left: auto; margin-right:auto">
                                 <tr>
+                                    <td width="45%">Nomor DO</td>
+                                    <td width="5%">:</td>
+                                    <td width="50%">{{ $planload->nomor_do }}</td>
+                                </tr>
+                                <tr>
+                                    <td width="45%">Tanggal Tiba</td>
+                                    <td width="5%">:</td>
+                                    <td width="50%">{{ \Carbon\Carbon::parse($planload->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}</td>                                </td>
+                                </tr>
+                                <tr>
                                     <td width="47%">Vessel/Voyage</td>
                                     <td width="3%">:</td>
                                     <td width="50%">{{ $planload->vessel }}</td>
@@ -85,6 +95,16 @@
                                     <td>:</td>
                                     <td>{{ $planload->select_company }}</td>
                                 </tr>
+                                <tr>
+                                    <td>Pengirim</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->pengirim }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Penerima</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->penerima }}</td>
+                                </tr>
 
                                 <tr>
                                     <td>Activity</td>
@@ -96,12 +116,22 @@
                                     <td>:</td>
                                     <td>{{ $planload->pol }}</td>
                                 </tr>
+                                <tr>
+                                    <td>POD (Port of Discharge)</td>
+                                    <td>:</td>
+                                    <td>{{ $planload->pod }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Biaya DO (Rp.)</td>
+                                    <td>:</td>
+                                    <td>@rupiah($planload->biaya_do)</td>
+                                </tr>
 
 
 
                             </table>
                             <div class="text-center mt-3">
-                                <a href="/processload-create/{{ $planload->slug }}" class="btn btn-success ">to Process <i
+                                <a href="/processdischarge-create/{{ $planload->slug }}" class="btn btn-success ">to Process <i
                                         class="fa fa-arrow-right"></i>
                                 </a>
                             </div>
@@ -123,155 +153,134 @@
             </div>
 
 
-            @if (count($pdfs_si) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
 
-                        <div class="portlet-body">
+            <div class="col-md-12">
+                <div class="portlet">
 
-                            <!-- BEGIN Form -->
+                    <div class="portlet-body">
 
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><u><b>SI/BL/DO</b></u></label>
-                            </div>
+                        <!-- BEGIN Form -->
 
-                            <div class="row row-cols-lg-auto py-5 g-3">
-                                <label for="" class="col-form-label">Filter Tabel :</label>
+                        <div class="col-md-12 text-center">
+                            <label for="inputState" class="form-label"><u><b>LIST KONTAINER DISCHARGE</b></u></label>
+                        </div>
+                        <div class="table-responsive">
 
-                                <div class="col-6">
-                                    <select id="pilih_status_si" name="pilih_status_si" class="form-select pilih"
-                                        onchange="filter_status(this)">
-                                        <option selected disabled>Pilih Jenis SI</option>
-                                        <option value="BIASA">BIASA</option>
-                                        <option value="ALIH-KAPAL">ALIH-KAPAL</option>
 
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                            <table id="tabel_si" class="table table-bordered table-hover mb-0 seratus">
-                                <thead id="thead_alih" class="table-danger text-center">
+                            <table id="table_invoice" class="table table-bordered table-hover mb-0 seratus">
+                                <thead id="thead_alih" class="table-danger text-nowrap">
                                     <tr>
-                                        <th class="">No</th>
-                                        <th class=""></th>
-                                        <th class="">Jenis SI</th>
-                                        <th class="">Nomor Invoice</th>
-                                        <th class="">Kontainer</th>
-                                        <th class="">Shipper</th>
-                                        <th class="">Consigne</th>
-                                        <th class="">Nomor BL</th>
-                                        <th class="">Tanggal BL</th>
-                                        <th class="">Tanggal DO</th>
-                                        <th class="">BL Fee</th>
-                                        <th class="">DO Fee</th>
-
-
-
-
+                                        <th class="text-center">No</th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Input</th>
+                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Nomor Invoice</th>
+                                        <th class="text-center">Unit Price</th>
+                                        <th class="text-center">Kondisi</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Tgl Dooring</th>
+                                        <th class="text-center">Penerima Barang</th>
+                                        <th class="text-center">Size/Type</th>
+                                        <th class="text-center">Cargo (Nama Barang)</th>
+                                        <th class="text-center">Seal-Container</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody_alih" class="">
-                                    @foreach ($pdfs_si as $pdf)
+                                <tbody id="tbody_alih" class="text-center">
+                                    @foreach ($containers as $container)
                                         <tr>
-                                            <td align="center">
-
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td class="text-nowrap">
-                                                <input type="hidden" name="container_id" id="container_id"
-                                                    value="{{ $pdf->container_id }}">
-                                                @if ($pdf->status_si == 'Default')
-                                                    <button data-id="{{ $pdf->container_id }}"
-                                                        data-bs-target="modal_invoice_si" type="button"
-                                                        value="{{ $pdf->container_id }}" onclick="input_invoice_si(this)"
-                                                        class="btn btn-success btn-sm ">Invoice <i
-                                                            class="fa fa-pencil"></i></button>
-                                                @else
-                                                    <button data-id="{{ $pdf->container_id }}"
-                                                        data-bs-target="modal_invoice_si" type="button"
-                                                        value="{{ $pdf->container_id }}" onclick="input_invoice_si_alih(this)"
-                                                        class="btn btn-primary btn-sm ">Invoice Alih Kapal <i
-                                                            class="fa fa-ship"></i></button>
-                                                @endif
-
-
-                                                <a type="button" href="/preview-si/{{ $pdf->path }}"
-                                                    class="btn btn-info btn-sm ">SI <i class="fa fa-eye"></i></a>
+                                            <td>{{ $loop->iteration }}</td>
 
 
 
-                                            </td>
-
-                                            <td class="align-middle text-nowrap">
-
-                                                @if ($pdf->status_si == 'Default')
-                                                    <i class="marker marker-dot text-success"></i>
-                                                    BIASA
-                                                @else
-                                                    <i class="marker marker-dot text-primary"></i>
-                                                    ALIH-KAPAL
+                                            <td>
+                                                @if ($container->invoices->path == null && $container->price_invoice != null)
+                                                    <div class="validation-container">
+                                                        <input type="hidden" value="{{ $container->status_invoice }}"
+                                                            class="{{ $container->status_invoice }}">
+                                                        <input data-tagname={{ $loop->iteration }} type="checkbox"
+                                                            class="form-check-input check_kontainer_batal"
+                                                            id="kontainer_check[{{ $loop->iteration }}]"
+                                                            name="{{ $container->status_invoice }}"
+                                                            value="{{ $container->id }}" autofocus
+                                                            onclick="click_check(this)" onchange="countCheck()">
+                                                    </div>
+                                                @elseif ($container->invoices->path != null)
+                                                    <input readonly disabled checked type="checkbox"
+                                                        class="form-check-input"
+                                                        id="kontainer_check[{{ $loop->iteration }}]">
+                                                @elseif ($container->price_invoice == null)
+                                                    -
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($pdf->containers->status_invoice == null)
-                                                    -
+                                                @if ($container->price_invoice != null)
+                                                    <button type="button" value="{{ $container->id }}"
+                                                        type="button" onclick="update_invoice(this)"
+                                                        class="btn btn-primary btn-sm "><i
+                                                            class="fa fa-pencil"></i></button>
                                                 @else
-                                                    {{ $pdf->containers->status_invoice }}
+                                                    <button type="button" value="{{ $container->id }}"
+                                                        type="button" onclick="input_invoice(this)"
+                                                        class="btn btn-success btn-sm text-nowrap ">Input <i
+                                                            class="fa fa-pencil"></i></button>
                                                 @endif
+
+
+                                            </td>
+                                            
+
+                                            <td>{{ $container->nomor_kontainer }}</td>
+                                            
+                                            <td>{{ $container->status_invoice }}</td>
+                                            <td>@rupiah($container->price_invoice)</td>
+                                            <td>{{ $container->kondisi_invoice }}</td>
+                                            <td>{{ $container->keterangan_invoice }}</td>
+
+                                          
+                                            <td>
+
+                                                {{ \Carbon\Carbon::parse($container->tanggal_kembali)->isoFormat('dddd, DD MMMM YYYY') }}
+                                            </td>
+                                           
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="penerima[{{ $container->id }}]">{{ old('penerima', $container->penerima) }}</label>
+
+                                            </td>
+                                            
+                                            
+                                            <td>
+                                                <label disabled @readonly(true)
+                                                    id="size[{{ $container->id }}]">{{ $container->size }}/{{ $container->type }}
+                                                </label>
+
+                                            </td>
+
+                                          
+                                            <td>
+
+                                                <label disabled @readonly(true)
+                                                    id="cargo[{{ $container->id }}]">{{ old('cargo', $container->cargo) }}</label>
+
                                             </td>
                                             <td>
                                                 <ol type="1.">
 
-                                                    @foreach ($container_si as $container)
-                                                        @if ($container->slug == $pdf->container_id)
+                                                    @foreach ($sealsc as $seal)
+                                                        @if ($seal->kontainer_id_discharge == $container->id)
                                                             <li>
-                                                                {{ $container->nomor_kontainer }}
+                                                                {{ $seal->seal_kontainer }}
+
                                                             </li>
                                                         @endif
                                                     @endforeach
                                                 </ol>
 
 
-                                            </td>
-
-                                            <td>
-                                                {{ $pdf->shipper }}
-
-                                            </td>
-                                            <td>
-                                                {{ $pdf->consigne }}
-
-                                            </td>
-                                            <td>
-                                                {{ $pdf->nomor_bl }}
 
                                             </td>
 
-                                            <td>
-                                                @if ($pdf->tanggal_bl != null)
-                                                    {{ \Carbon\Carbon::parse($pdf->tanggal_bl)->isoFormat('dddd, DD-MMMM-YYYY') }}
-                                                @else
-                                                    -
-                                                @endif
-
-                                            </td>
-                                            <td>
-                                                {{ \Carbon\Carbon::parse($pdf->tanggal_do_pod)->isoFormat('dddd, DD-MMMM-YYYY') }}
-                                            </td>
-                                            <td>
-                                                @rupiah($pdf->biaya_do_pol)
-
-                                            </td>
-                                            <td>
-                                                @rupiah($pdf->biaya_do_pod)
-
-                                            </td>
-
-
-
-
+                                            
 
                                         </tr>
                                     @endforeach
@@ -279,192 +288,30 @@
                                 </tbody>
                             </table>
 
+                        </div>
 
 
-                            <div class="text-center mt-3">
-                                <a href="/realisasi-pod-create/{{ $planload->slug }}" class="btn btn-success ">
-                                    Realisasi POD <i class="fa fa-arrow-right"></i>
-                                </a>
+                        <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
+                            <div class="col-auto">
+                                <button id="submit_batal" type="submit" onclick="pdf_invoice_batal()"
+                                    class="btn btn-success ">Cetak Invoice <i
+                                        class="fa fa-print"></i></button>
+                                <label for="" class="" style="margin-left: ">
+                                    <b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.
+                                </label>
+                                
                             </div>
 
 
                         </div>
-                        <!-- BEGIN Portlet -->
 
-                        <!-- END Portlet -->
                     </div>
                 </div>
-            @endif
+                <!-- BEGIN Portlet -->
 
-            @if (count($container_batal) > 0)
-                <div class="col-md-12">
-                    <div class="portlet">
-
-                        <div class="portlet-body">
-
-                            <!-- BEGIN Form -->
-
-                            <div class="col-md-12 text-center">
-                                <label for="inputState" class="form-label"><u><b>KONTAINER BATAL MUAT</b></u></label>
-                            </div>
-                            <div class="table-responsive">
-
-
-                                <table id="table_batal" class="table table-bordered table-hover mb-0 seratus">
-                                    <thead id="thead_alih" class="table-danger text-nowrap">
-                                        <tr>
-                                            <th class="text-center">No</th>
-                                            <th class="text-center"></th>
-                                            <th class="text-center">Input</th>
-                                            <th class="text-center">NOMOR INVOICE</th>
-                                            <th class="text-center">UNIT PRICE</th>
-                                            <th class="text-center">KONDISI</th>
-                                            <th class="text-center">KETERANGAN</th>
-                                            <th class="text-center">POD</th>
-                                            <th class="text-center">Pengirim</th>
-                                            <th class="text-center">Penerima</th>
-                                            <th class="text-center">Size/Type</th>
-                                            <th class="text-center">Nomor Kontainer</th>
-                                            <th class="text-center">Cargo (Nama Barang)</th>
-                                            <th class="text-center">Seal-Container</th>
-                                            <th class="text-center">Biaya Batal Muat Kapal</th>
-                                            <th class="text-center">Keterangan Batal Muat</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody_alih" class="text-center">
-                                        @foreach ($container_batal as $batal)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-
-
-
-                                                <td>
-                                                    @if ($batal->invoices->path == null && $container->price_invoice != null)
-                                                        <div class="validation-container">
-                                                            <input type="hidden" value="{{ $batal->status_invoice }}"
-                                                                class="{{ $batal->status_invoice }}">
-                                                            <input data-tagname={{ $loop->iteration }} type="checkbox"
-                                                                class="form-check-input check_kontainer_batal"
-                                                                id="kontainer_check[{{ $loop->iteration }}]"
-                                                                name="{{ $batal->status_invoice }}"
-                                                                value="{{ $batal->id }}" autofocus
-                                                                onclick="click_check(this)">
-                                                        </div>
-                                                    @elseif ($batal->invoices->path != null)
-                                                        <input readonly disabled checked type="checkbox"
-                                                            class="form-check-input"
-                                                            id="kontainer_check[{{ $loop->iteration }}]">
-                                                    @elseif ($batal->price_invoice == null)
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($batal->price_invoice != null)
-                                                        <button type="button" value="{{ $batal->id }}"
-                                                            type="button" onclick="update_invoice(this)"
-                                                            class="btn btn-primary btn-sm "><i
-                                                                class="fa fa-pencil"></i></button>
-                                                    @else
-                                                        <button type="button" value="{{ $batal->id }}"
-                                                            type="button" onclick="input_invoice(this)"
-                                                            class="btn btn-success btn-sm text-nowrap ">Input <i
-                                                                class="fa fa-pencil"></i></button>
-                                                    @endif
-
-
-                                                </td>
-
-                                                <td>{{ $batal->status_invoice }}</td>
-                                                <td>@rupiah($batal->price_invoice)</td>
-                                                <td>{{ $batal->kondisi_invoice }}</td>
-                                                <td>{{ $batal->keterangan_invoice }}</td>
-                                                <td>
-                                                    <label disabled @readonly(true)
-                                                        id="pod_container[{{ $batal->id }}]">{{ old('pod_container', $batal->pod_container) }}</label>
-                                                </td>
-                                                <td>
-                                                    <label disabled @readonly(true)
-                                                        id="pengirim[{{ $batal->id }}]">{{ old('pengirim', $batal->pengirim) }}</label>
-
-                                                </td>
-                                                <td>
-                                                    <label disabled @readonly(true)
-                                                        id="penerima[{{ $batal->id }}]">{{ old('penerima', $batal->penerima) }}</label>
-
-                                                </td>
-                                                <td>
-                                                    <label disabled @readonly(true)
-                                                        id="size[{{ $batal->id }}]">{{ $batal->size }}/{{ $batal->type }}
-                                                    </label>
-
-                                                </td>
-
-                                                <td>
-
-                                                    <label disabled @readonly(true)
-                                                        id="nomor_kontainer[{{ $batal->id }}]">{{ old('nomor_kontainer', $batal->nomor_kontainer) }}</label>
-                                                </td>
-                                                <td>
-
-                                                    <label disabled @readonly(true)
-                                                        id="cargo[{{ $batal->id }}]">{{ old('cargo', $batal->cargo) }}</label>
-
-                                                </td>
-                                                <td>
-                                                    <ol type="1.">
-
-                                                        @foreach ($sealsc as $seal)
-                                                            @if ($seal->kontainer_id == $batal->id)
-                                                                <li>
-                                                                    {{ $seal->seal_kontainer }}
-
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ol>
-
-
-
-                                                </td>
-
-                                                <td>
-                                                    <label id="harga_batal[{{ $loop->iteration }}]">
-                                                        @rupiah($batal->harga_batal)</label>
-
-                                                </td>
-                                                <td>
-                                                    <label id="keterangan_alih_kapal[{{ $loop->iteration }}]">
-                                                        {{ $batal->keterangan_batal }}</label>
-
-                                                </td>
-
-
-                                            </tr>
-                                        @endforeach
-
-                                    </tbody>
-                                </table>
-
-                            </div>
-
-
-                            <div class="row row-cols-lg-auto px-3 mt-5 mb-5">
-                                <div class="col-auto">
-                                    <button id="submit_batal" type="submit" onclick="pdf_invoice_batal()"
-                                        class="btn btn-success ">Cetak Invoice Batal Muat <i
-                                            class="fa fa-print"></i></button>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- BEGIN Portlet -->
-
-                    <!-- END Portlet -->
-                </div>
-            @endif
+                <!-- END Portlet -->
+            </div>
+            
 
 
 
@@ -535,7 +382,7 @@
                             <div class="table-responsive">
 
 
-                                <table id="tabel_invoice" class="table table-bordered table-hover mb-0 seratus">
+                                <table id="tabel_list_invoice" class="table table-bordered table-hover mb-0 seratus">
                                     <thead id="thead_alih" class="table-danger">
                                         <tr>
                                             <th>No</th>
@@ -580,7 +427,7 @@
                                                     <td class="text-nowrap">
 
 
-                                                        <a type="button" href="/preview-invoice/{{ $pdf_inv->path }}"
+                                                        <a type="button" href="/preview-invoice-discharge/{{ $pdf_inv->path }}"
                                                             class="btn btn-info btn-sm ">Invoice <i
                                                                 class="fa fa-eye"></i></a>
                                                         <button type="button" value="{{ $pdf_inv->id }}"
@@ -1056,6 +903,7 @@
 
                                 <select data-bs-toggle="tooltip" id="kondisi_invoice_edit" name="kondisi_invoice_edit"
                                     class="form-select" required>
+                                   
                                     <option value="DP" @if ('DP') selected @endif>Door to Port
                                     </option>
                                     <option value="DC" @if ('DC') selected @endif>Door to Cy
@@ -1063,6 +911,7 @@
                                     <option value="DD" @if ('DD') selected @endif>Door to Door
                                     </option>
                                 </select>
+                                
 
                             </div>
                         </div>
@@ -1232,7 +1081,7 @@
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/jquery-ui.js"></script>
 
     <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
-    <script type="text/javascript" src="{{ asset('/') }}./js/invoice.js"></script>
+    <script type="text/javascript" src="{{ asset('/') }}./js/discharge/invoice_discharge.js"></script>
 
     <script type="text/javascript" src="{{ asset('/') }}./js/pemisah_titik.js"></script>
 

@@ -20,6 +20,8 @@
                             <thead class="align-top text-nowrap">
                                 <tr>
                                     <th>No</th>
+                                    <th></th>
+                                    <th>Status</th>
                                     <th>Tanggal Tiba</th>
                                     <th>Nomor DO</th>
                                     <th>Vessel</th>
@@ -31,12 +33,7 @@
                                     <th>POL</th>
                                     <th>POD</th>
 
-                                    <th class="align-top"> (JUMLAH) X SIZE - TYPE - CARGO KONTAINER :</th>
-                                    <th class="align-top">SEAL KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
-                                    <th class="align-top">REMARK KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK) :</th>
-                                    <th class="align-top">BIAYA KONTAINER (NOMOR KONTAINER - BIAYA RELOKASI - JAMINAN KONTAINER) :</th>
-                                    <th>Status</th>
-                                    <th>Aksi</th>
+                                  
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,6 +42,26 @@
                                         <td>
                                             {{$loop->iteration}}
                                         </td>
+                                        <td class="text-center text-nowrap">
+                                            <a href="/realisasidischarge-create/{{ $plandischarge->slug }}"
+                                                class="btn btn-danger btn-sm">Realisasi <i
+                                                    class="fa fa-pencil"></i>
+
+                                            </a>
+
+                                    
+                                        </td>
+                                        <td class="align-middle text-nowrap">
+                                            @if ($plandischarge->status == 'Process')
+                                            <i class="marker marker-dot text-success"></i>
+                                                {{ $plandischarge->status }}
+                                            @endif
+                                            @if ($plandischarge->status == 'Realisasi')
+                                            <i class="marker marker-dot text-danger"></i>
+                                                {{ $plandischarge->status }}
+                                            @endif
+                                        </td>
+                                       
                                         <td>{{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
                                         </td>
 
@@ -77,98 +94,14 @@
                                             {{$plandischarge->pod}}
                                         </td>
 
-                                        <td align="top" valign="top">
-                                            <ol type="1">
-                                                @foreach ($containers_group as $container)
-                                                    @if ($plandischarge->id == $container->job_id)
-                                                        <li>
-                                                            ({{ $container->jumlah_kontainer }}) x {{ $container->size }} - {{$container->type}} - {{ $container->cargo }}
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-
-                                        </td>
-                                        <td align="top" valign="top">
-                                            <ol type="1">
-                                                @foreach ($containers as $container)
-                                                    @if ($plandischarge->id == $container->job_id)
-                                                        <li>
-                                                            {{ $container->size }} - {{$container->type}} - {{ $container->cargo }} - @if ($container->seal != null) {{$container->seal}} @else ? @endif -
-                                                            @if ($container->date_activity != null) {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }} @else ? @endif
-                                                            - @if ($container->nomor_kontainer != null) {{$container->nomor_kontainer}} @else ? @endif
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-
-                                        </td>
-                                        <td align="top" valign="top">
-                                            @if ($plandischarge->status == 'Process-Discharge')
-                                                <ol start="1">
-                                                    @foreach ($containers as $container)
-                                                        @if ($plandischarge->id == $container->job_id)
-                                                            <li>
-                                                                {{ $container->nomor_kontainer }} - {{$container->driver}} - {{$container->nomor_polisi}} - {{$container->remark}}
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-
-                                                </ol>
-                                            @else
-                                                -
-                                            @endif
-
-
-                                        </td>
-                                        <td align="top" valign="top">
-                                            @if ($plandischarge->status == 'Process-Discharge')
-                                                <ol start="1">
-                                                    @foreach ($containers as $container)
-                                                        @if ($plandischarge->id == $container->job_id)
-                                                            <li>
-                                                                {{ $container->nomor_kontainer }} - @rupiah($container->biaya_relokasi) - @rupiah($container->jaminan_kontainer)
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-
-                                                </ol>
-                                            @else
-                                                -
-                                            @endif
-
-                                        </td>
+                                      
 
 
 
 
 
 
-                                        <td class="align-middle text-nowrap">
-                                            @if ($plandischarge->status == 'Process-Discharge')
-                                            <i class="marker marker-dot text-success"></i>
-                                                {{ $plandischarge->status }}
-                                            @endif
-                                            @if ($plandischarge->status == 'Realisasi')
-                                            <i class="marker marker-dot text-danger"></i>
-                                                {{ $plandischarge->status }}
-                                            @endif
-                                        </td>
-                                        <td class="text-center text-nowrap">
-                                            @if ($plandischarge->status == 'Realisasi')
-                                            <button disabled class="btn btn-label-secondary rounded-pill">
-                                             Realisasi Discharge <i class="fa fa-pencil"></i>
-                                            </button>
-
-                                            @else
-                                            <a href="/realisasidischarge-create/{{ $plandischarge->slug }}"
-                                                class="btn btn-label-danger rounded-pill">Realisasi Discharge <i
-                                                    class="fa fa-pencil"></i>
-
-                                            </a>
-
-                                            @endif
-                                        </td>
+                                       
 
 
                                     </tr>

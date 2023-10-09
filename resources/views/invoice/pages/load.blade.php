@@ -15,7 +15,7 @@
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
-                        <table id="tabelinvoice" class="align-top table mb-0 table-bordered table-striped table-hover  autosize">
+                        <table id="tabelinvoice" class="table mb-0 table-bordered table-striped table-hover seratus">
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>

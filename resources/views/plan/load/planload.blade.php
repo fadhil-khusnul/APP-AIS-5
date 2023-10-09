@@ -87,13 +87,9 @@
                             </td>
 
                             <td class="text-center">
-                                @if ($planload->status == 'Plan-Load')
-                                <a href="/planload-edit/{{$planload->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
+                                <a href="/planload-edit/{{$planload->slug}}" class="btn btn-success btn-sm">Plan <i class="fa fa-pencil"></i></a>
 
-                                @else
-                                <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
-
-                                @endif
+                               
 
                                 {{-- <button onclick="deletePlanload(this)" value="{{$planload->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
                                 class="fa fa-trash"></i></button> --}}

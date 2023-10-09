@@ -49,7 +49,7 @@ class PlanDischargeController extends Controller
         $containers_group = PlanDischargeContainer::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
 
         return view('plan.discharge.plandischarge', [
-            'title' => 'Discharge-Plan',
+            'title' => 'Plan-Discharge',
             'active' => 'Discharge',
             'plandischarges' => $discharges,
             'vessel' => $vessel,
@@ -76,7 +76,7 @@ class PlanDischargeController extends Controller
      
 
         return view('plan.discharge.plandischarge-create',[
-            'title' => 'Buat Discharge-Plan',
+            'title' => 'Plan-Discharge',
             'activity' => $activity,
             'active' => 'Plan',
             'shippingcompany' => $shipping_company,
@@ -124,6 +124,8 @@ class PlanDischargeController extends Controller
             'penerima' => $request->penerima,
             'nomor_do' => $request->nomor_do,
             'tanggal_tiba' => $request->tanggal_tiba,
+            'tanggal_free' => $request->tanggal_free,
+            'total_hari' => $request->total_hari,
             'slug' => $slug,
             'status' => "Plan",
         ];
@@ -155,7 +157,7 @@ class PlanDischargeController extends Controller
         // dd($seal_containers);
 
         return view('plan.discharge.plandischarge-edit', [
-            'title' => 'Discharge-Plan',
+            'title' => 'Plan-Discharge',
             'active' => 'Plan',
             'activity' => $activity,
             'shippingcompany' => $shipping_company,
@@ -225,6 +227,8 @@ class PlanDischargeController extends Controller
             'penerima' => $request->penerima,
             'nomor_do' => $request->nomor_do,
             'tanggal_tiba' => $request->tanggal_tiba,
+            'total_hari' => $request->total_hari,
+            'tanggal_free' => $request->tanggal_free,
             'biaya_do' => $biaya_do,
         ];
 
@@ -405,7 +409,7 @@ class PlanDischargeController extends Controller
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
         return view('process.discharge.processdischarge',[
-            'title' => 'Discharge-Process',
+            'title' => 'Process-Discharge',
             'active' => 'Discharge',
             'plandischarges' => $plandischarges,
             'containers' => $containers,
@@ -505,7 +509,7 @@ class PlanDischargeController extends Controller
 
 
         return view('process.discharge.processdischarge-create',[
-            'title' => 'Discharge-Process',
+            'title' => 'Process-Discharge',
             'active' => 'Discharge',
             'shippingcompany' => $shipping_company,
             'pols' => $pol,
@@ -600,7 +604,7 @@ class PlanDischargeController extends Controller
         $planload = PlanDischarge::findOrFail($request->job_id);
 
 
-        $status = "Process";
+        $status = "Realisasi";
 
         $load = [
             'status' => $status,
@@ -930,7 +934,7 @@ class PlanDischargeController extends Controller
 
     public function realisasi()
     {
-        $plandischarges = PlanDischarge::orderBy('id', 'DESC')->where('status', 'Realisasi')->orWhere('status', 'Process-Discharge')->get();
+        $plandischarges = PlanDischarge::orderBy('id', 'DESC')->where('status', 'Realisasi')->orWhere('status', 'Process')->get();
         $containers = PlanDischargeContainer::all();
         $containers_group = PlanDischargeContainer::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  PlanDischarge::all()->unique('select_company');
@@ -940,7 +944,7 @@ class PlanDischargeController extends Controller
         $alihkapal= AlihKapal::all();
         $batalmuat= BatalMuat::all();
         return view('realisasi.discharge.realisasi',[
-            'title' => 'Discharge-Realisasi',
+            'title' => 'Realisasi-Discharge',
             'active' => 'Discharge',
             'plandischarges' => $plandischarges,
             'containers' => $containers,

@@ -246,192 +246,29 @@ function detail_edit(e) {
         success: function (response) {
             let new_id = id;
 
-            var seals = [];
-
-            for (let i = 0; i < response.seal_discharge.length; i++) {
-                seals[i] = response.seal_discharge[i].seal_kontainer;
-            }
-
             $("#modal-job-edit").modal("show");
+            $("#seal_html_edit").html("");
 
-            $("#size_edit").val(response.result.size);
-            $("#type_edit").val(response.result.type);
+
+            var id_seal_html_edit = document.getElementById("seal_html_edit")
+            let seals = [""];
+            for (let i = 0; i < response.seal_discharge.length; i++) {
+
+                seals += ("<li>" + response.seal_discharge[i].seal_kontainer +"</li>");
+            }
+            let ol_seal = document.createElement("ol");
+            console.log(seals);
+            ol_seal.setAttribute("type", "1.")
+            ol_seal.setAttribute("style", "padding-left: 7px;")
+            ol_seal.innerHTML = seals
+            id_seal_html_edit.appendChild(ol_seal)
+
+
+            $("#size_type_edit").html(response.result.size +"/"+ response.result.type);
+            $("#nomor_kontainer_edit").html(response.result.nomor_kontainer);
+            $("#cargo_edit").html(response.result.cargo);
             $("#biaya_seal_edit").val("");
-            $("#nomor_kontainer_edit").val(response.result.nomor_kontainer);
-            $("#cargo_edit").val(response.result.cargo);
-            $("#seal_edit")
-                .val(seals)
-                .select2({
-                    ajax: {
-                        dataType: "json",
-                        delay: 250,
-                        async: false,
-                        cache: false,
-                    },
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih Seal",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal-job-edit"),
-                    // multiple: true,
-                    // ajax: {
-                    //     async: false
-                    // }
-                })
-                .off("select2:select")
-                .on("select2:select", function (e) {
-                    // console.log(e);
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
-                    let token = $("#csrf").val();
-                    // var count = 0
-                    // count += 1
-
-                    // for(var i = 0; i <= count; i++) {
-                    //     if(i ===)
-                    // }
-                    // var ev = e;
-                    // console.log(token);
-
-                    $.ajax({
-                        url: "/getSealProcessLoad",
-                        type: "post",
-                        async: false,
-                        data: {
-                            _token: token,
-                        },
-                        success: function (response) {
-                            // console.log(ev);
-                            var seal = $("#seal_edit").val();
-                            // console.log(seal, response);
-                            var last_seal = seal[seal.length - 1];
-                            // console.log(seal, last_seal);
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].seal_kontainer;
-                            }
-
-                            if (seal_already.includes(last_seal)) {
-                                swal.fire({
-                                    title: "Seal Kontainer Sudah Dipakai",
-                                    icon: "error",
-                                    timer: 10e3,
-                                    showConfirmButton: true,
-                                }).then(() => {
-                                    var wanted_option = $(
-                                        '#seal_ed{{ it o }}ption[value="' +
-                                            last_seal +
-                                            '"]'
-                                    );
-                                    wanted_option.prop("selected", false);
-                                    $("#seal_edit").trigger("change.select2");
-                                });
-                            } else {
-                                $.ajax({
-                                    url: "/getSealKontainer",
-                                    type: "post",
-                                    data: {
-                                        _token: token,
-                                        seal: last_seal,
-                                    },
-                                    success: function (response) {
-                                        $("#seal_edit").trigger(
-                                            "change.select2"
-                                        );
-                                        console.log(last_seal);
-                                        var harga_seal = $("#biaya_seal_edit")
-                                            .val()
-                                            .replace(/\./g, "");
-                                        harga_seal = parseFloat(harga_seal);
-
-                                        // console.log(response);
-                                        // console.log(seal_already);
-
-                                        if (isNaN(harga_seal)) {
-                                            harga_seal = 0;
-                                        }
-
-                                        var harga_seal_now =
-                                            harga_seal + response;
-                                        $("#biaya_seal_edit").val(
-                                            harga_seal_now
-                                        );
-                                    },
-                                    async: false,
-                                    cache: false,
-                                });
-                            }
-                        },
-                        async: false,
-                        cache: false,
-                    });
-                });
-
-            $("#seal_edit")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-
-                    // tags: true,
-                    placeholder: "Silahkan Pilih Seal",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal-job-edit"),
-                })
-                .off("select2:unselect")
-                .on("select2:unselect", function (e) {
-                    // var seal = $("#seal").val();
-                    // console.log(seal);
-                    // var last_seal = seal[seal.length - 1];
-
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    let token = $("#csrf").val();
-
-                    $element.detach();
-                    $(this).append($element);
-                    {
-                        {
-                        }
-                    }
-                    $(this).trigger("change");
-
-                    $.ajax({
-                        url: "/getSealKontainer",
-                        type: "post",
-                        data: {
-                            _token: token,
-                            seal: element.value,
-                        },
-                        success: function (response) {
-                            var harga_seal = document
-                                .getElementById("biaya_seal_edit")
-                                .value.replace(/\./g, "");
-                            harga_seal = parseFloat(harga_seal);
-
-                            if (isNaN(harga_seal)) {
-                                harga_seal = 0;
-                            }
-
-                            var harga_seal_now = harga_seal - response;
-                            $("#biaya_seal_edit").val(harga_seal_now);
-                        },
-                    });
-                });
+           
             var old_tanggal_result = moment(
                 response.result.tanggal_kembali,
                 "YYYY-MM-DD"

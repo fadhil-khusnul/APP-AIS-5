@@ -103,18 +103,7 @@
                                     <td>:</td>
                                     <td>{{ $plandischarge->pol }}</td>
                                 </tr>
-                                <tr>
-                                    <td>POT (Port of Transit)</td>
-                                    <td>:</td>
-                                    <td>
-                                        @if ($plandischarge->pot == null)
-                                        -
-                                        @else
-                                            
-                                        {{ $plandischarge->pot }}
-                                        @endif
-                                    </td>
-                                </tr>
+                               
                                 <tr>
                                     <td>POD (Port of Discharge)</td>
                                     <td>:</td>
@@ -206,18 +195,18 @@
                                             <td>
                                                 <button id="button_kontainer[{{ $loop->iteration }}]"
                                                     name="button_kontainer[{{ $loop->iteration }}]"
-                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
+                                                    class="btn btn-danger btn-icon btn-sm" type="button"
                                                     value="{{ $container->id }}" onclick="delete_kontainerDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
 
                                                 @if ($container->tanggal_kembali != null)
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-primary btn-sm text-nowrap"
+                                                        class="btn btn-primary btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail_edit(this)">Edit <i
                                                             class="fa fa-eye"></i></button>
                                                 @else
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-success btn-sm text-nowrap"
+                                                        class="btn btn-success btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail(this)">Input
                                                         <i class="fa fa-pencil"></i></button>
                                                 @endif
@@ -266,8 +255,8 @@
 
 
                         <div class="mb-5 mt-5 text-center">
-                            <button id="detail_kontainer" type="button" onclick="detail_tambah()"
-                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                            {{-- <button id="detail_kontainer" type="button" onclick="detail_tambah()"
+                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button> --}}
                             @if ($plandischarge->status == 'Process' || $plandischarge->status == 'Realisasi')
                                 <button style="margin-left: 10px" value="{{ $plandischarge->slug }}" type="button"
                                     onclick="realisasi_page(this)" class="btn btn-success">ke Realisasi <i
@@ -543,11 +532,11 @@
                                         <tr>
                                             <td class="text-center">
                                                 <button id="delete_detail" name="delete_detail"
-                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
+                                                    class="btn btn-danger btn-icon btn-sm" type="button"
                                                     value="{{ $container['id'] }}" onclick="delete_detailbarangDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
                                                 <button id="edit_detail" name="edit_detail"
-                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm"
+                                                    class="btn btn-primary btn-icon btn-sm"
                                                     type="button" value="{{ $container['id'] }}"
                                                     onclick="detail_barang_edit(this)" @readonly(true)><i
                                                         class="fa fa-pencil"></i></button>
@@ -577,9 +566,9 @@
                         </div>
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="detail_barang()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
                             <button style="float: right" id="add_biaya" type="button" onclick="cetak_packing()"
-                                class="btn btn-label-primary">Cetak List <i class="fa fa-print"></i></button>
+                                class="btn btn-primary">Cetak List <i class="fa fa-print"></i></button>
                         </div>
 
                         <!-- END Form -->
@@ -621,11 +610,11 @@
                                         <tr>
                                             <td class="text-center">
                                                 <button id="delete_biaya" name="delete_biaya"
-                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm" type="button"
+                                                    class="btn btn-danger btn-icon btn-sm" type="button"
                                                     value="{{ $biaya['id'] }}" onclick="delete_laiannyaDB(this)"
                                                     @readonly(true)><i class="fa fa-trash"></i></button>
                                                 <button id="edit_biaya" name="edit_biaya"
-                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm"
+                                                    class="btn btn-primary btn-icon btn-sm"
                                                     type="button" value="{{ $biaya['id'] }}"
                                                     onclick="detail_biaya_lain_edit(this)" @readonly(true)><i
                                                         class="fa fa-pencil"></i></button>
@@ -664,7 +653,7 @@
 
                         <div class="mb-5 mt-5">
                             <button id="add_biaya" type="button" onclick="detail_biaya_lain()"
-                                class="btn btn-label-success btn-icon"> <i class="fa fa-plus"></i></button>
+                                class="btn btn-success btn-icon"> <i class="fa fa-plus"></i></button>
                         </div>
 
                         <!-- END Form -->
@@ -692,7 +681,7 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">INPUT KONTAINER</h5>
+                        <h5 class="modal-title">INPUT KONTAINER</h5> <h5 class="modal-title" id="nomor_kontainer"></h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
@@ -700,11 +689,7 @@
                     <div class="modal-body d-grid gap-3 px-5">
 
                         <table>
-                            <tr>
-                                <td width="35%">Nomor Kontainer</td>
-                                <td width="5%">:</td>
-                                <td width="60%" id="nomor_kontainer"></td>
-                            </tr>
+                            
                             <tr>
                                 <td width="35%">Size/Type</td>
                                 <td width="5%">:</td>
@@ -1041,89 +1026,34 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">EDIT KONTAINER</h5>
+                        <h5 class="modal-title">EDIT KONTAINER</h5> <h5 class="modal-ttile" id="nomor_kontainer_edit"></h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
 
-                        <div class="row">
-                            <label for="email" class="col-sm-4 col-form-label">Size :<span
-                                    class="text-danger">*</span></label>
-
-                            <div class="col-sm-8 validation-container">
-
-                                <select required data-bs-toggle="tooltip" id="size_edit" name="size_edit"
-                                    class="form-select" @readonly(true) required>
-                                    <option disabled>Pilih Size</option>
-                                    @foreach ($sizes as $size)
-                                        <option value="{{ $size->size_container }}"
-                                            @if ($size->size_container) selected @endif>
-                                            {{ $size->size_container }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Type :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <select required data-bs-toggle="tooltip" id="type_edit" name="type_edit"
-                                    class="form-select" @readonly(true) required>
-                                    <option disabled>Pilih Type</option>
-                                    @foreach ($types as $type)
-                                        <option value="{{ $type->type_container }}"
-                                            @if ($type->type_container) selected @endif>
-                                            {{ $type->type_container }}</option>
-                                    @endforeach
-                                </select>
-
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="" class="col-sm-4 col-form-label">Nomor Kontainer :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <input required data-bs-toggle="tooltip" type="text"
-                                    class="form-control nomor_kontainer" id="nomor_kontainer_edit" minlength="11"
-                                    maxlength="11" name="nomor_kontainer_edit" onblur="blur_no_container(this)" required
-                                    placeholder="XXXX0000000">
-                            </div>
-                        </div>
-
-                        <div class="row ">
-                            <label for="" class="col-sm-4 col-form-label">Barang (Cargo) :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-
-                                <input required data-bs-toggle="tooltip" type="text" class="form-control"
-                                    id="cargo_edit" name="cargo_edit" value="{{ old('cargo') }}" required>
-                            </div>
-
-
-                        </div>
-
-                        <div class="row">
-                            <input type="hidden" name="seal_old" id="seal_old">
-                            <label for="" class="col-sm-4 col-form-label">Seal-Container :<span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-8 validation-container">
-                                <select data-bs-toggle="tooltip" id="seal_edit" multiple="multiple" name="seal_edit"
-                                    class="form-select" placeholder="Silahkan Pilih Seal" required>
-                                    @foreach ($seals as $seal)
-                                        <option value="{{ $seal->kode_seal }}">
-                                            {{ $seal->kode_seal }}</option>
-                                    @endforeach
-
-                                </select>
-
-                            </div>
-                        </div>
+                        <table>
+                           
+                            <tr>
+                                <td width="35%">Size/Type</td>
+                                <td width="5%">:</td>
+                                <td width="60%" id="size_type_edit"></td>
+                            </tr>
+                            <tr>
+                                <td width="35%">Barang (Cargo)</td>
+                                <td width="5%">:</td>
+                                <td width="60%" id="cargo_edit">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="35%" valign="top">Seal Kontainer</td>
+                                <td width="5%" valign="top">:</td>
+                                <td width="60%" id="seal_html_edit">
+                                    
+                                </td>
+                            </tr>
+                        </table>
 
 
                         <div class="row ">
@@ -1801,7 +1731,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <label class="col-sm-4 col-form-label">PDO :<span class="text-danger">*</span></label>
+                            <label class="col-sm-4 col-form-label">POD :<span class="text-danger">*</span></label>
                             <div class="col-sm-8 validation-container">
 
                                 <select required id="POD_1" name="POD_1" class="form-select">

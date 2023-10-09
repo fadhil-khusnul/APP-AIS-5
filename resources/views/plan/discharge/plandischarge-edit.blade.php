@@ -52,7 +52,22 @@
                             <label for="inputAddress2" class="col-sm-4 form-label">Tanggal Tiba Kapal</label>
                             <div class="col-sm-8 validation-container">
                                 <input required name="tanggal_tiba" id="tanggal_tiba" class="form-control"
-                                    value="{{ old('tanggal_tiba', $planload->tanggal_tiba) }}">
+                                    value="{{ old('tanggal_tiba', $planload->tanggal_tiba) }}" onblur="tambah_free_time()">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="inputAddress2" class="col-sm-4 form-label">Jumlah Free Time</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required name="tanggal_free" id="tanggal_free" class="form-control"
+                                    onblur="tambah_free_time()" value="{{ old("tanggal_free", $planload->tanggal_free) }}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+
+                            <label for="inputAddress2" class="col-sm-4 form-label">Total Tanggal Hari Free</label>
+                            <div class="col-sm-8 validation-container">
+                                <input required readonly name="total_hari" id="total_hari" class="form-control"
+                                    value="{{ old("total_hari", $planload->total_hari) }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -192,64 +207,68 @@
                             <label for="inputState" class="form-label"><b>Detail Kontainer :</b></label>
                         </div>
 
-                        <table class="table mb-0" id="table_container">
-                            <thead class="table-warning" id="thead_container">
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th class="text-center">Aksi</th>
-                                    <th class="text-center">Size</th>
-                                    <th class="text-center">Type</th>
-                                    <th class="text-center">Nomor Kontainer</th>
-                                    <th class="text-center">Seal Kontainer</th>
-                                    <th class="text-center">Nama Barang (CARGO)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center" id="tbody_container">
-                                @foreach ($containers as $container)
+                        <div class="table-responsive">
+                            <table class="table mb-0 seratus" id="table_container">
+                                <thead class="table-warning" id="thead_container">
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-
-                                        <td>
-                                            <button id="deleterow{{ $loop->iteration }}" value="{{ $container->id }}"
-                                                onclick="delete_kontainerDB(this)" type="button"
-                                                class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                                    class="fa fa-trash"></i></button>
-                                            <button id="editrow{{ $loop->iteration }}" value="{{ $container->id }}"
-                                                onclick="modal_edit(this)" type="button"
-                                                class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
-                                                    class="fa fa-pencil"></i></button>
-                                        </td>
-
-                                        <td>{{ $container->size }}</td>
-                                        <td>{{ $container->type }}</td>
-                                        <td>{{ $container->nomor_kontainer }}</td>
-                                        <td>
-                                            @if ($sealsc->count() == 1)
-                                                @foreach ($sealsc as $seal)
-                                                    @if ($seal->kontainer_id_discharge == $container->id)
-                                                        {{ $seal->seal_kontainer }}
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                <ol type="1.">
-
+                                        <th class="text-center">No</th>
+                                        <th class="text-center">Aksi</th>
+                                        <th class="text-center">Size</th>
+                                        <th class="text-center">Type</th>
+                                        <th class="text-center">Nomor Kontainer</th>
+                                        <th class="text-center">Seal Kontainer</th>
+                                        <th class="text-center">Nama Barang (CARGO)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" id="tbody_container">
+                                    @foreach ($containers as $container)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+    
+                                            <td>
+                                                <button id="deleterow{{ $loop->iteration }}" value="{{ $container->id }}"
+                                                    onclick="delete_kontainerDB(this)" type="button"
+                                                    class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                                        class="fa fa-trash"></i></button>
+                                                <button id="editrow{{ $loop->iteration }}" value="{{ $container->id }}"
+                                                    onclick="modal_edit(this)" type="button"
+                                                    class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
+                                                        class="fa fa-pencil"></i></button>
+                                            </td>
+    
+                                            <td>{{ $container->size }}</td>
+                                            <td>{{ $container->type }}</td>
+                                            <td>{{ $container->nomor_kontainer }}</td>
+                                            <td>
+                                                @if ($sealsc->count() == 1)
                                                     @foreach ($sealsc as $seal)
                                                         @if ($seal->kontainer_id_discharge == $container->id)
-                                                            <li id="seal[{{ $container->id }}]">
-                                                                {{ $seal->seal_kontainer }}
-                                                            </li>
+                                                            {{ $seal->seal_kontainer }}
                                                         @endif
                                                     @endforeach
-                                                </ol>
-                                            @endif
-                                        </td>
-                                        <td>{{ $container->cargo }}</td>
+                                                @else
+                                                    <ol type="1.">
+    
+                                                        @foreach ($sealsc as $seal)
+                                                            @if ($seal->kontainer_id_discharge == $container->id)
+                                                                <li id="seal[{{ $container->id }}]">
+                                                                    {{ $seal->seal_kontainer }}
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ol>
+                                                @endif
+                                            </td>
+                                            <td>{{ $container->cargo }}</td>
+    
+                                        </tr>
+                                    @endforeach
+    
+                                </tbody>
+                            </table>
 
-                                    </tr>
-                                @endforeach
+                        </div>
 
-                            </tbody>
-                        </table>
                         <div class="mt-5 mb-5 text-center">
                             <button id="add_container" onclick="modal_tambah()" type="button"
                                 class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
@@ -502,6 +521,10 @@
             let tanggal_tiba = $("#tanggal_tiba").val();
             tanggal_tiba = moment(tanggal_tiba, "YYYY-MM-DD").format("dddd, DD-MMMM-YYYY")
             $("#tanggal_tiba").val(tanggal_tiba);
+
+            let total_hari = $("#total_hari").val();
+            total_hari = moment(total_hari, "YYYY-MM-DD").format("dddd, DD-MMMM-YYYY")
+            $("#total_hari").val(total_hari);
 
             var checkboxes = $("#check"),
                 submitButt = $("#submit");

@@ -360,7 +360,9 @@
 
                             <div class="col-auto text-center">
                                 <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
-                                    SI <i class="fa fa-print"></i></button> <label for="" class="" style="margin-left: "><b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
+                                    SI <i class="fa fa-print"></i></button> 
+                                    <label for="" class="" style="margin-left: ">
+                                    <b id="nomor">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                                 <button id="submit_ok" type="button" onclick="ok_load()" class="btn btn-success ">Buat Job
                                     <i class="fa fa-check"></i></button> <label for="" class="" style="margin-left: "><b id="nomor_delivery">0</b> dari <b id="jumlah">{{count($containers)}}</b> Kontainer dipilih.</label>
                             </div>
@@ -579,6 +581,7 @@
                                     <th class="">Status Approve</th>
                                     <th class="">Status BL</th>
                                     <th class="">Jenis SI</th>
+                                    <th>Kontainer</th>
                                     <th class="">Shipper</th>
                                     <th class="">Consigne</th>
                                     <th class="">Tanggal BL</th>
@@ -632,15 +635,15 @@
                                             @elseif ($pdf->status_approve == 'Ditolak')
                                             <i class="marker marker-dot text-danger"></i>Ditolak
                                             @elseif ($pdf->status_approve == null)
-                                            <i class="marker marker-dot text-warning"></i>Belum Approve
+                                            <i class="marker marker-dot text-danger"></i>Belum Approve
                                             @endif
 
                                         </td>
                                         <td>
                                             @if ($pdf->nomor_bl != null)
-                                            <i class="marker marker-dot text-success"></i>Selesai
+                                            <i class="marker marker-dot text-success"></i>BL Success
                                             @else
-                                                <i class="marker marker-dot text-warning"></i>
+                                                <i class="marker marker-dot text-danger"></i>
                                                 Belum BL
                                             @endif
 
@@ -654,6 +657,20 @@
                                             <i class="marker marker-dot text-primary"></i>
                                             ALIH-KAPAL
                                             @endif
+                                        </td>
+
+                                        <td>
+                                            <ol type="1.">
+
+                                                @foreach ($container_si as $container)
+                                                    @if ($container->slug == $pdf->container_id)
+                                                        <li>
+                                                            {{ $container->nomor_kontainer }}
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ol>
+
                                         </td>
 
                                         <td>

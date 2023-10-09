@@ -15,24 +15,23 @@
                     <!-- BEGIN Datatable -->
                     <div class="table-responsive">
 
-                        <table id="summaryloadreport" class="align-top table mb-0 table-bordered table-striped table-hover  autosize">
+                        <table id="invoicedischarge" class="align-top table mb-0 table-bordered table-striped table-hover seratus">
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
+                                    <th></th>
+                                    <th>Tanggal Tiba</th>
+                                    <th>Nomor DO</th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
-                                    <th>Pemilik Barang</th>
+                                    <th>Pengirim</th>
+                                    <th>Penerima</th>
                                     <th>Activity</th>
                                     <th>POL</th>
-                                    <th>POT</th>
                                     <th>POD</th>
-                                    <th class="align-top"> (JUMLAH) X SIZE - TYPE - CARGO KONTAINER :</th>
-                                    <th class="align-top">SEAL KONTAINER (SIZE - TYPE - CARGO - SEAL - DATE - NOMOR KONTAINER) :</th>
-                                    <th class="align-top">REMARK KONTAINER (NOMOR KONTAINER - DRIVER - NO. POLISI - REMARK) :</th>
-                                    <th class="align-top">BIAYA KONTAINER (NOMOR KONTAINER - BIAYA STUFFING - BIAYA TRUCKING - ONGKOS SUPIR - THC) :</th>
-
-                                    <th>Aksi</th>
+                                    
+                                 
                                 </tr>
                             </thead>
 
@@ -41,6 +40,20 @@
                                     <tr>
                                         <td>
                                             {{ $loop->iteration }}
+                                        </td>
+                                        <td class="text-center text-nowrap">
+                                            <a href="/invoice-discharge-create/{{ $planload->slug }}"
+                                                class="btn btn-primary btn-sm">Buat Invoice <i
+                                                    class="fa fa-pencil"></i>
+    
+                                            </a>
+    
+                                        </td>
+
+                                        <td>{{ \Carbon\Carbon::parse($planload->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
+                                        </td>
+                                        <td>
+                                            {{$planload->nomor_do}}
                                         </td>
                                         <td>
                                             {{$planload->vessel}}
@@ -55,94 +68,20 @@
                                             {{$planload->pengirim}}
                                         </td>
                                         <td>
+                                            {{$planload->penerima}}
+                                        </td>
+                                        <td>
                                             {{$planload->activity}}
                                         </td>
                                         <td>
                                             {{$planload->pol}}
                                         </td>
-                                        <td>
-                                            {{$planload->pot}}
-                                        </td>
+                                      
                                         <td>
                                             {{$planload->pod}}
                                         </td>
 
-                                        <td align="top" valign="top">
-                                            <ol type="1">
-                                                @foreach ($containers_group as $container)
-                                                    @if ($planload->id == $container->job_id)
-                                                        <li>
-                                                            ({{ $container->jumlah_kontainer }}) x {{ $container->size }} - {{$container->type}} - {{ $container->cargo }}
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-
-                                        </td>
-                                        <td align="top" valign="top">
-                                            <ol type="1">
-                                                @foreach ($containers as $container)
-                                                    @if ($planload->id == $container->job_id && $container->seal != null)
-                                                        <li>
-                                                            {{ $container->size }} - {{$container->type}} - {{ $container->cargo }} - @if ($container->seal != null) {{$container->seal}} @else ? @endif
-                                                            - @if ($container->date_activity != null) {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }} @else ? @endif
-                                                            - @if ($container->nomor_kontainer != null) {{$container->nomor_kontainer}} @else ? @endif
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ol>
-
-                                        </td>
-                                        <td align="top" valign="top">
-                                            @if ($planload->status == 'Process-Load')
-                                                <ol start="1">
-                                                    @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id && $container->driver !=null)
-                                                            <li>
-                                                                {{ $container->nomor_kontainer }} - {{$container->driver}} - {{$container->nomor_polisi}} - {{$container->remark}}
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-
-                                                </ol>
-                                            @else
-                                                -
-                                            @endif
-
-
-                                        </td>
-
-                                        <td align="top" valign="top">
-                                            @if ($planload->status == 'Process-Load')
-                                                <ol start="1">
-                                                    @foreach ($containers as $container)
-                                                        @if ($planload->id == $container->job_id && $container->ongkos_supir != null)
-                                                        <li>
-                                                            {{ $container->nomor_kontainer }} - @rupiah($container->biaya_stuffing) - @rupiah($container->biaya_trucking) - @rupiah($container->ongkos_supir) - @rupiah($container->biaya_thc)
-                                                        </li>
-                                                        @endif
-                                                    @endforeach
-
-                                                </ol>
-                                            @else
-                                                -
-                                            @endif
-
-
-                                        </td>
-
-
-
-                                        <td class="text-center text-nowrap">
-                                            <a href="/pdfinvoice-discharge/{{ $planload->slug }}"
-                                                class="btn btn-primary rounded-pill">Download INVOICE <i
-                                                    class="bi bi-download"></i>
-
-                                            </a>
-
-
-                                        </td>
-
+                                        
 
 
                                     </tr>

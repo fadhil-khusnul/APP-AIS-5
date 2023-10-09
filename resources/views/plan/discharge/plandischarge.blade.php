@@ -35,6 +35,7 @@
                     <thead class="align-top text-nowrap">
                         <tr>
                             <th>No</th>
+                            <th></th>
                             <th>Tanggal Tiba</th>
                             <th>Nomor DO</th>
                             <th>Vessel</th>
@@ -46,7 +47,6 @@
                             <th>POL</th>
                             <th>POD</th>
                             <th class="align-top">Jumlah Kontainer</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +54,18 @@
                         <tr>
                             <td>
                                 {{$loop->iteration}}
+                            </td>
+                            <td class="text-center text-nowrap">
+                                <a href="/plandischarge/{{$plandischarge->slug}}" class="btn btn-success btn-sm">Plan <i class="fa fa-pencil"></i></a>
+                                {{-- @if ($plandischarge->status == 'Plan-Discharge')
+
+                                @else
+                                <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
+
+                                @endif --}}
+
+                                {{-- <button onclick="deletePlanload(this)" value="{{$plandischarge->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
+                                class="fa fa-trash"></i></button> --}}
                             </td>
                             <td>
                                 {{ \Carbon\Carbon::parse($plandischarge->tanggal_tiba)->isoFormat('dddd, DD MMMM YYYY') }}
@@ -96,18 +108,7 @@
                             </td>
 
 
-                            <td class="text-center">
-                                <a href="/plandischarge/{{$plandischarge->slug}}" class="btn btn-label-info btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></a>
-                                {{-- @if ($plandischarge->status == 'Plan-Discharge')
-
-                                @else
-                                <button disabled @readonly(true) class="btn btn-label-secondary btn-icon btn-circle btn-sm"><i class="fa fa-pencil"></i></button>
-
-                                @endif --}}
-
-                                {{-- <button onclick="deletePlanload(this)" value="{{$plandischarge->slug}}" type="button" class="btn btn-label-danger btn-icon btn-circle btn-sm"><i
-                                class="fa fa-trash"></i></button> --}}
-                            </td>
+                           
 
                         </tr>
 

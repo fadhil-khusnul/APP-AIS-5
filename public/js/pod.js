@@ -1,13 +1,14 @@
 var realisasiload_create = $("#realisasiload_create").DataTable({
-    responsive:true,
-    pageLength : 5,
-    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    responsive: true,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
     fixedHeader: {
-        header:true,
+        header: true,
     },
     // scroller: true,
-
-
 });
 
 var tabel_si = $("#tabel_si").DataTable({
@@ -56,83 +57,110 @@ function biaya_do(e) {
         cancelButtonText: "Tidak",
     }).then((willCreate) => {
         if (willCreate.isConfirmed) {
-        $.ajax({
-            url: "/detail-kontainer/" + id + "/input",
-            type: "GET",
-            success: function (response) {
-                let new_id = id;
-                console.log(new_id);
-            $("#modal_biaya_do").modal("show");
+            $.ajax({
+                url: "/detail-kontainer/" + id + "/input",
+                type: "GET",
+                success: function (response) {
+                    let new_id = id;
+                    console.log(new_id);
+                    $("#modal_biaya_do").modal("show");
 
-            $("#id_container").val(response.result.id);
+                    $("#id_container").val(response.result.id);
+                    $("#nomor_kontainer").html(response.result.nomor_kontainer);
 
+                    $("#valid_pod").validate({
+                        highlight: function highlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).addClass("is-invalid");
+                            $(element).removeClass("is-valid");
+                        },
+                        unhighlight: function unhighlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).removeClass("is-invalid");
+                        },
+                        errorPlacement: function errorPlacement(
+                            error,
+                            element
+                        ) {
+                            error.addClass("invalid-feedback");
+                            element
+                                .closest(".validation-container")
+                                .append(error);
+                        },
+                        submitHandler: function (form) {
+                            document.getElementById(
+                                "loading-wrapper"
+                            ).style.cursor = "wait";
+                            document
+                                .getElementById("btnFinish1")
+                                .setAttribute("disabled", true);
 
+                            var csrf = $("#csrf").val();
+                            var id_container = $("#id_container").val();
+                            var thc_pod = $("#thc_pod")
+                                .val()
+                                .replace(/\./g, "");
+                            var lolo = $("#lolo").val().replace(/\./g, "");
+                            var dooring = $("#dooring")
+                                .val()
+                                .replace(/\./g, "");
+                            var demurrage = $("#demurrage")
+                                .val()
+                                .replace(/\./g, "");
+                            var input_total_biaya_lain = $(
+                                "#input_total_biaya_lain"
+                            )
+                                .val()
+                                .replace(/\./g, "");
 
+                            var keterangan_biaya = [];
 
-            $("#valid_pod").validate({
+                            console.log(urutan_keterangan);
 
+                            for (let i = 0; i < urutan_keterangan; i++) {
+                                keterangan_biaya[i] = document.getElementById(
+                                    "keterangan_biaya[" + (i + 1) + "]"
+                                ).value;
+                            }
+                            var data = {
+                                _token: csrf,
+                                id: id_container,
+                                thc_pod: thc_pod,
+                                lolo: lolo,
+                                dooring: dooring,
+                                demurrage: demurrage,
+                                input_total_biaya_lain: input_total_biaya_lain,
+                                keterangan_biaya: keterangan_biaya,
+                            };
 
-                highlight: function highlight(element, errorClass, validClass) {
-                    $(element).addClass("is-invalid");
-                    $(element).removeClass("is-valid");
-                },
-                unhighlight: function unhighlight(
-                    element,
-                    errorClass,
-                    validClass
-                ) {
-                    $(element).removeClass("is-invalid");
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    error.addClass("invalid-feedback");
-                    element.closest(".validation-container").append(error);
-                },
-                submitHandler: function (form) {
-                    document.getElementById('loading-wrapper').style.cursor = "wait";
-                    document.getElementById('btnFinish1').setAttribute('disabled', true);
+                            $.ajax({
+                                type: "POST",
+                                url: "/masukkan-biaya-pod",
+                                data: data,
 
-
-                    var csrf = $("#csrf").val();
-                    var id_container = $("#id_container").val();
-                    var thc_pod = $("#thc_pod").val().replace(/\./g, "");
-                    var lolo = $("#lolo").val().replace(/\./g, "");
-                    var dooring = $("#dooring").val().replace(/\./g, "");
-                    var demurrage = $("#demurrage").val().replace(/\./g, "");
-
-
-
-                    var data = {
-                        _token: csrf,
-                        id: id_container,
-                        thc_pod: thc_pod,
-                        lolo: lolo,
-                        dooring: dooring,
-                        demurrage: demurrage,
-                    };
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/masukkan-biaya-pod",
-                        data: data,
-
-                        success: function (response) {
-                            // console.log(response);
-                            toast
-                                .fire({
-                                    icon: "success",
-                                    title: "Biaya POD Dimasukkan",
-                                    timer: 2e3,
-                                })
-                                .then((result) => {
-                                    location.reload();
-                                });
+                                success: function (response) {
+                                    // console.log(response);
+                                    toast
+                                        .fire({
+                                            icon: "success",
+                                            title: "Biaya POD Dimasukkan",
+                                            timer: 2e3,
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                },
+                            });
                         },
                     });
                 },
             });
-
-            },
-        });
         } else {
             toast.fire({
                 title: "Nomor BL Tidak dimasukkan",
@@ -147,6 +175,7 @@ function biaya_do(e) {
 
     // }
 }
+
 
 function edit_biaya_do(e) {
     var id = e.value;
@@ -172,485 +201,379 @@ function edit_biaya_do(e) {
         },
     });
 
-
-        $.ajax({
-            url: "/detail-kontainer/" + id + "/input",
-            type: "GET",
-            success: function (response) {
-                let new_id = id;
-                console.log(new_id);
+    $.ajax({
+        url: "/detail-kontainer/" + id + "/input",
+        type: "GET",
+        success: function (response) {
+            console.log(response);
+            let new_id = id;
             $("#modal_biaya_do_edit").modal("show");
 
-            $("#id_container_edit").val(response.result.id);
-            $("#thc_pod_edit").val(response.result.thc_pod);
-            $("#lolo_edit").val(response.result.lolo);
-            $("#dooring_edit").val(response.result.dooring);
-            $("#demurrage_edit").val(response.result.demurrage);
+            document.getElementById("div_button_biaya").innerHTML = "";
+            document.getElementById("div_total_biaya_edit").innerHTML = "";
+            document.getElementById("div_keterangan_biaya_edit").innerHTML = "";
+            if(response.biayalain.length == 0) {    
+                $("#id_container_edit").val(response.result.id);
+                $("#nomor_kontainer_edit").html(response.result.nomor_kontainer);
+    
+                $("#thc_pod_edit").val(response.result.thc_pod);
+                $("#lolo_edit").val(response.result.lolo);
+                $("#dooring_edit").val(response.result.dooring);
+                $("#demurrage_edit").val(response.result.demurrage);
+                var button_biaya_lain = document.getElementById("div_button_biaya");
+                
+                var label1 = document.createElement("label");
+                label1.setAttribute("id", "label_biaya");
+                label1.setAttribute("name", "label_biaya");
+                label1.setAttribute("class", "col-sm-4 col-form-label");
+
+                var button1 = document.createElement("button");
+                button1.setAttribute("type", "button");
+                button1.setAttribute("id", "edit_button_biaya_lain");
+                button1.setAttribute("name", "edit_button_biaya_lain");
+                button1.setAttribute("value", 0);
+                button1.setAttribute("class", "btn btn-sm btn-label-success btn-sm text-nowrap");
+                button1.setAttribute("onclick", "edit_total_biaya_lain(this)");
+                button1.innerHTML = "Biaya Lain <i class='fa fa-plus'></i>";
+
+                label1.append(button1);
+                button_biaya_lain.appendChild(label1);
+                edit_urutan_keterangan = 1;
+
+                $("#valid_pod_edit").validate({
+                    highlight: function highlight(element, errorClass, validClass) {
+                        $(element).addClass("is-invalid");
+                        $(element).removeClass("is-valid");
+                    },
+                    unhighlight: function unhighlight(
+                        element,
+                        errorClass,
+                        validClass
+                    ) {
+                        $(element).removeClass("is-invalid");
+                    },
+                    errorPlacement: function errorPlacement(error, element) {
+                        error.addClass("invalid-feedback");
+                        element.closest(".validation-container").append(error);
+                    },
+                    submitHandler: function (form) {
+                        document.getElementById("loading-wrapper").style.cursor =
+                            "wait";
+                        document
+                            .getElementById("btnFinish2")
+                            .setAttribute("disabled", true);
+    
+                        var csrf = $("#csrf").val();
+                        var id_container = $("#id_container_edit").val();
+                        var thc_pod = $("#thc_pod_edit").val().replace(/\./g, "");
+                        var lolo = $("#lolo_edit").val().replace(/\./g, "");
+                        var dooring = $("#dooring_edit").val().replace(/\./g, "");
+                        var demurrage = $("#demurrage_edit")
+                            .val()
+                            .replace(/\./g, "");
+
+                        var input_total_biaya_lain = $("#input_total_biaya_lain_edit").val().replace(/\./g, "");
+
+
+                        var keterangan_biaya = [];
+
+                        console.log(edit_urutan_keterangan);
+
+
+                        for (let i = 0; i < edit_urutan_keterangan; i++) {
+                            keterangan_biaya[i] = document.getElementById(
+                                "keterangan_biaya[" + (i + 1) + "]"
+                            ).value;
+                        }
+    
+                        var data = {
+                            _token: csrf,
+                            id: id_container,
+                            thc_pod: thc_pod,
+                            lolo: lolo,
+                            dooring: dooring,
+                            demurrage: demurrage,
+                            input_total_biaya_lain: input_total_biaya_lain,
+                            keterangan_biaya: keterangan_biaya,
+                        };
+    
+                        $.ajax({
+                            type: "POST",
+                            url: "/masukkan-biaya-pod",
+                            data: data,
+    
+                            success: function (response) {
+                                // console.log(response);
+                                toast
+                                    .fire({
+                                        icon: "success",
+                                        title: "Biaya POD Dimasukkan",
+                                        timer: 2e3,
+                                    })
+                                    .then((result) => {
+                                        location.reload();
+                                    });
+                            },
+                        });
+                    },
+                });
+            } else {    
+                $("#id_container_edit").val(response.result.id);
+                $("#nomor_kontainer_edit").html(response.result.nomor_kontainer);
+    
+                $("#thc_pod_edit").val(response.result.thc_pod);
+                $("#lolo_edit").val(response.result.lolo);
+                $("#dooring_edit").val(response.result.dooring);
+                $("#demurrage_edit").val(response.result.demurrage);
+                var button_biaya_lain = document.getElementById("div_button_biaya");
+                
+                var label1 = document.createElement("label");
+                label1.setAttribute("id", "label_biaya");
+                label1.setAttribute("name", "label_biaya");
+                label1.setAttribute("class", "col-sm-4 col-form-label");
+
+                var button1 = document.createElement("button");
+                button1.setAttribute("type", "button");
+                button1.setAttribute("id", "edit_button_biaya_lain");
+                button1.setAttribute("name", "edit_button_biaya_lain");
+                button1.setAttribute("value", 1);
+                button1.setAttribute("class", "btn btn-sm btn-label-danger btn-sm text-nowrap");
+                button1.setAttribute("onclick", "edit_total_biaya_lain(this)");
+                button1.innerHTML = "Hapus Biaya Lain <i class='fa fa-minus'></i>";
+
+                label1.append(button1);
+                button_biaya_lain.appendChild(label1);
+
+                var div_total_biaya_lain = document.getElementById("div_total_biaya_edit");
+
+                var label2 = document.createElement("label");
+                label2.setAttribute("class", "col-sm-4 col-form-label");
+                label2.innerHTML = "Total Biaya Lain : ";
+
+                var div1 = document.createElement("div");
+                div1.setAttribute("class", "col-sm-8 validation-container");
+
+                var div2 = document.createElement("div");
+                div2.setAttribute("class", "input-group input-group-sm");
+
+                var span1 = document.createElement("span");
+                span1.setAttribute("class", "input-group-text");
+                span1.innerHTML = "Rp.";
+
+                var input1 = document.createElement("input");
+                input1.setAttribute("data-bs-toggle", "tooltip");
+                input1.setAttribute("type", "text");
+                input1.setAttribute("class", "form-control currency-rupiah");
+                input1.setAttribute("id", "input_total_biaya_lain_edit");
+                input1.setAttribute("name", "input_total_biaya_lain_edit");
+                input1.setAttribute("placeholder", "Total Biaya Lain...");
+                input1.setAttribute("value", response.result.total_biaya_lain_pod.toString());
+
+                div2.append(span1);
+                div2.append(input1);
+                div1.append(div2);
+
+                div_total_biaya_lain.appendChild(label2);
+                div_total_biaya_lain.appendChild(div1);
+
+                $("#input_total_biaya_lain_edit").inputmask({
+                    alias: "numeric",
+                    prefix: "",
+                    groupSeparator: ".",
+                    autoGroup: true,
+                    digits: 0,
+                    digitsOptional: false,
+                    placeholder: "0",
+                });
+
+                var div_keterangan_biaya_lain = document.getElementById("div_keterangan_biaya_edit");
+                edit_urutan_keterangan = response.biayalain.length;
+
+                for(var i = 0; i < response.biayalain.length; i++) {
+                    if(i == 0) {
+                        var div3 = document.createElement("div");
+                        div3.setAttribute("id", "body_biaya[" + ( i + 1 ) + "]");
+                        div3.setAttribute("class", "row row-cols");
+        
+                        var label3 = document.createElement("label");
+                        label3.setAttribute("id", "label_biaya");
+                        label3.setAttribute("name", "label_biaya");
+                        label3.setAttribute("class", "col-sm-4 col-form-label");
+        
+                        var a1 = document.createElement("a");
+                        a1.setAttribute("id", "tambah_keterangan");
+                        a1.setAttribute("name", "tambah_keterangan");
+                        a1.setAttribute("class", "btn btn-sm btn-label-success btn-sm text-nowrap");
+                        a1.setAttribute("onclick", "edit_tambah_keterangan()");
+                        a1.innerHTML = "Keterangan Biaya Lain <i class='fa fa-plus'></i>";
+        
+                        label3.append(a1);
+        
+                        var div4 = document.createElement("div");
+                        div4.setAttribute("id", "div_textarea_biaya");
+                        div4.setAttribute("name", "div_textarea_biaya");
+                        div4.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+        
+                        var textarea1 = document.createElement("textarea");
+                        textarea1.setAttribute("style", "margin-left: 10px");
+                        textarea1.setAttribute("data-bs-toggle", "tooltip");
+                        textarea1.setAttribute("class", "form-control");
+                        textarea1.setAttribute("id", "keterangan_biaya[" + (i + 1) + "]");
+                        textarea1.setAttribute("name", "keterangan_biaya[" + (i + 1) + "]");
+                        textarea1.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
+                        textarea1.setAttribute("required", true);
+                        textarea1.innerHTML = response.biayalain[i].keterangan;
+
+                        div4.append(textarea1);
+
+                        var div5 = document.createElement("div");
+                        div5.setAttribute("id", "div_button_biaya");
+                        div5.setAttribute("name", "div_button_biaya");
+                        div5.setAttribute("class", "col-sm-2 py-4");
+
+                        div3.append(label3);
+                        div3.append(div4);
+                        div3.append(div5);
+
+                        div_keterangan_biaya_lain.appendChild(div3);
+                    } else {
+                        var div6 = document.createElement("div");
+                        div6.setAttribute("id", "body_biaya[" + ( i + 1 ) + "]");
+                        div6.setAttribute("class", "row row-cols");
+
+                        var label4 = document.createElement("label");
+                        label4.setAttribute("id", "label_biaya");
+                        label4.setAttribute("name", "label_biaya");
+                        label4.setAttribute("class", "col-sm-4 col-form-label");
+
+                        var div7 = document.createElement("div");
+                        div7.setAttribute("id", "div_textarea_biaya");
+                        div7.setAttribute("name", "div_textarea_biaya");
+                        div7.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+        
+                        var textarea2 = document.createElement("textarea");
+                        textarea2.setAttribute("style", "margin-left: 10px");
+                        textarea2.setAttribute("data-bs-toggle", "tooltip");
+                        textarea2.setAttribute("class", "form-control");
+                        textarea2.setAttribute("id", "keterangan_biaya[" + (i + 1) + "]");
+                        textarea2.setAttribute("name", "keterangan_biaya[" + (i + 1) + "]");
+                        textarea2.setAttribute("placeholder", "ex. (Rp. 10.000 untuk kebutuhan kontainer)");
+                        textarea2.setAttribute("required", true);
+                        textarea2.innerHTML = response.biayalain[i].keterangan;
+
+                        div7.append(textarea2);
+
+                        var div8 = document.createElement("div");
+                        div8.setAttribute("id", "div_button_biaya");
+                        div8.setAttribute("name", "div_button_biaya");
+                        div8.setAttribute("class", "col-sm-2 py-4");
+
+                        var a2 = document.createElement("a");
+                        a2.setAttribute("style", "margin-left: 10px");
+                        a2.setAttribute("id", "hapus_biaya[" + (i + 1) + "]");
+                        a2.setAttribute("name", "hapus_biaya[" + (i + 1) + "]");
+                        a2.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+                        a2.setAttribute("onclick", "edit_hapus_biaya(this)");
+
+                        var i1 = document.createElement("i");
+                        i1.setAttribute("class", "fa fa-trash");
+
+                        a2.append(i1);
+                        div8.append(a2);
+
+                        div6.append(label4);
+                        div6.append(div7);
+                        div6.append(div8);
+
+                        div_keterangan_biaya_lain.appendChild(div6);
+                    }
+                }
 
 
 
+                $("#valid_pod_edit").validate({
+                    highlight: function highlight(element, errorClass, validClass) {
+                        $(element).addClass("is-invalid");
+                        $(element).removeClass("is-valid");
+                    },
+                    unhighlight: function unhighlight(
+                        element,
+                        errorClass,
+                        validClass
+                    ) {
+                        $(element).removeClass("is-invalid");
+                    },
+                    errorPlacement: function errorPlacement(error, element) {
+                        error.addClass("invalid-feedback");
+                        element.closest(".validation-container").append(error);
+                    },
+                    submitHandler: function (form) {
+                        document.getElementById("loading-wrapper").style.cursor =
+                            "wait";
+                        document
+                            .getElementById("btnFinish2")
+                            .setAttribute("disabled", true);
+    
+                        var csrf = $("#csrf").val();
+                        var id_container = $("#id_container_edit").val();
+                        var thc_pod = $("#thc_pod_edit").val().replace(/\./g, "");
+                        var lolo = $("#lolo_edit").val().replace(/\./g, "");
+                        var dooring = $("#dooring_edit").val().replace(/\./g, "");
+                        var demurrage = $("#demurrage_edit")
+                        .val()
+                        .replace(/\./g, "");
+                        var input_total_biaya_lain = $("#input_total_biaya_lain_edit").val().replace(/\./g, "");
 
-            $("#valid_pod_edit").validate({
+
+                        var keterangan_biaya = [];
+
+                        console.log(edit_urutan_keterangan);
 
 
-                highlight: function highlight(element, errorClass, validClass) {
-                    $(element).addClass("is-invalid");
-                    $(element).removeClass("is-valid");
-                },
-                unhighlight: function unhighlight(
-                    element,
-                    errorClass,
-                    validClass
-                ) {
-                    $(element).removeClass("is-invalid");
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    error.addClass("invalid-feedback");
-                    element.closest(".validation-container").append(error);
-                },
-                submitHandler: function (form) {
-                    document.getElementById('loading-wrapper').style.cursor = "wait";
-                    document.getElementById('btnFinish2').setAttribute('disabled', true);
-
-
-                    var csrf = $("#csrf").val();
-                    var id_container = $("#id_container_edit").val();
-                    var thc_pod = $("#thc_pod_edit").val().replace(/\./g, "");
-                    var lolo = $("#lolo_edit").val().replace(/\./g, "");
-                    var dooring = $("#dooring_edit").val().replace(/\./g, "");
-                    var demurrage = $("#demurrage_edit").val().replace(/\./g, "");
-
-
-
-                    var data = {
-                        _token: csrf,
-                        id: id_container,
-                        thc_pod: thc_pod,
-                        lolo: lolo,
-                        dooring: dooring,
-                        demurrage: demurrage,
-                    };
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/masukkan-biaya-pod",
-                        data: data,
-
-                        success: function (response) {
-                            // console.log(response);
-                            toast
-                                .fire({
-                                    icon: "success",
-                                    title: "Biaya POD Dimasukkan",
-                                    timer: 2e3,
-                                })
-                                .then((result) => {
-                                    location.reload();
-                                });
-                        },
-                    });
-                },
-            });
-
-            },
-        });
-
+                        for (let i = 0; i < edit_urutan_keterangan; i++) {
+                            keterangan_biaya[i] = document.getElementById(
+                                "keterangan_biaya[" + (i + 1) + "]"
+                            ).value;
+                        }
+                        var data = {
+                            _token: csrf,
+                            id: id_container,
+                            thc_pod: thc_pod,
+                            lolo: lolo,
+                            dooring: dooring,
+                            demurrage: demurrage,
+                            input_total_biaya_lain: input_total_biaya_lain,
+                            keterangan_biaya: keterangan_biaya,
+                        };
+    
+                        $.ajax({
+                            type: "POST",
+                            url: "/masukkan-biaya-pod",
+                            data: data,
+    
+                            success: function (response) {
+                                // console.log(response);
+                                toast
+                                    .fire({
+                                        icon: "success",
+                                        title: "Biaya POD Dimasukkan",
+                                        timer: 2e3,
+                                    })
+                                    .then((result) => {
+                                        location.reload();
+                                    });
+                            },
+                        });
+                    },
+                });
+            }
+        },
+    });
 
     // for (let i = 0; i < chek_container.length; i++) {
     //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
 
     // }
-}
-
-function detail_kontainer(e) {
-    let id = e.value;
-    console.log(id);
-    var swal = Swal.mixin({
-        customClass: {
-            confirmButton: "btn btn-success btn-wide mx-1",
-            denyButton: "btn btn-secondary btn-wide mx-1",
-            cancelButton: "btn btn-danger btn-wide mx-1",
-        },
-        buttonsStyling: false,
-    });
-
-    $.ajax({
-        url: "/detail-kontainer/" + id + "/input",
-        type: "GET",
-        success: function (response) {
-            let new_id = id;
-            console.log(new_id);
-
-            var seals = [""];
-            var spk = [""];
-            var supir = [""];
-
-            for (let i = 0; i < response.seal_containers.length; i++) {
-                seals[i] = response.seal_containers[i].seal_kontainer;
-            }
-            for (let i = 0; i < response.spks.length; i++) {
-                spk[i] = response.spks[i].spk_kontainer;
-            }
-            for (let i = 0; i < response.supirs.length; i++) {
-                supir +=
-                    "<option value='" +
-                    response.supirs[i].id +
-                    "'>" +
-                    response.supirs[i].nama_supir +
-                    "/" +
-                    response.supirs[i].nomor_polisi +
-                    "</option>";
-            }
-            console.log(seals);
-            $("#modal-job-update").modal("show");
-
-            $("#size_update").val(response.result.size);
-            $("#type_update").val(response.result.type);
-            $("#nomor_kontainer_update").val(response.result.nomor_kontainer);
-            $("#no_container_edit").val(response.result.nomor_kontainer);
-            $("#cargo_update").val(response.result.cargo);
-            $("#detail_barang_update").val(response.result.detail_barang);
-            $("#seal_old").val(seals);
-
-            $("#seal_update")
-                .val(seals)
-                .select2({
-                    dropdownAutoWidth: true,
-                    // tags: true,
-                    placeholder: "Silahkan Pilih",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal-job-update"),
-                })
-                .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
-                    let token = $("#csrf").val();
-
-                    $.ajax({
-                        url: "/getSealProcessLoad",
-                        type: "post",
-                        async: false,
-                        data: {
-                            _token: token,
-                        },
-                        success: function (response) {
-                            // console.log(seals);
-                            var seal = $("#seal_update").val();
-                            var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].seal_kontainer;
-                            }
-
-                            if (seals.includes(last_seal) == false) {
-                                if (seal_already.includes(last_seal)) {
-                                    swal.fire({
-                                        title: "Seal Kontainer Sudah Dipakai",
-                                        icon: "error",
-                                        timer: 10e3,
-                                        async: false,
-                                        showConfirmButton: true,
-                                    }).then(() => {
-                                        var wanted_option = $(
-                                            '#seal_update option[value="' +
-                                                last_seal +
-                                                '"]'
-                                        );
-                                        console.log(wanted_option);
-
-                                        wanted_option.prop("selected", false);
-                                        // $(this).trigger("change.select2");
-                                        $("#seal_update").trigger(
-                                            "change.select2"
-                                        );
-                                    });
-                                }
-                            }
-                        },
-                    });
-                });
-            $("#spk_update")
-                .val(spk)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih",
-                    // allowClear:true,
-                    maximumSelectionLength: 4,
-                    dropdownParent: $("#modal-job-update"),
-                })
-                .on("select2:select", function (e) {
-                    var selected_element = $(e.currentTarget);
-                    var select_val = selected_element.val();
-                    // console.log(select_val);
-
-                    // console.log(seals);
-
-                    var element = e.params.data.element;
-                    var $element = $(element);
-
-                    $element.detach();
-                    $(this).append($element);
-                    $(this).trigger("change");
-
-                    let token = $("#csrf").val();
-
-                    $.ajax({
-                        url: "/getSpkProcessLoad",
-                        type: "post",
-                        async: false,
-                        data: {
-                            _token: token,
-                        },
-                        success: function (response) {
-                            // console.log(seals);
-                            var seal = $("#spk_update").val();
-                            var last_seal = seal[seal.length - 1];
-                            console.log(seal, last_seal);
-                            var count_seal = response.length;
-                            var seal_already = [];
-                            for (var i = 0; i < count_seal; i++) {
-                                seal_already[i] = response[i].spk_kontainer;
-                            }
-
-                            if (spk.includes(last_seal) == false) {
-                                if (seal_already.includes(last_seal)) {
-                                    swal.fire({
-                                        title: "SPK Kontainer Sudah Dipakai",
-                                        icon: "error",
-                                        timer: 10e3,
-                                        async: false,
-                                        showConfirmButton: true,
-                                    }).then(() => {
-                                        var wanted_option = $(
-                                            '#spk_update option[value="' +
-                                                last_seal +
-                                                '"]'
-                                        );
-                                        console.log(wanted_option);
-
-                                        wanted_option.prop("selected", false);
-                                        // $(this).trigger("change.select2");
-                                        $("#spk_update").trigger(
-                                            "change.select2"
-                                        );
-                                    });
-                                }
-                            }
-                        },
-                    });
-                });
-
-            var old_tanggal_result = moment(
-                response.result.date_activity,
-                "YYYY-MM-DD"
-            ).format("dddd, DD-MM-YYYY");
-            $("#date_activity_update").val(old_tanggal_result);
-            $("#lokasi_update")
-                .val(response.result.lokasi_depo)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                });
-            $("#pengirim_update")
-                .val(response.result.pengirim)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih Pengirim",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                });
-            $("#penerima_update")
-                .val(response.result.penerima)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih penerima",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                });
-
-            $("#new_id_update").val(response.result.id);
-            $("#nomor_polisi_update")
-                .html(supir)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih Supir",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                });
-            $("#driver_update")
-                .val(response.result.driver)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih Vendor",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                })
-                .change(function () {
-                    let vendor_id = $(this).val();
-                    let token = $("#csrf").val();
-                    $.ajax({
-                        url: "/getVendor",
-                        type: "POST",
-                        data: {
-                            vendor_id: vendor_id,
-                            _token: token,
-                        },
-                        success: function (result) {
-                            $("#nomor_polisi_update")
-                                .select2({
-                                    dropdownAutoWidth: true,
-                                    placeholder: "Silahkan Pilih Supir",
-                                    allowClear: true,
-                                    dropdownParent: $("#modal-job-update"),
-                                })
-                                .html(result);
-                        },
-                    });
-                });
-            $("#remark_update").val(response.result.remark);
-            $("#biaya_stuffing_update").val(response.result.biaya_stuffing);
-            $("#biaya_trucking_update").val(response.result.biaya_trucking);
-            $("#biaya_thc_update").val(response.result.biaya_thc);
-            $("#ongkos_supir_update").val(response.result.ongkos_supir);
-            $("#biaya_seal_update").val(response.result.biaya_seal);
-            $("#freight_update").val(response.result.freight);
-            $("#lss_update").val(response.result.lss);
-            $("#jenis_mobil_update").val(response.result.jenis_mobil);
-            $("#dana_update")
-                .val(response.result.dana)
-                .select2({
-                    dropdownAutoWidth: true,
-                    placeholder: "Silahkan Pilih Deposit Trucking",
-                    allowClear: true,
-                    dropdownParent: $("#modal-job-update"),
-                });
-
-            $("#valid_job_update").validate({
-                ignore: "select[type=hidden]",
-
-                rules: {
-                    size: {
-                        required: true,
-                    },
-                },
-                messages: {
-                    size: {
-                        required: "Silakan Pilih Size",
-                    },
-                },
-                highlight: function highlight(element, errorClass, validClass) {
-                    $(element).addClass("is-invalid");
-                    $(element).removeClass("is-valid");
-                },
-                unhighlight: function unhighlight(
-                    element,
-                    errorClass,
-                    validClass
-                ) {
-                    $(element).removeClass("is-invalid");
-                    $(element).addClass("is-valid");
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    error.addClass("invalid-feedback");
-                    element.closest(".validation-container").append(error);
-                },
-
-                // console.log();
-                submitHandler: function (form) {
-                    var new_id = document.getElementById("new_id_update").value;
-                    console.log(new_id);
-                    console.log(id);
-                    var token = $("#csrf").val();
-
-                    let date_activity = document.getElementById(
-                        "date_activity_update"
-                    ).value;
-                    var tempDate;
-                    var formattedDate;
-
-                    tempDate = new Date(date_activity);
-                    console.log(tempDate);
-                    formattedDate = [
-                        tempDate.getFullYear(),
-                        tempDate.getMonth() + 1,
-                        tempDate.getDate(),
-                    ].join("-");
-
-                    $.ajax({
-                        url: "/detail-kontainer-edit/" + new_id,
-                        type: "PUT",
-                        data: {
-                            _token: token,
-                            job_id: $("#job_id").val(),
-                            size: $("#size_update").val(),
-                            type: $("#type_update").val(),
-                            nomor_kontainer: $("#nomor_kontainer_update").val(),
-                            cargo: $("#cargo_update").val(),
-                            detail_barang: $("#detail_barang_update").val(),
-                            seal: $("#seal_update").val(),
-                            seal_old: seals,
-                            spk_old: spk,
-                            date_activity: formattedDate,
-                            lokasi: $("#lokasi_update").val(),
-                            penerima: $("#penerima_update").val(),
-                            pengirim: $("#pengirim_update").val(),
-                            driver: $("#driver_update").val(),
-                            nomor_polisi: $("#nomor_polisi_update").val(),
-                            remark: $("#remark_update").val(),
-                            biaya_stuffing: $("#biaya_stuffing_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            biaya_trucking: $("#biaya_trucking_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            ongkos_supir: $("#ongkos_supir_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            biaya_thc: $("#biaya_thc_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            biaya_seal: $("#biaya_seal_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            freight: $("#freight_update")
-                                .val()
-                                .replace(/\./g, ""),
-                            lss: $("#lss_update").val().replace(/\./g, ""),
-                            jenis_mobil: $("#jenis_mobil_update").val(),
-                            dana: $("#dana_update").val(),
-                            spk: $("#spk_update").val(),
-                        },
-                        success: function (response) {
-                            swal.fire({
-                                icon: "success",
-                                title: "Detail Kontainer Berhasil DIUPDATE",
-                                showConfirmButton: false,
-                                timer: 2e3,
-                            }).then((result) => {
-                                location.reload();
-                            });
-                        },
-                    });
-                },
-            });
-        },
-    });
 }
 
 function input_biaya_do(e) {
@@ -682,15 +605,18 @@ function input_biaya_do(e) {
         type: "GET",
         success: function (response) {
             swal.fire({
-                title: " Masukkkan DO FEE untuk Nomor BL ini "+response.result.nomor_bl+" ?",
+                title:
+                    " Masukkkan DO FEE untuk Nomor BL ini " +
+                    response.result.nomor_bl +
+                    " ?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Iya",
                 cancelButtonText: "Tidak",
             }).then((willCreate) => {
                 if (willCreate.isConfirmed) {
-                        let new_id = id;
-                        console.log(new_id);
+                    let new_id = id;
+                    console.log(new_id);
                     $("#modal_do_fee_si").modal("show");
 
                     $("#id_si").val(response.result.id);
@@ -701,13 +627,12 @@ function input_biaya_do(e) {
                     // ).format("dddd, DD-MM-YYYY");
                     // $("#tanggal_do_pod").val(old_tanggal_result);
 
-
-
-
                     $("#valid_do_fee").validate({
-
-
-                        highlight: function highlight(element, errorClass, validClass) {
+                        highlight: function highlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
                             $(element).addClass("is-invalid");
                             $(element).removeClass("is-valid");
                         },
@@ -718,30 +643,41 @@ function input_biaya_do(e) {
                         ) {
                             $(element).removeClass("is-invalid");
                         },
-                        errorPlacement: function errorPlacement(error, element) {
+                        errorPlacement: function errorPlacement(
+                            error,
+                            element
+                        ) {
                             error.addClass("invalid-feedback");
-                            element.closest(".validation-container").append(error);
+                            element
+                                .closest(".validation-container")
+                                .append(error);
                         },
                         submitHandler: function (form) {
-                            document.getElementById('loading-wrapper').style.cursor = "wait";
-                            document.getElementById('btnFinish3').setAttribute('disabled', true);
-
+                            document.getElementById(
+                                "loading-wrapper"
+                            ).style.cursor = "wait";
+                            document
+                                .getElementById("btnFinish3")
+                                .setAttribute("disabled", true);
 
                             var csrf = $("#csrf").val();
                             var id_si = $("#id_si").val();
-                            var biaya_do_pod = $("#biaya_do_pod").val().replace(/\./g, "");
+                            var biaya_do_pod = $("#biaya_do_pod")
+                                .val()
+                                .replace(/\./g, "");
                             var tanggal_do_pod = $("#tanggal_do_pod").val();
 
-                            tanggal_do_pod = moment(tanggal_do_pod, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                            tanggal_do_pod = moment(
+                                tanggal_do_pod,
+                                "dddd, DD-MMMM-YYYY"
+                            ).format("YYYY-MM-DD");
 
-                        tempDate = new Date(tanggal_do_pod);
-                        formattedDate = [
-                            tempDate.getFullYear(),
-                            tempDate.getMonth() + 1,
-                            tempDate.getDate(),
-                        ].join("-");
-
-
+                            tempDate = new Date(tanggal_do_pod);
+                            formattedDate = [
+                                tempDate.getFullYear(),
+                                tempDate.getMonth() + 1,
+                                tempDate.getDate(),
+                            ].join("-");
 
                             var data = {
                                 _token: csrf,
@@ -770,19 +706,15 @@ function input_biaya_do(e) {
                             });
                         },
                     });
-
-                }
-
-                else {
+                } else {
                     toast.fire({
                         title: "DO FEE Tidak dimasukkan",
                         icon: "error",
                         timer: 2e3,
                     });
                 }
-
             });
-        }
+        },
     });
 
     // for (let i = 0; i < chek_container.length; i++) {
@@ -818,7 +750,6 @@ function do_fee_edit(e) {
         url: "/detail-pdf/" + id + "/input",
         type: "GET",
         success: function (response) {
-
             let new_id = id;
             console.log(new_id);
             $("#modal_do_fee_si_edit").modal("show");
@@ -832,8 +763,6 @@ function do_fee_edit(e) {
             $("#tanggal_do_pod_edit").val(old_tanggal_result);
 
             $("#valid_do_fee_edit").validate({
-
-
                 highlight: function highlight(element, errorClass, validClass) {
                     $(element).addClass("is-invalid");
                     $(element).removeClass("is-valid");
@@ -850,17 +779,23 @@ function do_fee_edit(e) {
                     element.closest(".validation-container").append(error);
                 },
                 submitHandler: function (form) {
-
-                    document.getElementById('loading-wrapper').style.cursor = "wait";
-                    document.getElementById('btnFinish4').setAttribute('disabled', true);
-
+                    document.getElementById("loading-wrapper").style.cursor =
+                        "wait";
+                    document
+                        .getElementById("btnFinish4")
+                        .setAttribute("disabled", true);
 
                     var csrf = $("#csrf").val();
                     var id_si_edit = $("#id_si_edit").val();
-                    var biaya_do_pod = $("#biaya_do_pod_edit").val().replace(/\./g, "");
+                    var biaya_do_pod = $("#biaya_do_pod_edit")
+                        .val()
+                        .replace(/\./g, "");
                     var tanggal_do_pod = $("#tanggal_do_pod_edit").val();
 
-                    tanggal_do_pod = moment(tanggal_do_pod, "dddd, DD-MMMM-YYYY").format("YYYY-MM-DD")
+                    tanggal_do_pod = moment(
+                        tanggal_do_pod,
+                        "dddd, DD-MMMM-YYYY"
+                    ).format("YYYY-MM-DD");
 
                     tempDate = new Date(tanggal_do_pod);
                     formattedDate = [
@@ -868,8 +803,6 @@ function do_fee_edit(e) {
                         tempDate.getMonth() + 1,
                         tempDate.getDate(),
                     ].join("-");
-
-
 
                     var data = {
                         _token: csrf,
@@ -898,9 +831,7 @@ function do_fee_edit(e) {
                     });
                 },
             });
-
-
-        }
+        },
     });
 
     // for (let i = 0; i < chek_container.length; i++) {
@@ -908,7 +839,6 @@ function do_fee_edit(e) {
 
     // }
 }
-
 
 function delete_SI(r) {
     var deleteid = r.value;
@@ -960,4 +890,426 @@ function delete_SI(r) {
             });
         }
     });
+}
+
+var urutan_keterangan = 1;
+
+function total_biaya_lain(e) {
+    var value = e.value;
+    console.log(value);
+
+    var div_total_biaya = document.getElementById("div_total_biaya");
+    var div_keterangan_biaya = document.getElementById("div_keterangan_biaya");
+
+    if (value == 0) {
+        var label1 = document.createElement("label");
+        label1.setAttribute("class", "col-sm-4 col-form-label");
+        label1.innerHTML = "Total Biaya Lain : ";
+
+        var div1 = document.createElement("div");
+        div1.setAttribute("class", "col-sm-8 validation-container");
+
+        var div2 = document.createElement("div");
+        div2.setAttribute("class", "input-group input-group-sm");
+
+        var span1 = document.createElement("span");
+        span1.setAttribute("class", "input-group-text");
+        span1.innerHTML = "Rp.";
+
+        var input1 = document.createElement("input");
+        input1.setAttribute("data-bs-toggle", "tooltip");
+        input1.setAttribute("type", "text");
+        input1.setAttribute("class", "form-control currency-rupiah");
+        input1.setAttribute("id", "input_total_biaya_lain");
+        input1.setAttribute("name", "input_total_biaya_lain");
+        input1.setAttribute("required", true);
+        input1.setAttribute("placeholder", "Total Biaya Lain...");
+
+        div2.append(span1);
+        div2.append(input1);
+        div1.append(div2);
+
+        div_total_biaya.appendChild(label1);
+        div_total_biaya.appendChild(div1);
+
+        var div3 = document.createElement("div");
+        div3.setAttribute("id", "body_biaya[1]");
+        div3.setAttribute("class", "row row-cols");
+
+        var label2 = document.createElement("label");
+        label2.setAttribute("id", "label_biaya");
+        label2.setAttribute("name", "label_biaya");
+        label2.setAttribute("class", "col-sm-4 col-form-label");
+
+        var a1 = document.createElement("a");
+        // a1.setAttribute("type", "button");
+        a1.setAttribute("id", "tambah_keterangan");
+        a1.setAttribute("name", "tambah_keterangan");
+        a1.setAttribute(
+            "class",
+            "btn btn-sm btn-label-success btn-sm text-nowrap"
+        );
+        a1.setAttribute("onclick", "tambah_keterangan()");
+        a1.innerHTML = "Keterangan Biaya Lain <i class='fa fa-plus'></i>";
+
+        label2.append(a1);
+
+        var div4 = document.createElement("div");
+        div4.setAttribute("id", "div_textarea_biaya");
+        div4.setAttribute("name", "div_textarea_biaya");
+        div4.setAttribute(
+            "class",
+            "col-sm-6 validation-container d-grid gap-3"
+        );
+
+        var textarea1 = document.createElement("textarea");
+        textarea1.setAttribute("style", "margin-left: 10px");
+        textarea1.setAttribute("data-bs-toggle", "tooltip");
+        textarea1.setAttribute("class", "form-control");
+        textarea1.setAttribute("id", "keterangan_biaya[1]");
+        textarea1.setAttribute("name", "keterangan_biaya[1]");
+        textarea1.setAttribute(
+            "placeholder",
+            "ex. (Rp.10.000 untuk kebutuhan kontainer)"
+        );
+        textarea1.setAttribute("required", true);
+
+        div4.append(textarea1);
+
+        div3.append(label2);
+        div3.append(div4);
+
+        div_keterangan_biaya.appendChild(div3);
+
+        $("#input_total_biaya_lain").inputmask({
+            alias: "numeric",
+            prefix: "",
+            groupSeparator: ".",
+            autoGroup: true,
+            digits: 0,
+            digitsOptional: false,
+            placeholder: "0",
+        });
+
+        document.getElementById("button_biaya_lain").value = 1;
+
+        document
+            .getElementById("button_biaya_lain")
+            .setAttribute(
+                "class",
+                "btn btn-sm btn-label-danger btn-sm text-nowrap"
+            );
+        document.getElementById("button_biaya_lain").innerHTML =
+            "Hapus Biaya Lain <i class='fa fa-minus'></i>";
+    } else {
+        div_total_biaya.innerHTML = "";
+        div_keterangan_biaya.innerHTML = "";
+
+        urutan_keterangan = 1;
+
+        document.getElementById("button_biaya_lain").value = 0;
+
+        document
+            .getElementById("button_biaya_lain")
+            .setAttribute(
+                "class",
+                "btn btn-sm btn-label-success btn-sm text-nowrap"
+            );
+        document.getElementById("button_biaya_lain").innerHTML =
+            "Biaya Lain <i class='fa fa-plus'></i>";
+    }
+}
+
+var edit_urutan_keterangan = 1;
+
+function edit_total_biaya_lain(e) {
+    var value = e.value;
+    console.log(value);
+
+    var div_total_biaya = document.getElementById("div_total_biaya_edit");
+    var div_keterangan_biaya = document.getElementById("div_keterangan_biaya_edit");
+
+    if (value == 0) {
+        var label1 = document.createElement("label");
+        label1.setAttribute("class", "col-sm-4 col-form-label");
+        label1.innerHTML = "Total Biaya Lain : ";
+
+        var div1 = document.createElement("div");
+        div1.setAttribute("class", "col-sm-8 validation-container");
+
+        var div2 = document.createElement("div");
+        div2.setAttribute("class", "input-group input-group-sm");
+
+        var span1 = document.createElement("span");
+        span1.setAttribute("class", "input-group-text");
+        span1.innerHTML = "Rp.";
+
+        var input1 = document.createElement("input");
+        input1.setAttribute("data-bs-toggle", "tooltip");
+        input1.setAttribute("type", "text");
+        input1.setAttribute("class", "form-control currency-rupiah");
+        input1.setAttribute("id", "input_total_biaya_lain_edit");
+        input1.setAttribute("name", "input_total_biaya_lain_edit");
+        input1.setAttribute("required", true);
+        input1.setAttribute("placeholder", "Total Biaya Lain...");
+
+        div2.append(span1);
+        div2.append(input1);
+        div1.append(div2);
+
+        div_total_biaya.appendChild(label1);
+        div_total_biaya.appendChild(div1);
+
+        var div3 = document.createElement("div");
+        div3.setAttribute("id", "body_biaya[1]");
+        div3.setAttribute("class", "row row-cols");
+
+        var label2 = document.createElement("label");
+        label2.setAttribute("id", "label_biaya");
+        label2.setAttribute("name", "label_biaya");
+        label2.setAttribute("class", "col-sm-4 col-form-label");
+
+        var a1 = document.createElement("a");
+        // a1.setAttribute("type", "button");
+        a1.setAttribute("id", "tambah_keterangan");
+        a1.setAttribute("name", "tambah_keterangan");
+        a1.setAttribute(
+            "class",
+            "btn btn-sm btn-label-success btn-sm text-nowrap"
+        );
+        a1.setAttribute("onclick", "edit_tambah_keterangan()");
+        a1.innerHTML = "Keterangan Biaya Lain <i class='fa fa-plus'></i>";
+
+        label2.append(a1);
+
+        var div4 = document.createElement("div");
+        div4.setAttribute("id", "div_textarea_biaya");
+        div4.setAttribute("name", "div_textarea_biaya");
+        div4.setAttribute(
+            "class",
+            "col-sm-6 validation-container d-grid gap-3"
+        );
+
+        var textarea1 = document.createElement("textarea");
+        textarea1.setAttribute("style", "margin-left: 10px");
+        textarea1.setAttribute("data-bs-toggle", "tooltip");
+        textarea1.setAttribute("class", "form-control");
+        textarea1.setAttribute("id", "keterangan_biaya[1]");
+        textarea1.setAttribute("name", "keterangan_biaya[1]");
+        textarea1.setAttribute(
+            "placeholder",
+            "ex. (Rp. 10.000 untuk kebutuhan kontainer)"
+        );
+        textarea1.setAttribute("required", true);
+
+        div4.append(textarea1);
+
+        div3.append(label2);
+        div3.append(div4);
+
+        div_keterangan_biaya.appendChild(div3);
+
+        $("#input_total_biaya_lain_edit").inputmask({
+            alias: "numeric",
+            prefix: "",
+            groupSeparator: ".",
+            autoGroup: true,
+            digits: 0,
+            digitsOptional: false,
+            placeholder: "0",
+        });
+
+        document.getElementById("edit_button_biaya_lain").value = 1;
+
+        document
+            .getElementById("edit_button_biaya_lain")
+            .setAttribute(
+                "class",
+                "btn btn-sm btn-label-danger btn-sm text-nowrap"
+            );
+        document.getElementById("edit_button_biaya_lain").innerHTML =
+            "Hapus Biaya Lain <i class='fa fa-minus'></i>";
+    } else {
+        div_total_biaya.innerHTML = "";
+        div_keterangan_biaya.innerHTML = "";
+
+        edit_urutan_keterangan = 1;
+
+        document.getElementById("edit_button_biaya_lain").value = 0;
+
+        document
+            .getElementById("edit_button_biaya_lain")
+            .setAttribute(
+                "class",
+                "btn btn-sm btn-label-success btn-sm text-nowrap"
+            );
+        document.getElementById("edit_button_biaya_lain").innerHTML =
+            "Biaya Lain <i class='fa fa-plus'></i>";
+    }
+}
+
+function tambah_keterangan() {
+    urutan_keterangan++;
+
+    var div1 = document.getElementById("div_keterangan_biaya");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("id", "body_biaya[" + urutan_keterangan + "]");
+    div2.setAttribute("class", "row row-cols");
+
+    var label1 = document.createElement("label");
+    label1.setAttribute("id", "label_biaya");
+    label1.setAttribute("name", "label_biaya");
+    label1.setAttribute("class", "col-sm-4 col-form-label");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("id", "div_textarea_biaya");
+    div3.setAttribute("name", "div_textarea_biaya");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+
+    var textarea1 = document.createElement("textarea");
+    textarea1.setAttribute("style", "margin-left: 10px; margin-top:10px;");
+    textarea1.setAttribute("data-bs-toggle", "tooltip");
+    textarea1.setAttribute("class", "form-control");
+    textarea1.setAttribute("id", "keterangan_biaya[" + urutan_keterangan + "]");
+    textarea1.setAttribute(
+        "name",
+        "keterangan_biaya[" + urutan_keterangan + "]"
+    );
+    textarea1.setAttribute(
+        "placeholder",
+        "ex. (Rp. 10.000 untuk kebutuhan kontainer)"
+    );
+    textarea1.setAttribute("required", true);
+
+    div3.append(textarea1);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("id", "div_button_biaya");
+    div4.setAttribute("name", "div_button_biaya");
+    div4.setAttribute("class", "col-sm-2 py-4");
+
+    var a1 = document.createElement("a");
+    a1.setAttribute("style", "margin-left: 10px");
+    a1.setAttribute("id", "hapus_biaya[" + urutan_keterangan + "]");
+    a1.setAttribute("name", "hapus_biaya[" + urutan_keterangan + "]");
+    a1.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    a1.setAttribute("onclick", "button_hapus_biaya(this)");
+
+    var icon1 = document.createElement("i");
+    icon1.setAttribute("class", "fa fa-trash");
+
+    a1.append(icon1);
+    div4.append(a1);
+
+    div2.append(label1);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+}
+
+function edit_tambah_keterangan() {
+    edit_urutan_keterangan++
+
+    var div1 = document.getElementById("div_keterangan_biaya_edit");
+
+    var div2 = document.createElement("div");
+    div2.setAttribute("id", "body_biaya[" + edit_urutan_keterangan + "]");
+    div2.setAttribute("class", "row row-cols");
+
+    var label1 = document.createElement("label");
+    label1.setAttribute("id", "label_biaya");
+    label1.setAttribute("name", "label_biaya");
+    label1.setAttribute("class", "col-sm-4 col-form-label");
+
+    var div3 = document.createElement("div");
+    div3.setAttribute("id", "div_textarea_biaya");
+    div3.setAttribute("name", "div_textarea_biaya");
+    div3.setAttribute("class", "col-sm-6 validation-container d-grid gap-3");
+
+    var textarea1 = document.createElement("textarea");
+    textarea1.setAttribute("style", "margin-left: 10px; margin-top:10px;");
+    textarea1.setAttribute("data-bs-toggle", "tooltip");
+    textarea1.setAttribute("class", "form-control");
+    textarea1.setAttribute("id", "keterangan_biaya[" + edit_urutan_keterangan + "]");
+    textarea1.setAttribute(
+        "name",
+        "keterangan_biaya[" + edit_urutan_keterangan + "]"
+    );
+    textarea1.setAttribute(
+        "placeholder",
+        "ex. (Rp. 10.000 untuk kebutuhan kontainer)"
+    );
+    textarea1.setAttribute("required", true);
+
+    div3.append(textarea1);
+
+    var div4 = document.createElement("div");
+    div4.setAttribute("id", "div_button_biaya");
+    div4.setAttribute("name", "div_button_biaya");
+    div4.setAttribute("class", "col-sm-2 py-4");
+
+    var a1 = document.createElement("a");
+    a1.setAttribute("style", "margin-left: 10px");
+    a1.setAttribute("id", "hapus_biaya[" + edit_urutan_keterangan + "]");
+    a1.setAttribute("name", "hapus_biaya[" + edit_urutan_keterangan + "]");
+    a1.setAttribute("class", "btn btn-sm btn-label-danger btn-icon");
+    a1.setAttribute("onclick", "edit_hapus_biaya(this)");
+
+    var icon1 = document.createElement("i");
+    icon1.setAttribute("class", "fa fa-trash");
+
+    a1.append(icon1);
+    div4.append(a1);
+
+    div2.append(label1);
+    div2.append(div3);
+    div2.append(div4);
+
+    div1.appendChild(div2);
+}
+
+function button_hapus_biaya(e) {
+    var urutan_delete = e.parentNode.parentNode;
+    urutan_delete.remove();
+    urutan_keterangan--;
+
+    var div1 = document.querySelectorAll("#div_textarea_biaya textarea");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "keterangan_biaya[" + (i + 1) + "]";
+        div1[i].name = "keterangan_biaya[" + (i + 1) + "]";
+        div1[i].placeholder =
+            "ex. (Rp. 10.000 untuk kebutuhan kontainer)";
+    }
+
+    var div2 = document.querySelectorAll("#div_button_biaya a");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "hapus_biaya[" + (i + 1) + "]";
+        div2[i].name = "hapus_biaya[" + (i + 1) + "]";
+    }
+}
+
+function edit_hapus_biaya(e) {
+    var urutan_delete = e.parentNode.parentNode;
+    urutan_delete.remove();
+    edit_urutan_keterangan--;
+
+    var div1 = document.querySelectorAll("#div_textarea_biaya textarea");
+
+    for (var i = 0; i < div1.length; i++) {
+        div1[i].id = "keterangan_biaya[" + (i + 1) + "]";
+        div1[i].name = "keterangan_biaya[" + (i + 1) + "]";
+        div1[i].placeholder =
+            "ex. (Rp. 10.000 untuk kebutuhan kontainer)";
+    }
+
+    var div2 = document.querySelectorAll("#div_button_biaya a");
+
+    for (var i = 0; i < div2.length; i++) {
+        div2[i].id = "hapus_biaya[" + (i + 1) + "]";
+        div2[i].name = "hapus_biaya[" + (i + 1) + "]";
+    }
 }

@@ -105,18 +105,7 @@
                                     <td>:</td>
                                     <td>{{ $plandischarge->pol }}</td>
                                 </tr>
-                                <tr>
-                                    <td>POT (Port of Transit)</td>
-                                    <td>:</td>
-                                    <td>
-                                        @if ($plandischarge->pot == null)
-                                        -
-                                        @else
-                                            
-                                        {{ $plandischarge->pot }}
-                                        @endif
-                                    </td>
-                                </tr>
+                                
                                 <tr>
                                     <td>POD (Port of Discharge)</td>
                                     <td>:</td>
@@ -163,7 +152,7 @@
                             <label for="" class="col-auto col-form-label">Filter Tabel :</label>
 
 
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <select multiple aria-placeholder="Pilih Size" id="pilih_size_in" name="pilih_size_in"
                                     class="form-select" onchange="fun_pilih_size_in(this)">
                                     <label for="">Pilih Size</label>
@@ -174,7 +163,7 @@
                                 </select>
 
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <select multiple id="pilih_type_in" name="pilih_type_in" class="form-select"
                                     onchange="fun_pilih_type_in(this)">
                                     @foreach ($types as $type)
@@ -210,12 +199,12 @@
                                             <td>
                                                 @if ($container->tanggal_mty != null)
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-primary btn-sm text-nowrap"
+                                                        class="btn btn-primary btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail(this)">Edit <i
                                                             class="fa fa-eye"></i></button>
                                                 @else
                                                     <button type="button" id="btn_detail" name="btn_detail"
-                                                        class="btn btn-label-success btn-sm text-nowrap"
+                                                        class="btn btn-success btn-sm text-nowrap"
                                                         value="{{ $container->id }}" onclick="detail(this)">Input
                                                         <i class="fa fa-pencil"></i></button>
                                                 @endif
@@ -274,6 +263,15 @@
 
                                 </tbody>
                             </table>
+
+                            <div class="text-center mt-3">
+
+                                <a href="/invoice-discharge-create/{{ $plandischarge->slug }}" class="btn btn-success ">
+                                    Invoice <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+
                         </div>
                         <!-- END Form -->
                     </div>
@@ -520,18 +518,14 @@
 
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">INPUT KONTAINER</h5>
+                        <h5 class="modal-title">INPUT KONTAINER</h5> <h5 class="modal-title" id="nomor_kontainer"></h5>
                         <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="modal-body d-grid gap-3 px-5">
                         <table>
-                            <tr>
-                                <td width="35%">Nomor Kontainer</td>
-                                <td width="5%">:</td>
-                                <td width="60%" id="nomor_kontainer"></td>
-                            </tr>
+                           
                             <tr>
                                 <td width="35%">Size/Type</td>
                                 <td width="5%">:</td>

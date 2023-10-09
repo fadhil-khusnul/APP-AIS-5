@@ -95,7 +95,7 @@
                     <th>PENGIRIM</th>
                     <th>POD</th>
                     <th>KONTAINER</th>
-                    <th>SIZE</th>
+                    <th>SIZE/TYPE</th>
                     <th>KONDISI</th>
                     <th>KETERANGAN</th>
                     <th>UNIT PRICE</th>
@@ -110,7 +110,7 @@
                         <td>{{$container['pengirim']}}</td>
                         <td>{{$container['pod_alih'][($loop->iteration - 1)][0]->pod_alih}}</td>
                         <td>{{$container['nomor_kontainer']}}</td>
-                        <td>{{$container['size']}}</td>
+                        <td>{{$container['size']}}/{{$container['type']}}</td>
                         <td>{{$container['kondisi_invoice']}}</td>
                         <td>{{$container['keterangan_invoice']}}</td>
                         <td align="right">@rupiah($container['price_invoice'])</td>
@@ -123,7 +123,7 @@
                     <td>{{$container['pengirim']}}</td>
                     <td>{{$container['pod_container']}}</td>
                     <td>{{$container['nomor_kontainer']}}</td>
-                    <td>{{$container['size']}}</td>
+                    <td>{{$container['size']}}/{{$container['type']}}</td>
                     <td>{{$container['kondisi_invoice']}}</td>
                     <td>{{$container['keterangan_invoice']}}</td>
                     <td align="right">@rupiah($container['price_invoice'])</td>
