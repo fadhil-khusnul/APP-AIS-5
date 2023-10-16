@@ -19,7 +19,6 @@
     <main>
         <h3 class="judul">COST DETAIL REPORT</h3>
 
-        @foreach ($loads as $load)
             <table width="100%">
                 <tr valign="top">
                     <td width="">
@@ -107,6 +106,7 @@
                         <th>NO</th>
                         <th>CONTAINER</th>
                         <th>CARGO</th>
+                        <th>SIZE/TYPE</th>
                         <th>SEAL</th>
                         <th>ONGKOS SUPIR</th>
                         <th>BIAYA TRUCKING</th>
@@ -126,16 +126,19 @@
                 </thead>
 
 
-                <tbody border="1">
+                <tbody>
                     @foreach ($containers as $container)
                         <tr valign="top">
                             <td>{{ $loop->iteration }}</td>
                             @if ($container->status == 'Alih-Kapal')
                                 <td>{{ $container->nomor_kontainer }} (Alih-Kapal)</td>
+                            @elseif ($container->status == "Batal-Muat")
+                                <td>{{ $container->nomor_kontainer }} (Batal Muat)</td>
                             @else
                                 <td>{{ $container->nomor_kontainer }}</td>
                             @endif
-                            <td>{{ $container->cargo }}/{{ $container->type }}</td>
+                            <td>{{ $container->cargo }}</td>
+                            <td>{{ $container->size }}/{{ $container->type }}</td>
                             <td align="center" valign="top">
                                 @foreach ($seals as $seal)
                                     @foreach ($seal as $seal_2)
@@ -170,7 +173,7 @@
                             <td class="harga">@rupiah2($container->lolo)</td>
                             <td class="harga">@rupiah2($container->dooring)</td>
                             <td class="harga">@rupiah2($container->demurrage)</td>
-                            <td class="harga">@rupiah2($container->total_biaya_lain)</td>
+                            <td class="harga">@rupiah2($container->total_biaya_lain + $container->total_biaya_lain_pod)</td>
 
                         </tr>
                     @endforeach
@@ -180,7 +183,7 @@
 
                 <tfoot>
                     <tr>
-                        <td colspan="4" align="right">SUB TOTAL :</td>
+                        <td colspan="5" align="right">SUB TOTAL :</td>
                         <td>@rupiah2($container->sum('ongkos_supir'))</td>
                         <td>@rupiah2($container->sum('biaya_trucking'))</td>
                         <td>@rupiah2($container->sum('biaya_thc'))</td>
@@ -194,18 +197,17 @@
                         <td>@rupiah2($container->sum('lolo'))</td>
                         <td>@rupiah2($container->sum('dooring'))</td>
                         <td>@rupiah2($container->sum('demurrage'))</td>
-                        <td>@rupiah2($container->sum('total_biaya_lain'))</td>
+                        <td>@rupiah2($container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod'))</td>
 
                     </tr>
                     <tr>
-                        <td colspan="18">TOTAL : @rupiah(($container->sum('ongkos_supir') + $container->sum('biaya_trucking') + $container->sum('biaya_thc') + $container->sum('biaya_stuffing') + $sum_alih + $container->sum('harga_batal') + $container->sum('biaya_seal') + $container->sum('freight') + $container->sum('lss') + $container->sum('thc_pod') + $container->sum('lolo') + $container->sum('dooring') + $container->sum('demurrage') + $container->sum('total_biaya_lain'))) </td>
+                        <td colspan="19">TOTAL : @rupiah(($container->sum('ongkos_supir') + $container->sum('biaya_trucking') + $container->sum('biaya_thc') + $container->sum('biaya_stuffing') + $sum_alih + $container->sum('harga_batal') + $container->sum('biaya_seal') + $container->sum('freight') + $container->sum('lss') + $container->sum('thc_pod') + $container->sum('lolo') + $container->sum('dooring') + $container->sum('demurrage') + $container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod'))) </td>
                     </tr>
 
                 </tfoot>
 
 
             </table>
-        @endforeach
 
 
     </main>

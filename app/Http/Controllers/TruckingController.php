@@ -31,7 +31,7 @@ class TruckingController extends Controller
     public function index()
     {
         //
-        $truckings = Trucking::orderBy('id', 'DESC')->where('status', 'Plan-Trucking')->get();
+        $truckings = Trucking::orderBy('id', 'DESC')->where('status', 'Plan')->get();
         $containers = TruckingContainer::all();
         $select_company =  Trucking::all()->unique('pelayaran');
         $vessel =  Trucking::all()->unique('vessel');
@@ -53,24 +53,27 @@ class TruckingController extends Controller
      */
     public function create()
     {
-        $activity = Stripping::all()
-        ;
+        $activity = Stripping::all();
         $shipping_company = ShippingCompany::all();
 
         $pengirim = Pengirim::all();
         $penerima = Penerima::all();
         $kontainer = Container::all();
+        $sizes = Container::all();
+        $types = TypeContainer::all();
 
-        return view('plan.trucking.trucking-plan-create',[
-            'title' => 'Buat Trucking-Plan',
-            'activity' => $activity,
+        return view('plan.trucking.plantrucking-create',[
+            'title' => 'Plan-Trucking',
+            'activities' => $activity,
             'active' => 'Trucking',
             'shippingcompany' => $shipping_company,
 
             'pengirim' => $pengirim,
             'penerima' => $penerima,
             'kontainer' => $kontainer,
-
+            'sizes' => $sizes,
+            'types' => $types,
+            
             ]);
     }
 
@@ -106,48 +109,53 @@ class TruckingController extends Controller
             'activity' => $request->activity,
             'emkl' => $request->emkl,
             'slug' => $slug,
-            'status' => "Plan-Trucking",
+            'status' => "Plan",
         ];
 
         Trucking::create($orderJob);
 
-        $id = Trucking::where('slug', $slug)->value('id');
+        // $id = Trucking::where('slug', $slug)->value('id');
 
-        $job_id = [];
+        // $job_id = [];
 
-        $tambah = $request->tambah;
+        // $tambah = $request->tambah;
 
-        $jumlah_kontainer = [];
-        $size = [];
-        $type = [];
-        $cargo = [];
+        // $jumlah_kontainer = [];
+        // $size = [];
+        // $type = [];
+        // $cargo = [];
 
-        for ($j = 0; $j < $tambah; $j++) {
-            $job_id[$j] = $id;
-            $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
-            $size[$j] = [];
-            $type[$j] = [];
-            $cargo[$j] = [];
-            // $tambah2[$j] = [];
-            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
+        // for ($j = 0; $j < $tambah; $j++) {
+        //     $job_id[$j] = $id;
+        //     $jumlah_kontainer[$j] = (int)$request->jumlah_kontainer[$j];
+        //     $size[$j] = [];
+        //     $type[$j] = [];
+        //     $cargo[$j] = [];
+        //     // $tambah2[$j] = [];
+        //     for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
 
-                $container = [
-                    'job_id' => $job_id[$j],
-                    'jumlah_kontainer' => $jumlah_kontainer[$j],
-                    'size' => $request->size[$j][$i],
-                    'type' => $request->type[$j][$i],
-                    'cargo' => $request->cargo[$j][$i],
-                ];
-                TruckingContainer::create($container);
-            }
-        }
+        //         $container = [
+        //             'job_id' => $job_id[$j],
+        //             'jumlah_kontainer' => $jumlah_kontainer[$j],
+        //             'size' => $request->size[$j][$i],
+        //             'type' => $request->type[$j][$i],
+        //             'cargo' => $request->cargo[$j][$i],
+        //         ];
+        //         TruckingContainer::create($container);
+        //     }
+        // }
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true, 
+            'slug' => $slug
+        ]);
+
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, $slug)
     {
-        $id = Trucking::where('slug', $request->slug)->value('id');
+        $id = Trucking::where('slug', $slug)->value('id');
+
         $activity = Stripping::where('jenis_kegiatan', 'Stripping')->get();
         $shipping_company = ShippingCompany::all();
         $pol = Pelabuhan::all();
@@ -159,9 +167,9 @@ class TruckingController extends Controller
         $type = TypeContainer::all();
         // dd($activity);
         return view('plan.trucking.plantrucking-edit', [
-            'title' => 'Edit Trucking-Plan',
+            'title' => 'Plan-Trucking',
             'active' => 'Plan',
-            'activity' => $activity,
+            'activities' => $activity,
             'shippingcompany' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
@@ -171,9 +179,48 @@ class TruckingController extends Controller
             'sizes' => $size,
             'types' => $type,
             'planload' => Trucking::find($id),
-            'containers' => TruckingContainer::select('type', 'jumlah_kontainer', 'size', 'cargo')->where('job_id', $id)->groupBy('jumlah_kontainer', 'type', 'size', 'cargo')->get()
+            'containers' => TruckingContainer::where('job_id', $id)->get()
         ]);
 
+    }
+
+    public function input($id)
+    {
+        $container = TruckingContainer::find($id);
+        
+        return response()->json([
+            'result' => $container,
+        ]);
+    }
+
+    public function input_tambah(Request $request)
+    {
+        // dd($request);
+
+        $planload = Trucking::findOrFail($request->job_id);
+
+        $status = [
+            "status" => "Process",
+        ];
+
+        $planload->update($status);
+
+
+        $data = [
+            'job_id' => $request->job_id,
+            'size' => $request->size,
+            'type' => $request->type,
+            'order_dari' => $request->order_dari,
+            'activity' => $request->activity,
+            "status" => "Process",
+
+        ];
+
+        $id = TruckingContainer::create($data);
+
+      
+
+        return response()->json(['success' => true]);
     }
 
     public function update(Request $request)

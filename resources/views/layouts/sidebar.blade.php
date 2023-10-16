@@ -23,7 +23,18 @@
                     </div>
                     <h2 class="menu-section-text">MENU</h2>
                 </div>
+
                 <!-- END Menu Section -->
+
+                <div class="menu-item">
+                    <a href="/user" data-menu-path="/user" class="menu-item-link {{ Request::is('user*') ? 'active' : '' }}">
+                        <div class="menu-item-icon">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <span class="menu-item-text">USER</span>
+                    </a>
+                </div>
+                
                 <div class="menu-item">
                     <a href="/data" data-menu-path="/data" class="menu-item-link {{ Request::is('data*') ? 'active' : '' }}">
                         <div class="menu-item-icon">
@@ -32,6 +43,7 @@
                         <span class="menu-item-text">DATA</span>
                     </a>
                 </div>
+               
 
                 <div class="menu-item">
                     <button class="menu-item-link menu-item-toggle {{
@@ -508,6 +520,8 @@
                     </div>
                     <!-- END Menu Submenu -->
                 </div>
+
+               
 
             </div>
             <!-- END Menu -->

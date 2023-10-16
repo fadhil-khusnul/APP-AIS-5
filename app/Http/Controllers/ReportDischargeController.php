@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
 use Carbon\Carbon;
 use App\Models\PPN;
 use App\Models\Spk;
@@ -24,7 +23,7 @@ use App\Models\BiayaLainnya;
 use App\Models\RekeningBank;
 use Illuminate\Http\Request;
 use App\Models\PlanDischarge;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\SealContainer;
 use App\Models\TypeContainer;
 use App\Models\ShippingCompany;

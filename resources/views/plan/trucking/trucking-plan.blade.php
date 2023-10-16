@@ -18,7 +18,7 @@
 
                 <div class="row row-cols-lg-auto px-5 g-5">
                     <div style="margin-left: auto; margin-right:0px;" class="margin-atas text-end">
-                        <a href="truckingplan/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Plan (Trucking <i class="fa fa-truck"></i> )</a>
+                        <a href="truckingplan/create" class="btn btn-success"> <i class="fa fa-plus"></i> Buat Plan </a>
                     </div>
 
 
@@ -40,7 +40,7 @@
                             <th>Penerima</th>
                             <th>EMKL</th>
                             <th>Activity</th>
-                            <th class="align-top">JUMLAH X (SIZE - TYPE - CARGO CONTAINER)</th>
+                            <th class="align-top">Jumlah Kontainer</th>
 
                             <th>Aksi</th>
                         </tr>
@@ -76,15 +76,9 @@
                             </td>
 
                             <td align="top" valign="top">
-                                <ol type="1">
-                                    @foreach ($containers as $container)
-                                        @if ($trucking->id == $container->job_id)
-                                        <li>
-                                            {{$container->jumlah_kontainer}} X ({{$container->size}} - {{$container->type}} - {{$container->cargo}})
-                                        </li>
-                                        @endif
-                                    @endforeach
-                                </ol>
+                                <b>
+                                    {{$containers->where("job_id", $trucking->id)->count()}} Kontainer
+                                </b>
 
                             </td>
 

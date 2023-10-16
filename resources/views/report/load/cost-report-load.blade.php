@@ -20,6 +20,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th></th>
+                                    <th>Tanggal</th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
@@ -38,12 +39,15 @@
                                         </td>
                                         <td class="text-center text-nowrap">
                                             <a href="/downloadcload/{{ $planload->slug }}"
-                                                class="btn btn-success ">Download Report COST <i
+                                                class="btn btn-success btn-sm btn-icon "><i
                                                     class="bi bi-download"></i>
 
                                             </a>
 
 
+                                        </td>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($planload->tanggal)->isoFormat('dddd, DD-MMMM-YYYY') }}
                                         </td>
                                         <td>
                                             {{$planload->vessel}}

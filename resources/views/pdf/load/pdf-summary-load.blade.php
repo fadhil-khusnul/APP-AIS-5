@@ -11,110 +11,70 @@
 </head>
 <body>
     <header>
+        <img class="header-online" src="{{ public_path('/') }}./assets/images/online.png" alt="">
 
     </header>
     <main>
         <h3 class="judul">SUMMARY DETAIL REPORT</h3>
 
-        @foreach ($loads as $load)
 
 
-        <table>
-            <tr>
-                <td width="46%">
+        <table width="100%">
+            <tr valign="top">
+                <td width="">
                     ACTIVITY
                 </td>
-                <td width="4%">:</td>
-                <td width="50%">{{$report}}</td>
+                <td width="2%">:</td>
+                <td width="">{{ $report }}</td>
+
+                <td width="10%"></td>
+
+                <td width="">
+                    Shipping Company (Pelayaran)
+                </td>
+                <td width="2%">:</td>
+                <td width="">{{ $load->select_company }}</td>
             </tr>
 
-            <tr>
+            <tr valign="top">
                 <td>
                     TANGGAL AWAL
                 </td>
-                <td>:</td>
+                <td width="2%">:</td>
                 <td>{{ \Carbon\Carbon::parse($min_date)->isoFormat('dddd, DD MMMM YYYY') }}</td>
-            </tr>
-            <tr>
-                <td>
-                    TANGGAL AKHIR
-                </td>
-                <td>:</td>
-                <td>{{ \Carbon\Carbon::parse($max_date)->isoFormat('dddd, DD MMMM YYYY') }}</td>
-            </tr>
-            <tr>
-                <td>
-                    POL
-                </td>
-                <td>:</td>
-                <td>{{$load->pol}}</td>
-            </tr>
-            @if ($load->pot != null)
-            <tr>
-                <td>
-                    POT
-                </td>
-                <td>:</td>
-                <td>{{$load->pot}}</td>
-            </tr>
-            @else
-            <tr>
-                <td>
-                    POT
-                </td>
-                <td>:</td>
-                <td>-</td>
-            </tr>
-            @endif
-            <tr>
-                <td>
-                    POD
-                </td>
-                <td>:</td>
-                <td>{{$load->pod}}</td>
-            </tr>
-            <tr>
-                <td>
-                    Shipping Company (Pelayaran)
-                </td>
-                <td>:</td>
-                <td>{{$load->select_company}}</td>
-            </tr>
-            <tr>
+                <td width="10%"></td>
+
                 <td>
                     Vessel/Voyage
                 </td>
-                <td>:</td>
-                <td>{{$load->vessel}}</td>
+                <td width="2%">:</td>
+                <td>{{ $load->vessel }}</td>
             </tr>
-            <tr>
+            <tr valign="top">
                 <td>
-                    Pengirim
+                    TANGGAL AKHIR
                 </td>
-                <td>:</td>
-                <td>{{$load->pengirim}}</td>
-            </tr>
-            <tr>
+                <td width="2%">:</td>
+                <td>{{ \Carbon\Carbon::parse($max_date)->isoFormat('dddd, DD MMMM YYYY') }}</td>
+
+                <td width="10%"></td>
+
                 <td>
-                    Pemilik Barang
+                    Vessel Code
                 </td>
-                <td>:</td>
-                <td>{{$load->pengirim}}</td>
+                <td width="2%">:</td>
+                <td>{{ $load->vessel_code }}</td>
             </tr>
-            <tr>
+            <tr valign="top">
                 <td>
-                    Pembeli
+                    POL
                 </td>
-                <td>:</td>
-                <td>{{$load->pengirim}}</td>
+                <td width="2%">:</td>
+                <td>{{ $load->pol }}</td>
             </tr>
-            <tr>
-                <td>
-                    Penerima
-                </td>
-                <td>:</td>
-                <td>{{$load->pengirim}}</td>
-            </tr>
+
+
+
         </table>
 
 
@@ -123,19 +83,16 @@
             <thead class="hijau">
                 <tr>
                     <th>NO</th>
-                    <th>Vessel/Voy</th>
+                    <th>Vessel/Vessel Code</th>
                     <th>POL</th>
-                    <th>POT</th>
                     <th>POD</th>
                     <th>CONTAINER</th>
                     <th>SIZE/TYPE</th>
+                    <th>CARGO</th>
                     <th>SEAL</th>
                     <th>PENGIRIM</th>
-                    <th>PEMILIK BARANG</th>
-                    <th>PEMBELI</th>
                     <th>PENERIMA</th>
                     <th>BL/DO NUMBER</th>
-                    <th>NAMA BARANG</th>
                     <th>KETERANGAN</th>
                 </tr>
             </thead>
@@ -146,30 +103,47 @@
 
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$load->vessel}}</td>
-                    <td>{{$load->pol}}</td>
-                    <td>{{$load->pot}}</td>
-                    <td>{{$load->pod}}</td>
-                    <td>{{$container->nomor_kontainer}}</td>
+                    @if ($container->status == "Alih-Kapal")
+                    
+                        <td>{{$container->alihs->vesseL_alih}}/{{ $container->alihs->code_vesseL_alih }}</td>
+                        <td>{{$load->pol}}</td>
+                        <td>{{$container->alihs->pod_alih}}</td>
+                    @else
+                        <td>{{$load->vessel}}/{{ $load->vessel_code  }}</td>
+                        <td>{{$load->pol}}</td>
+                        <td>{{$load->pod}}</td>
+                        
+                    @endif
+
+                    @if ($container->status == 'Alih-Kapal')
+                    <td>{{ $container->nomor_kontainer }} (Alih-Kapal)</td>
+                    @elseif ($container->status == "Batal-Muat")
+                        <td>{{ $container->nomor_kontainer }} (Batal Muat)</td>
+                    @else
+                        <td>{{ $container->nomor_kontainer }}</td>
+                    @endif
+                  
                     <td>{{$container->size}}/{{$container->type}}</td>
-                    <td>{{$container->seal}}</td>
-                    <td>{{$load->pengirim}}</td>
-                    <td>{{$load->pengirim}}</td>
-                    <td>{{$load->pengirim}}</td>
-                    <td>{{$load->pengirim}}</td>
-                    <td>{{$container->seal}}</td>
                     <td>{{$container->cargo}}</td>
-                    @if ($report === "LOAD")
-                    <td rowspan="0">LOAD</td>
-                    @endif
 
-                    @if ($report === "DISCHARGE")
-                    <td rowspan="0">DISCHARGE</td>
-                    @endif
-
-                    @if ($report === "TRUCKING")
-                    <td rowspan="0">TRUCKING</td>
-                    @endif
+                    <td align="center" valign="top">
+                        @foreach ($seals as $seal)
+                            @foreach ($seal as $seal_2)
+                                @if ($container->id == $seal_2["kontainer_id"])
+                                    @if ($seal[(count($seal) - 1)] != $seal[($loop->iteration - 1)])
+                                        {{ $seal_2["seal_kontainer"] }}, &ensp;
+                                    @else
+                                        {{ $seal_2["seal_kontainer"] }}
+                                    @endif
+                                @endif
+                            @endforeach
+                        @endforeach
+                    </td>
+                    <td>{{$container->pengirim}}</td>
+                    <td>{{$container->penerima}}</td>
+                    <td>{{$container->si_pdf_containers->nomor_bl}}</td>
+                    <td>{{$report}}</td>
+                   
 
                 </tr>
 
@@ -185,7 +159,6 @@
 
         </table>
 
-        @endforeach
 
 
     </main>

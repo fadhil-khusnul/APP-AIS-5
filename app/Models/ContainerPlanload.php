@@ -24,11 +24,10 @@ class ContainerPlanload extends Model
 
     public function si_pdf_containers()
     {
-        return $this->belongsTo(SiPdfContainer::class, 'slug', 'container_id');
-    }
-    public function mobils()
-    {
-        return $this->belongsTo(SupirMobil::class, 'driver', 'id');
+        return $this->belongsTo(SiPdfContainer::class, 'slug', 'container_id')->withDefault([
+            'nomor_bl' => ' ',
+
+        ]);
     }
     public function alihs()
     {
@@ -40,6 +39,11 @@ class ContainerPlanload extends Model
         return $this->belongsTo(InvoiceLoad::class, 'status_invoice', 'nomor_invoice')->withDefault([
             'tanggal_invoice' => ' ',
 
+        ]);
+    }
+    public function mobils(){
+        return $this->belongsTo(SupirMobil::class, 'nomor_polisi', 'id')->withDefault([
+            'nomor_polisi' => ' ',
         ]);
     }
     public function danas()

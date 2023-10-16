@@ -19,23 +19,20 @@
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nomor Kontainer</th>
+                                    <th></th>
                                     <th>Tanggal kegiatan</th>
-                                    <th>Vessel/Voy (Nama Kapal)</th>
+                                    <th>Status</th>
+                                    <th>Nomor Kontainer</th>
+                                    <th>Size/Type</th>
+                                    <th>Cargo</th>
+                                    <th>Vessel (Nama Kapal)</th>
                                     <th>Kode Kapal</th>
                                     <th>POL</th>
-                                    <th>POT</th>
                                     <th>POD</th>
                                     <th>Pengirim</th>
                                     <th>Penerima</th>
-                                    <th>Nama Barang</th>
-                                    <th>Detail Barang</th>
-                                    <th>Seal Number</th>
                                     <th>BL Number</th>
-                                    <th>DO Number</th>
-                                    <th>TOTAL COST</th>
-                                    <th>Keterangan</th>
-                                    <th>Aksi</th>
+                                    <th>Total Cost</th>
                                 </tr>
                             </thead>
 
@@ -45,72 +42,71 @@
                                         <td>
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>
-                                            {{$container->nomor_kontainer}}
-                                        </td>
-                                        <td>{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</td>
-
-
-                                        @foreach ($loads as $planload)
-                                        @if ($container->job_id === $planload->id)
-
-                                        <td>
-                                            {{$planload->vessel}}
-                                        </td>
-                                        <td>
-                                            {{$planload->vessel_code}}
-                                        </td>
-                                        <td>
-                                            {{$planload->pol}}
-                                        </td>
-                                        <td>
-                                            {{$planload->pot}}
-                                        </td>
-                                        <td>
-                                            {{$planload->pod}}
-                                        </td>
-                                        <td>
-                                            {{$planload->pengirim}}
-                                        </td>
-                                        <td>
-                                            {{$planload->penerima}}
-                                        </td>
-                                        @endif
-
-                                        @endforeach
-
-                                        <td>
-                                            {{$container->cargo}}
-                                        </td>
-                                        <td>
-                                            {{$container->detail_barang}}
-                                        </td>
-                                        <td>
-                                            {{$container->seal}}
-                                        </td>
-                                        <td>
-                                            {{$container->seal}}
-                                        </td>
-                                        <td>
-                                            {{$container->seal}}
-                                        </td>
-                                        <td>
-                                            @rupiah($container->biaya_trucking)
-                                        </td>
-                                        <td>
-                                            {{$report}}
-                                        </td>
-
-
                                         <td class="text-center text-nowrap">
                                             <a href="/downloadcoload/{{ $container->id }}"
-                                                class="btn btn-success rounded-pill">Download CONTAINER <i
+                                                class="btn btn-success btn-sm btn-icon"><i
                                                     class="bi bi-download"></i>
 
                                             </a>
 
 
                                         </td>
+                                        <td>{{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}</td>
+                                        
+                                        <td>
+                                            {{$container->status}}
+                                        </td>
+                                        <td>
+                                            {{$container->nomor_kontainer}}
+                                        </td>
+                                        <td>
+                                            {{$container->size}}/{{ $container->type }}
+                                        </td>
+                                        <td>
+                                            {{$container->cargo}}
+                                        </td>
+                                        <td>
+                                            {{$container->planload->vessel}}
+                                        </td>
+                                        <td>
+                                            {{$container->planload->vessel_code}}
+                                        </td>
+                                        <td>
+                                            {{$container->planload->pol}}
+                                        </td>
+                                       
+                                        <td>
+                                            {{$container->pod_container}}
+                                        </td>
+                                        <td>
+                                            {{$container->pengirim}}
+                                        </td>
+                                        <td>
+                                            {{$container->penerima}}
+                                        </td>
+                                        <td>
+                                            {{$container->si_pdf_containers->nomor_bl}}
+                                        </td>
+
+                                        @if ($container->harga_alih != null)
+                                        <td>
+                                             @rupiah(($container->alihs->harga_alih_kapal + $container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod)) </>
+
+                                        </td>
+                                            
+                                        @else
+                                            
+                                        <td>
+                                             @rupiah(($container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod)) </>
+
+                                        </td>
+                                        @endif
+                                        
+                                       
+                                        
+
+
+                                        
 
 
 

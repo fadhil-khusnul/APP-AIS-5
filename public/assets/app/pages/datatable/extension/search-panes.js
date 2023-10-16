@@ -276,7 +276,7 @@
 
 
             },
-            targets: [2, 3, 4, 5, 6],
+            targets: [3, 4, 5, 7],
         }],
     });
     $("#invoicedischarge").DataTable({
@@ -349,7 +349,7 @@
         // "pageLength": 10,
         searchPanes:{
             layout: 'columns-1',
-            columns: [1, 2, 3, 8, 9, 12],
+            columns: [1, 3, 4,5,6,7,8, 9, 10,11,12],
             cascadePanes: false,
             viewTotal: true,
 
@@ -367,7 +367,7 @@
 
 
             },
-            targets: [1, 2, 3, 8, 9, 12],
+            targets: [3,4,6,7,8,9,10,11,12],
         }],
     });
 

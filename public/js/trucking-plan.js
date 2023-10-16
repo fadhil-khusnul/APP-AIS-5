@@ -5,6 +5,18 @@
 
 var tambah = 0;
 
+var table_container = $("#table_container").DataTable({
+    responsive: true,
+    pageLength: 5,
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"],
+    ],
+    fixedHeader: {
+        header: true,
+    },
+});
+
 function CreateTrucking() {
     var swal = Swal.mixin({
         customClass: {
@@ -120,31 +132,7 @@ function CreateTrucking() {
             fd.append("activity", activity);
             fd.append("emkl", emkl);
 
-            fd.append("tambah", tambah);
-
-            var jumlah_kontainer = [];
-            var size = [];
-            var type = [];
-            var cargo = [];
-
-            for(var i = 0; i < tambah; i++) {
-                size[i] = [];
-                type[i] = [];
-                cargo[i] = [];
-                jumlah_kontainer[i] = document.getElementById("jumlah-container[" + (i + 1) + "]").value;
-                jumlah_kontainer[i] = parseInt(jumlah_kontainer[i]);
-                fd.append("jumlah_kontainer[]", jumlah_kontainer[i]);
-
-                for(var j = 0; j < jumlah_kontainer[i]; j++) {
-                    size[i][j] = document.getElementById("size[" + (i + 1) + "]").value;
-                    type[i][j] = document.getElementById("type[" + (i + 1) + "]").value;
-                    cargo[i][j] = document.getElementById("cargo[" + (i + 1) + "]").value;
-
-                    fd.append("size["+i+"][]", size[i][j]);
-                    fd.append("type["+i+"][]", type[i][j]);
-                    fd.append("cargo["+i+"][]", cargo[i][j]);
-                }
-            }
+            
 
             swal.fire({
                 title: "Apakah anda yakin?",
@@ -170,7 +158,7 @@ function CreateTrucking() {
                                 timer: 2e3,
                                 showConfirmButton: false,
                             });
-                            window.location.href = "../truckingplan";
+                            window.location.href = "/truckingplan/"+response.slug;
                         },
                     });
                 } else {
@@ -483,6 +471,176 @@ function tambah_kontener() {
             cell7.appendChild(button);
 
             reindex_container();
+        },
+    });
+}
+
+function modal_tambah() {
+    $("#modal_tambah").modal("show");
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    $("#valid_job_tambah")
+        .submit(function (e) {
+            e.preventDefault();
+        })
+        .validate({
+            // ignore: "select[type=hidden]",
+
+            rules: {
+                size_tambah: {
+                    required: true,
+                },
+                seal_tambah: {
+                    required: true,
+                },
+            },
+            highlight: function highlight(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+                $(element).removeClass("is-valid");
+            },
+            unhighlight: function unhighlight(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+                $(element).addClass("is-valid");
+            },
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".validation-container").append(error);
+            },
+
+            submitHandler: function (form) {
+                // console.log(urutan_detail);
+                var token = $("#csrf").val();
+
+
+                var data = {
+                    _token: token,
+                    job_id: $("#job_id").val(),
+                    size: $("#size_tambah").val(),
+                    type: $("#type_tambah").val(),
+                    order_dari: $("#order_dari_tambah").val(),
+                    activity: $("#activity_tambah").val(),
+                };
+
+                $.ajax({
+                    url: "/tambah-kontainer-plantrucking",
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            icon: "success",
+                            title: "Detail Kontainer Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    },
+                });
+            },
+        });
+}
+
+function modal_edit(e) {
+    let id = e.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success btn-wide mx-1",
+            denyButton: "btn btn-secondary btn-wide mx-1",
+            cancelButton: "btn btn-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+    let token = $("#csrf").val();
+
+    $.ajax({
+        url: "/detail-kontainer-trucking/" + id + "/input",
+        data: {
+            _token: token,
+        },
+        type: "GET",
+        async: false,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            $("#new_id_edit").val(response.result.id);
+            $("#size_edit").val(response.result.size);
+            $("#type_edit").val(response.result.type);
+            $("#order_dari_edit").val(response.result.order_dari);
+            $("#activity_edit").val(response.result.activity);
+
+            $("#modal_edit").modal("show");
+
+
+        $("#valid_job_edit")
+        .submit(function (e) {
+            e.preventDefault();
+        })
+        .validate({
+            ignore: "select[type=hidden]",
+            highlight: function highlight(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+                $(element).removeClass("is-valid");
+            },
+            unhighlight: function unhighlight(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+                $(element).addClass("is-valid");
+            },
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".validation-container").append(error);
+            },
+
+            submitHandler: function (form) {
+                // console.log(urutan_detail);
+                var token = $("#csrf").val();
+                var new_id_edit = $("#new_id_edit").val();
+
+                var seal = [];
+
+                for (let i = 0; i < edit_urutan_detail; i++) {
+                    seal[i] = document.getElementById(
+                        "edit_seal_tambah[" + (i + 1) + "]"
+                    ).value;
+                }
+
+                var data = {
+                    _token: token,
+                    job_id: $("#job_id").val(),
+                    size: $("#size_edit").val(),
+                    type: $("#type_edit").val(),
+                    nomor_kontainer: $("#nomor_kontainer_edit").val(),
+                    cargo: $("#cargo_edit").val(),
+                    seal: seal,
+                };
+
+                $.ajax({
+                    url: "/plandischarge-kontainer/"+ new_id_edit,
+                    type: "PUT",
+                    data: data,
+                    success: function (response) {
+                        swal.fire({
+                            icon: "success",
+                            title: "Detail Kontainer Berhasil Diupdate",
+                            showConfirmButton: false,
+                            timer: 2e3,
+                        }).then((result) => {
+                            location.reload();
+                        });
+                    },
+                });
+            },
+        });
+
+          
         },
     });
 }

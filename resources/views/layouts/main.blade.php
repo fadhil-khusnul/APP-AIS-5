@@ -17,6 +17,17 @@
     <link href="{{ asset('/') }}./assets/build/scripts/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+    <link rel="stylesheet" href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+
+    <style>
+        .filepond--file [data-align*=right] {
+            right: calc(50% - 0.5em);
+            bottom: calc(50% - 1em);
+            left: calc(50% - 1em);
+        }
+    </style>
+
     
     
     

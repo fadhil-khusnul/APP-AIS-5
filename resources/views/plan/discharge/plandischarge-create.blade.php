@@ -203,9 +203,9 @@
 
                             </tbody>
                         </table>
-                        <div class="mt-5 mb-5">
-                            <button disabled id="add_container" onclick="tambah_kontener()" type="button"
-                                class="btn btn-label-primary btn-icon"> <i class="fa fa-plus"></i></button>
+                        <div class="mt-5 mb-5 text-center">
+                            <button disabled type="button"
+                                class="btn btn-success btn-icon"><i class="fa fa-plus"></i></button>
                         </div>
 
 

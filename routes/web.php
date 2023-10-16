@@ -28,7 +28,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReportDischargeController;
 use App\Http\Controllers\ReportTruckingController;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +47,17 @@ Route::get('/data', [DataController::class, 'index']);
 Route::get('/ppn-edit/{id}', [DataController::class, 'ppn_edit']);
 Route::put('/ppn-update', [DataController::class, 'ppn_update']);
 
+Route::get('/user', [UserController::class, 'index']);
+Route::get('/user/{remember_token}', [UserController::class, 'edit_profile']);
+Route::get('/user/{id}/edit', [UserController::class, 'show']);
+Route::put('/user/{id}', [UserController::class, 'update']);
+Route::delete('/user/{id}', [UserController::class, 'destroy']);
+Route::post('/user-create', [UserController::class, 'store']);
+
+
 //LOGIN
 Route::get('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout']);
 
 
 Route::post('/shipping-company', [ShippingController::class, 'store']);
@@ -199,6 +208,7 @@ Route::get('/detail-kontainer-discharge/{id}/input', [PlanDischargeController::c
 Route::post('/create-job-plandischarge', [PlanDischargeController::class, 'create_job_plandischarge']);
 Route::post('/update-job-plandischarge', [PlanDischargeController::class, 'update']);
 Route::post('/tambah-kontainer-plandischarge', [PlanDischargeController::class, 'input_tambah']);
+
 Route::post('/detailbarang-kontainer-discharge', [PlanDischargeController::class, 'detailbarang']);
 Route::post('/cetak-packing-list-discharge', [PlanDischargeController::class, 'cetak_detail']);
 
@@ -283,7 +293,10 @@ Route::post('/getKodeSpk', [SpkController::class, 'getKodeSpk']);
 Route::get('/truckingplan', [TruckingController::class, 'index']);
 Route::get('/truckingplan/create', [TruckingController::class, 'create']);
 Route::post('/create-job-truckingplan', [TruckingController::class, 'create_job_Trucking']);
-Route::get('/plantrucking-edit/{slug}', [TruckingController::class, 'edit']);
+Route::post('/tambah-kontainer-plantrucking', [TruckingController::class, 'input_tambah']);
+Route::get('/detail-kontainer-trucking/{id}/input', [TruckingController::class, 'input']);
+
+Route::get('/truckingplan/{slug}', [TruckingController::class, 'edit']);
 Route::post('/update-job-truckinplan', [TruckingController::class, 'update']);
 
 Route::get('/truckingprocess', [TruckingController::class, 'process']);

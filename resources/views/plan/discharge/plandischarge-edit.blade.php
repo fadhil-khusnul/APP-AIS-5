@@ -212,7 +212,7 @@
                                 <thead class="table-warning" id="thead_container">
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-center">Aksi</th>
+                                        <th class="text-center"></th>
                                         <th class="text-center">Size</th>
                                         <th class="text-center">Type</th>
                                         <th class="text-center">Nomor Kontainer</th>
@@ -271,7 +271,7 @@
 
                         <div class="mt-5 mb-5 text-center">
                             <button id="add_container" onclick="modal_tambah()" type="button"
-                                class="btn btn-label-success">Tambah Kontainer <i class="fa fa-plus"></i></button>
+                                class="btn btn-success btn-icon"><i class="fa fa-plus"></i></button>
                             @if (count($containers) > 1)
                                 <button style="margin-left: 10px" value="{{ $planload->slug }}" type="button"
                                     onclick="process_page(this)" class="btn btn-success">ke Process <i

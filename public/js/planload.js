@@ -11,6 +11,10 @@ var table_container = $("#table_container").DataTable({
     fixedHeader: {
         header: true,
     },
+    info : false,
+    filtering : false,
+    paging : false,
+
 });
 
 var tambah = 0;
@@ -386,9 +390,16 @@ function UpdateteJobPlanload() {
 }
 
 function tambah_kontener() {
+
+    console.log(tambah);
     let token = $("#csrf").val();
 
     var table = document.getElementById("tbody_container");
+
+    if(tambah == 0) {
+        table.innerHTML = "";
+    }
+
     tambah++;
 
     $.ajax({
@@ -475,7 +486,7 @@ function tambah_kontener() {
             icon.setAttribute("class", "fa fa-trash");
             button.append(icon);
 
-            var row = table.insertRow(-1);
+            var row = table.insertRow(0);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);

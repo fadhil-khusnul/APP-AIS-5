@@ -64,14 +64,32 @@ class ReportController extends Controller
 
         $old_slug = $request->slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-        $loads = OrderJobPlanload::where('id', $old_id)->get();
+        $loads = OrderJobPlanload::findOrFail($old_id);
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
+
 
 
         $path1 = 'storage/report/Summary-'.$old_slug.'.pdf';
         // dd($path1);
 
         $containers = ContainerPlanload::where('job_id', $old_id)->get();
+        
+        $seals = SealContainer::where("job_id", $old_id)->get();
+        $seals_2 = [];
+        for($i = 0; $i < count($containers); $i++) {
+            $seals_2[$i] = [];
+            for($j = 0; $j < count($seals); $j++) {
+                if($containers[$i]->id == $seals[$j]->kontainer_id){
+                    $seals_2[$i][$j] = [
+                        "kontainer_id" => $seals[$j]->kontainer_id,
+                        "seal_kontainer" => $seals[$j]->seal_kontainer
+                    ];
+                }
+            }
+            $seals_2[$i] = array_values($seals_2[$i]);
+        }
+        // dd($containers);
+
         $date = ContainerPlanload::select('date_activity')->where('job_id', $old_id)->get()->toArray();
 
         $min_date = min($date);
@@ -84,8 +102,9 @@ class ReportController extends Controller
 
         $pdf = Pdf::loadview('pdf.load.pdf-summary-load',[
 
-            "loads" => $loads,
+            "load" => $loads,
             "containers" => $containers,
+            "seals" => $seals_2,
             "report" => $report,
             "min_date" => $min_date,
             "max_date" => $max_date,
@@ -126,7 +145,7 @@ class ReportController extends Controller
 
         $old_slug = $request->slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-        $loads = OrderJobPlanload::where('id', $old_id)->get();
+        $loads = OrderJobPlanload::findOrFail($old_id);
         $dt = Carbon::now()->isoFormat('YYYY-MMMM-DDDD-dddd-HH-mm-ss');
 
 
@@ -161,14 +180,11 @@ class ReportController extends Controller
             $seals_2[$i] = array_values($seals_2[$i]);
         }
         
-        // dd($containers , $seals, (count($containers) -1 ), $seals_2);
-        // $sum_alih->sum("harga_alih_kapal");
-
 
 
         $pdf = Pdf::loadview('pdf.load.pdf-cost-report',[
 
-            "loads" => $loads,
+            "load" => $loads,
             "containers" => $containers,
             "seals" => $seals_2,
             "report" => $report,
@@ -189,7 +205,11 @@ class ReportController extends Controller
 
         $report = 'LOAD';
         $loads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
-        $containers = ContainerPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
+        $containers = ContainerPlanload::orderBy('id', 'DESC')->whereNotNull("status")->get();
+
+    
+
+
 
         return view('report.load.container-report-load', [
 
@@ -203,18 +223,37 @@ class ReportController extends Controller
         ]);
     }
 
-    public function download_coload(Request $request)
+    public function download_coload(Request $request, $id)
     {
-        // dd($request->id);
+        // dd($request);
 
         $report = "LOAD";
 
 
         $old_slug = $request->id;
 
+        $job_id = ContainerPlanload::where("id", $id)->value("job_id");
 
-        $loads = OrderJobPlanload::where('status', 'Process-Load')->orWhere('status', 'Realisasi')->get();
-        $containers = ContainerPlanload::where('id', $old_slug )->get();
+
+        $containers = ContainerPlanload::findOrFail($id);
+
+        $containers_get = ContainerPlanload::where('job_id', $job_id)->get();
+
+        $seals = SealContainer::where("job_id", $job_id)->get();
+
+        $seals_2 = [];
+        for($i = 0; $i < count($containers_get); $i++) {
+            $seals_2[$i] = [];
+            for($j = 0; $j < count($seals); $j++) {
+                if($containers_get[$i]->id == $seals[$j]->kontainer_id){
+                    $seals_2[$i][$j] = [
+                        "kontainer_id" => $seals[$j]->kontainer_id,
+                        "seal_kontainer" => $seals[$j]->seal_kontainer
+                    ];
+                }
+            }
+            $seals_2[$i] = array_values($seals_2[$i]);
+        }
 
 
 
@@ -223,9 +262,9 @@ class ReportController extends Controller
 
             'title'=> 'Container Report Load',
             'active' => 'LOAD',
-            'loads' => $loads,
             'report' => $report,
-            'containers' => $containers,
+            'seals' => $seals_2,
+            'container' => $containers,
 
         ]);
 
