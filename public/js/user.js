@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 
     FilePond.registerPlugin(
-        FilePondPluginFileEncode,
+    
         FilePondPluginFileValidateType,
         FilePondPluginImageExifOrientation,
         FilePondPluginImagePreview,
@@ -20,8 +20,31 @@ $(document).ready(function() {
 
     );
 
+    const url = "{{ asset('/storage/Image-Profile/'.$users->img.'') }}";
+    let token = $('#csrf').val();
+    let username = $('#username').val();
 
     const inputElement = document.querySelector('input[id="img"]');
+    // const inputElement = document.querySelector('fieldset');
+    // Create a FilePond instance
+
+    FilePond.setOptions({
+        server: {
+
+            load: (source, load, error, progress, abort, headers) => {
+
+                // now load it using XMLHttpRequest as a blob then load it.
+                let request = new XMLHttpRequest();
+                request.open('GET', source);
+                request.responseType = "blob";
+                request.onreadystatechange = () => request.readyState === 4 && load(request
+                    .response);
+                request.send();
+            },
+        }
+    });
+
+
     // const inputElement = document.querySelector('fieldset');
     // Create a FilePond instance
     const pond = FilePond.create(inputElement, {
@@ -37,6 +60,14 @@ $(document).ready(function() {
         styleProgressIndicatorPosition: 'center bottom',
         styleButtonRemoveItemPosition: 'center bottom',
         imageCropAspectRatio: 1,
+
+        files: [{
+            source: url,
+            options: {
+                type: 'local'
+
+            },
+        }],
 
 
 
@@ -147,7 +178,94 @@ $(document).ready(function() {
                     },
                 });
             }
-    }).pr;
+    });
+    $('#valid_profil_edit').submit(function (e) { 
+        e.preventDefault();}).validate({
+            rules: {
+
+                username: {
+                    required: true,
+                    // remote: {
+                    //     url: "/checkUsername",
+                    //     type: "post"
+                    // },
+                },
+                name: {
+                    required: true
+                },
+                no_telp: {
+                    required: true
+                },
+                email: {
+                    required: true
+                },
+                password: {
+                    required: true,
+                    minlength: 5,
+                    uppercaseCheck: true,
+                    nomorCheck: true,
+                    spesialcharCheck: true,
+                },
+            },
+          
+            highlight: function highlight(element, errorClass, validClass) {
+                $(element).addClass("is-invalid");
+                $(element).removeClass("is-valid");
+            },
+            unhighlight: function unhighlight(element, errorClass, validClass) {
+                $(element).removeClass("is-invalid");
+                $(element).addClass("is-valid");
+            },
+            errorPlacement: function errorPlacement(error, element) {
+                error.addClass("invalid-feedback");
+                element.closest(".validation-container").append(error);
+            },
+            submitHandler: function (form) {
+
+                var fd = new FormData();
+
+                const pondFiles = pond.getFiles();
+                    for (var i = 0; i < pondFiles.length; i++) {
+                        fd.append('file', pondFiles[i].file);
+                }
+
+                var name = $("#name").val();
+                var username = $("#username").val();
+                var email = $("#email").val();
+                var no_telp = $("#no_telp").val();
+                var role = $("#role").val();
+                var remember_token = $("#remember_token").val();
+                var token = $('#csrf').val();
+
+                fd.append("_token", token);
+                fd.append("name", name);
+                fd.append("username", username);
+                fd.append("email", email);
+                fd.append("no_telp", no_telp);
+                fd.append("role", role);
+
+                $.ajax({
+                    url: '/user/'+remember_token,
+                    type: 'POST',
+                    data: fd,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        swal.fire({
+                            icon: "success",
+                            title: "User Berhasil Diupdate",
+                            showConfirmButton: false,
+                            timer: 2e3,
+
+                        })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    },
+                });
+            }
+    });
  
 
 });
@@ -159,7 +277,7 @@ function editpassword(e) {
 
 
     $.ajax({
-        url: 'user/' + id + '/edit',
+        url: '/user/' + id + '/edit',
         type: 'GET',
         success: function (response) {
             $('#modal-password-edit').modal('show');

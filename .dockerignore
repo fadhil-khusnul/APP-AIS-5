@@ -1,0 +1,12 @@
+node_modules
+.vscode
+.editorconfig
+/vendor
+/.git
+/tests
+# /phpunit.xml
+# /composer.lock
+/composer.phar
+Homestead.yaml
+Homestead.json
+*.log

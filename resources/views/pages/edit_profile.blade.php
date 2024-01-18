@@ -7,11 +7,15 @@
 
             <div class="portlet">
                 <div class="portlet-header portlet-header-bordered">
-                    <h3 class="portlet-title">Buat User</h3>
+                    <h3 class="portlet-title">Edit User</h3>
                 </div>
                 <div class="portlet-body">
 
-                    <form class="row d-grid gap-3" id="valid_profil" name="valid_profil">
+                    <form class="row d-grid gap-3" id="valid_profil_edit" name="valid_profil_edit">
+
+                        <input type="hidden" name="remember_token" id="remember_token" value="{{ $users->remember_token }}">
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+
 
                         <div class="col-md-8" style="margin-left:auto; margin-right:auto;">
                             <div class="validation-container">
@@ -26,46 +30,40 @@
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Masukkan Nama User :</label>
-                                <input id="name" name="name" type="text" placeholder="Nama User" class="form-control"
+                                <input value="{{ $users->name }}" id="name" name="name" type="text" placeholder="Nama User" class="form-control"
                                     required>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Masukkan Email :</label>
-                                <input id="email" name="email" type="email" placeholder="Email" class="form-control"
+                                <input value="{{ $users->email }}" id="email" name="email" type="email" placeholder="Email" class="form-control"
                                     required>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Masukkan No. Telp :</label>
-                                <input id="no_telp" name="no_telp" type="numeric" placeholder="No. Telp" class="form-control"
+                                <input value="{{ $users->no_telp }}" id="no_telp" name="no_telp" type="numeric" placeholder="No. Telp" class="form-control"
                                     required>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Masukkan Username :</label>
-                                <input id="username" name="username" type="text" placeholder="Username" class="form-control"
+                                <input value="{{ $users->username }}" id="username" name="username" type="text" placeholder="Username" class="form-control"
                                     required>
                             </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <div class="validation-container">
-                                <label for="" class="form-label">Masukkan Password :</label>
-                                <input id="password" name="password" type="password" placeholder="Password" class="form-control"
-                                    required>
-                            </div>
-                        </div>
+                     
                         <div class="col-md-12">
                             <div class="validation-container">
                                 <label for="" class="form-label">Pilih Role :</label>
                                 <select name="role" id="role" class="form-control">
-                                    <option value="super_user" class="form-control">Super User</option>
-                                    <option value="admin" class="form-control">Admin</option>
-                                    <option value="operasional" class="form-control">Operasional</option>
+                                    <option @if ($users->role == "super_user") selected @endif value="super_user" class="form-control">Super User</option>
+                                    <option @if ($users->role == "admin") selected @endif value="admin" class="form-control">Admin</option>
+                                    <option @if ($users->role == "operasional") selected @endif value="operasional" class="form-control">Operasional</option>
                                 </select>
                                 
                             </div>
@@ -74,7 +72,11 @@
 
 
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success"> Buat User </button>
+                            <button onclick="editpassword(this)" value="{{ $users->id }}"
+                                class="btn btn-label-primary btn-icon btn-circle btn-sm"><i
+                                    class="fa fa-lock"></i></button>
+
+                            <button type="submit" class="btn btn-success"> Edit User </button>
                         </div>
                     </form>
 
@@ -93,7 +95,6 @@
     <div class="modal fade" id="modal-password-edit">
         <div class="modal-dialog">
             <form action="#" name="valid_password_edit" id="valid_password_edit">
-                <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                 <input type="hidden" name="new_id" id="new_id">
 
 

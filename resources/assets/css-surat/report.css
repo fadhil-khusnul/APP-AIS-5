@@ -1,0 +1,201 @@
+
+:root {
+    font-family: 'Calibri';
+}
+
+/* @page {
+    margin: 180px 20px 100px 20px;
+} */
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Regular'), local('Calibri-Regular'),
+        url('Calibri.woff2') format('woff2'),
+        url('Calibri.woff') format('woff'),
+        url('Calibri.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Bold'), local('Calibri-Bold'),
+        url('Calibri-Bold.woff2') format('woff2'),
+        url('Calibri-Bold.woff') format('woff'),
+        url('Calibri-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Bold Italic'), local('Calibri-Bold-Italic'),
+        url('Calibri-BoldItalic.woff2') format('woff2'),
+        url('Calibri-BoldItalic.woff') format('woff'),
+        url('Calibri-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: local('Calibri Italic'), local('Calibri-Italic'),
+        url('Calibri-Italic.woff2') format('woff2'),
+        url('Calibri-Italic.woff') format('woff'),
+        url('Calibri-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+.header-online{
+    position: fixed;
+    /* float: right; */
+    right: -20px;
+    top: -1cm;
+    /* left: -50px; */
+    width: 20%;
+    margin-bottom: 20px;
+}
+.header-online1{
+    position: fixed;
+    /* float: right; */
+    right: -20px;
+    top: -1cm;
+    /* left: -50px; */
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.header-invoice {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: -1.2cm;
+    left: -50px;
+    /* right: -20px; */
+    width: 115%;
+
+
+}
+.footer-invoice {
+    position: fixed;
+    bottom: -1.2cm;
+    /* margin-top: 20px; */
+    /* top: -40px; */
+    left: -50px;
+    /* right: -20px; */
+    width: 115%;
+
+
+}
+.header-invoice2 {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: 30px;
+    right: 130px;
+    /* right: -20px; */
+    width: 12%;
+
+
+}
+.header-invoice3 {
+    position: fixed;
+    /* margin-top: 20px; */
+    top: -17px;
+    right: -17px;
+    /* right: -20px; */
+    width: 22%;
+
+
+}
+.ttd{
+    width: 95%;
+}
+
+.judul {
+    /* font-family: Calibri; */
+    font-weight: bold;
+    font-style: normal;
+    font-size: 14px;
+    text-decoration: underline;
+    text-align: center;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+.judul-container {
+    /* font-family: Calibri; */
+    font-weight: bold;
+    font-style: normal;
+    font-size: 20px;
+    text-decoration: underline;
+    text-align: center;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+.left-table{
+    margin-left: 50px;
+}
+main {
+    font-size: 11px;
+}
+.main {
+    font-size: 16px;
+}
+
+.table {
+    border-collapse: collapse;
+    /* border: black; */
+    /* border: ; */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table tbody tr td {
+text-align: left;
+padding: 4px;
+
+}
+
+.table tr:nth-child(even){
+    background-color: #f2f2f2
+}
+
+.table tfoot tr:first-child{
+    text-align: right !important;
+    font-weight: bold;
+
+
+}
+.table tfoot tr:nth-child(2){
+    text-align: center !important;
+    font-weight: bold;
+
+
+}
+.harga{
+    text-align: right !important;
+
+}
+.center{
+    text-align: center !important;
+    align-items: center;
+    
+
+}
+
+.table th {
+color: white;
+text-align: center;
+
+}
+
+.hijau {
+    background-color: #4caf50;
+}
+.biru {
+    background-color: #4371c7;
+}
+
+
+
+
+

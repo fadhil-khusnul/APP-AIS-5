@@ -2075,6 +2075,114 @@ function delete_invoice(r) {
         }
     });
 }
+function kirim_invoice(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+            icon: "no-border",
+
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah Invoice ini sudah dikirim ?",
+        // icon: "warning",
+        iconHtml: '<i  class= "no-border text-success bi bi-send-check-fill"></i>',
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/kirim-invoice/" + deleteid,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "INVOICE TELAH DIKIRIM",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "INVOICE BELUM DIKIRIM",
+                icon: "info",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
+function batal_kirim_invoice(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+            icon: "no-border",
+
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah Invoice ini batal dikirim ?",
+        // icon: "warning",
+        iconHtml: '<i  class= "no-border text-danger bi bi-send-dash-fill"></i>',
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+        var old_slug = document.getElementById("old_slug").value;
+
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/batal-kirim-invoice/" + deleteid,
+                data: data,
+
+                success: function (response) {
+                    swal.fire({
+                        title: "INVOICE BATAL DIKIRIM",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "INVOICE DIKIRIM",
+                icon: "info",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
 
 function delete_history(r) {
     var slug = r.value;

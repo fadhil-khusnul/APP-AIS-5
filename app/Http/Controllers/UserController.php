@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -123,10 +124,48 @@ class UserController extends Controller
         $users = User::find($id);
 
         return view('pages.edit_profile', [
-            'title' => 'List User',
+            'title' => 'Edit User',
             'active' => 'user',
             'users' => $users,
 
+        ]);
+    }
+    public function update_profile(Request $request, $remember_token){
+
+        // dd($request);
+        $id = User::where("remember_token", $remember_token)->value("id");
+        $users = User::find($id);
+
+        if($request->old_pic_profile){
+            Storage::delete('public/Image-Profile/'.$request->old_pic_profile);
+        }
+
+
+        if ($request->file('file') != null) {
+            # code...
+            $fileName = time() . $request->file('file')->getClientOriginalName();
+            $path = $request->file('file')->storeAs('Image-Profile', $fileName, 'public');
+        }   
+        else{
+            $path = null;
+            $fileName = null;
+        }
+
+
+        $data = [
+            'username' => $request->username,
+            'name' => $request->name,
+            'email' => $request->email,
+            'no_telp' => $request->no_telp,
+            'role' => $request->role,
+            'img' => $fileName,
+        ];
+
+        // $data['password']= Hash::make($data['password']);
+
+        $users->update($data);
+        return response()->json([
+            'success'   => true
         ]);
     }
 }

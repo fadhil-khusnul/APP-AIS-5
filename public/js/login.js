@@ -23,8 +23,8 @@ window.addEventListener("scroll", () => {
   }
 });
 
-modalButton.addEventListener("click", openModal);
-closeButton.addEventListener("click", closeModal);
+// modalButton.addEventListener("click", openModal);
+// closeButton.addEventListener("click", closeModal);
 
 document.onkeydown = evt => {
   evt = evt || window.event;

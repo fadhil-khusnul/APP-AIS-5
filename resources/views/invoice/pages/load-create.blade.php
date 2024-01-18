@@ -156,6 +156,7 @@
                                     <tr>
                                         <th class="">No</th>
                                         <th class=""></th>
+                                        <th class="">Progress</th>
                                         <th class="">Jenis SI</th>
                                         <th class="">Nomor Invoice</th>
                                         <th class="">Kontainer</th>
@@ -179,6 +180,7 @@
 
                                                 {{ $loop->iteration }}
                                             </td>
+
                                             <td class="text-nowrap">
                                                 <input type="hidden" name="container_id" id="container_id"
                                                     value="{{ $pdf->container_id }}">
@@ -191,7 +193,8 @@
                                                 @else
                                                     <button data-id="{{ $pdf->container_id }}"
                                                         data-bs-target="modal_invoice_si" type="button"
-                                                        value="{{ $pdf->container_id }}" onclick="input_invoice_si_alih(this)"
+                                                        value="{{ $pdf->container_id }}"
+                                                        onclick="input_invoice_si_alih(this)"
                                                         class="btn btn-primary btn-sm ">Invoice Alih Kapal <i
                                                             class="fa fa-ship"></i></button>
                                                 @endif
@@ -204,6 +207,14 @@
 
                                             </td>
 
+                                            <td class="align-middle text-nowrap">
+
+                                                @if ($pdf->containers->status_invoice == null)
+                                                    <span class="badge badge-label-danger fs-6">Invalid</span>
+                                                @else
+                                                    <span class="badge badge-label-success fs-6">Valid</span>
+                                                @endif
+                                            </td>
                                             <td class="align-middle text-nowrap">
 
                                                 @if ($pdf->status_si == 'Default')
@@ -316,6 +327,7 @@
                                             <th class="text-center">No</th>
                                             <th class="text-center"></th>
                                             <th class="text-center">Input</th>
+                                            <th class="text-center">Progress</th>
                                             <th class="text-center">NOMOR INVOICE</th>
                                             <th class="text-center">UNIT PRICE</th>
                                             <th class="text-center">KONDISI</th>
@@ -331,7 +343,7 @@
                                             <th class="text-center">Keterangan Batal Muat</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tbody_alih" class="text-center">
+                                    <tbody id="tbody_alih" class="">
                                         @foreach ($container_batal as $batal)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -358,7 +370,7 @@
                                                         -
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     @if ($batal->price_invoice != null)
                                                         <button type="button" value="{{ $batal->id }}"
                                                             type="button" onclick="update_invoice(this)"
@@ -372,6 +384,13 @@
                                                     @endif
 
 
+                                                </td>
+                                                <td>
+                                                    @if ($batal->status_invoice == null)
+                                                        <span class="badge badge-label-danger fs-6">Invalid</span>
+                                                    @else
+                                                        <span class="badge badge-label-success fs-6">Valid</span>
+                                                    @endif
                                                 </td>
 
                                                 <td>{{ $batal->status_invoice }}</td>
@@ -523,7 +542,7 @@
                                 </div>
 
 
-                                
+
 
 
                             </div>
@@ -541,14 +560,16 @@
                                             <th>No</th>
                                             <th></th>
                                             <th></th>
+                                            <th>Progress Bayar</th>
                                             <th>Jenis Invoice</th>
                                             <th>Tanggal Invoice</th>
                                             <th>Nomor Invoice</th>
+
+                                            <th>TOTAL</th>
+                                            <th>DITAGIH</th>
+                                            <th>DITERIMA</th>
                                             <th>YTH</th>
                                             <th>KM</th>
-                                            <th>TOTAL</th>
-                                            <th>DITERIMA</th>
-                                            <th>SELISIH</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody_alih" class="">
@@ -559,18 +580,34 @@
                                                     <td>
                                                         {{ $loop->iteration }}
                                                     </td>
-                                                    <td class="text-nowrap">
+                                                    <td class="text-nowrap text-center">
 
-                                                        @if ($pdf_inv->total - $pdf_inv->terbayar == 0)
+                                                        @if ($pdf_inv->kirim == 0)
+                                                        <button type="button" value="{{ $pdf_inv->id }}"
+                                                            onclick="kirim_invoice(this)"
+                                                            class="btn btn-label-success btn-sm "><i
+                                                                class="bi bi-send-check-fill"></i></button>
+                                                        @elseif ($pdf_inv->total - $pdf_inv->terbayar == 0)
+                                                        <button type="button" value="{{ $pdf_inv->id }}"
+                                                            onclick="batal_kirim_invoice(this)"
+                                                            class="btn btn-label-danger btn-sm "><i
+                                                                class="bi bi-send-dash-fill"></i></button>
                                                             <input readonly disabled checked type="checkbox"
                                                                 class="form-check-input"
                                                                 id="kontainer_check[{{ $loop->iteration }}]">
-                                                        @elseif ($pdf_inv->total - $pdf_inv->terbayar > 0)
+                                                            
+                                                        @elseif ($pdf_inv->total - $pdf_inv->terbayar > 0 && $pdf_inv->kirim == 1)
                                                             <div class="validation-container">
+                                                                 <button type="button" value="{{ $pdf_inv->id }}"
+                                                                    onclick="batal_kirim_invoice(this)"
+                                                                    class="btn btn-label-danger btn-sm "><i
+                                                                        class="bi bi-send-dash-fill"></i></button>
                                                                 <input data-tagname={{ $loop->iteration }} type="checkbox"
                                                                     class="form-check-input check-container2"
                                                                     id="kontainer_check[{{ $loop->iteration }}]"
                                                                     name="letter" value="{{ $pdf_inv->id }}" autofocus>
+
+                                                               
 
                                                             </div>
                                                         @endif
@@ -583,10 +620,58 @@
                                                         <a type="button" href="/preview-invoice/{{ $pdf_inv->path }}"
                                                             class="btn btn-info btn-sm ">Invoice <i
                                                                 class="fa fa-eye"></i></a>
+                                                       
                                                         <button type="button" value="{{ $pdf_inv->id }}"
                                                             onclick="delete_invoice(this)"
                                                             class="btn btn-danger btn-sm "><i
                                                                 class="fa fa-trash"></i></button>
+
+                                                    </td>
+
+                                                    <td>
+
+                                                        <div class="widget4">
+                                                            <div class="widget4-group">
+                                                                <div class="widget4-addon">
+                                                                    
+                                                                        <h2 class="widget4-subtitle">
+                                                                            {{ round(($pdf_inv->terbayar / $pdf_inv->total) * 100) }}%
+                                                                        </h2>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            @if (round(($pdf_inv->terbayar / $pdf_inv->total) * 100) == 100)
+                                                                <div class="progress progress-sm">
+                                                                    <div class="progress-bar bg-success"
+                                                                        style="width: 100%"></div>
+                                                                </div>
+                                                            @else
+                                                                <div class="progress progress-sm">
+                                                                    <div class="progress-bar bg-danger"
+                                                                        style="width: {{ round(($pdf_inv->terbayar / $pdf_inv->total) * 100) }}%"></div>
+                                                                </div>
+                                                            @endif
+                                                            <div class="widget4-group">
+                                                                <div class="widget4-addon">
+                                                                    <h2 class="widget4-subtitle">Progress Bayar</h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {{-- <div class="widget4">
+                                                                <div class="widget4-group">
+                                                                    <div class="widget4-display">
+                                                                        <h6 class="widget4-subtitle">20%</h6>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- BEGIN Progress -->
+                                                                <div class="progress progress-sm">
+                                                                    <div class="progress-bar bg-primary" style="width: 20%"></div>
+                                                                </div>
+                                                                <!-- END Progress -->
+                                                            </div> --}}
+
+
 
                                                     </td>
 
@@ -617,6 +702,20 @@
                                                     </td>
 
                                                     <td>
+                                                        @rupiah($pdf_inv->total)
+
+                                                    </td>
+
+                                                    <td>
+                                                        @rupiah($pdf_inv->total - $pdf_inv->terbayar)
+
+                                                    </td>
+                                                    <td>
+                                                        @rupiah($pdf_inv->terbayar)
+
+                                                    </td>
+
+                                                    <td>
                                                         {{ $pdf_inv->yth }}
 
                                                     </td>
@@ -624,18 +723,8 @@
                                                         {{ $pdf_inv->km }}
 
                                                     </td>
-                                                    <td>
-                                                        @rupiah($pdf_inv->total)
 
-                                                    </td>
-                                                    <td>
-                                                        @rupiah($pdf_inv->terbayar)
 
-                                                    </td>
-                                                    <td>
-                                                        @rupiah($pdf_inv->total - $pdf_inv->terbayar)
-
-                                                    </td>
 
 
                                                 </tr>

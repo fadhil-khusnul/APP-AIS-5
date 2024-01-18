@@ -1,5 +1,11 @@
-"use strict";$(function(){$("#inputmask-1").inputmask({
-    mask:"99/99/9999",placeholder:"mm/dd/yyyy"});$("#inputmask-2").inputmask({mask:"(999) 999-9999"});$("#inputmask-3").inputmask(
+"use strict";$(function(){
+    
+    $("#inputmask-1").inputmask({
+    mask:"99/99/9999",placeholder:"mm/dd/yyyy"});
+    $("#inputmask-2").inputmask({
+        mask:"(999) 999-9999"
+});
+    $("#inputmask-3").inputmask(
         {mask:"99-9999999",
         placeholder:
         ""})

@@ -13952,6 +13952,9 @@ body.preload-hide .preload {
 .seratus {
     width: 100% !important;
 }
+.no-border {
+  border: 0 !important;
+}
 
 
 

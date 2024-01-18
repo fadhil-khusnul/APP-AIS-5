@@ -49,6 +49,7 @@ Route::put('/ppn-update', [DataController::class, 'ppn_update']);
 
 Route::get('/user', [UserController::class, 'index']);
 Route::get('/user/{remember_token}', [UserController::class, 'edit_profile']);
+Route::post('/user/{remember_token}', [UserController::class, 'update_profile']);
 Route::get('/user/{id}/edit', [UserController::class, 'show']);
 Route::put('/user/{id}', [UserController::class, 'update']);
 Route::delete('/user/{id}', [UserController::class, 'destroy']);
@@ -57,6 +58,20 @@ Route::post('/user-create', [UserController::class, 'store']);
 
 //LOGIN
 Route::get('/login', [LoginController::class, 'login']);
+Route::get('/auth/redirect', [LoginController::class, 'redirectToProvider']);
+Route::get('/auth/callback', [LoginController::class, 'handleProviderCallback']);
+Route::get('/auth/reset-password', [LoginController::class, 'reset_password']);
+Route::get('/code-verification', [LoginController::class, 'code_verification'])->name('code-verification');
+Route::get('/konfirmasi-password', [LoginController::class, 'konfirmasi_password'])->name('konfirmasi-password');
+Route::post('/verifikasi-otp', [LoginController::class, 'verifikasi_otp'])->name('verifikasi-otp');
+Route::post('/confirm-password', [LoginController::class, 'confirm_password'])->name('confirm-password');
+Route::post('/verifikasi-ulang-otp', [LoginController::class, 'verifikasi_ulang_otp']);
+Route::post('/resend-code', [LoginController::class, 'resend_code'])->name('resend-code');
+Route::post('/getOTP', [LoginController::class, 'getOTP']);
+Route::post('/check-OTP', [LoginController::class, 'check_OTP']);
+Route::post('/checkEmail', [LoginController::class, 'check_Email']);
+// Route::post('/getNewOTPCode', [LoginController::class, 'getNewOTPCode']);
+
 Route::get('/logout', [LoginController::class, 'logout']);
 
 
@@ -395,7 +410,10 @@ Route::post('/kontainer-dibayar-ii', [InvoiceLoadController::class, 'dibayar']);
 Route::post('/getNomorInvoice', [InvoiceLoadController::class, 'nomor_invoice']);
 Route::get('/preview-invoice/{path}', [InvoiceLoadController::class, 'preview_invoice']);
 Route::delete('/delete-invoice/{id}', [InvoiceLoadController::class, 'delete_invoice']);
+Route::post('/kirim-invoice/{id}', [InvoiceLoadController::class, 'kirim_invoice']);
+Route::post('/batal-kirim-invoice/{id}', [InvoiceLoadController::class, 'batal_kirim_invoice']);
 Route::delete('/delete-history-invoice/{slug}', [InvoiceLoadController::class, 'delete_history']);
+
 
 
 

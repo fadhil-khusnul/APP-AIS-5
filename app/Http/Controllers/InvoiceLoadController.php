@@ -831,6 +831,25 @@ class InvoiceLoadController extends Controller
 
     }
 
+    public function kirim_invoice($id){
+        $invoice = InvoiceLoad::findOrFail($id);
+
+        $kirim = [
+            "kirim" => 1,
+        ];
+
+        $invoice->update($kirim);
+    }
+    public function batal_kirim_invoice($id){
+        $invoice = InvoiceLoad::findOrFail($id);
+
+        $kirim = [
+            "kirim" => 0,
+        ];
+
+        $invoice->update($kirim);
+    }
+
     public function delete_history(Request $request)
     {
         // dd($request);
