@@ -1,27 +1,27 @@
-"use strict";$(function(){
+"use strict"; $(function () {
     $("#planload").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 3, 4, 5, 6, 7],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -31,28 +31,28 @@
         }],
     });
     $("#plandischarge").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -62,28 +62,28 @@
         }],
     });
     $("#plantrucking").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -94,28 +94,28 @@
     });
 
     $("#processdischarge").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -125,28 +125,28 @@
         }],
     });
     $("#processtrucking").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -158,28 +158,28 @@
 
 
     $("#processload").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 3, 4, 5, 6, 7, 8],
             cascadePanes: false,
             viewTotal: true,
 
-          },
+        },
 
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -189,27 +189,27 @@
         }],
     })
     $("#realisasiload").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 3, 4, 5, 6, 7, 8],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -219,27 +219,27 @@
         }],
     });
     $("#realisasipod").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 3, 4, 5, 6, 7, 8],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -250,27 +250,27 @@
     });
 
     $("#summaryloadreport").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -280,27 +280,27 @@
         }],
     });
     $("#invoicedischarge").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -310,27 +310,27 @@
         }],
     });
     $("#tabelinvoice").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom: "\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ", pageLength: 20,
         // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
             columns: [1, 2, 3, 4, 5, 6, 7],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
@@ -341,52 +341,60 @@
     });
 
     $("#containerloadreport").DataTable({
-        responsive:true,
+        responsive: true,
         // dom: "Bfrtip",
         // dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
-        dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
+        dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
-        searchPanes:{
+        searchPanes: {
             layout: 'columns-1',
-            columns: [1, 3, 4,5,6,7,8, 9, 10,11,12],
+            columns: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             cascadePanes: false,
             viewTotal: true,
 
-          },
-        language:{
-            searchPanes:{
-                count:"{total} found",
-                countFiltered:"{shown} / {total}"
+        },
+        language: {
+            searchPanes: {
+                count: "{total} found",
+                countFiltered: "{shown} / {total}"
             }
         },
-        columnDefs:[{
-            searchPanes:{
+        columnDefs: [{
+            searchPanes: {
                 show: true,
                 cascadePanes: false,
 
 
             },
-            targets: [3,4,6,7,8,9,10,11,12],
+            targets: [3, 4, 6, 7, 8, 9, 10, 11, 12],
         }],
 
-       
-        buttons:[
-       
-        {
+
+        buttons: [
+            {
+                extend: "excel",
+                className: "btn btn-flat-success",
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+                }
+
+            },
+
+            {
                 extend: 'pdf',
                 orientation: 'landscape',
-                className:"btn btn-flat-success",
-                className:"btn btn-flat-success",
-                pageSize : 'LEGAL',
-                customize : function(doc){
+                className: "btn btn-flat-success",
+                className: "btn btn-flat-success",
+                pageSize: 'LEGAL',
+                customize: function (doc) {
                     doc.defaultStyle.alignment = 'center';
                     doc.styles.tableHeader.alignment = 'center';
                     doc.styles.tableHeader.fillColor = '#00ad4c';
-                    doc.content[1].table.widths = [15,70,50,70,50,50,80,50,50,70,50,50,70,70];;
+                    doc.content[1].table.widths = [15, 70, 50, 70, 50, 50, 80, 50, 50, 70, 50, 50, 70, 70];;
                 },
                 exportOptions: {
-                    columns: [0,2,3,4,5,6,7,8,9,10,11,12,13,14],
+                    columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
                 }
             },
         ],
