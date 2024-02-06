@@ -555,16 +555,15 @@
 
 
                                 <table id="tabel_invoice" class="table table-bordered table-hover mb-0 seratus">
-                                    <thead id="thead_alih" class="table-danger">
-                                        <tr>
+                                    <thead id="thead_alih" class="table-danger text-center">
+                                        <tr class="text-bold">
                                             <th>No</th>
                                             <th></th>
                                             <th></th>
-                                            <th>Progress Bayar</th>
+                                            <th>Progress</th>
                                             <th>Jenis Invoice</th>
                                             <th>Tanggal Invoice</th>
                                             <th>Nomor Invoice</th>
-
                                             <th>TOTAL TAGIHAN</th>
                                             <th>PIUTANG</th>
                                             <th>DITERIMA</th>
@@ -736,8 +735,8 @@
                             </div>
 
                             <div style="" class="text-center">
-                                <button id="add_total" type="button" onclick="bayar()" class="btn btn-success">Dana
-                                    Telah Terima <i class="fa fa-check"></i></button>
+                                <button id="add_total" type="button" onclick="bayar()" class="btn btn-success">Proses Pembayaran
+                                     <i class="fa fa-check"></i></button>
                             </div>
 
 
