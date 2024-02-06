@@ -328,7 +328,6 @@ class ProcessLoadController extends Controller
         $supirs = VendorMobil::where("id", $driver)->get();
         $biayalain = BiayaLainPod::where("kontainer_id", $id)->get();
 
-        // dd($supirs[0]->nama_vendor);
         return response()->json([
             'result' => $container,
             'seal_containers' => $seal_containers,
