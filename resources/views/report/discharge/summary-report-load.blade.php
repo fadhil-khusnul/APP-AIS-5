@@ -19,7 +19,7 @@
                             <thead class="text-nowrap">
                                 <tr>
                                     <th>No</th>
-                                <th>Vessel</th>
+                                    <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
                                     <th>Pemilik Barang</th>

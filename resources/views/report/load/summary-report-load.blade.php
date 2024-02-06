@@ -59,9 +59,7 @@
                                         <td>
                                             {{$planload->select_company}}
                                         </td>
-                                        <td>
-                                            {{$planload->pengirim}}
-                                        </td>
+                                        
                                         <td>
                                             {{$planload->activity}}
                                         </td>
@@ -69,9 +67,7 @@
                                             {{$planload->pol}}
                                         </td>
                                         
-                                        <td>
-                                            {{$planload->pol}}
-                                        </td>
+                                       
                                         <td align="top" valign="top">
                                             <b>
                                                 {{$containers->where("job_id", $planload->id)->count()}} Kontainer
