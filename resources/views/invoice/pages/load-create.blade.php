@@ -565,8 +565,8 @@
                                             <th>Tanggal Invoice</th>
                                             <th>Nomor Invoice</th>
 
-                                            <th>TOTAL</th>
-                                            <th>DITAGIH</th>
+                                            <th>TOTAL TAGIHAN</th>
+                                            <th>PIUTANG</th>
                                             <th>DITERIMA</th>
                                             <th>YTH</th>
                                             <th>KM</th>
