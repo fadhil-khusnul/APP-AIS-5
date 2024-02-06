@@ -180,7 +180,7 @@
 
       <tfoot>
         <tr>
-          <td colspan="5" align="right">SUB TOTAL :</td>
+          <td colspan="3" align="right">SUB TOTAL :</td>
           <td>@rupiah2($container->sum('ongkos_supir'))</td>
           <td>@rupiah2($container->sum('biaya_trucking'))</td>
           <td>@rupiah2($container->sum('biaya_thc'))</td>
@@ -198,7 +198,7 @@
 
         </tr>
         <tr>
-          <td colspan="19">TOTAL : @rupiah($container->sum('ongkos_supir') + $container->sum('biaya_trucking') + $container->sum('biaya_thc') + $container->sum('biaya_stuffing') + $sum_alih + $container->sum('harga_batal') + $container->sum('biaya_seal') + $container->sum('freight') + $container->sum('lss') + $container->sum('thc_pod') + $container->sum('lolo') + $container->sum('dooring') + $container->sum('demurrage') + $container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod')) </td>
+          <td colspan="17">TOTAL : @rupiah($container->sum('ongkos_supir') + $container->sum('biaya_trucking') + $container->sum('biaya_thc') + $container->sum('biaya_stuffing') + $sum_alih + $container->sum('harga_batal') + $container->sum('biaya_seal') + $container->sum('freight') + $container->sum('lss') + $container->sum('thc_pod') + $container->sum('lolo') + $container->sum('dooring') + $container->sum('demurrage') + $container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod')) </td>
         </tr>
 
       </tfoot>

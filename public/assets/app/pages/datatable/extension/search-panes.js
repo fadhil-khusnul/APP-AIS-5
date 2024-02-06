@@ -343,8 +343,8 @@
     $("#containerloadreport").DataTable({
         responsive:true,
         // dom: "Bfrtip",
-        dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
-        // dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
+        // dom:"\n<'row'<'col-12'P>>\n<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n<'row'<'col-12'tr>>\n<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>\n    ",        pageLength: 20,
+        dom : '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
         // dom: 'BPQlfrtip',
         // "pageLength": 10,
         searchPanes:{
@@ -369,6 +369,27 @@
             },
             targets: [3,4,6,7,8,9,10,11,12],
         }],
+
+       
+        buttons:[
+       
+        {
+                extend: 'pdf',
+                orientation: 'landscape',
+                className:"btn btn-flat-success",
+                className:"btn btn-flat-success",
+                pageSize : 'LEGAL',
+                customize : function(doc){
+                    doc.defaultStyle.alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'center';
+                    doc.styles.tableHeader.fillColor = '#00ad4c';
+                    doc.content[1].table.widths = [15,70,50,70,50,50,80,50,50,70,50,50,70,70];;
+                },
+                exportOptions: {
+                    columns: [0,2,3,4,5,6,7,8,9,10,11,12,13,14],
+                }
+            },
+        ],
     });
 
     // $("#planload").DataTable({
