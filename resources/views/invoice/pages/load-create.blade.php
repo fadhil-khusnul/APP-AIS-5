@@ -619,14 +619,20 @@
 
                                 </div>
                               </div>
-                              @if (round(($pdf_inv->terbayar / $pdf_inv->total) * 100) == 100)
-                                <div class="progress progress-sm">
-                                  <div class="progress-bar bg-success" style="width: 100%"></div>
-                                </div>
+                              @if ($pdf_inv->total != 0)
+                                @if (round(($pdf_inv->terbayar / $pdf_inv->total) * 100) == 100)
+                                  <div class="progress progress-sm">
+                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                  </div>
+                                @else
+                                  <div class="progress progress-sm">
+                                    <div class="progress-bar bg-danger"
+                                      style="width: {{ round(($pdf_inv->terbayar / $pdf_inv->total) * 100) }}%"></div>
+                                  </div>
+                                @endif
                               @else
                                 <div class="progress progress-sm">
-                                  <div class="progress-bar bg-danger"
-                                    style="width: {{ round(($pdf_inv->terbayar / $pdf_inv->total) * 100) }}%"></div>
+                                  <div class="progress-bar bg-danger" style="width: 0%"></div>
                                 </div>
                               @endif
                               <div class="widget4-group">
