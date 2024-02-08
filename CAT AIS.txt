@@ -1,0 +1,6 @@
+1. Biaya trucking, freight, lss hanya super user (process load) pindah ke pod load
+2. POT DAN CODE vessel dihapus di process
+3. bug di biaya lain pod 
+4. ketika no materai dan ppn no jangan munculkan di pdf invoice
+5. tambahkan metode pembayaran di proses pembayaran
+6. export excel dengan format accunting untuk kolom harga
