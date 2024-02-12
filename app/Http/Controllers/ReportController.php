@@ -179,6 +179,24 @@ class ReportController extends Controller
             }
             $seals_2[$i] = array_values($seals_2[$i]);
         }
+
+        $subtotals = [
+            'ongkos_supir' => $containers->sum('ongkos_supir'),
+            'biaya_trucking' => $containers->sum('biaya_trucking'),
+            'biaya_thc' => $containers->sum('biaya_thc'),
+            'biaya_stuffing' => $containers->sum('biaya_stuffing'),
+            'harga_batal' => $containers->sum('harga_batal'),
+            'biaya_seal' => $containers->sum('biaya_seal'),
+            'freight' => $containers->sum('freight'),
+            'lss' => $containers->sum('lss'),
+            'thc_pod' => $containers->sum('thc_pod'),
+            'demurrage' => $containers->sum('demurrage'),
+            'lolo' => $containers->sum('lolo'),
+            'dooring' => $containers->sum('dooring'),
+            'total_biaya_lain' => $containers->sum('total_biaya_lain'),
+            'total_biaya_lain_pod' => $containers->sum('total_biaya_lain_pod'),
+            // Add more keys for other columns as needed
+        ];
         
 
 
@@ -186,6 +204,7 @@ class ReportController extends Controller
 
             "load" => $loads,
             "containers" => $containers,
+            "subtotals" => $subtotals,
             "seals" => $seals_2,
             "report" => $report,
             "sum_alih" => $sum_alih,
@@ -195,9 +214,9 @@ class ReportController extends Controller
         ]);
         $pdf->setPaper('A4', 'landscape');
 
-        $pdf->save($path1);
+        return $pdf->stream();
 
-        return response()->download($path1);
+        // return response()->download($path1);
 
     }
 

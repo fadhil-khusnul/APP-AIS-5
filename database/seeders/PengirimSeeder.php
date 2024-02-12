@@ -15,11 +15,39 @@ class PengirimSeeder extends Seeder
     {
         //
         Pengirim::create([
-            'nama_costumer' => 'Nama Pengirim 01',
-            'alamat' => 'Alamat Pengirim 01',
-            'email' => 'Email Pengirim 01',
-            'no_telp' => 'No. Telp Pengirim 01',
-            'rekening' => 'Rekening Pengirim 01',
+            'nama_costumer' => 'GATOT',
+            'alamat' => '-',
+            'email' => '-',
+            'no_telp' => '-',
+            'rekening' => '-',
+        ]);
+        Pengirim::create([
+            'nama_costumer' => 'MERRY',
+            'alamat' => '-',
+            'email' => '-',
+            'no_telp' => '-',
+            'rekening' => '-',
+        ]);
+        Pengirim::create([
+            'nama_costumer' => 'PT. AIS LOGISTIC MAKASSAR',
+            'alamat' => '-',
+            'email' => '-',
+            'no_telp' => '-',
+            'rekening' => '-',
+        ]);
+        Pengirim::create([
+            'nama_costumer' => 'HAJI SUKRI',
+            'alamat' => '-',
+            'email' => '-',
+            'no_telp' => '-',
+            'rekening' => '-',
+        ]);
+        Pengirim::create([
+            'nama_costumer' => 'HENDRA',
+            'alamat' => '-',
+            'email' => '-',
+            'no_telp' => '-',
+            'rekening' => '-',
         ]);
 
         Pengirim::create([

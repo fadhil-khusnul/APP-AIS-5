@@ -318,7 +318,7 @@
     // "pageLength": 10,
     searchPanes: {
       layout: 'columns-1',
-      columns: [1, 2, 3, 4, 5, 6, 7],
+      columns: [1, 2, 3, 4, 5, 6, 7, 8],
       cascadePanes: false,
       viewTotal: true,
 
@@ -336,7 +336,7 @@
 
 
       },
-      targets: [2, 3, 4],
+      targets: [2, 3, 4, 5],
     }],
   });
 
@@ -344,8 +344,8 @@
     responsive: true,
     dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"Bfrtip>>',
     searchPanes: {
+      columns: [3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       layout: 'columns-1',
-      columns: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       cascadePanes: false,
       viewTotal: true,
     },
@@ -355,13 +355,26 @@
         countFiltered: "{shown} / {total}"
       }
     },
-    columnDefs: [{
-      searchPanes: {
-        show: true,
-        cascadePanes: false,
+
+    columnDefs: [
+      {
+
+        targets: [3, 4, 6, 7, 8, 9, 10, 11, 12],
+        searchPanes: {
+          show: true,
+          cascadePanes: false,
+        },
+
+
       },
-      targets: [3, 4, 6, 7, 8, 9, 10, 11, 12],
-    }],
+      {
+
+
+        targets: 15,
+        visible: false
+
+      }
+    ],
     createdRow: function (row, data, dataIndex) {
       // Set the content of the first column to the row index + 1
       $('td:eq(0)', row).html(dataIndex + 1);
@@ -387,9 +400,9 @@
           });
         });
       },
-    
+
       exportOptions: {
-        columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        columns: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15],
       }
     },
     {

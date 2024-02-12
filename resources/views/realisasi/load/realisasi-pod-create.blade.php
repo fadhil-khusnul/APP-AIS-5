@@ -633,7 +633,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
               <label class="col-sm-4 col-form-label" for="">Lolo :<span class="text-danger">*</span></label>
               <div class="col-sm-8 validation-container">
                 <div class="input-group input-group-sm">
@@ -644,7 +644,7 @@
 
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">Dooring :<span class="text-danger">*</span></label>
@@ -765,50 +765,7 @@
             </button>
           </div>
           <div class="modal-body d-grid gap-3">
-            <div class="row">
-              <label class="col-sm-4 col-form-label" for="">Biaya Trucking :<span
-                  class="text-danger">*</span></label>
-              <div class="col-sm-8 validation-container">
-
-                <div class="input-group input-group-sm">
-                  <span class="input-group-text" for="">Rp.</span>
-
-                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                    id="biaya_trucking_tambah" name="biaya_trucking_tambah" placeholder="Biaya Trucking..." required
-                    onblur="validate_biaya_trucking_tambah(this)">
-
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <label class="col-sm-4 col-form-label" for="">Biaya Freight:<span
-                  class="text-danger">*</span></label>
-              <div class="col-sm-8 validation-container">
-
-                <div class="input-group input-group-sm">
-                  <span class="input-group-text" for="">Rp.</span>
-
-                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                    id="freight_tambah" name="freight_tambah" placeholder="Biaya Freight..." required>
-
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-4 col-form-label" for="">Biaya LSS:<span
-                  class="text-danger">*</span></label>
-              <div class="col-sm-8 validation-container">
-
-                <div class="input-group input-group-sm">
-                  <span class="input-group-text" for="">Rp.</span>
-
-                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
-                    id="lss_tambah" name="lss_tambah" placeholder="Biaya LSS..." required>
-
-                </div>
-              </div>
-            </div>
+          
 
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">THC POD :<span class="text-danger">*</span></label>
@@ -822,7 +779,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
               <label class="col-sm-4 col-form-label" for="">Lolo :<span class="text-danger">*</span></label>
               <div class="col-sm-8 validation-container">
                 <div class="input-group input-group-sm">
@@ -833,7 +790,7 @@
 
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">Dooring :<span class="text-danger">*</span></label>

@@ -61,6 +61,34 @@
     margin-bottom: 0; */
 
 }
+
+header {
+
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: left;
+    font-size: 12px;
+}
+
+main {
+    margin: 0;
+    /* padding-top: 100px; */
+}
+
+body {
+    padding-top: 220px;
+    padding-bottom: 20px;
+
+}
 .header-invoice {
     position: fixed;
     /* margin-top: 20px; */
@@ -85,7 +113,7 @@
     background-color: #4caf50 ;
 }
 .ttd{
-    width: 95%;
+    width: 20%;
 }
 
 .judul {
@@ -128,6 +156,7 @@
     /* padding-bottom: 20px; */
 }
 .left {
+
     /* font-family: Calibri; */
     /* font-weight: bold;
     text-transform: uppercase; */
@@ -136,15 +165,59 @@
     /* tab-size: 4; */
     /* padding-bottom: 20px; */
 }
+.td_top ol {
+    padding-top: 0;
+    margin-top: 0;
+
+
+}
+
+.left-si {
+
+    font-family: Calibri;
+    font-size: 12px;
+    margin-top: 100px;
+    padding: 2px;
+    
+}
+
+
+
+.left-si tr td {
+    padding: 0px;
+
+}
 
 
 .title1 {
-    /* font-family: Calibri; */
+    position: fixed;
+    font-family: Calibri;
     font-weight: bold;
     font-style: normal;
-    font-size: 28px;
-    color: rgb(255, 0, 51);
+    font-size: 24px;
+    color: #4D78C4;
+    top: -10;
+    left: 0;
+    right: 0;
+    align-items: center;
+    text-align: center;
 
+}
+.header-si {
+    position: fixed;
+    top: -5;
+    left: 50;
+    width: 15%;
+  
+}
+.header-shipping {
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    top: 30;
+    left: 180;
+    width: 30%;
+  
 }
 .title2 {
     /* font-family: Calibri; */
@@ -165,5 +238,53 @@
     background-color: #e6e6e6aa;
     text-align: right;
     border: 0;
+
+}
+
+
+table.table_si {
+    /* margin-top: 100px; */
+    font-size: 12px;
+    text-align: left;
+    border-collapse: collapse;
+    display: table;
+    table-layout: fixed;
+    word-wrap: break-word;
+
+
+}
+
+
+
+
+.table_si thead tr:first-child {
+    background-color: #F27825;
+    color: #ffffff;
+
+
+}
+
+.table_si thead tr:nth-child(2) {
+    background-color: #F27825;
+    color: #ffffff;
+    text-align: center;
+
+
+}
+
+.table_si tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+
+
+}
+
+.table_si tbody tr td {
+    padding: 0;
+    color: #0c341d;
+
+}
+
+.table_si thead tr td {
+    padding: 2px;
 
 }

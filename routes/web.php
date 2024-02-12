@@ -18,7 +18,6 @@ use App\Http\Controllers\TruckingController;
 use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\StuffingController;
 use App\Http\Controllers\StrippingController;
-use App\Http\Controllers\AlihKapalController;
 use App\Http\Controllers\InvoiceLoadController;
 use App\Http\Controllers\TypeContainerController;
 use App\Http\Controllers\RealisasiLoadController;
@@ -210,6 +209,7 @@ Route::get('/realisasi-pod-create/{slug}', [RealisasiLoadController::class, 'cre
 Route::post('/ok-load', [RealisasiLoadController::class, 'ok_load']);
 Route::put('/remove-ok-load/{id}', [RealisasiLoadController::class, 'remove_ok_load']);
 Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
+Route::post('/masukkan-biaya-pol', [RealisasiLoadController::class, 'masukkan_biaya_pol']);
 Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fee']);
 
 
@@ -272,8 +272,8 @@ Route::post('/konfirmasi-si', [PdfController::class, 'konfirmasi_si']);
 Route::delete('/delete-si/{id}', [PdfController::class, 'delete_si']);
 
 //ALih Kapal
-Route::get('/alih-kapal', [AlihKapalController::class, 'index']);
-Route::get('/batal-muat', [AlihKapalController::class, 'index']);
+// Route::get('/alih-kapal', [AlihKapalController::class, 'index']);
+// Route::get('/batal-muat', [AlihKapalController::class, 'index']);
 
 
 //seal

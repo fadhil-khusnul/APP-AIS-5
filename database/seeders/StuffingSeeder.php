@@ -22,5 +22,8 @@ class StuffingSeeder extends Seeder
         Stuffing::create([
             'kegiatan_stuffing' => 'Stuffing Luar',
         ]);
+        Stuffing::create([
+            'kegiatan_stuffing' => 'Trucking Muatan',
+        ]);
     }
 }

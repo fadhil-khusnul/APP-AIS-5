@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PDF;
 use App\Models\PlanLoad;
 use App\Models\AlihKapal;
 use App\Models\BatalMuat;
@@ -25,6 +24,8 @@ use App\Models\PlanDischargeContainer;
 use App\Models\SiPdfContainer;
 use App\Models\SealContainer;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Carbon\Carbon;
 
 
@@ -48,8 +49,14 @@ class PdfController extends Controller
             $sizez [$i] = ContainerPlanload::where('id', $id_container[$i])->value('size');
 
         }
+        for ($i=0; $i < count($id_container) ; $i++) {
+
+            $types [$i] = ContainerPlanload::where('id', $id_container[$i])->value('type');
+
+        }
 
         $unique_size = array_values(array_unique($sizez));
+        $unique_type = array_values(array_unique($types));
 
         $jumlah = [];
         $quantity = [];
@@ -60,12 +67,12 @@ class PdfController extends Controller
                     $jumlah[$i] += 1;
                 }
             }
-            $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i];
+            $quantity[$i] = $jumlah[$i].' X '.$unique_size[$i].'/'.$unique_type[$i];
         }
 
         $old_slug = $request->old_slug;
         $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-        $loads = OrderJobPlanload::where('id', $old_id)->get();
+        $loads = OrderJobPlanload::find($old_id);
         $alihs = AlihKapal::where('kontainer_alih', $request->chek_container)->get();
 
         // dd($containers);
@@ -168,7 +175,7 @@ class PdfController extends Controller
 
 
         $pdf1 = Pdf::loadview('pdf.create_si',[
-            "loads" => $loads,
+            "load" => $loads,
             "containers" => $new_container,
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
@@ -183,12 +190,14 @@ class PdfController extends Controller
 
         ]);
 
+        $this->makeFooter($pdf1);
         $pdf1->save($save1);
+
 
         //ON-PROGRESS
 
         $pdf2 = Pdf::loadview('pdf.create_si_progress',[
-            "loads" => $loads,
+            "load" => $loads,
             "containers" => $new_container,
             "seal_container" => $seal_container,
             "vessel" => $old_slug,
@@ -204,13 +213,14 @@ class PdfController extends Controller
         $status1 = 'ON-PROGRESS';
 
         $this->make_watermark($pdf2, $status1);
+        $this->makeFooter($pdf2);
 
         $pdf2->save($save2);
 
 
         //DITOLAK
         $pdf3 = Pdf::loadview('pdf.create_si_progress',[
-            "loads" => $loads,
+            "load" => $loads,
             "containers" => $new_container,
             "vessel" => $old_slug,
             "shipper" => $request->shipper,
@@ -225,6 +235,7 @@ class PdfController extends Controller
         $status2 = 'SI-DITOLAK';
 
         $this->make_watermark($pdf3, $status2);
+        $this->makeFooter($pdf3);
 
         $pdf3->save($save3);
 
@@ -232,6 +243,25 @@ class PdfController extends Controller
 
         return response()->download($save2);
     }
+
+    public function makeFooter($pdf) {
+        $pdf->render();
+    
+        $canvas = $pdf->getCanvas();
+        
+        // Set the coordinates for the footer text
+        $x = $canvas->get_width() - 100 ; // X coordinate (left)
+        $y = $canvas->get_height() - 55;
+        // $canvas->set_opacity(.1, "Multiply"); 
+        
+        // Set the footer text
+        $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
+    
+    
+        // Add the footer to the PDF
+        $canvas->page_text($x, $y, $text, "Calibri", 8, [0, 0, 0]);
+    
+      }
     public function create_si_alih(Request $request)
     {
         $random = Str::random(15);

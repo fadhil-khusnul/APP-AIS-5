@@ -223,7 +223,7 @@
                           -
                         @endif
                       </td>
-                      
+
                       <td>
                         @if ($container->pod_container != null)
                           {{ $container->pod_container }}
@@ -233,7 +233,7 @@
                       </td>
                       <td>
                         @if ($container->date_activity != null)
-                        {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
+                          {{ \Carbon\Carbon::parse($container->date_activity)->isoFormat('dddd, DD MMMM YYYY') }}
                         @else
                           -
                         @endif
@@ -268,19 +268,23 @@
         <!-- END Portlet -->
       </div>
 
-
-
-
       <div class="col-md-6">
-        <div class="portlet">
 
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">DETAIL BARANG/KONTAINER</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
           <div class="portlet-body">
 
             <!-- BEGIN Form -->
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>DETAIL BARANG/KONTAINER</b></u></label>
-            </div>
+            
 
             <div class="table-responsive">
               <table id="table_biaya2" class="table mb-0" style="width: 100% !important">
@@ -339,20 +343,30 @@
             <!-- END Form -->
           </div>
         </div>
-        <!-- BEGIN Portlet -->
-
-        <!-- END Portlet -->
       </div>
+
+
+
+
+
+  
       <div class="col-md-6">
-        <div class="portlet">
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">BIAYA LAIN KONTAINER</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
 
           <div class="portlet-body">
 
             <!-- BEGIN Form -->
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>BIAYA LAIN KONTAINER (JIKA ADA)</b></u></label>
-            </div>
+           
 
             <div class="table-responsive">
 
@@ -428,15 +442,22 @@
         <!-- END Portlet -->
       </div>
       <div class="col-md-12">
-        <div class="portlet">
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">KONTAINER BATAL MUAT (JIKA ADA)</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
 
           <div class="portlet-body">
 
             <!-- BEGIN Form -->
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>CONTAINER BATAL MUAT (JIKA ADA)</b></u></label>
-            </div>
+           
 
             <div class="table-responsive">
 
@@ -506,15 +527,24 @@
         <!-- END Portlet -->
       </div>
       <div class="col-md-12">
-        <div class="portlet">
+        <div class="portlet portlet-collapsed">
+
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">KONTAINER ALIH KAPAL (JIKA ADA)</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
+          
 
           <div class="portlet-body">
 
             <!-- BEGIN Form -->
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>KONTAINER ALIH KAPAL (JIKA ADA)</b></u></label>
-            </div>
+            
             <div class="table-responsive">
 
               <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
@@ -602,12 +632,19 @@
       </div>
 
       <div class="col-md-12 col-xl-12">
-        <div class="portlet">
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">INFORMASI KONTAINER</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
           <div class="portlet-body">
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>INFORMASI KONTAINER :</b></u></label>
-            </div>
+            
 
             <div class="row row-cols-lg-auto py-5 g-3">
               <label for="" class="col-form-label">Filter Tabel :</label>
@@ -952,7 +989,7 @@
 
               </div>
             </div>
-          
+
 
 
             <div class="row">
@@ -1009,7 +1046,7 @@
 
 
             </div>
-          
+
 
 
             <div class="row ">
@@ -1164,7 +1201,7 @@
                 </div>
               </div>
             </div>
-           
+
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">Ongkos Supir :<span
                   class="text-danger">*</span></label>
@@ -1193,7 +1230,7 @@
                 </div>
               </div>
             </div>
-        
+
 
 
 
@@ -1498,7 +1535,7 @@
                 </div>
               </div>
             </div>
-        
+
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">Ongkos Supir :<span
                   class="text-danger">*</span></label>
@@ -1568,8 +1605,8 @@
                 <select disabled id="pengirim_disabled" name="pengirim_disabled" class="form-select">
                   <option selected disabled>Pilih Pengirim</option>
                   @foreach ($pengirims as $pengirim)
-                    <option value="{{ $pengirim->nama_costumer }}"
-                      @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>{{ $pengirim->nama_costumer }}
+                    <option value="{{ $pengirim->nama_costumer }}" @if ($pengirim->nama_costumer == $planload->pengirim) selected @endif>
+                      {{ $pengirim->nama_costumer }}
                     </option>
                   @endforeach
                 </select>
@@ -1583,8 +1620,8 @@
                 <select disabled id="penerima_disabled" name="penerima_disabled" class="form-select">
                   <option selected disabled>Pilih Pengirim</option>
                   @foreach ($penerimas as $penerima)
-                    <option value="{{ $penerima->nama_penerima }}"
-                      @if ($penerima->nama_penerima == $planload->penerima) selected @endif>{{ $penerima->nama_penerima }}
+                    <option value="{{ $penerima->nama_penerima }}" @if ($penerima->nama_penerima == $planload->penerima) selected @endif>
+                      {{ $penerima->nama_penerima }}
                     </option>
                   @endforeach
                 </select>
@@ -1595,8 +1632,8 @@
               <label class="col-sm-4 col-form-label">Size :<span class="text-danger">*</span></label>
               <div class="col-sm-8 validation-container">
 
-                <select disabled data-bs-toggle="tooltip" id="size_disabled" name="size_disabled"
-                  class="form-select" @readonly(true) required>
+                <select disabled data-bs-toggle="tooltip" id="size_disabled" name="size_disabled" class="form-select"
+                  @readonly(true) required>
                   <option disabled>Pilih Size</option>
                   @foreach ($sizes as $size)
                     <option value="{{ $size->size_container }}" @if ($size->size_container) selected @endif>
@@ -1612,8 +1649,8 @@
               <label for="" class="col-sm-4 col-form-label">Type :<span class="text-danger">*</span></label>
               <div class="col-sm-8 validation-container">
 
-                <select disabled data-bs-toggle="tooltip" id="type_disabled" name="type_disabled"
-                  class="form-select" @readonly(true) required>
+                <select disabled data-bs-toggle="tooltip" id="type_disabled" name="type_disabled" class="form-select"
+                  @readonly(true) required>
                   <option disabled>Pilih Type</option>
                   @foreach ($types as $type)
                     <option value="{{ $type->type_container }}" @if ($type->type_container) selected @endif>
@@ -1630,10 +1667,9 @@
               <div class="col-sm-8 validation-container">
 
                 {{-- <input type="hidden" id="no_container_edit" name="no_container_edit"> --}}
-                <input disabled required data-bs-toggle="tooltip" type="text"
-                  class="form-control nomor_kontainer" id="nomor_kontainer_disabled" minlength="11" maxlength="11"
-                  name="nomor_kontainer_disabled" onblur="blur_no_container_edit(this)" required
-                  placeholder="XXXX0000000">
+                <input disabled required data-bs-toggle="tooltip" type="text" class="form-control nomor_kontainer"
+                  id="nomor_kontainer_disabled" minlength="11" maxlength="11" name="nomor_kontainer_disabled"
+                  onblur="blur_no_container_edit(this)" required placeholder="XXXX0000000">
               </div>
             </div>
 
@@ -1971,7 +2007,7 @@
               </div>
             </div>
 
-            
+
 
             <div class="row">
 
@@ -2028,7 +2064,7 @@
 
 
             </div>
-            
+
 
 
             <div class="row">
@@ -2186,7 +2222,7 @@
                 </div>
               </div>
             </div>
-            
+
 
             <div class="row">
               <label class="col-sm-4 col-form-label" for="">Ongkos Supir :<span

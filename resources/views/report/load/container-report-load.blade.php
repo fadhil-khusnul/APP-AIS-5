@@ -33,6 +33,7 @@
                   <th>Penerima</th>
                   <th>BL Number</th>
                   <th>Total Cost</th>
+                  <th>Cost</th>
                 </tr>
               </thead>
 
@@ -89,15 +90,19 @@
 
                     @if ($container->harga_alih != null)
                       <td>
-                        @rupiah($container->alihs->harga_alih_kapal + $container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod) </>
+                        @rupiah($container->alihs->harga_alih_kapal + $container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod)
 
                       </td>
                     @else
                       <td>
-                        @rupiah($container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod) </>
+                        @rupiah($container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod)
 
                       </td>
                     @endif
+                    <td>
+                      {{ $container->ongkos_supir + $container->biaya_trucking + $container->biaya_thc + $container->biaya_stuffing + $container->harga_batal + $container->biaya_seal + $container->freight + $container->lss + $container->thc_pod + $container->lolo + $container->dooring + $container->demurrage + $container->total_biaya_lain + $container->total_biaya_lain_pod }}
+
+                    </td>
 
 
 
@@ -127,7 +132,5 @@
   </div>
 
 
-  <script>
-   
-  </script>
+  <script></script>
 @endsection

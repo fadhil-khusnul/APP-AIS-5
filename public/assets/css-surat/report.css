@@ -1,4 +1,3 @@
-
 :root {
     font-family: 'Calibri';
 }
@@ -47,7 +46,7 @@
     font-style: italic;
 }
 
-.header-online{
+.header-online {
     position: fixed;
     /* float: right; */
     right: -20px;
@@ -56,7 +55,8 @@
     width: 20%;
     margin-bottom: 20px;
 }
-.header-online1{
+
+.header-online1 {
     position: fixed;
     /* float: right; */
     right: -20px;
@@ -76,6 +76,7 @@
 
 
 }
+
 .footer-invoice {
     position: fixed;
     bottom: -1.2cm;
@@ -87,6 +88,7 @@
 
 
 }
+
 .header-invoice2 {
     position: fixed;
     /* margin-top: 20px; */
@@ -97,6 +99,7 @@
 
 
 }
+
 .header-invoice3 {
     position: fixed;
     /* margin-top: 20px; */
@@ -107,7 +110,8 @@
 
 
 }
-.ttd{
+
+.ttd {
     width: 95%;
 }
 
@@ -121,6 +125,7 @@
     padding-bottom: 30px;
     margin-bottom: 30px;
 }
+
 .judul-container {
     /* font-family: Calibri; */
     font-weight: bold;
@@ -131,12 +136,15 @@
     padding-bottom: 30px;
     margin-bottom: 30px;
 }
-.left-table{
+
+.left-table {
     margin-left: 50px;
 }
+
 main {
     font-size: 11px;
 }
+
 .main {
     font-size: 16px;
 }
@@ -147,55 +155,68 @@ main {
     /* border: ; */
     width: 100%;
     margin-top: 20px;
+    display: table;
+
+    table-layout: fixed;
+    word-wrap: break-word;
+
+
 }
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 
 .table tbody tr td {
-text-align: left;
-padding: 4px;
+    text-align: left;
+    padding: 4px;
 
 }
 
-.table tr:nth-child(even){
+
+
+.table tr:nth-child(even) {
     background-color: #f2f2f2
 }
 
-.table tfoot tr:first-child{
+.table tfoot tr:first-child {
     text-align: right !important;
     font-weight: bold;
 
 
 }
-.table tfoot tr:nth-child(2){
+
+.table tfoot tr:nth-child(2) {
     text-align: center !important;
     font-weight: bold;
 
 
 }
-.harga{
+
+.harga {
     text-align: right !important;
 
 }
-.center{
+
+.center {
     text-align: center !important;
     align-items: center;
-    
+
 
 }
 
 .table th {
-color: white;
-text-align: center;
+    color: white;
+    text-align: center;
 
 }
 
 .hijau {
     background-color: #4caf50;
 }
+
 .biru {
     background-color: #4371c7;
 }
-
-
-
-
-

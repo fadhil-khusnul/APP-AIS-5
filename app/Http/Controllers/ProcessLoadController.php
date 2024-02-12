@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Cookie;
 use Session;
 use Tracker;
+use Dompdf\Canvas;
+use Dompdf\Dompdf;
 use App\Models\Spk;
+use Dompdf\Options;
 use App\Models\Depo;
 use App\Models\Seal;
+use Dompdf\FontMetrics;
 use App\Models\Penerima;
 use App\Models\Pengirim;
 use App\Models\PlanLoad;
@@ -24,19 +28,29 @@ use App\Models\VendorMobil;
 use Illuminate\Support\Str;
 use App\Models\BiayaLainnya;
 use App\Models\BiayaLainPod;
+use App\Models\BiayaLainPol;
 use App\Models\SpkContainer;
+
 use Illuminate\Http\Request;
 use App\Models\SealContainer;
 use App\Models\TypeContainer;
 use App\Models\SiPdfContainer;
 use App\Models\ShippingCompany;
-
 use Barryvdh\DomPDF\Facade\Pdf;
+// use PDF;
+
+
+// use Spatie\LaravelPdf\Facades\Pdf;
+// use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\DetailBarangLoad;
 use App\Models\OrderJobPlanload;
 use App\Models\ContainerPlanload;
+
 use App\Http\Requests\StoreProcessLoadRequest;
 use App\Http\Requests\UpdateProcessLoadRequest;
+
 
 class ProcessLoadController extends Controller
 {
@@ -327,6 +341,7 @@ class ProcessLoadController extends Controller
     $driver = ContainerPlanload::where('id', $id)->value('nomor_polisi');
     $supirs = VendorMobil::where("id", $driver)->get();
     $biayalain = BiayaLainPod::where("kontainer_id", $id)->get();
+    $biayalain_pol = BiayaLainPol::where("kontainer_id", $id)->get();
 
     return response()->json([
       'result' => $container,
@@ -334,6 +349,7 @@ class ProcessLoadController extends Controller
       'spks' => $spks,
       'supirs' => $supirs,
       'biayalain' => $biayalain,
+      'biayalain_pol' => $biayalain_pol,
     ]);
   }
   public function input_si($slug)
@@ -508,7 +524,7 @@ class ProcessLoadController extends Controller
       'date_activity' => $request->date_activity,
       'lokasi_depo' => $request->lokasi,
       'pod_container' => $request->pod_container,
-     
+
       'driver' => $request->driver,
       'nomor_polisi' => $request->nomor_polisi,
       'remark' => $request->remark,
@@ -874,13 +890,15 @@ class ProcessLoadController extends Controller
     ]);
   }
 
+ 
+
   public function cetak_detail(Request $request)
   {
 
 
     $old_slug = $request->old_slug;
     $old_id = OrderJobPlanload::where('slug', $old_slug)->value('id');
-    $loads = OrderJobPlanload::where('id', $old_id)->get();
+    $loads = OrderJobPlanload::find($old_id);
 
     $kontainer_id = DetailBarangLoad::where("job_id", $old_id)->distinct()->get('kontainer_id');
 
@@ -901,6 +919,7 @@ class ProcessLoadController extends Controller
         'nomor_kontainer' => $containers[$i][0]->nomor_kontainer,
         'pengirim' => $containers[$i][0]->pengirim,
         'pod_container' => $containers[$i][0]->pod_container,
+        'slug' => $containers[$i][0]->slug,
 
       ];
     }
@@ -908,30 +927,49 @@ class ProcessLoadController extends Controller
 
     $details = DetailBarangLoad::where("job_id", $old_id)->get();
 
-    // dd($request);
+
+    $new_container = collect($new_container)->whereNull('slug');
 
 
-    $save = 'storage/detail-load.pdf';
+    // $pdf = Pdf::view('pdf.detail.detail_barang_load', [
+    //   "load" => $loads,
+    //   "details" => $details,
+    //   "containers" => $new_container,
+    // ])->withBrowsershot(function (Browsershot $browsershot) { $browsershot->setNodeBinary('C:/Program Files/nodejs/node')->setOption('tempDir', storage_path('app/public')); })
+    // ->save(storage_path('app/public/example.pdf'));
 
-    $pdf1 = Pdf::loadview('pdf.detail.detail_barang_load', [
-      "loads" => $loads,
-      "report" => "MUATAN",
+    $save1 = 'storage/Packing-List-' . $old_slug . '.pdf';
+
+    $pdf = Pdf::loadView('pdf.detail.detail_barang_load', [
+      "load" => $loads,
       "details" => $details,
       "containers" => $new_container,
-
-
-
-
     ]);
-    // $pdf1->setPaper('A4', 'landscape');
-    $pdf1->save($save);
+    $pdf->setPaper('A4', 'landscape');
+    $this->makeFooter($pdf);
+
+    $pdf->save($save1);
+    return response()->download($save1);   
+    
+  }
+
+  public function makeFooter($pdf) {
+    $pdf->render();
+
+    $canvas = $pdf->getCanvas();
+    
+    // Set the coordinates for the footer text
+    $x = $canvas->get_width() - 100 ; // X coordinate (left)
+    $y = $canvas->get_height() - 55;
+    // $canvas->set_opacity(.1, "Multiply"); 
+    
+    // Set the footer text
+    $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
 
+    // Add the footer to the PDF
+    $canvas->page_text($x, $y, $text, "Calibri", 8, [0, 0, 0]);
 
-
-
-
-    return response()->download($save);
   }
 
 

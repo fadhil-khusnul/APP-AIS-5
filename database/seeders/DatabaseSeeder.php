@@ -38,6 +38,9 @@ class DatabaseSeeder extends Seeder
             SupirMobilSeeder::class,
             TypeContainerSeeder::class,
             PPNSeeder::class,
+            JobPlanloadSeeder::class,
+            SealCreateSeeder::class,
+            ContainerLoadSeeder::class,
 
         ]);
 

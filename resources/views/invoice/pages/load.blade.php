@@ -20,6 +20,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th></th>
+                                    <th>Nomor Invoice</th>
                                     <th>Vessel</th>
                                     <th>Vessel-Code</th>
                                     <th>Shipping Company</th>
@@ -46,6 +47,9 @@
 
                                         </a>
 
+                                    </td>
+                                    <td>
+                                        {{$planload->vessel}}
                                     </td>
                                     <td>
                                         {{$planload->vessel}}

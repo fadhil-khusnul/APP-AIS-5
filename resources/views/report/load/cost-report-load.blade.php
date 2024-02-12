@@ -38,7 +38,7 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="text-center text-nowrap">
-                                            <a href="/downloadcload/{{ $planload->slug }}"
+                                            <a href="/downloadcload/{{ $planload->slug }}" target="_blank"
                                                 class="btn btn-success btn-sm btn-icon "><i
                                                     class="bi bi-download"></i>
 

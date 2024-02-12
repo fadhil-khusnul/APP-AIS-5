@@ -16,20 +16,20 @@ class VendorMobilSeeder extends Seeder
     {
 
         VendorMobil::create([
-            'nama_vendor' => 'Vendor Mobil PT. Meratus Line',
+            'nama_vendor' => 'MERAH PUTIH TRANS',
+        ]);
+        VendorMobil::create([
+            'nama_vendor' => 'MITRA INTERTRANS FORWADING',
+        ]);
+        VendorMobil::create([
+            'nama_vendor' => 'TRANS MITRA TRANSPORT',
+        ]);
+        VendorMobil::create([
+            'nama_vendor' => 'MANSYUR',
+        ]);
+        VendorMobil::create([
+            'nama_vendor' => 'RAHMAT JAYA LAUT',
         ]);
 
-        VendorMobil::create([
-            'nama_vendor' => 'Vendor Mobil PT. Samudera Pacific Indonesia Lines',
-        ]);
-        VendorMobil::create([
-            'nama_vendor' => 'Vendor Mobil PT. Tempuran EMAS',
-        ]);
-        VendorMobil::create([
-            'nama_vendor' => 'Vendor Mobil PT. Tanto Intim Line',
-        ]);
-        VendorMobil::create([
-            'nama_vendor' => 'Vendor Mobil PT. Samudera Indonesia',
-        ]);
     }
 }

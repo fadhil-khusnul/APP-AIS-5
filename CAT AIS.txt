@@ -4,3 +4,11 @@
 4. ketika no materai dan ppn no jangan munculkan di pdf invoice
 5. tambahkan metode pembayaran di proses pembayaran
 6. export excel dengan format accunting untuk kolom harga
+7. batal muat
+8. Di SI tambah untuk total jumlah x size type container
+9. footer dan header fix ttap harus ada d setiap halaman dan headar pertabel 
+9. tiap row untuk packaging list kasih strip begitu pun invoice (biru) dan packing
+10. tambahkan kegiatan Trucking Load
+11. Trucking load tidak mempunyai si dan pod langsung buat invoice, untuk trucking load menjumlah semua kecuali ongkos supir
+11. Stripping (discharge) stuffing (load)
+12. pencariaan di invoice berdasarkan nomornya, shipper (pengirim), consigne (penerima), Penerima invoice 

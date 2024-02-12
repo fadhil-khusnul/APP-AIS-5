@@ -98,116 +98,122 @@
 
     </table>
 
+    <div class="table-container">
 
-
-    <table class="table" width="100%" align="center">
-      <thead class="biru">
-        <tr valign="top">
-          <th>NO</th>
-          <th>CONTAINER</th>
-          <th>SIZE/TYPE</th>
-          <th>ONGKOS SUPIR</th>
-          <th>BIAYA TRUCKING</th>
-          <th>THC</th>
-          <th>BIAYA STUFFING</th>
-          <th>BIAYA ALIH KAPAL</th>
-          <th>BIAYA BATAL MUAT</th>
-          <th>BIAYA SEAL</th>
-          <th>FREIGHT</th>
-          <th>LSS</th>
-          <th>THC POD</th>
-          <th>LOLO</th>
-          <th>DOORING</th>
-          <th>DEMURRAGE</th>
-          <th>TOTAL BIAYA LAIN</th>
-        </tr>
-      </thead>
-
-
-      <tbody>
-        @foreach ($containers as $container)
+      <table class="table" width="100%" align="center">
+        <thead class="biru">
           <tr valign="top">
-            <td>{{ $loop->iteration }}</td>
-            @if ($container->status == 'Alih-Kapal')
-              <td>{{ $container->nomor_kontainer }} (Alih-Kapal)</td>
-            @elseif ($container->status == 'Batal-Muat')
-              <td>{{ $container->nomor_kontainer }} (Batal Muat)</td>
-            @else
-              <td>{{ $container->nomor_kontainer }}</td>
-            @endif
-            <td>{{ $container->size }}/{{ $container->type }}</td>
-            {{-- <td align="center" valign="top">
-                                @foreach ($seals as $seal)
-                                    @foreach ($seal as $seal_2)
-                                        @if ($container->id == $seal_2['kontainer_id'])
-                                            @if ($seal[count($seal) - 1] != $seal[$loop->iteration - 1])
-                                                {{ $seal_2["seal_kontainer"] }}, &ensp;
-                                            @else
-                                                {{ $seal_2["seal_kontainer"] }}
-                                            @endif
-                                        @endif
-                                    @endforeach
-                                @endforeach
-                            </td> --}}
-            <td class="harga">@rupiah2($container->ongkos_supir)</td>
-            <td class="harga">@rupiah2($container->biaya_trucking)</td>
-            <td class="harga">@rupiah2($container->biaya_thc)</td>
-            <td class="harga">@rupiah2($container->biaya_stuffing)</td>
-            @if ($container->status == 'Alih-Kapal')
-              <td class="harga">@rupiah2($container->alihs->harga_alih_kapal)</td>
-            @else
-              <td class="harga">0</td>
-            @endif
-            @if ($container->status == 'Batal-Muat')
-              <td class="harga">@rupiah2($container->harga_batal)</td>
-            @else
-              <td class="harga">0</td>
-            @endif
-            <td class="harga">@rupiah2($container->biaya_seal)</td>
-            <td class="harga">@rupiah2($container->freight)</td>
-            <td class="harga">@rupiah2($container->lss)</td>
-            <td class="harga">@rupiah2($container->thc_pod)</td>
-            <td class="harga">@rupiah2($container->lolo)</td>
-            <td class="harga">@rupiah2($container->dooring)</td>
-            <td class="harga">@rupiah2($container->demurrage)</td>
-            <td class="harga">@rupiah2($container->total_biaya_lain + $container->total_biaya_lain_pod)</td>
-
+            <th width="3%" >NO</th>
+            <th width="10%">CONTAINER</th>
+            <th>SIZE/TYPE</th>
+            <th>ONGKOS SUPIR</th>
+            <th>BIAYA TRUCKING</th>
+            <th>THC POL</th>
+            <th>BIAYA STUFFING</th>
+            <th>BIAYA ALIH KAPAL</th>
+            <th>BIAYA BATAL MUAT</th>
+            <th>BIAYA SEAL</th>
+            <th>FREIGHT</th>
+            <th>LSS</th>
+            <th>THC POD</th>
+            <th>LOLO</th>
+            <th>DOORING</th>
+            <th>DEMURRAGE</th>
+            <th>TOTAL BIAYA LAIN</th>
           </tr>
-        @endforeach
+        </thead>
+  
+  
+        <tbody>
+          @foreach ($containers as $container)
+            <tr valign="top">
+              <td>{{ $loop->iteration }}</td>
+              @if ($container->status == 'Alih-Kapal')
+                <td>{{ $container->nomor_kontainer }} (Alih-Kapal)</td>
+              @elseif ($container->status == 'Batal-Muat')
+                <td>{{ $container->nomor_kontainer }} (Batal Muat)</td>
+              @else
+                <td>{{ $container->nomor_kontainer }}</td>
+              @endif
+              <td>{{ $container->size }}/{{ $container->type }}</td>
+              {{-- <td align="center" valign="top">
+                                  @foreach ($seals as $seal)
+                                      @foreach ($seal as $seal_2)
+                                          @if ($container->id == $seal_2['kontainer_id'])
+                                              @if ($seal[count($seal) - 1] != $seal[$loop->iteration - 1])
+                                                  {{ $seal_2["seal_kontainer"] }}, &ensp;
+                                              @else
+                                                  {{ $seal_2["seal_kontainer"] }}
+                                              @endif
+                                          @endif
+                                      @endforeach
+                                  @endforeach
+                              </td> --}}
+              <td class="harga">@rupiah2($container->ongkos_supir)</td>
+              <td class="harga">@rupiah2($container->biaya_trucking)</td>
+              <td class="harga">@rupiah2($container->biaya_thc)</td>
+              <td class="harga">@rupiah2($container->biaya_stuffing)</td>
+              @if ($container->status == 'Alih-Kapal')
+                <td class="harga">@rupiah2($container->alihs->harga_alih_kapal)</td>
+              @else
+                <td class="harga">0</td>
+              @endif
+              @if ($container->status == 'Batal-Muat')
+                <td class="harga">@rupiah2($container->harga_batal)</td>
+              @else
+                <td class="harga">0</td>
+              @endif
+              <td class="harga">@rupiah2($container->biaya_seal)</td>
+              <td class="harga">@rupiah2($container->freight)</td>
+              <td class="harga">@rupiah2($container->lss)</td>
+              <td class="harga">@rupiah2($container->thc_pod)</td>
+              <td class="harga">@rupiah2($container->lolo)</td>
+              <td class="harga">@rupiah2($container->dooring)</td>
+              <td class="harga">@rupiah2($container->demurrage)</td>
+              <td class="harga">@rupiah2($container->total_biaya_lain + $container->total_biaya_lain_pod)</td>
+  
+            </tr>
+          @endforeach
+  
+  
+        </tbody>
+  
+        <tfoot>
+          <tr>
+            <td colspan="3" align="right">SUB TOTAL :</td>
+            <td>@rupiah2($subtotals['ongkos_supir'])</td>
+            <td>@rupiah2($subtotals['biaya_trucking'])</td>
+            <td>@rupiah2($subtotals['biaya_thc'])</td>
+            <td>@rupiah2($subtotals['biaya_stuffing'])</td>
+            <td>@rupiah2($sum_alih)</td>
+            <td>@rupiah2($subtotals['harga_batal'])</td>
+            <td>@rupiah2($subtotals['biaya_seal'])</td>
+            <td>@rupiah2($subtotals['freight'])</td>
+            <td>@rupiah2($subtotals['lss'])</td>
+            <td>@rupiah2($subtotals['thc_pod'])</td>
+            <td>@rupiah2($subtotals['lolo'])</td>
+            <td>@rupiah2($subtotals['dooring'])</td>
+            <td>@rupiah2($subtotals['demurrage'])</td>
+            <td>@rupiah2($subtotals['total_biaya_lain'] + $subtotals['total_biaya_lain_pod'])</td>
+  
+          </tr>
+          <tr>
+            <td colspan="17">TOTAL : @rupiah($subtotals['ongkos_supir'] + $subtotals['biaya_trucking'] + $subtotals['biaya_thc'] + $subtotals['biaya_stuffing'] + $sum_alih + $subtotals['harga_batal'] + $subtotals['biaya_seal'] + $subtotals['freight'] + $subtotals['lss'] + $subtotals['thc_pod'] + $subtotals['lolo'] + $subtotals['dooring'] + $subtotals['demurrage'] + $subtotals['total_biaya_lain'] + $subtotals['total_biaya_lain_pod']) </td>
+          </tr>
+  
+        </tfoot>
+  
+  
+      </table>
+    </div>
 
 
-      </tbody>
 
-      <tfoot>
-        <tr>
-          <td colspan="3" align="right">SUB TOTAL :</td>
-          <td>@rupiah2($container->sum('ongkos_supir'))</td>
-          <td>@rupiah2($container->sum('biaya_trucking'))</td>
-          <td>@rupiah2($container->sum('biaya_thc'))</td>
-          <td>@rupiah2($container->sum('biaya_stuffing'))</td>
-          <td>@rupiah2($sum_alih)</td>
-          <td>@rupiah2($container->sum('harga_batal'))</td>
-          <td>@rupiah2($container->sum('biaya_seal'))</td>
-          <td>@rupiah2($container->sum('freight'))</td>
-          <td>@rupiah2($container->sum('lss'))</td>
-          <td>@rupiah2($container->sum('thc_pod'))</td>
-          <td>@rupiah2($container->sum('lolo'))</td>
-          <td>@rupiah2($container->sum('dooring'))</td>
-          <td>@rupiah2($container->sum('demurrage'))</td>
-          <td>@rupiah2($container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod'))</td>
-
-        </tr>
-        <tr>
-          <td colspan="17">TOTAL : @rupiah($container->sum('ongkos_supir') + $container->sum('biaya_trucking') + $container->sum('biaya_thc') + $container->sum('biaya_stuffing') + $sum_alih + $container->sum('harga_batal') + $container->sum('biaya_seal') + $container->sum('freight') + $container->sum('lss') + $container->sum('thc_pod') + $container->sum('lolo') + $container->sum('dooring') + $container->sum('demurrage') + $container->sum('total_biaya_lain') + $container->sum('total_biaya_lain_pod')) </td>
-        </tr>
-
-      </tfoot>
-
-
-    </table>
 
 
   </main>
+
+
 
 
 

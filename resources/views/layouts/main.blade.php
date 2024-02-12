@@ -97,6 +97,8 @@
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/tooltip-popover.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/dropdown-scrollbar.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/fullscreen-trigger.js"></script>
+  	<script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/portlet/tool.js"></script>
+
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/home.js"></script>
 
 

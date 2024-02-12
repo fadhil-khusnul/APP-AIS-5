@@ -32,5 +32,13 @@ class StrippingSeeder extends Seeder
             'kegiatan' => 'Stuffing Dalam',
             'jenis_kegiatan' => 'Stuffing',
         ]);
+        Stripping::create([
+            'kegiatan' => 'Trucking Muatan',
+            'jenis_kegiatan' => 'Stuffing',
+        ]);
+        Stripping::create([
+            'kegiatan' => 'Trucking Bongkaran',
+            'jenis_kegiatan' => 'Strpping',
+        ]);
     }
 }

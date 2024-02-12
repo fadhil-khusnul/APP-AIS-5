@@ -19,6 +19,7 @@ use App\Models\VendorMobil;
 use Illuminate\Support\Str;
 use App\Models\BiayaLainnya;
 use App\Models\BiayaLainPod;
+use App\Models\BiayaLainPol;
 use Illuminate\Http\Request;
 use App\Models\RealisasiLoad;
 use App\Models\SealContainer;
@@ -279,7 +280,7 @@ class RealisasiLoadController extends Controller
 
     public function masukkan_biaya_pod(Request $request)
     {
-        // dd($request);
+        // dd($request->keterangan_biaya, $request->input_total_biaya_lain);
         $Container = ContainerPlanload::findOrFail($request->id);
 
 
@@ -287,7 +288,7 @@ class RealisasiLoadController extends Controller
         $data = [
 
             "thc_pod" => $request->thc_pod,
-            "lolo" => $request->lolo,
+            "lolo" => 0,
             "dooring" => $request->dooring,
             "demurrage" => $request->demurrage,
             "total_biaya_lain_pod" => (int) $request->input_total_biaya_lain,
@@ -300,17 +301,61 @@ class RealisasiLoadController extends Controller
 
         BiayaLainPod::where('kontainer_id', $request->id)->delete();
 
-
-
-        for ($i = 0; $i < count($request->keterangan_biaya); $i++) {
-            $data = [
-                'job_id' => $Container->job_id,
-                'harga_biaya' => 0,
-                'kontainer_id' => $request->id,
-                'keterangan' => $request->keterangan_biaya[$i],
-            ];
-            BiayaLainPod::create($data);
+        if ($request->keterangan_biaya !== null) {
+            for ($i = 0; $i < count($request->keterangan_biaya); $i++) {
+                $data = [
+                    'job_id' => $Container->job_id,
+                    'harga_biaya' => 0,
+                    'kontainer_id' => $request->id,
+                    'keterangan' => $request->keterangan_biaya[$i],
+                ];
+                BiayaLainPod::create($data);
+            }
         }
+
+
+
+
+        return response()->json(['success' => true]);
+
+
+
+    }
+    public function masukkan_biaya_pol(Request $request)
+    {
+        // dd($request->keterangan_biaya, $request->input_total_biaya_lain);
+        $Container = ContainerPlanload::findOrFail($request->id);
+
+
+
+        $data = [
+
+            "biaya_trucking" => $request->biaya_trucking,
+            "freight" => $request->freight,
+            "lss" => $request->lss,
+            "total_biaya_lain_pol" => (int) $request->input_total_biaya_lain,
+
+
+        ];
+
+        $Container->update($data);
+
+        BiayaLainPol::where('kontainer_id', $request->id)->delete();
+
+        if ($request->keterangan_biaya !== null) {
+            for ($i = 0; $i < count($request->keterangan_biaya); $i++) {
+                $data = [
+                    'job_id' => $Container->job_id,
+                    'harga_biaya' => 0,
+                    'kontainer_id' => $request->id,
+                    'keterangan' => $request->keterangan_biaya[$i],
+                ];
+                BiayaLainPol::create($data);
+            }
+        }
+
+
+
 
         return response()->json(['success' => true]);
 
