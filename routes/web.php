@@ -79,6 +79,11 @@ Route::get('/company/{id}/edit', [ShippingController::class, 'edit']);
 Route::put('/company/{id}', [ShippingController::class, 'update']);
 Route::delete('/company/{id}', [ShippingController::class, 'destroy']);
 
+Route::post('/tambah-kapal', [ShippingController::class, 'store_kapal']);
+Route::get('/kapal/{id}/edit', [ShippingController::class, 'edit_kapal']);
+Route::put('/kapal/{id}', [ShippingController::class, 'update_kapal']);
+Route::delete('/kapal/{id}', [ShippingController::class, 'destroy_kapal']);
+
 Route::post('/vendor-mobil', [ShippingController::class, 'store_vendor']);
 Route::get('/vendor-mobil/{id}/edit', [ShippingController::class, 'edit_vendor']);
 Route::put('/vendor-mobil/{id}', [ShippingController::class, 'update_vendor']);
@@ -187,6 +192,7 @@ Route::put('/plan-kapal-detail-update/{id}', [ProcessLoadController::class, 'pla
 // Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
 
 Route::get('/processload', [ProcessLoadController::class, 'index']);
+Route::get('/search-processload', [ProcessLoadController::class, 'search_processload']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);
 Route::post('/getVendor', [ProcessLoadController::class, 'getVendor']);

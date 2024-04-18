@@ -11,6 +11,16 @@ $("#seal").select2
 
 
 });
+$("#pelayaran_kapal_id").select2
+({
+    dir:direction,
+    dropdownAutoWidth:true,
+    placeholder:"Silahkan Pilih Pelayaran",
+    allowClear:true
+
+
+
+});
 $("#penerima_1").select2
 ({
     dir:direction,

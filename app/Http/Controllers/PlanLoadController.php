@@ -243,17 +243,17 @@ class PlanLoadController extends Controller
             $size[$j] = [];
             $type[$j] = [];
             $cargo[$j] = [];
-            for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
+            // for ($i = 0; $i < $jumlah_kontainer[$j]; $i++) {
 
-                $container = [
-                    'job_id' => $job_id[$j],
-                    'jumlah_kontainer' => $jumlah_kontainer[$j],
-                    'size' => $request->size[$j][$i],
-                    'type' => $request->type[$j][$i],
-                    'cargo' => $request->cargo[$j][$i],
-                ];
-                ContainerPlanload::create($container);
-            }
+            //     $container = [
+            //         'job_id' => $job_id[$j],
+            //         'jumlah_kontainer' => $jumlah_kontainer[$j],
+            //         'size' => $request->size[$j][$i],
+            //         'type' => $request->type[$j][$i],
+            //         'cargo' => $request->cargo[$j][$i],
+            //     ];
+            //     ContainerPlanload::create($container);
+            // }
         }
 
         return response()->json(['success' => true]);

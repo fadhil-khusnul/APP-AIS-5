@@ -10,6 +10,7 @@ use App\Models\Pengirim;
 use App\Models\Stuffing;
 use App\Models\Trucking;
 use App\Models\Container;
+use App\Models\Kapal;
 use App\Models\Pelabuhan;
 use App\Models\Stripping;
 use App\Models\VendorMobil;
@@ -29,6 +30,7 @@ class DataController extends Controller
 
         $companies = ShippingCompany::orderBy('id', 'DESC')->get();
         $pelayarans = ShippingCompany::orderBy('id', 'DESC')->get();
+        $kapals = Kapal::orderBy('id', 'DESC')->get();
         $depos = Depo::orderBy('id', 'DESC')->get();
         $pelabuhans = Pelabuhan::orderBy('id', 'DESC')->get();
         $pengirims = Pengirim::orderBy('id', 'DESC')->get();
@@ -49,6 +51,7 @@ class DataController extends Controller
             'title' => 'Data',
             'active' => 'Data',
             'companies' => $companies,
+            'kapals' => $kapals,
             'ppn' => $ppn,
             'pelayarans' => $pelayarans,
             'depos' => $depos,

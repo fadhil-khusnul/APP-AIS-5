@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kapal;
 use Illuminate\Http\Request;
 use App\Models\ShippingCompany;
 use App\Models\VendorMobil;
@@ -40,6 +41,17 @@ class ShippingController extends Controller
         return response()->json(['success' => true]);
 
     }
+    public function store_kapal(Request $request)
+    {
+        $data = [
+            'nama_kapal' => $request->nama_kapal,
+            'code_kapal' => $request->code_kapal,
+            'pelayaran_id' => $request->pelayaran_id,
+        ];
+        Kapal::create($data);
+        return response()->json(['success' => true]);
+
+    }
 
     public function store_vendor(Request $request)
     {
@@ -74,6 +86,15 @@ class ShippingController extends Controller
             'result' => $ShippingCompany,
         ]);
     }
+    public function edit_kapal($id)
+    {
+        // dd($id);
+        $kapal = Kapal::find($id);
+
+        return response()->json([
+            'result' => $kapal,
+        ]);
+    }
     public function edit_vendor($id)
     {
         // dd($id);
@@ -103,6 +124,20 @@ class ShippingController extends Controller
         $companies->update($data);
         return response()->json(['success' => true]);
     }
+    public function update_kapal(Request $request, $id)
+    {
+        
+
+        $kapals = Kapal::findOrFail($id);
+
+        $data = [
+            "nama_kapal" =>$request->nama_kapal,
+            "code_kapal" =>$request->code_kapal,
+            "pelayaran_id" =>$request->pelayaran_id,
+        ];
+        $kapals->update($data);
+        return response()->json(['success' => true]);
+    }
 
     public function update_vendor(Request $request, $id)
     {
@@ -128,6 +163,15 @@ class ShippingController extends Controller
     {
         $companies = ShippingCompany::find($id);
         $companies->delete();
+        return response()->json([
+            'success'   => true
+        ]);
+
+    }
+    public function destroy_kapal($id)
+    {
+        $kapal = Kapal::find($id);
+        $kapal->delete();
         return response()->json([
             'success'   => true
         ]);

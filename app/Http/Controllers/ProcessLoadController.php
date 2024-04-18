@@ -59,7 +59,9 @@ class ProcessLoadController extends Controller
    */
   public function index()
   {
-    $planloads = OrderJobPlanload::orderBy('id', 'DESC')->where('status', 'Process-Load')->orWhere('status', 'Plan-Load')->orWhere('status', 'Realisasi')->orWhere('status', 'Default')->get();
+    $query_planloads = OrderJobPlanload::orderBy('id', 'DESC')->whereIn('status', ['Process-Load', 'Plan-Load', 'Realisasi', 'Default']);
+
+    $planloads = $query_planloads->paginate(100);
     $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
     $sizez = ContainerPlanload::orderBy('id', 'DESC')->get('size');
     $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
@@ -90,6 +92,46 @@ class ProcessLoadController extends Controller
       'sealcontainers' => $sealcontainers,
 
     ]);
+  }
+
+  public function search_processload(Request $request)
+  {
+
+    dd($request);
+    $query_planloads = OrderJobPlanload::orderBy('id', 'DESC')->whereIn('status', ['Process-Load', 'Plan-Load', 'Realisasi', 'Default']);
+
+    foreach ($request->columns as $key => $column) {
+      if (!empty($column['search']['value'])) {
+          // Adjust column indexes as needed based on your table structure
+          switch ($key) {
+              case 1: // Column index for 'vessel'
+                  $query_planloads->where('status', 'like', "%{$column['search']['value']}%");
+                  break;
+              case 3: // Column index for 'vessel_code'
+                  $query_planloads->where('vessel_code', 'like', "%{$column['search']['value']}%");
+                  break;
+              case 4: 
+                  $query_planloads->where('vessel_code', 'like', "%{$column['search']['value']}%");
+                  break;
+              case 5: 
+                  $query_planloads->where('select_company', 'like', "%{$column['search']['value']}%");
+                  break;
+              case 6: 
+                  $query_planloads->where('activity', 'like', "%{$column['search']['value']}%");
+                  break;
+              case 7: 
+                  $query_planloads->where('pol', 'like', "%{$column['search']['value']}%");
+                  break;
+             
+              default:
+                  break;
+          }
+      }
+  }
+
+    $planloads = $query_planloads->paginate(10);
+
+    return $planloads;
   }
 
   /**
@@ -890,7 +932,7 @@ class ProcessLoadController extends Controller
     ]);
   }
 
- 
+
 
   public function cetak_detail(Request $request)
   {
@@ -949,27 +991,26 @@ class ProcessLoadController extends Controller
     $this->makeFooter($pdf);
 
     $pdf->save($save1);
-    return response()->download($save1);   
-    
+    return response()->download($save1);
   }
 
-  public function makeFooter($pdf) {
+  public function makeFooter($pdf)
+  {
     $pdf->render();
 
     $canvas = $pdf->getCanvas();
-    
+
     // Set the coordinates for the footer text
-    $x = $canvas->get_width() - 100 ; // X coordinate (left)
+    $x = $canvas->get_width() - 100; // X coordinate (left)
     $y = $canvas->get_height() - 55;
     // $canvas->set_opacity(.1, "Multiply"); 
-    
+
     // Set the footer text
     $text = "Page {PAGE_NUM} of {PAGE_COUNT}";
 
 
     // Add the footer to the PDF
     $canvas->page_text($x, $y, $text, "Calibri", 8, [0, 0, 0]);
-
   }
 
 

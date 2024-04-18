@@ -14,7 +14,6 @@
 
           <!-- BEGIN Datatable -->
           <div class="table-responsive">
-
             <table id="processload" class="align-top table mb-0 table-bordered table-striped table-hover  autosize">
               <thead class="text-nowrap">
                 <tr>
@@ -56,8 +55,8 @@
                       @endif
                     </td>
                     <td class="text-center text-nowrap">
-                      <a href="/processload-create/{{ $planload->slug }}" target="_blank" class="btn btn-success btn-sm">Process Load <i
-                          class="fa fa-pencil"></i>
+                      <a href="/processload-create/{{ $planload->slug }}" target="_blank"
+                        class="btn btn-success btn-sm">Process Load <i class="fa fa-pencil"></i>
                       </a>
 
 

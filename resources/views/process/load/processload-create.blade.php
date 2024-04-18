@@ -268,9 +268,9 @@
         <!-- END Portlet -->
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 ">
 
-        <div class="portlet portlet-collapsed">
+        <div class="portlet">
           <div class="portlet-header portlet-header-bordered">
             <h3 class="portlet-title">DETAIL BARANG/KONTAINER</h3>
             <div class="portlet-addon">
@@ -282,9 +282,8 @@
           </div>
           <div class="portlet-body">
 
-            <!-- BEGIN Form -->
 
-            
+
 
             <div class="table-responsive">
               <table id="table_biaya2" class="table mb-0" style="width: 100% !important">
@@ -349,9 +348,9 @@
 
 
 
-  
+
       <div class="col-md-6">
-        <div class="portlet portlet-collapsed">
+        <div class="portlet">
           <div class="portlet-header portlet-header-bordered">
             <h3 class="portlet-title">BIAYA LAIN KONTAINER</h3>
             <div class="portlet-addon">
@@ -366,7 +365,7 @@
 
             <!-- BEGIN Form -->
 
-           
+
 
             <div class="table-responsive">
 
@@ -457,7 +456,7 @@
 
             <!-- BEGIN Form -->
 
-           
+
 
             <div class="table-responsive">
 
@@ -538,13 +537,13 @@
               </button>
             </div>
           </div>
-          
+
 
           <div class="portlet-body">
 
             <!-- BEGIN Form -->
 
-            
+
             <div class="table-responsive">
 
               <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
@@ -644,7 +643,7 @@
           </div>
           <div class="portlet-body">
 
-            
+
 
             <div class="row row-cols-lg-auto py-5 g-3">
               <label for="" class="col-form-label">Filter Tabel :</label>
@@ -1701,8 +1700,8 @@
                   class="text-danger">*</span></label>
               <div class="col-sm-8 validation-container">
 
-                <select disabled data-bs-toggle="tooltip" id="seal_disabled" multiple="multiple"
-                  name="seal_disabled" class="form-select" placeholde="Silahkan Pilih Seal" required>
+                <select disabled data-bs-toggle="tooltip" id="seal_disabled" multiple="multiple" name="seal_disabled"
+                  class="form-select" placeholde="Silahkan Pilih Seal" required>
                   @foreach ($seals as $seal)
                     <option value="{{ $seal->kode_seal }}">
                       {{ $seal->kode_seal }}</option>

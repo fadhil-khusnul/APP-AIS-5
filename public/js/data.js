@@ -1,12 +1,13 @@
 "use strict";
-$(function () {
+$(function() {
     var swal = Swal.mixin({
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
-        });
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
+    });
     var toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -19,7 +20,7 @@ $(function () {
         }
     });
 
-    $.validator.addMethod("notEqual", function (value, element, arg) { return arg !== value }, "Value must not equal arg.");
+    $.validator.addMethod("notEqual", function(value, element, arg) { return arg !== value }, "Value must not equal arg.");
 
 
     $('#valid_company').validate({
@@ -47,7 +48,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var nama_company = $("#nama_company").val();
             var token = $('#csrf').val();
@@ -62,14 +63,75 @@ $(function () {
                 type: 'POST',
                 url: 'shipping-company',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Company Berhasil Ditambah",
-                    showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Company Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
+                        .then((result) => {
+                            location.reload();
+                        });
+                },
+            });
+        }
+    });
+
+    $('#valid_data_kapal').validate({
+        rules: {
+
+            nama_company: {
+                required: true
+            },
+            code_kapal: {
+                required: true
+            },
+            pelayaran_kapal_id: {
+                required: true
+            },
+        },
+
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+        submitHandler: function(form) {
+
+            var nama_kapal = $("#nama_kapal").val();
+            var code_kapal = $("#code_kapal").val();
+            var pelayaran_id = $("#pelayaran_kapal_id").val();
+            var token = $('#csrf').val();
+
+
+            var data = {
+                "_token": token,
+                "nama_kapal": nama_kapal,
+                "code_kapal": code_kapal,
+                "pelayaran_id": pelayaran_id
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/tambah-kapal',
+                data: data,
+                success: function(response) {
+                    swal.fire({
+                            icon: "success",
+                            title: "Data Kapal Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
+
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -102,7 +164,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var nama_vendor = $("#nama_vendor").val();
             var token = $('#csrf').val();
@@ -117,14 +179,14 @@ $(function () {
                 type: 'POST',
                 url: '/vendor-mobil',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Vendor Berhasil Ditambah",
-                    showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Vendor Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -158,7 +220,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var nama_depo = $("#nama_depo").val();
             var pelayaran_id_tambah = $("#pelayaran_id_tambah").val();
@@ -175,16 +237,16 @@ $(function () {
                 type: 'POST',
                 url: 'add-depo',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Depo Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Depo Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
-                         location.reload();
+                            location.reload();
                         });
                 },
             });
@@ -222,7 +284,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var area_code = $("#area_code").val();
             var nama_pelabuhan = $("#nama_pelabuhan").val();
@@ -239,14 +301,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-pelabuhan',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Pelabuhan Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Pelabuhan Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -266,7 +328,7 @@ $(function () {
                 remote: {
                     url: "/checkpengirim",
                     type: "post",
-                    data :{
+                    data: {
                         "_token": $('#csrf').val(),
                     }
                 }
@@ -313,7 +375,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var alamat = $("#alamat").val();
             var nama_costumer = $("#nama_costumer").val();
@@ -336,14 +398,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-pengirim',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data pengirim Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data pengirim Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -363,7 +425,7 @@ $(function () {
                 remote: {
                     url: "/checkpenerima",
                     type: "post",
-                    data :{
+                    data: {
                         "_token": $('#csrf').val(),
                     }
                 },
@@ -409,7 +471,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var alamat_penerima = $("#alamat_penerima").val();
             var nama_penerima = $("#nama_penerima").val();
@@ -432,14 +494,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-penerima',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data penerima Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data penerima Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -448,69 +510,6 @@ $(function () {
         }
     });
 
-    // $('#valid_biaya').validate({
-    //     rules: {
-
-    //         pekerjaan_biaya: {
-    //             required: true
-    //         },
-    //         biaya_cost: {
-    //             required: true
-    //         }
-    //     },
-    //     messages: {
-
-    //         pekerjaan_biaya: {
-    //             required: "Silakan Isi Pekerjaan"
-    //         },
-    //         biaya_cost: {
-    //             required: "Silakan Isi Biaya"
-    //         }
-    //     },
-    //     highlight: function highlight(element, errorClass, validClass) {
-    //         $(element).addClass("is-invalid");
-    //         $(element).removeClass("is-valid");
-    //     },
-    //     unhighlight: function unhighlight(element, errorClass, validClass) {
-    //         $(element).removeClass("is-invalid");
-    //         $(element).addClass("is-valid");
-    //     },
-    //     errorPlacement: function errorPlacement(error, element) {
-    //         error.addClass("invalid-feedback");
-    //         element.closest(".validation-container").append(error);
-    //     },
-    //     submitHandler: function (form) {
-
-    //         var pekerjaan_biaya = $("#pekerjaan_biaya").val();
-    //         var biaya_cost = $("#biaya_cost").val();
-    //         var token = $('#csrf').val();
-
-
-    //         var data = {
-    //             "_token": token,
-    //             "pekerjaan_biaya": pekerjaan_biaya,
-    //             "biaya_cost": biaya_cost
-    //         }
-
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: 'add-biaya',
-    //             data: data,
-    //             success: function (response) {
-    //                 swal.fire({
-    //                     icon: "success",
-    //                     title: "Data Biaya Berhasil Ditambah",
-    //                     showConfirmButton: false,
-    //                     timer: 2e3,
-
-    //                 })
-    //                     .then((result) => {
-    //                         location.reload();
-    //                     });
-    //             },
-    //         });
-    //     }
-    // });
 
     $('#valid_rekening').validate({
         rules: {
@@ -550,7 +549,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var nama_bank = $("#nama_bank").val();
             var no_rekening = $("#no_rekening").val();
@@ -569,21 +568,21 @@ $(function () {
                 type: 'POST',
                 url: '/add-rekening',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Rekening Bank Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Rekening Bank Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
                 },
             });
         }
-});
+    });
 
     $('#valid_type').validate({
         rules: {
@@ -612,7 +611,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var type_container = $("#type_container").val();
             var token = $('#csrf').val();
@@ -627,14 +626,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-type',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Type Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Type Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -672,7 +671,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             // var jenis_container = $("#jenis_container").val();
             var size_container = $("#size_container").val();
@@ -691,14 +690,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-container',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Container Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Container Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -734,7 +733,7 @@ $(function () {
             error.addClass("invalid-feedback");
             element.closest(".validation-container").append(error);
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var kegiatan_stuffing = $("#kegiatan_stuffing").val();
             var token = $('#csrf').val();
@@ -750,14 +749,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-stuffing',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Stuffing Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Stuffing Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -800,7 +799,7 @@ $(function () {
             element.closest(".validation-container").append(error);
         },
 
-        submitHandler: function (form) {
+        submitHandler: function(form) {
 
             var kegiatan_stripping = $("#kegiatan").val();
             var jenis_kegiatan = $("#jenis_kegiatan:checked").val();
@@ -818,14 +817,14 @@ $(function () {
                 type: 'POST',
                 url: 'add-stripping',
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
-                        icon: "success",
-                        title: "Data Kegiatan Berhasil Ditambah",
-                        showConfirmButton: false,
-                        timer: 2e3,
+                            icon: "success",
+                            title: "Data Kegiatan Berhasil Ditambah",
+                            showConfirmButton: false,
+                            timer: 2e3,
 
-                    })
+                        })
                         .then((result) => {
                             location.reload();
                         });
@@ -844,7 +843,7 @@ function editrekening(e) {
     $.ajax({
         url: '/rekening-bank/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-dana-edit').modal('show');
 
             $('#nama_bank_edit').val(response.result.nama_bank);
@@ -893,7 +892,7 @@ function editrekening(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var oldid = $('#old_id_rekening').val();
 
@@ -906,14 +905,14 @@ function editrekening(e) {
                             no_rekening: $('#no_rekening_edit').val(),
                             atas_nama: $('#atas_nama_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Rekening Bank Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Rekening Bank Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -933,18 +932,19 @@ function deleterekening(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -956,14 +956,14 @@ function deleterekening(id) {
                     type: "DELETE",
                     url: '/rekening-bank/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Rekening Bank Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Rekening Bank Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -994,29 +994,29 @@ function nama_pengirim(ini) {
     });
 
     $.ajax({
-            url: "/getnamapengirim",
-            type: "post",
-            data: {
-                _token: token,
-            },
-            success: function (response) {
-                for (let i = 0; i < response.length; i++) {
-                    if (response[i] == ini.value) {
+        url: "/getnamapengirim",
+        type: "post",
+        data: {
+            _token: token,
+        },
+        success: function(response) {
+            for (let i = 0; i < response.length; i++) {
+                if (response[i] == ini.value) {
 
-                        swal.fire({
-                            title: "Nama Pengirim Mirip Dengan Data yang Sudah Ada",
-                            text: "Silakan Cek List Tabel Pengirim yang Ada",
-                            icon: "warning",
-                            timer: 10e3,
-                            showConfirmButton: true,
-                        });
-                    }
-
+                    swal.fire({
+                        title: "Nama Pengirim Mirip Dengan Data yang Sudah Ada",
+                        text: "Silakan Cek List Tabel Pengirim yang Ada",
+                        icon: "warning",
+                        timer: 10e3,
+                        showConfirmButton: true,
+                    });
                 }
 
+            }
 
-            },
-        });
+
+        },
+    });
 
 
 }
@@ -1066,9 +1066,9 @@ function editCompany(e) {
     var id = e.value;
 
     $.ajax({
-        url: 'company/' + id + '/edit',
+        url: '/company/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-company-edit').modal('show');
 
             $('#nama_company_edit').val(response.result.nama_company);
@@ -1101,25 +1101,25 @@ function editCompany(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var oldid = $('#old_id_company').val();
 
                     $.ajax({
-                        url: 'company/' + oldid,
+                        url: '/company/' + oldid,
                         type: 'PUT',
                         data: {
                             "_token": token,
                             nama_company: $('#nama_company_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Company Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Company Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1131,13 +1131,95 @@ function editCompany(e) {
         }
     });
 }
+
+function editKapal(e) {
+    var id = e.value;
+
+    $.ajax({
+        url: '/kapal/' + id + '/edit',
+        type: 'GET',
+        success: function(response) {
+            $('#modal-kapal-edit').modal('show');
+
+            $('#old_id_kapal').val(response.result.id);
+            $('#nama_kapal_edit').val(response.result.nama_kapal);
+            $('#code_kapal_edit').val(response.result.code_kapal);
+
+            $("#pelayaran_kapal_id_edit")
+                .val(response.result.pelayaran_id)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Lokasi Pickup",
+                    allowClear: true,
+                    dropdownParent: $("#modal-kapal-edit"),
+                });
+            $('#valid_data_kapal_edit').validate({
+                rules: {
+
+                    nama_kapal_edit: {
+                        required: true
+                    },
+                    code_kapal_edit: {
+                        required: true
+                    },
+                    pelayaran_kapal_id_edit: {
+                        required: true
+                    },
+
+                },
+
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(element, errorClass, validClass) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+                submitHandler: function(form) {
+                    var token = $('#csrf').val();
+                    var oldid = $('#old_id_kapal').val();
+
+                    $.ajax({
+                        url: '/kapal/' + oldid,
+                        type: 'PUT',
+                        data: {
+                            "_token": token,
+                            nama_kapal: $('#nama_kapal_edit').val(),
+                            code_kapal: $('#code_kapal_edit').val(),
+                            pelayaran_id: $('#pelayaran_kapal_id_edit').val(),
+                        },
+                        success: function(response) {
+                            swal.fire({
+                                    icon: "success",
+                                    title: "Data Kapal Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
+
+                                })
+                                .then((result) => {
+                                    location.reload();
+                                });
+                        }
+                    })
+                }
+            });
+
+        }
+    });
+}
+
 function ppn_modal(e) {
     var id = e.value;
 
     $.ajax({
-        url: '/ppn-edit/'+id,
+        url: '/ppn-edit/' + id,
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal_ppn').modal('show');
 
             $('#nilai_ppn').val(response.result.ppn);
@@ -1169,7 +1251,7 @@ function ppn_modal(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
 
                     $.ajax({
@@ -1180,14 +1262,14 @@ function ppn_modal(e) {
                             ppn: $('#nilai_ppn').val().replace(/\,/g, "."),
                             id: id,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Nilai PPN Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Nilai PPN Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1199,13 +1281,14 @@ function ppn_modal(e) {
         }
     });
 }
+
 function editVendor(e) {
     var id = e.value;
 
     $.ajax({
         url: 'vendor-mobil/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-vendor-edit').modal('show');
 
             $('#nama_vendor_edit').val(response.result.nama_vendor);
@@ -1240,7 +1323,7 @@ function editVendor(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old_id = $('#old_id_vendor').val();
 
@@ -1251,14 +1334,14 @@ function editVendor(e) {
                             "_token": token,
                             nama_vendor: $('#nama_vendor_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data vendor Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data vendor Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1277,7 +1360,7 @@ function editDepo(e) {
     $.ajax({
         url: 'depo/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-depo-edit').modal('show');
 
             $('#nama_depo_edit').val(response.result.nama_depo);
@@ -1313,7 +1396,7 @@ function editDepo(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_depo').val();
 
@@ -1325,14 +1408,14 @@ function editDepo(e) {
                             nama_depo: $('#nama_depo_edit').val(),
                             pelayaran_id: $('#pelayaran_id_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Depo Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Depo Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1351,7 +1434,7 @@ function editpelabuhan(e) {
     $.ajax({
         url: 'pelabuhan/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-pelabuhan-edit').modal('show');
 
             $('#old_id_pelabuhan').val(response.result.id);
@@ -1392,7 +1475,7 @@ function editpelabuhan(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_pelabuhan').val();
 
@@ -1404,14 +1487,14 @@ function editpelabuhan(e) {
                             area_code: $('#area_code_edit').val(),
                             nama_pelabuhan: $('#nama_pelabuhan_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Pelabuhan Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Pelabuhan Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1430,7 +1513,7 @@ function editpengirim(e) {
     $.ajax({
         url: 'pengirim/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-pengirim-edit').modal('show');
             $('#old_id_pengirim').val(response.result.id);
 
@@ -1492,7 +1575,7 @@ function editpengirim(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_pengirim').val();
 
@@ -1507,14 +1590,14 @@ function editpengirim(e) {
                             no_telp: $('#no_telp_edit').val(),
                             rekening: $('#rekening_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Pengirim Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Pengirim Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1533,7 +1616,7 @@ function editpenerima(e) {
     $.ajax({
         url: 'penerima/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-penerima-edit').modal('show');
             $('#old_id_penerima').val(response.result.id);
 
@@ -1595,7 +1678,7 @@ function editpenerima(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_penerima').val();
 
@@ -1610,14 +1693,14 @@ function editpenerima(e) {
                             no_telp_penerima: $('#no_telp_penerima_edit').val(),
                             rekening_penerima: $('#rekening_penerima_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Penerima Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Penerima Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1638,7 +1721,7 @@ function editbiaya(e) {
     $.ajax({
         url: 'biaya/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-biaya-edit').modal('show');
 
             $('#pekerjaan_biaya_edit').val(response.result.pekerjaan_biaya);
@@ -1679,7 +1762,7 @@ function editbiaya(e) {
                 },
 
                 // console.log();
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
 
                     $.ajax({
@@ -1690,14 +1773,14 @@ function editbiaya(e) {
                             pekerjaan_biaya: $('#pekerjaan_biaya_edit').val(),
                             biaya_cost: $('#biaya_cost_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Biaya Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Biaya Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1718,7 +1801,7 @@ function edittype(e) {
     $.ajax({
         url: 'type/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-type-edit').modal('show');
             $('#old_id_type').val(response.result.id);
 
@@ -1756,7 +1839,7 @@ function edittype(e) {
                 },
 
                 // console.log();
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_type').val();
 
@@ -1767,14 +1850,14 @@ function edittype(e) {
                             "_token": token,
                             type_container: $('#type_container_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Type Container Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Type Container Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1795,7 +1878,7 @@ function editstuff(e) {
     $.ajax({
         url: 'stuffing/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-load-edit').modal('show');
 
             $('#kegiatan_stuffing_edit').val(response.result.kegiatan_stuffing);
@@ -1829,7 +1912,7 @@ function editstuff(e) {
                 },
 
                 // console.log();
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
 
                     $.ajax({
@@ -1839,14 +1922,14 @@ function editstuff(e) {
                             "_token": token,
                             kegiatan_stuffing: $('#kegiatan_stuffing_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Stuffing Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Stuffing Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1867,7 +1950,7 @@ function editstripp(e) {
     $.ajax({
         url: 'stripping/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-discharge-edit').modal('show');
             $('#old_id_kegiatan').val(response.result.id);
 
@@ -1875,8 +1958,7 @@ function editstripp(e) {
             $('#kegiatan_edit').val(response.result.kegiatan);
             if (response.result.jenis_kegiatan == "Stripping") {
                 $('.jenis_kegiatan_edit_stripping').prop("checked", true);
-            }else
-            {
+            } else {
                 $('.jenis_kegiatan_edit_stripping').prop("checked", false);
                 $('.jenis_kegiatan_edit_stuffing').prop("checked", true);
 
@@ -1912,7 +1994,7 @@ function editstripp(e) {
                 },
 
                 // console.log();
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_kegiatan').val();
 
@@ -1924,14 +2006,14 @@ function editstripp(e) {
                             kegiatan: $('#kegiatan_edit').val(),
                             jenis_kegiatan: $('#jenis_kegiatan_edit:checked').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Kegiatan Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Kegiatan Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -1950,9 +2032,9 @@ function editcontainer(e) {
 
 
     $.ajax({
-        url: 'container/' + id + '/edit',
+        url: '/container/' + id + '/edit',
         type: 'GET',
-        success: function (response) {
+        success: function(response) {
             $('#modal-container-edit').modal('show');
             $('#old_id_container').val(response.result.id);
 
@@ -2002,12 +2084,12 @@ function editcontainer(e) {
                 },
 
                 // console.log();
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var token = $('#csrf').val();
                     var old = $('#old_id_container').val();
 
                     $.ajax({
-                        url: 'container/' + old,
+                        url: '/container/' + old,
                         type: 'PUT',
                         data: {
                             "_token": token,
@@ -2015,14 +2097,14 @@ function editcontainer(e) {
                             size_container: $('#size_container_edit').val(),
                             // type_container: $('#type_container_edit').val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
-                                icon: "success",
-                                title: "Data Size Container Berhasil Diedit",
-                                showConfirmButton: false,
-                                timer: 2e3,
+                                    icon: "success",
+                                    title: "Data Size Container Berhasil Diedit",
+                                    showConfirmButton: false,
+                                    timer: 2e3,
 
-                            })
+                                })
                                 .then((result) => {
                                     location.reload();
                                 });
@@ -2046,18 +2128,19 @@ function deleteCompany(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2067,16 +2150,16 @@ function deleteCompany(id) {
                 };
                 $.ajax({
                     type: "DELETE",
-                    url: 'company/' + deleteid,
+                    url: '/company/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2093,6 +2176,63 @@ function deleteCompany(id) {
             }
         });
 }
+
+function deleteKapal(id) {
+    var deleteid = id.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
+    });
+
+    swal.fire({
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
+        .then((willDelete) => {
+            if (willDelete.isConfirmed) {
+
+                var data = {
+                    "_token": $('input[name=_token]').val(),
+                    'id': deleteid,
+                };
+                $.ajax({
+                    type: "DELETE",
+                    url: '/kapal/' + deleteid,
+                    data: data,
+                    success: function(response) {
+                        swal.fire({
+                                title: "Data Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
+                            .then((result) => {
+                                location.reload();
+                            });
+                    }
+                });
+            } else {
+                swal.fire({
+                    title: "Data Tidak Dihapus",
+                    text: "Data Batal Dihapus",
+                    icon: "error",
+                    timer: 2e3,
+                    showConfirmButton: false
+                });
+            }
+        });
+}
+
 function deleteVendor(id) {
     var deleteid = id.value;
 
@@ -2100,18 +2240,19 @@ function deleteVendor(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2123,14 +2264,14 @@ function deleteVendor(id) {
                     type: "DELETE",
                     url: '/vendor-mobil/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2155,18 +2296,19 @@ function deleteDepo(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2178,14 +2320,14 @@ function deleteDepo(id) {
                     type: "DELETE",
                     url: 'depo/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Depo Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Depo Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2210,18 +2352,19 @@ function deletepelabuhan(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2233,14 +2376,14 @@ function deletepelabuhan(id) {
                     type: "DELETE",
                     url: 'pelabuhan/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Pelabuhan Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Pelabuhan Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2266,18 +2409,19 @@ function deletepengirim(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2289,14 +2433,14 @@ function deletepengirim(id) {
                     type: "DELETE",
                     url: 'pengirim/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Pengirim Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Pengirim Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2321,18 +2465,19 @@ function deletepenerima(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2344,14 +2489,14 @@ function deletepenerima(id) {
                     type: "DELETE",
                     url: 'penerima/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Penerima Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Penerima Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2376,18 +2521,19 @@ function deletebiaya(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2399,14 +2545,14 @@ function deletebiaya(id) {
                     type: "DELETE",
                     url: 'biaya/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Biaya Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Biaya Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2424,6 +2570,7 @@ function deletebiaya(id) {
         });
 
 }
+
 function deletetype(id) {
     var deleteid = id.value;
 
@@ -2431,18 +2578,19 @@ function deletetype(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2454,14 +2602,14 @@ function deletetype(id) {
                     type: "DELETE",
                     url: 'type/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Type Container Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Type Container Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2486,18 +2634,19 @@ function deletecontainer(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2507,16 +2656,16 @@ function deletecontainer(id) {
                 };
                 $.ajax({
                     type: "DELETE",
-                    url: 'container/' + deleteid,
+                    url: '/container/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Container Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Container Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2541,18 +2690,19 @@ function deletestuff(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2564,14 +2714,14 @@ function deletestuff(id) {
                     type: "DELETE",
                     url: 'stuffing/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Stuffing Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Stuffing Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });
@@ -2596,18 +2746,19 @@ function deletestripp(id) {
         customClass: {
             confirmButton: "btn btn-label-success btn-wide mx-1",
             denyButton: "btn btn-label-secondary btn-wide mx-1",
-            cancelButton: "btn btn-label-danger btn-wide mx-1" },
-            buttonsStyling: false
+            cancelButton: "btn btn-label-danger btn-wide mx-1"
+        },
+        buttonsStyling: false
     });
 
     swal.fire({
-        title: "Apakah anda yakin?",
-        text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-    })
+            title: "Apakah anda yakin?",
+            text: "Setelah dihapus, Anda tidak dapat memulihkan Data ini lagi!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+        })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
 
@@ -2619,14 +2770,14 @@ function deletestripp(id) {
                     type: "DELETE",
                     url: 'stripping/' + deleteid,
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
-                            title: "Data Kegiatan Dihapus",
-                            text: "Data Berhasil Dihapus",
-                            icon: "success",
-                            timer: 2e3,
-                            showConfirmButton: false
-                        })
+                                title: "Data Kegiatan Dihapus",
+                                text: "Data Berhasil Dihapus",
+                                icon: "success",
+                                timer: 2e3,
+                                showConfirmButton: false
+                            })
                             .then((result) => {
                                 location.reload();
                             });

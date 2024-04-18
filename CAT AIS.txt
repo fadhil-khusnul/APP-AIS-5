@@ -1,10 +1,10 @@
-1. Biaya trucking, freight, lss hanya super user (process load) pindah ke pod load
-2. POT DAN CODE vessel dihapus di process
-3. bug di biaya lain pod 
+1. Biaya trucking, freight, lss hanya super user (process load) pindah ke pod load ✅
+2. POT DAN CODE vessel dihapus di process ✅
+3. bug di biaya lain pod ✅
 4. ketika no materai dan ppn no jangan munculkan di pdf invoice
 5. tambahkan metode pembayaran di proses pembayaran
 6. export excel dengan format accunting untuk kolom harga
-7. batal muat
+7. batal muat ✅
 8. Di SI tambah untuk total jumlah x size type container
 9. footer dan header fix ttap harus ada d setiap halaman dan headar pertabel 
 9. tiap row untuk packaging list kasih strip begitu pun invoice (biru) dan packing
