@@ -12,8 +12,10 @@
             </button>
         </div>
     </div>
-    <div class="aside-body" data-simplebar data-simplebar-direction="ltr">
-        <!-- BEGIN Menu -->
+
+
+    <div class="aside-body" id="sidebar">
+        {{-- <!-- BEGIN Menu -->
         <div class="menu">
 
             <!-- BEGIN Menu Section -->
@@ -529,7 +531,7 @@
         <div class="aside-addon">
 
             <img class="aside-icon-maximize" src="{{ asset('/') }}./assets/images/icon.png" width="50" alt="">
-        </div>
+        </div> --}}
 
 
     </div>

@@ -36,11 +36,16 @@
     }
   </style>
 
+  @vite('resources/js/app.jsx')
+
+
+  {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
+
+
 
 
 
   <title>{{ $title }} | AIS-ONLINE</title>
-  {{-- @vite('resources/js/app.js') --}}
 
 </head>
 
@@ -87,7 +92,7 @@
 
 
 
- 
+
   <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/mandatory.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/core.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/build/scripts/vendor.js"></script>
@@ -97,15 +102,15 @@
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/tooltip-popover.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/dropdown-scrollbar.js"></script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/utilities/fullscreen-trigger.js"></script>
-  	<script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/portlet/tool.js"></script>
+  <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/portlet/tool.js"></script>
 
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/home.js"></script>
 
 
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/fixed-header.js">
   </script>
-    
-   
+
+
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/datatable/extension/search-panes.js">
   </script>
   <script type="text/javascript" src="{{ asset('/') }}./assets/app/pages/form/typeahead.js"></script>

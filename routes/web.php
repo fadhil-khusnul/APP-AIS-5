@@ -192,6 +192,8 @@ Route::put('/plan-kapal-detail-update/{id}', [ProcessLoadController::class, 'pla
 // Route::post('/update-job-processload', [ProcessLoadController::class, 'update']);
 
 Route::get('/processload', [ProcessLoadController::class, 'index']);
+Route::get('/get-processload', [ProcessLoadController::class, 'get_processload']);
+Route::get('/get-containers', [ProcessLoadController::class, 'get_containers']);
 Route::get('/search-processload', [ProcessLoadController::class, 'search_processload']);
 Route::post('/getBiayaLain', [ProcessLoadController::class, 'getBiayaLain']);
 Route::post('/getNoSurat', [ProcessLoadController::class, 'getNoSurat']);

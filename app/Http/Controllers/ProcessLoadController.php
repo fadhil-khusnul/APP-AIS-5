@@ -94,6 +94,21 @@ class ProcessLoadController extends Controller
     ]);
   }
 
+  public function get_containers(Request $request) {
+    $containers = ContainerPlanload::orderBy('id', 'DESC')->get();
+
+
+    return response()->json($containers);
+    
+  }
+  public function get_processload(Request $request) {
+    $query_planloads = OrderJobPlanload::orderBy('id', 'DESC')->whereIn('status', ['Process-Load', 'Plan-Load', 'Realisasi', 'Default']);
+
+    $planloads = $query_planloads->paginate(100);
+
+    return response()->json($planloads);
+
+  }
   public function search_processload(Request $request)
   {
 

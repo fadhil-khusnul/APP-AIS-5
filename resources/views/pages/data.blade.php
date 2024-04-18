@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
 @section('content')
+  <div id="Data"></div>
+
   <div class="row">
 
     <div class="col-6">
@@ -817,6 +819,7 @@
   </div>
 
 
+
   <div class="modal fade" id="modal-company">
     <div class="modal-dialog">
       <form action="#" name="valid_company" id="valid_company">
@@ -1493,7 +1496,8 @@
             </div>
             <div>
               <label class="form-label" for="text">No. Rekening (Bank) </label>
-              <input class="form-control" id="rekening_penerima_edit" name="rekening_penerima_edit" type="text">
+              <input class="form-control" id="rekening_penerima_edit" name="rekening_penerima_edit"
+                type="text">
               <small class="form-text">ex. 123456000 (BRI)</small>
             </div>
           </div>
