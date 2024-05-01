@@ -169,6 +169,7 @@ class ProcessLoadController extends Controller
     $containers = ContainerPlanload::orderBy("id", "DESC")->where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
       $query
         ->Where('status', '=', 'Process-Load')
+        ->Where('ok', '=', 0)
         ->orWhereNull('status');
     })->get();
 
@@ -181,9 +182,9 @@ class ProcessLoadController extends Controller
       ;
     })->get();
 
-    $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->whereNull('slug')->get();
     $select_biaya = ContainerPlanload::where('job_id', $id)->where('total_biaya_lain', 0)->whereNotNull('status')->whereNull('slug')->get();
     $select_barang = ContainerPlanload::where('job_id', $id)->whereNull('status_barang')->whereNotNull('status')->whereNull('slug')->get();
+    $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->whereNull('slug')->get();
     // dd($containers);
 
     $containers_alih = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
@@ -477,7 +478,7 @@ class ProcessLoadController extends Controller
       'lokasi_depo' => $request->lokasi,
       'driver' => $request->driver,
       'pod_container' => $request->pod_container,
-      'pot_container' => $request->pot_container,
+      'pot_container' => $request->pod_container,
       'vessel_pot' => $request->vessel_pot,
       'kode_vessel_pot' => $request->kode_vessel_pot,
       'nomor_polisi' => $request->nomor_polisi,
@@ -713,6 +714,7 @@ class ProcessLoadController extends Controller
       'date_activity' => $request->date_activity,
       'lokasi_depo' => $request->lokasi,
       'pod_container' => $request->pod_container,
+      'pot_container' => $request->pod_container,
       'driver' => $request->driver,
       'nomor_polisi' => $request->nomor_polisi,
       'remark' => $request->remark,

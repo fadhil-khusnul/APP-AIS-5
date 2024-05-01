@@ -47,7 +47,8 @@ class ContainerLoadSeeder extends Seeder
                 'pengirim' => Pengirim::inRandomOrder()->first()->nama_costumer, // Fetch random pengirim
                 'penerima' => Penerima::inRandomOrder()->first()->nama_penerima, // Fetch random penerima
                 // Assuming portName is pod_container
-                'pod_container' => Pelabuhan::first()->nama_pelabuhan, 
+                'pod_container' => Pelabuhan::inRandomOrder()->first()->nama_pelabuhan, 
+                'pot_container' => Pelabuhan::inRandomOrder()->first()->nama_pelabuhan, 
                 // Fetch random penerima
                 'size' => Container::inRandomOrder()->first()->size_container, 
                 'type' => TypeContainer::inRandomOrder()->first()->type_container, 

@@ -1,7 +1,10 @@
 var tabel_container = $("#realisasiload_create").DataTable({
     responsive: true,
     pageLength: 5,
-    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"]
+    ],
     fixedHeader: {
         header: true,
     },
@@ -11,7 +14,10 @@ var tabel_container = $("#realisasiload_create").DataTable({
 var table_alih_kapal_realisasi = $("#table_alih_kapal_realisasi").DataTable({
     responsive: true,
     pageLength: 5,
-    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"]
+    ],
     fixedHeader: {
         header: true,
     },
@@ -21,23 +27,24 @@ var table_alih_kapal_realisasi = $("#table_alih_kapal_realisasi").DataTable({
 var tabel_si = $("#tabel_si").DataTable({
     responsive: true,
     pageLength: 5,
-    lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    lengthMenu: [
+        [5, 10, 20, -1],
+        [5, 10, 20, "All"]
+    ],
     fixedHeader: {
         header: true,
     },
     columnDefs: [{ targets: [10], visible: false }],
-    columnDefs: [
-        {
+    columnDefs: [{
             targets: [10], // Target the 11th column
             className: 'collapsed dtr-inline sorting dtr-hidden', // Apply the dtr-inline collapsed class
-        }
-    ]
-    // scroller: true,
+        }]
+        // scroller: true,
 
 });
 
 $("#submit-id").attr("disabled", "disabled");
-tabel_container.$(".check-container", { page: "all" },).click(function () {
+tabel_container.$(".check-container", { page: "all" }, ).click(function() {
     if ($(this).is(":checked")) {
         $("#submit-id").removeAttr("disabled");
     } else {
@@ -45,7 +52,7 @@ tabel_container.$(".check-container", { page: "all" },).click(function () {
     }
 });
 $("#submit_ok").attr("disabled", "disabled");
-tabel_container.$(".check_job", { page: "all" },).click(function () {
+tabel_container.$(".check_job", { page: "all" }, ).click(function() {
     if ($(this).is(":checked")) {
         $("#submit_ok").removeAttr("disabled");
     } else {
@@ -57,7 +64,7 @@ tabel_container.$(".check_job", { page: "all" },).click(function () {
 
 
 $("#submit-id1").attr("disabled", "disabled");
-table_alih_kapal_realisasi.$(".check-container1", { page: "all" },).click(function () {
+table_alih_kapal_realisasi.$(".check-container1", { page: "all" }, ).click(function() {
     if ($(this).is(":checked")) {
         $("#submit-id1").removeAttr("disabled");
     } else {
@@ -101,15 +108,15 @@ function biaya_do(e) {
             $.ajax({
                 url: "/detail-kontainer/" + id + "/input",
                 type: "GET",
-                success: function (response) {
+                success: function(response) {
                     let new_id = id;
                     console.log(new_id);
                     $("#modal_biaya_pol").modal("show");
 
                     $("#id_container").val(response.result.id);
-                    $("#nomor_kontainer").html(response.result.nomor_kontainer);
+                    $("#nomor_kontainer_pol").html(response.result.nomor_kontainer);
 
-                    $("#valid_pol").submit(function (e) {
+                    $("#valid_pol").submit(function(e) {
                         e.preventDefault();
                     }).validate({
                         highlight: function highlight(
@@ -136,7 +143,7 @@ function biaya_do(e) {
                                 .closest(".validation-container")
                                 .append(error);
                         },
-                        submitHandler: function (form) {
+                        submitHandler: function(form) {
                             document.getElementById(
                                 "loading-wrapper"
                             ).style.cursor = "wait";
@@ -185,7 +192,7 @@ function biaya_do(e) {
                                 url: "/masukkan-biaya-pol",
                                 data: data,
 
-                                success: function (response) {
+                                success: function(response) {
                                     // console.log(response);
                                     toast
                                         .fire({
@@ -216,6 +223,7 @@ function biaya_do(e) {
 
     // }
 }
+
 function edit_biaya_do(e) {
     var id = e.value;
     console.log(id);
@@ -243,7 +251,7 @@ function edit_biaya_do(e) {
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
         type: "GET",
-        success: function (response) {
+        success: function(response) {
             console.log(response);
             let new_id = id;
             $("#modal_biaya_pol_edit").modal("show");
@@ -278,7 +286,7 @@ function edit_biaya_do(e) {
                 button_biaya_lain.appendChild(label1);
                 edit_urutan_keterangan = 1;
 
-                $("#valid_pol_edit").submit(function (e) { e.preventDefault(); }).validate({
+                $("#valid_pol_edit").submit(function(e) { e.preventDefault(); }).validate({
                     highlight: function highlight(element, errorClass, validClass) {
                         $(element).addClass("is-invalid");
                         $(element).removeClass("is-valid");
@@ -294,7 +302,7 @@ function edit_biaya_do(e) {
                         error.addClass("invalid-feedback");
                         element.closest(".validation-container").append(error);
                     },
-                    submitHandler: function (form) {
+                    submitHandler: function(form) {
                         document.getElementById("loading-wrapper").style.cursor =
                             "wait";
                         document
@@ -340,7 +348,7 @@ function edit_biaya_do(e) {
                             url: "/masukkan-biaya-pol",
                             data: data,
 
-                            success: function (response) {
+                            success: function(response) {
                                 // console.log(response);
                                 toast
                                     .fire({
@@ -530,7 +538,7 @@ function edit_biaya_do(e) {
 
 
 
-                $("#valid_pol_edit").submit(function (e) { e.preventDefault(); }).validate({
+                $("#valid_pol_edit").submit(function(e) { e.preventDefault(); }).validate({
                     highlight: function highlight(element, errorClass, validClass) {
                         $(element).addClass("is-invalid");
                         $(element).removeClass("is-valid");
@@ -546,7 +554,7 @@ function edit_biaya_do(e) {
                         error.addClass("invalid-feedback");
                         element.closest(".validation-container").append(error);
                     },
-                    submitHandler: function (form) {
+                    submitHandler: function(form) {
                         document.getElementById("loading-wrapper").style.cursor =
                             "wait";
                         document
@@ -593,7 +601,7 @@ function edit_biaya_do(e) {
                             url: "/masukkan-biaya-pol",
                             data: data,
 
-                            success: function (response) {
+                            success: function(response) {
                                 // console.log(response);
                                 toast
                                     .fire({
@@ -622,7 +630,7 @@ function validate_biaya_trucking(ini) {
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
         type: "GET",
-        success: function (response) {
+        success: function(response) {
 
             var ongkos_supir = response.result.ongkos_supir
 
@@ -905,6 +913,7 @@ function edit_total_biaya_lain(e) {
             "Biaya Lain <i class='fa fa-plus'></i>";
     }
 }
+
 function tambah_keterangan() {
     urutan_keterangan++;
 
@@ -965,6 +974,7 @@ function tambah_keterangan() {
 
     div1.appendChild(div2);
 }
+
 function edit_tambah_keterangan() {
     edit_urutan_keterangan++
 
@@ -1085,6 +1095,7 @@ function pilih_pod_input_fun(val) {
             .draw();
     }
 }
+
 function pilih_pot_input_fun(val) {
     var filter = [];
     filter = $("#pilih_pot_input").val();
@@ -1099,6 +1110,7 @@ function pilih_pot_input_fun(val) {
             .draw();
     }
 }
+
 function pilih_size_input_fun(val) {
     var filter = [];
     filter = $("#pilih_size_input").val();
@@ -1113,6 +1125,7 @@ function pilih_size_input_fun(val) {
             .draw();
     }
 }
+
 function pilih_type_input_fun(val) {
     var filter = [];
     filter = $("#pilih_type_input").val();
@@ -1127,6 +1140,7 @@ function pilih_type_input_fun(val) {
             .draw();
     }
 }
+
 function pilih_ok_input_fun(val) {
 
     // console.log(val);
@@ -1143,6 +1157,7 @@ function pilih_ok_input_fun(val) {
             .draw();
     }
 }
+
 function pdf_si() {
     var swal = Swal.mixin({
         customClass: {
@@ -1194,7 +1209,7 @@ function pdf_si() {
                 error.insertAfter(element);
             }
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             let token = $("#csrf").val();
             // var chek_container = $(".check-container:checked")
             //     .map(function () {
@@ -1205,7 +1220,7 @@ function pdf_si() {
             var chek_container = []
 
             var rowcollection = tabel_container.$(".check-container:checked", { "page": "all" });
-            rowcollection.each(function (index, elem) {
+            rowcollection.each(function(index, elem) {
                 chek_container.push($(elem).val());
             });
 
@@ -1217,7 +1232,7 @@ function pdf_si() {
                     _token: token,
                     chek_container: chek_container,
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log(response);
                     var pod_sama = [...new Set(response.pod_container)];
                     var pot_sama = [...new Set(response.pot_container)];
@@ -1231,8 +1246,7 @@ function pdf_si() {
                             timer: 2e3,
                             showConfirmButton: false,
                         });
-                    }
-                    else {
+                    } else {
                         var old_slug = $("#old_slug").val();
 
                         var d = new Date(),
@@ -1297,7 +1311,7 @@ function pdf_si() {
                                             .closest(".validation-container")
                                             .append(error);
                                     },
-                                    submitHandler: function (form) {
+                                    submitHandler: function(form) {
                                         document.getElementById('loading-wrapper').style.cursor = "wait";
                                         document.getElementById('btnFinish').setAttribute('disabled', true);
                                         var shipper = $("#shipper").val();
@@ -1320,7 +1334,7 @@ function pdf_si() {
                                             xhrFields: {
                                                 responseType: "blob",
                                             },
-                                            success: function (response) {
+                                            success: function(response) {
                                                 toast.fire({
                                                     icon: "success",
                                                     title: "SI Berhasil Dibuat",
@@ -1333,7 +1347,7 @@ function pdf_si() {
                                                     "" + old_slug + dformat + ".pdf";
                                                 link.click();
 
-                                                setTimeout(function () {
+                                                setTimeout(function() {
                                                     window.location.reload();
                                                 }, 10);
                                             },
@@ -1398,13 +1412,13 @@ function pdf_si_alih() {
                 error.insertAfter(element);
             }
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             let token = $("#csrf").val();
             //
             var chek_container = []
 
             var rowcollection = table_alih_kapal_realisasi.$(".check-container1:checked", { "page": "all" });
-            rowcollection.each(function (index, elem) {
+            rowcollection.each(function(index, elem) {
                 chek_container.push($(elem).val());
             });
             console.log(chek_container);
@@ -1416,7 +1430,7 @@ function pdf_si_alih() {
                     _token: token,
                     kontainer_alih: chek_container,
                 },
-                success: function (response) {
+                success: function(response) {
                     var unique_alih_kapal = [...new Set(response)];
 
                     if (unique_alih_kapal.length != 1) {
@@ -1476,7 +1490,7 @@ function pdf_si_alih() {
                                         error.addClass("invalid-feedback");
                                         element.closest(".validation-container").append(error);
                                     },
-                                    submitHandler: function (form) {
+                                    submitHandler: function(form) {
                                         document.getElementById('loading-wrapper').style.cursor = "wait";
                                         document.getElementById('btnFinish').setAttribute('disabled', true);
                                         var shipper = $('#shipper').val();
@@ -1498,7 +1512,7 @@ function pdf_si_alih() {
                                             xhrFields: {
                                                 responseType: 'blob'
                                             },
-                                            success: function (response) {
+                                            success: function(response) {
                                                 toast.fire({
                                                     icon: "success",
                                                     title: "SI Berhasil Dibuat"
@@ -1508,7 +1522,7 @@ function pdf_si_alih() {
                                                 link.href = window.URL.createObjectURL(blob);
                                                 link.download = "" + old_slug + dformat + ".pdf";
                                                 link.click();
-                                                setTimeout(function () {
+                                                setTimeout(function() {
                                                     window.location.reload();
                                                 }, 10);
                                             }
@@ -1598,7 +1612,7 @@ function input_bl(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     document.getElementById("loading-wrapper").style.cursor =
                         "wait";
                     document
@@ -1629,7 +1643,7 @@ function input_bl(e) {
                         url: "/masukkan-bl",
                         data: data,
 
-                        success: function (response) {
+                        success: function(response) {
                             toast
                                 .fire({
                                     icon: "success",
@@ -1657,6 +1671,7 @@ function input_bl(e) {
 
     // }
 }
+
 function update_bl(e) {
     var id = e.value;
     var swal = Swal.mixin({
@@ -1683,7 +1698,7 @@ function update_bl(e) {
     $.ajax({
         url: "/detail-pdf/" + id + "/input",
         type: "GET",
-        success: function (response) {
+        success: function(response) {
             let new_id = id;
             $("#modal-bl-edit").modal("show");
 
@@ -1716,7 +1731,7 @@ function update_bl(e) {
                     error.addClass("invalid-feedback");
                     element.closest(".validation-container").append(error);
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     document.getElementById("loading-wrapper").style.cursor =
                         "wait";
                     document
@@ -1751,7 +1766,7 @@ function update_bl(e) {
                         url: "/masukkan-bl",
                         data: data,
 
-                        success: function (response) {
+                        success: function(response) {
                             toast
                                 .fire({
                                     icon: "success",
@@ -1810,7 +1825,7 @@ function approve_si(ini) {
                     type: "POST",
                     url: "/konfirmasi-si",
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
                             title: "SI Diapprove",
                             text: "SI Telah Diapprove",
@@ -1834,6 +1849,7 @@ function approve_si(ini) {
         });
     }
 }
+
 function tolak_si(ini) {
     var swal = Swal.mixin({
         customClass: {
@@ -1868,7 +1884,7 @@ function tolak_si(ini) {
                     type: "POST",
                     url: "/konfirmasi-si",
                     data: data,
-                    success: function (response) {
+                    success: function(response) {
                         swal.fire({
                             title: "SI Ditolak",
                             text: "SI Telah Ditolak",
@@ -1907,7 +1923,7 @@ function detail_update(e) {
     $.ajax({
         url: "/detail-kontainer/" + id + "/input",
         type: "GET",
-        success: function (response) {
+        success: function(response) {
             let new_id = id;
 
             var seals = [""];
@@ -1950,7 +1966,7 @@ function detail_update(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .on("select2:select", function(e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
 
@@ -1970,7 +1986,7 @@ function detail_update(e) {
                         data: {
                             _token: token,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             var seal = $("#seal_update").val();
                             var last_seal = seal[seal.length - 1];
                             var count_seal = response.length;
@@ -2014,7 +2030,7 @@ function detail_update(e) {
                     maximumSelectionLength: 4,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .on("select2:select", function (e) {
+                .on("select2:select", function(e) {
                     var selected_element = $(e.currentTarget);
                     var select_val = selected_element.val();
 
@@ -2034,7 +2050,7 @@ function detail_update(e) {
                         data: {
                             _token: token,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             var seal = $("#spk_update").val();
                             var last_seal = seal[seal.length - 1];
                             var count_seal = response.length;
@@ -2117,7 +2133,7 @@ function detail_update(e) {
                     allowClear: true,
                     dropdownParent: $("#modal-job-update"),
                 })
-                .change(function () {
+                .change(function() {
                     let vendor_id = $(this).val();
                     let token = $("#csrf").val();
                     $.ajax({
@@ -2127,7 +2143,7 @@ function detail_update(e) {
                             vendor_id: vendor_id,
                             _token: token,
                         },
-                        success: function (result) {
+                        success: function(result) {
                             $("#nomor_polisi_update")
                                 .select2({
                                     dropdownAutoWidth: true,
@@ -2187,7 +2203,7 @@ function detail_update(e) {
                     element.closest(".validation-container").append(error);
                 },
 
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     var new_id = document.getElementById("new_id_update").value;
                     var token = $("#csrf").val();
 
@@ -2248,7 +2264,7 @@ function detail_update(e) {
                             dana: $("#dana_update").val(),
                             spk: $("#spk_update").val(),
                         },
-                        success: function (response) {
+                        success: function(response) {
                             swal.fire({
                                 icon: "success",
                                 title: "Detail Kontainer Berhasil DIUPDATE",
@@ -2297,7 +2313,7 @@ function delete_SI(r) {
                 url: "/delete-si/" + deleteid,
                 data: data,
 
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
                         title: "SI BERHASIL DIHAPUS",
                         icon: "success",
@@ -2327,11 +2343,12 @@ function countCheck() {
     var ids = []
 
     var rowcollection = tabel_container.$('input[name="letter"]:checked', { "page": "all" });
-    rowcollection.each(function (index, elem) {
+    rowcollection.each(function(index, elem) {
         ids.push($(elem).val());
     });
     document.getElementById("nomor").innerHTML = ids.length;
 }
+
 function countCheck1() {
     // var search = "";
 
@@ -2341,11 +2358,12 @@ function countCheck1() {
     var ids = []
 
     var rowcollection = tabel_container.$('input[name="letter1"]:checked', { "page": "all" });
-    rowcollection.each(function (index, elem) {
+    rowcollection.each(function(index, elem) {
         ids.push($(elem).val());
     });
     document.getElementById("nomor1").innerHTML = ids.length;
 }
+
 function countCheck_delivery() {
     // var search = "";
 
@@ -2355,7 +2373,7 @@ function countCheck_delivery() {
     var ids = []
 
     var rowcollection = tabel_container.$('input[name="delivery"]:checked', { "page": "all" });
-    rowcollection.each(function (index, elem) {
+    rowcollection.each(function(index, elem) {
         ids.push($(elem).val());
     });
     document.getElementById("nomor_delivery").innerHTML = ids.length;
@@ -2376,7 +2394,7 @@ function ok_load(ini) {
     var check_job = []
 
     var rowcollection = tabel_container.$(".check_job:checked", { "page": "all" });
-    rowcollection.each(function (index, elem) {
+    rowcollection.each(function(index, elem) {
         check_job.push($(elem).val());
     });
 
@@ -2397,7 +2415,7 @@ function ok_load(ini) {
                 type: "POST",
                 url: "/ok-load",
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
                         title: "Container Delivery OK",
                         icon: "success",
@@ -2419,6 +2437,7 @@ function ok_load(ini) {
     });
 
 }
+
 function remove_ok_load(ini) {
     var swal = Swal.mixin({
         customClass: {
@@ -2451,7 +2470,7 @@ function remove_ok_load(ini) {
                 type: "PUT",
                 url: "/remove-ok-load/" + id,
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     swal.fire({
                         title: "Job Container dibatalkan",
                         icon: "success",
@@ -2472,4 +2491,574 @@ function remove_ok_load(ini) {
         }
     });
 
+}
+
+function masukkan_pot(e) {
+    var id = e.value;
+    console.log(id);
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    var toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3e3,
+        timerProgressBar: true,
+        didOpen: function didOpen(toast) {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+    });
+
+    swal.fire({
+        title: " Ubah POT Kontainer ini?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            $.ajax({
+                url: "/detail-kontainer/" + id + "/input",
+                type: "GET",
+                success: function(response) {
+                    let new_id = id;
+                    console.log(new_id);
+                    $("#modal_masukkan_pot").modal("show");
+
+                    $("#id_container").val(response.result.id);
+                    $("#nomor_kontainer_pot").html(response.result.nomor_kontainer);
+
+                    $("#modal_pot")
+                        .val(response.result.pot_container)
+                        .select2({
+                            dropdownAutoWidth: true,
+                            placeholder: "Silahkan Pilih POT",
+                            allowClear: true,
+                            dropdownParent: $("#modal_masukkan_pot"),
+                        });
+                    $("#valid_masukkan_pot").submit(function(e) {
+                        e.preventDefault();
+                    }).validate({
+                        highlight: function highlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).addClass("is-invalid");
+                            $(element).removeClass("is-valid");
+                        },
+                        unhighlight: function unhighlight(
+                            element,
+                            errorClass,
+                            validClass
+                        ) {
+                            $(element).removeClass("is-invalid");
+                        },
+                        errorPlacement: function errorPlacement(
+                            error,
+                            element
+                        ) {
+                            error.addClass("invalid-feedback");
+                            element
+                                .closest(".validation-container")
+                                .append(error);
+                        },
+                        submitHandler: function(form) {
+                            document.getElementById(
+                                "loading-wrapper"
+                            ).style.cursor = "wait";
+                            document
+                                .getElementById("btn_pot")
+                                .setAttribute("disabled", true);
+
+                            var csrf = $("#csrf").val();
+                            var id_container = $("#id_container").val();
+                            var data = {
+                                _token: csrf,
+                                id: id_container,
+                                pot_container: $("#modal_pot").val(),
+
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/masukkan-pot",
+                                data: data,
+
+                                success: function(response) {
+                                    // console.log(response);
+                                    swal
+                                        .fire({
+                                            icon: "success",
+                                            title: "POT Diupdate",
+                                            timer: 2e3,
+                                            showConfirmButton: false,
+
+                                        })
+                                        .then((result) => {
+                                            location.reload();
+                                        });
+                                },
+                            });
+                        },
+                    });
+                },
+            });
+        } else {
+            swal.fire({
+                title: "POT Tidak diedit",
+                icon: "error",
+                timer: 2e3,
+            });
+        }
+    });
+
+    // for (let i = 0; i < chek_container.length; i++) {
+    //     volume[i] = document.getElementById("volume[" + item_id[i] + "]").value;
+
+    // }
+}
+
+
+function detail_batal_muat() {
+    $("#modal_batal_muat").modal("show");
+
+    $("#kontainer_batal").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Kontainer",
+        allowClear: true,
+        dropdownParent: $("#modal_batal_muat"),
+    });
+
+    $("#valid_batal_muat").validate({
+        ignore: "select[type=hidden]",
+
+        rules: {
+            size: {
+                required: true,
+            },
+        },
+        messages: {},
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+
+        // console.log();
+        submitHandler: function(form) {
+            var token = $("#csrf").val();
+
+            var data = {
+                _token: token,
+                job_id: $("#job_id").val(),
+                kontainer_batal: $("#kontainer_batal").val(),
+                harga_batal: $("#harga_batal").val().replace(/\./g, ""),
+                keterangan_batal: $("#keterangan_batal").val(),
+            };
+
+            $.ajax({
+                url: "/batalmuat-kontainer",
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    swal.fire({
+                        icon: "success",
+                        title: "Kontainer Berhasil BATAL MUATAN",
+                        showConfirmButton: false,
+                        timer: 2e3,
+                    }).then((result) => {
+                        location.reload();
+                    });
+                },
+            });
+        },
+    });
+}
+
+function detail_batal_muat_edit(e) {
+    let id = e.value;
+    // console.log(id);
+
+    $.ajax({
+        url: "/batalmuat-edit/" + id,
+        type: "GET",
+        success: function(response) {
+            $("#modal_batal_muat_edit").modal("show");
+
+            $("#id_lama_batal").val(response.result.id);
+            $("#kontainer_batal_edit").val(response.result.id).is(":selected");
+            $("#harga_batal_edit").val(response.result.harga_batal);
+            $("#keterangan_batal_edit").val(response.result.keterangan_batal);
+
+            $("#valid_batal_muat_edit").validate({
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function(form) {
+                    var id_lama_batal =
+                        document.getElementById("id_lama_batal").value;
+                    // console.log(id_lama_biaya);
+                    var token = $("#csrf").val();
+
+                    var data = {
+                        _token: token,
+                        job_id: $("#job_id").val(),
+                        id_lama_batal: $("#id_lama_batal").val(),
+                        kontainer_batal: $("#kontainer_batal_edit").val(),
+                        harga_batal: $("#harga_batal_edit")
+                            .val()
+                            .replace(/\./g, ""),
+                        keterangan_batal: $("#keterangan_batal_edit").val(),
+                    };
+
+                    $.ajax({
+                        url: "/batalmuat-update/" + id_lama_batal,
+                        type: "PUT",
+                        data: data,
+                        success: function(response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Isi Batal Muat Berhasil Diupdate",
+                                showConfirmButton: false,
+                                timer: 2e3,
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+                },
+            });
+        },
+    });
+}
+
+function delete_batalDB(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Mengembalikan Kontainer ini ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+                // 'old_slug': old_slug,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/batalmuat-delete/" + deleteid,
+                data: data,
+                // contentType: false,
+                // processData: false,
+                // dataType: "json",
+                success: function(response) {
+                    swal.fire({
+                        title: "Kontainer Berhasil DIKEMBALIKAN",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Container TIDAK DIKEMBALIKAN",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
+}
+
+function detail_alih_kapal() {
+    $("#modal_alih_kapal").modal("show");
+
+    $("#kontainer_alih").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Kontainer",
+        allowClear: true,
+        dropdownParent: $("#modal_alih_kapal"),
+    });
+    $("#select_company_alih").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih Pelayaran",
+        allowClear: true,
+        dropdownParent: $("#modal_alih_kapal"),
+    });
+    $("#pot_alih").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih POT",
+        allowClear: true,
+        dropdownParent: $("#modal_alih_kapal"),
+    });
+    $("#pod_alih").select2({
+        dropdownAutoWidth: true,
+        placeholder: "Silahkan Pilih POD",
+        allowClear: true,
+        dropdownParent: $("#modal_alih_kapal"),
+    });
+
+    $("#valid_alih_kapal").validate({
+        ignore: "select[type=hidden]",
+
+        rules: {
+            size: {
+                required: true,
+            },
+        },
+        messages: {},
+        highlight: function highlight(element, errorClass, validClass) {
+            $(element).addClass("is-invalid");
+            $(element).removeClass("is-valid");
+        },
+        unhighlight: function unhighlight(element, errorClass, validClass) {
+            $(element).removeClass("is-invalid");
+            $(element).addClass("is-valid");
+        },
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass("invalid-feedback");
+            element.closest(".validation-container").append(error);
+        },
+
+        // console.log();
+        submitHandler: function(form) {
+            var token = $("#csrf").val();
+
+            var data = {
+                _token: token,
+                job_id: $("#job_id").val(),
+                kontainer_alih: $("#kontainer_alih").val(),
+                pelayaran_alih: $("#select_company_alih").val(),
+                pot_alih: $("#pot_alih").val(),
+                pod_alih: $("#pod_alih").val(),
+                vessel_alih: $("#vessel_alih").val(),
+                code_vesseL_alih: $("#vessel_code_alih").val(),
+                harga_alih_kapal: $("#harga_alih").val().replace(/\./g, ""),
+                keterangan_alih_kapal: $("#keterangan_alih").val(),
+            };
+
+            $.ajax({
+                url: "/alihkapal-kontainer",
+                type: "POST",
+                data: data,
+                success: function(response) {
+                    swal.fire({
+                        icon: "success",
+                        title: "Kontainer Berhasil DIALIHKAPALKAN",
+                        showConfirmButton: false,
+                        timer: 2e3,
+                    }).then((result) => {
+                        location.reload();
+                    });
+                },
+            });
+        },
+    });
+}
+
+function detail_alih_kapal_edit(e) {
+    let id = e.value;
+    console.log(id);
+
+    $.ajax({
+        url: "/alihkapal-edit/" + id,
+        type: "GET",
+        success: function(response) {
+            console.log(response);
+            $("#modal_alih_kapal_edit").modal("show");
+
+            $("#id_lama_alih").val(response.result.id);
+            // console.log(response.result.kontainer_alih);
+            $("#kontainer_alih_edit")
+                .val(response.result.kontainer_alih)
+                .is(":selected");
+            $("#select_company_alih_edit")
+                .val(response.result.pelayaran_alih)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih Pelayaran",
+                    allowClear: true,
+                    dropdownParent: $("#modal_alih_kapal_edit"),
+                });
+            $("#pot_alih_edit")
+                .val(response.result.pot_alih)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih POT",
+                    allowClear: true,
+                    dropdownParent: $("#modal_alih_kapal_edit"),
+                });
+            $("#pod_alih_edit")
+                .val(response.result.pod_alih)
+                .select2({
+                    dropdownAutoWidth: true,
+                    placeholder: "Silahkan Pilih POD",
+                    allowClear: true,
+                    dropdownParent: $("#modal_alih_kapal_edit"),
+                });
+            $("#vessel_alih_edit").val(response.result.vesseL_alih);
+            $("#vessel_code_alih_edit").val(response.result.code_vesseL_alih);
+            $("#harga_alih_edit").val(response.result.harga_alih_kapal);
+            $("#keterangan_alih_edit").val(
+                response.result.keterangan_alih_kapal
+            );
+
+            $("#valid_alih_kapal_edit").validate({
+                highlight: function highlight(element, errorClass, validClass) {
+                    $(element).addClass("is-invalid");
+                    $(element).removeClass("is-valid");
+                },
+                unhighlight: function unhighlight(
+                    element,
+                    errorClass,
+                    validClass
+                ) {
+                    $(element).removeClass("is-invalid");
+                    $(element).addClass("is-valid");
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".validation-container").append(error);
+                },
+
+                // console.log();
+                submitHandler: function(form) {
+                    var id_lama_alih =
+                        document.getElementById("id_lama_alih").value;
+                    // console.log(id_lama_biaya);
+                    var token = $("#csrf").val();
+
+                    var data = {
+                        _token: token,
+                        job_id: $("#job_id").val(),
+                        kontainer_alih: $("#kontainer_alih_edit").val(),
+                        pelayaran_alih: $("#select_company_alih_edit").val(),
+                        pot_alih: $("#pot_alih_edit").val(),
+                        pod_alih: $("#pod_alih_edit").val(),
+                        vessel_alih: $("#vessel_alih_edit").val(),
+                        code_vesseL_alih: $("#vessel_code_alih_edit").val(),
+                        harga_alih_kapal: $("#harga_alih_edit")
+                            .val()
+                            .replace(/\./g, ""),
+                        keterangan_alih_kapal: $("#keterangan_alih_edit").val(),
+                    };
+
+                    $.ajax({
+                        url: "/alihkapal-update/" + id_lama_alih,
+                        type: "PUT",
+                        data: data,
+                        success: function(response) {
+                            swal.fire({
+                                icon: "success",
+                                title: "Isi Alih Kapal Berhasil Diupdate",
+                                showConfirmButton: false,
+                                timer: 2e3,
+                            }).then((result) => {
+                                location.reload();
+                            });
+                        },
+                    });
+                },
+            });
+        },
+    });
+}
+
+function delete_alihDB(r) {
+    var deleteid = r.value;
+
+    var swal = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-label-success btn-wide mx-1",
+            denyButton: "btn btn-label-secondary btn-wide mx-1",
+            cancelButton: "btn btn-label-danger btn-wide mx-1",
+        },
+        buttonsStyling: false,
+    });
+
+    swal.fire({
+        title: "Apakah anda yakin Ingin Mengembalikan Kontainer ini ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+    }).then((willCreate) => {
+        if (willCreate.isConfirmed) {
+            var data = {
+                _token: $("input[name=_token]").val(),
+                id: deleteid,
+                // 'old_slug': old_slug,
+            };
+            $.ajax({
+                type: "DELETE",
+                url: "/alihkapal-delete/" + deleteid,
+                data: data,
+                // contentType: false,
+                // processData: false,
+                // dataType: "json",
+                success: function(response) {
+                    swal.fire({
+                        title: "Kontainer Berhasil DIKEMBALIKAN",
+                        icon: "success",
+                        timer: 9e3,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload();
+                },
+            });
+        } else {
+            swal.fire({
+                title: "Container TIDAK Dikambalikan",
+                icon: "error",
+                timer: 10e3,
+                showConfirmButton: false,
+            });
+        }
+    });
 }

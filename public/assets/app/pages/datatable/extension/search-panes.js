@@ -191,34 +191,34 @@ $(function() {
             targets: [1, 3, 4, 5, 6, 7],
         }],
 
-        serverSide: false, 
-        ajax: function(requestData, callback, settings) {
-            console.log(requestData);
-            let hasInput = false;
-            for (let i = 0; i < requestData.columns.length; i++) {
-                if ([1, 3, 4, 5, 6, 7].includes(i) && columns[i] && columns[i].searchPanes !== '') {
-                    hasInput = true;
-                    break;
-                }
-            }
+        // serverSide: false, 
+        // ajax: function(requestData, callback, settings) {
+        //     console.log(requestData);
+        //     let hasInput = false;
+        //     for (let i = 0; i < requestData.columns.length; i++) {
+        //         if ([1, 3, 4, 5, 6, 7].includes(i) && columns[i] && columns[i].searchPanes !== '') {
+        //             hasInput = true;
+        //             break;
+        //         }
+        //     }
 
-            if (hasInput) {
-                processload.settings()[0].oFeatures.bServerSide = true;
-                data.draw = 1; // Reset the draw counter to start from the first page
-            } else {
-                processload.settings()[0].oFeatures.bServerSide = false;
-            }
+        //     if (hasInput) {
+        //         processload.settings()[0].oFeatures.bServerSide = true;
+        //         data.draw = 1; // Reset the draw counter to start from the first page
+        //     } else {
+        //         processload.settings()[0].oFeatures.bServerSide = false;
+        //     }
 
-            $.ajax({
-                url: '/search-processload',
-                type: 'GET',
-                data: requestData,
-                success: callback,
-                error: function(xhr, error, thrown) {
-                    // Handle errors if needed
-                }
-            });
-        }
+        //     $.ajax({
+        //         url: '/search-processload',
+        //         type: 'GET',
+        //         data: requestData,
+        //         success: callback,
+        //         error: function(xhr, error, thrown) {
+        //             // Handle errors if needed
+        //         }
+        //     });
+        // }
     });
 
 

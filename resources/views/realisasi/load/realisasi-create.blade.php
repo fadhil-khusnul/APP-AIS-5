@@ -51,6 +51,8 @@
 
     <form action="#" class="row row-cols-lg-12 g-3" id="valid_realisasi" name="valid_realisasi">
       <input type="hidden" name="old_slug" id="old_slug" value="{{ $planload->slug }}">
+      <input type="hidden" name="job_id" id="job_id" value="{{ $planload->id }}">
+
       <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
       <div class="col-md-12">
         <div class="portlet">
@@ -204,6 +206,7 @@
                     <th>Receiving OK</th>
                     <th>Biaya POL</th>
                     <th>POD</th>
+                    <th>POT</th>
                     <th>Nomor Kontainer</th>
                     <th>Size</th>
                     <th>Type</th>
@@ -223,11 +226,6 @@
 
 
                       <td class="text-nowrap text-center">
-
-
-
-
-
                         @if ($container->slug != null)
                           <div class="">
 
@@ -288,6 +286,12 @@
                         <label disabled @readonly(true)
                           id="pod_container[{{ $container->id }}]">{{ old('pod_container', $container->pod_container) }}</label>
 
+                      </td>
+                      <td class="text-nowrap">
+                        {{ $container->pot_container }} 
+                        <button type="button" class="btn btn-success btn-sm" value="{{ $container->id }}"
+                          onclick="masukkan_pot(this)">Edit <i class="fa fa-pencil"></i>
+                        </button>
                       </td>
                       {{-- <td>
                         @if ($container->pot_container != null)
@@ -363,14 +367,35 @@
                     </tr>
                   @endforeach
                 </tbody>
+{{-- 
+                <tfoot>
+                  <tr>
+                    <th>
+                      <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
+                        SI <i class="fa fa-print"></i></button>
+                      <label for="" class="text-danger" style="margin-left: ">
+                        <b id="nomor">0</b> dari <b id="jumlah">{{ count($containers) }}</b> Kontainer
+                        dipilih.</label>
+                    </th>
+                    <th>
+                      <button id="submit_ok" type="button" onclick="ok_load()" class="btn btn-success ">Buat Job
+                        <i class="fa fa-check"></i></button> <label for="" class="text-danger"
+                        style="margin-left: "><b id="nomor_delivery">0</b> dari <b
+                          id="jumlah">{{ count($containers) }}</b> Kontainer
+                        dipilih.</label>
+                    </th>
+                  </tr>
+                </tfoot> --}}
+
+               
               </table>
 
             </div>
 
             <!-- END Form -->
-            <div class="text-start ml-4">
+            <div class="text-center ml-4">
 
-              <div class="col-auto text-star mb-4">
+              <div class="col-auto mb-4">
                 <button id="submit-id" type="submit" onclick="pdf_si()" class="btn btn-primary ">Cetak
                   SI <i class="fa fa-print"></i></button>
                 <label for="" class="text-danger" style="margin-left: ">
@@ -378,7 +403,7 @@
                   dipilih.</label>
 
               </div>
-              <div class="col-auto text-start">
+              <div class="col-auto mb-4">
 
                 <button id="submit_ok" type="button" onclick="ok_load()" class="btn btn-success ">Buat Job
                   <i class="fa fa-check"></i></button> <label for="" class="text-danger"
@@ -386,6 +411,7 @@
                     id="jumlah">{{ count($containers) }}</b> Kontainer
                   dipilih.</label>
               </div>
+
 
 
 
@@ -399,18 +425,211 @@
           <!-- END Portlet -->
         </div>
       </div>
+
+
+      <div class="col-md-12">
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">KONTAINER BATAL MUAT (JIKA ADA)</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="portlet-body">
+
+            <!-- BEGIN Form -->
+
+
+
+            <div class="table-responsive">
+
+
+              <table id="table_batal_muat" class="table mb-0" style="width: 100% !important">
+                <thead id="thead_batal_muat" class="table-success">
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th class="text-center"></th>
+                    <th class="text-center">Pilih Nomor Container</th>
+                    <th class="text-center">Biaya Batal Muat</th>
+                    <th class="text-center">Keterangan</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody_batal_muat" class="text-center">
+                  @foreach ($container_batal as $container)
+                    <tr>
+                      <td align="center">
+
+                        {{ $loop->iteration }}
+                      </td>
+                      <td class="text-center">
+                        <button id="delete_batal" name="delete_batal" class="btn btn-info btn-icon btn-sm"
+                          type="button" value="{{ $container->id }}" onclick="delete_batalDB(this)"
+                          @readonly(true)><i class="fa fa-refresh"></i></button>
+                        <button id="edit_batal" name="edit_batal" class="btn btn-primary btn-icon btn-sm"
+                          type="button" value="{{ $container->id }}" onclick="detail_batal_muat_edit(this)"
+                          @readonly(true)><i class="fa fa-pencil"></i></button>
+                      </td>
+
+                      <td>
+                        {{ $container->nomor_kontainer }}
+                      </td>
+                      <td>
+                        @rupiah($container->harga_batal)
+                      </td>
+                      <td>
+                        {{ $container->keterangan_batal }}
+                      </td>
+
+                      {{-- <td>
+                                                <button type="button" id="btn_detail" name="btn_detail"
+                                                    class="btn btn-label-primary btn-sm text-nowrap"
+                                                    value="{{ $container->id }}" onclick="detail_disabled(this)">Detail
+                                                    Kontainer <i class="fa fa-eye"></i></button>
+
+                                            </td> --}}
+                    </tr>
+                  @endforeach
+
+
+                </tbody>
+              </table>
+
+            </div>
+            <div class="mb-5 mt-5">
+              <button id="add_biaya" type="button" onclick="detail_batal_muat()" class="btn btn-success btn-icon"> <i
+                  class="fa fa-plus"></i></button>
+            </div>
+
+
+            <!-- END Form -->
+          </div>
+        </div>
+        <!-- BEGIN Portlet -->
+
+        <!-- END Portlet -->
+      </div>
+      <div class="col-md-12">
+        <div class="portlet portlet-collapsed">
+
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">KONTAINER ALIH KAPAL (JIKA ADA)</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
+
+
+          <div class="portlet-body">
+
+            <!-- BEGIN Form -->
+
+
+            <div class="table-responsive">
+
+              <table id="table_alih_kapal" class="table mb-0" style="width: 100% !important">
+                <thead id="thead_alih" class="table-success text-nowrap">
+                  <tr>
+                    <th class="text-center">No</th>
+                    <th class="text-center"></th>
+                    <th class="text-center">Nomor Kontainer</th>
+                    <th class="text-center">Pelayaran</th>
+                    <th class="text-center">POT (Jika Ada)</th>
+                    <th class="text-center">POD</th>
+                    <th class="text-center">vessel/Voyage</th>
+                    <th class="text-center">Kode vessel</th>
+                    <th class="text-center">Biaya Alih Kapal</th>
+                    <th class="text-center">Keterangan Alih Kapal</th>
+                    {{-- <th class="text-center"></th> --}}
+                  </tr>
+                </thead>
+                <tbody id="tbody_alih" class="text-center">
+                  @foreach ($new_container_alih as $alih)
+                    <tr>
+                      <td align="center">
+
+                        {{ $loop->iteration }}
+                      </td>
+                      <td class="text-center text-nowrap">
+                        <button id="delete_alih" name="delete_alih" class="btn btn-info btn-icon btn-sm"
+                          type="button" value="{{ $alih->id }}" onclick="delete_alihDB(this)"
+                          @readonly(true)><i class="fa fa-refresh"></i></button>
+                        <button id="edit_batal" name="edit_batal" class="btn btn-primary btn-icon btn-sm"
+                          type="button" value="{{ $alih->alihs->id }}" onclick="detail_alih_kapal_edit(this)"
+                          @readonly(true)><i class="fa fa-pencil"></i></button>
+                      </td>
+
+                      <td>
+                        {{ $alih->nomor_kontainer }}
+                      </td>
+                      <td>
+                        {{ $alih->alihs->pelayaran_alih }}
+                      </td>
+                      <td>
+                        {{ $alih->alihs->pot_alih }}
+                      </td>
+                      <td>
+                        {{ $alih->alihs->pod_alih }}
+                      </td>
+                      <td>
+                        {{ $alih->alihs->vesseL_alih }}
+                      </td>
+                      <td>
+                        {{ $alih->alihs->code_vesseL_alih }}
+                      </td>
+                      <td>
+                        @rupiah($alih->alihs->harga_alih_kapal)
+                      </td>
+                      <td>
+                        {{ $alih->alihs->keterangan_alih_kapal }}
+                      </td>
+                      {{-- <td>
+                                                <button type="button" id="btn_detail" name="btn_detail"
+                                                    class="btn btn-label-primary btn-sm text-nowrap"
+                                                    value="{{ $alih->alihs->kontainer_alih}}" onclick="detail_disabled(this)">Detail
+                                                    Kontainer <i class="fa fa-eye"></i></button>
+
+                                            </td> --}}
+
+
+                    </tr>
+                  @endforeach
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mb-5 mt-5">
+              <button id="add_biaya" type="button" onclick="detail_alih_kapal()" class="btn btn-success btn-icon"> <i
+                  class="fa fa-plus"></i></button>
+            </div>
+            <!-- END Form -->
+          </div>
+        </div>
+        <!-- BEGIN Portlet -->
+
+        <!-- END Portlet -->
+      </div>
       @if (count($alihs) > 0)
         <div class="col-md-12">
-          <div class="portlet">
+          <div class="portlet portlet-collapsed">
+            <div class="portlet-header portlet-header-bordered">
+              <h3 class="portlet-title">KONTAINER ALIH KAPAL</h3>
+              <div class="portlet-addon">
+                <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                  data-behavior="toggleCollapse">
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </div>
+            </div>
 
             <div class="portlet-body">
-
-              <!-- BEGIN Form -->
-
-              <div class="col-md-12 text-center">
-
-                <label for="inputState" class="form-label"><u><b>KONTAINER ALIH KAPAL</b></u></label>
-              </div>
 
               <div class="row row-cols-lg-auto py-5 g-3">
                 <label for="" class="col-form-label">Filter Tabel :</label>
@@ -552,7 +771,16 @@
 
       @if (count($pdfs) > 0)
         <div class="col-md-12">
-          <div class="portlet">
+          <div class="portlet portlet-collapsed">
+            <div class="portlet-header portlet-header-bordered">
+              <h3 class="portlet-title">SI/BL/DO</h3>
+              <div class="portlet-addon">
+                <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                  data-behavior="toggleCollapse">
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </div>
+            </div>
 
             <div class="portlet-body">
 
@@ -756,12 +984,19 @@
       @endif
 
       <div class="col-md-12 col-xl-12">
-        <div class="portlet">
+        <div class="portlet portlet-collapsed">
+          <div class="portlet-header portlet-header-bordered">
+            <h3 class="portlet-title">INFORMASI KONTAINER</h3>
+            <div class="portlet-addon">
+              <button class="btn btn-label-success btn-icon" data-toggle="portlet" data-target="parent"
+                data-behavior="toggleCollapse">
+                <i class="fa fa-angle-down"></i>
+              </button>
+            </div>
+          </div>
           <div class="portlet-body">
 
-            <div class="col-md-12 text-center">
-              <label for="inputState" class="form-label"><u><b>INFORMASI KONTAINER :</u></b></label>
-            </div>
+        
 
             <div class="row row-cols-lg-auto py-5 g-3">
               <label for="" class="col-form-label">Filter Tabel :</label>
@@ -1160,7 +1395,7 @@
 
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Masukkan Biaya-Biaya POL</h5>
+            <h5 class="modal-title">Masukkan Biaya-Biaya POL </h5>
             <h5 class="modal-title" id="nomor_kontainer_pol"></h5>
             <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
               <i class="fa fa-times"></i>
@@ -1326,6 +1561,52 @@
     </div>
   </div>
 
+  <div class="modal fade" id="modal_masukkan_pot" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+
+      <form class="modal-content" id="valid_masukkan_pot" name="valid_masukkan_pot">
+        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+        <input type="hidden" name="id_container" id="id_container">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit POT</h5>
+            <h5 class="modal-title" id="nomor_kontainer_pot"></h5>
+            <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body d-grid gap-3">
+            
+            <div class="row">
+              <label class="col-sm-4 col-form-label" for="">POT:<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <select id="modal_pot" name="modal_pot" class="form-select">
+                  <option selected disabled>Pilih POT</option>
+                  @foreach ($pelabuhans as $pot)
+                    <option value="{{ $pot->id }}">{{ $pot->area_code }} -
+                      {{ $pot->nama_pelabuhan }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+          
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" id="btn_pot" class="btn btn-success">Simpan</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
 
   <div class="modal fade" id="modal-bl-edit">
@@ -1383,6 +1664,431 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal_batal_muat" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-dialog-scrollable" action="#" name="valid_batal_muat" id="valid_batal_muat">
+        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+        {{-- <input type="hidden" name="id_lama_biaya" id="id_lama_biaya">
+                <input type="hidden" name="old_id_container_biaya" id="old_id_container_biaya"> --}}
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">CONTAINER BATAL MUAT :</h5>
+            <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body d-grid gap-3 px-3">
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <select data-bs-toggle="tooltip" id="kontainer_batal" name="kontainer_batal" class="form-select"
+                  @readonly(true) required>
+                  <option selected disabled>Pilih Kontainer</option>
+                  @foreach ($containers as $container)
+                    @if ($container->status == 'Process-Load' || $container->status == 'Biaya-Lainnya')
+                      <option value="{{ $container->id }}">
+                        {{ $container->nomor_kontainer }}</option>
+                    @endif
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label" for="">Biaya Batal Muatan :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text" for="">Rp.</span>
+                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                    id="harga_batal" name="harga_batal" placeholder="Biaya Batal Muatan..."
+                    value="@rupiah2(old('harga_batal'))" required>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+              <label for="" class="col-sm-4 col-form-label">Keterangan Batal Muat :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_batal" name="keterangan_batal" required>{{ old('keterangan_batal') }}</textarea>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Batal Muatkan Kontainer</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal_batal_muat_edit" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-dialog-scrollable" action="#" name="valid_batal_muat_edit"
+        id="valid_batal_muat_edit">
+        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+        <input type="hidden" name="id_lama_batal" id="id_lama_batal">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">EDIT CONTAINER BATAL MUAT :</h5>
+            <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body d-grid gap-3 px-3">
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <select data-bs-toggle="tooltip" id="kontainer_batal_edit" name="kontainer_batal_edit"
+                  class="form-select" @disabled(true) @readonly(true) required>
+                  <option selected disabled>Pilih Kontainer</option>
+                  @foreach ($select_batal_edit as $container)
+                    <option value="{{ $container->id }}">
+                      {{ $container->nomor_kontainer }}</option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label" for="">Biaya Batal Muatan :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text" for="">Rp.</span>
+                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                    id="harga_batal_edit" name="harga_batal_edit" placeholder="Biaya Batal Muatan..."
+                    value="@rupiah2(old('harga_batal'))" required>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+              <label for="" class="col-sm-4 col-form-label">Keterangan Batal Muat :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_batal_edit" name="keterangan_batal_edit"
+                  required>{{ old('keterangan_batal_edit') }}</textarea>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Edit Batal Muat Kontainer</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="modal_alih_kapal" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-dialog-scrollable" action="#" name="valid_alih_kapal" id="valid_alih_kapal">
+        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+        {{-- <input type="hidden" name="id_lama_biaya" id="id_lama_biaya">
+                <input type="hidden" name="old_id_container_biaya" id="old_id_container_biaya"> --}}
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">ALIH KAPAL KONTAINER :</h5>
+            <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body d-grid gap-3  px-5">
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <select data-bs-toggle="tooltip" id="kontainer_alih" name="kontainer_alih" class="form-select"
+                  @readonly(true) required>
+                  <option selected disabled>Pilih Kontainer</option>
+                  @foreach ($containers_alih as $container)
+                    <option value="{{ $container->id }}">
+                      {{ $container->nomor_kontainer }}</option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+
+              <label class="col-sm-4 col-form-label">Pilih Pelayaran (Shipping Company) :<span
+                  class="text-danger">*</span></label>
+
+              <div class="col-sm-8 validation-container">
+                <select id="select_company_alih" name="select_company_alih" class="form-select" required>
+                  <option selected disabled>Pilih Company</option>
+                  @foreach ($shipping_company as $shippingcompany)
+                    <option value="{{ $shippingcompany->nama_company }}">
+                      {{ $shippingcompany->nama_company }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Pilih POT (jika ada) :</label>
+
+              <div class="col-sm-8 validation-container">
+
+                <select id="pot_alih" name="pot_alih" class="form-select">
+                  <option selected disabled>Pilih POT</option>
+                  @foreach ($pelabuhans as $pot)
+                    <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
+                      {{ $pot->nama_pelabuhan }}
+                    </option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Pilih POD : <span class="text-danger">*</span></label>
+
+              <div class="col-sm-8 validation-container">
+
+                <select id="pod_alih" name="pod_alih" class="form-select" required>
+                  <option selected disabled>Pilih POD</option>
+                  @foreach ($pelabuhans as $pot)
+                    <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
+                      {{ $pot->nama_pelabuhan }}
+                    </option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Vessel/Voyage : <span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <input required class="form-control" type="text" name="vessel_alih" id="vessel_alih">
+
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Vessel Code : <span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <input required class="form-control" type="text" name="vessel_code_alih" id="vessel_code_alih">
+
+              </div>
+            </div>
+
+            <div class="row">
+
+              <label class="col-sm-4 col-form-label" for="">Biaya Alih Kapal<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text" for="">Rp.</span>
+                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                    id="harga_alih" name="harga_alih" placeholder="Biaya Alih Kapal..." required>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+              <label for="" class="col-sm-4 col-form-label">Keterangan Alih Kapal :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_alih" placeholder="Keterangan Alih Kapal"
+                  name="keterangan_alih" required>{{ old('keterangan_alih') }}</textarea>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Alih Kapalkan Kontainer</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal_alih_kapal_edit" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <form class="modal-dialog-scrollable" action="#" name="valid_alih_kapal_edit"
+        id="valid_alih_kapal_edit">
+        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+        <input type="hidden" name="id_lama_alih" id="id_lama_alih">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">EDIT ALIH KAPAL KONTAINER :</h5>
+            <button type="button" class="btn btn-label-danger btn-icon" data-bs-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body d-grid gap-3 px-5">
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Nomor Kontainer :<span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <select disabled data-bs-toggle="tooltip" id="kontainer_alih_edit" name="kontainer_alih_edit"
+                  class="form-select" @readonly(true) required>
+                  <option selected disabled>Pilih Kontainer</option>
+                  @foreach ($select_batal_edit as $container)
+                    <option value="{{ $container->id }}">
+                      {{ $container->nomor_kontainer }}</option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Pilih Pelayaran (Shipping Company) :<span
+                  class="text-danger">*</span></label>
+
+              <div class="col-sm-8 validation-container">
+
+                <select id="select_company_alih_edit" name="select_company_alih_edit" class="form-select" required>
+                  <option selected disabled>Pilih Company</option>
+                  @foreach ($shipping_company as $shippingcompany)
+                    <option value="{{ $shippingcompany->nama_company }}">
+                      {{ $shippingcompany->nama_company }}</option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Pilih POT (jika ada) :</label>
+
+              <div class="col-sm-8 validation-container">
+
+                <select id="pot_alih_edit" name="pot_alih_edit" class="form-select">
+                  <option selected disabled>Pilih POT</option>
+                  @foreach ($pelabuhans as $pot)
+                    <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
+                      {{ $pot->nama_pelabuhan }}
+                    </option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Pilih POD : <span class="text-danger">*</span></label>
+
+              <div class="col-sm-8 validation-container">
+
+                <select id="pod_alih_edit" name="pod_alih_edit" class="form-select" required>
+                  <option selected disabled>Pilih POD</option>
+                  @foreach ($pelabuhans as $pot)
+                    <option value="{{ $pot->nama_pelabuhan }}">{{ $pot->area_code }} -
+                      {{ $pot->nama_pelabuhan }}
+                    </option>
+                  @endforeach
+                </select>
+
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Vessel/Voyage : <span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <input required class="form-control" type="text" name="vessel_alih_edit" id="vessel_alih_edit">
+
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-4 col-form-label">Vessel Code : <span class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <input required class="form-control" type="text" name="vessel_code_alih_edit"
+                  id="vessel_code_alih_edit">
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-4 col-form-label" for="">Biaya Alih Kapal<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text" for="">Rp.</span>
+                  <input data-bs-toggle="tooltip" type="text" class="form-control currency-rupiah"
+                    id="harga_alih_edit" name="harga_alih_edit" placeholder="Biaya Alih Kapal..." required>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <div class="row">
+
+              <label for="" class="col-sm-4 col-form-label">Keterangan Alih Kapal :<span
+                  class="text-danger">*</span></label>
+              <div class="col-sm-8 validation-container">
+
+                <textarea data-bs-toggle="tooltip" class="form-control" id="keterangan_alih_edit"
+                  placeholder="Keterangan Alih Kapal" name="keterangan_alih_edit" required>{{ old('keterangan_alih_edit') }}</textarea>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Edit Alih Kapal Kontainer</button>
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </form>
+
     </div>
   </div>
 

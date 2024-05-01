@@ -217,6 +217,7 @@ Route::put('/remove-ok-load/{id}', [RealisasiLoadController::class, 'remove_ok_l
 Route::post('/masukkan-biaya-pod', [RealisasiLoadController::class, 'masukkan_biaya_pod']);
 Route::post('/masukkan-biaya-pol', [RealisasiLoadController::class, 'masukkan_biaya_pol']);
 Route::post('/masukkan-do-fee', [RealisasiLoadController::class, 'masukkan_do_fee']);
+Route::post('/masukkan-pot', [RealisasiLoadController::class, 'masukkan_pot']);
 
 
 

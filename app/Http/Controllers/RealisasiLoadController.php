@@ -43,15 +43,15 @@ class RealisasiLoadController extends Controller
 
         $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->orWhere('status', 'Default')->get();
         $containers = ContainerPlanload::all();
-        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
 
 
-        $biayas= BiayaLainnya::all();
-        $alihkapal= AlihKapal::all();
-        $batalmuat= BatalMuat::all();
-        return view('realisasi.load.realisasi',[
+        $biayas = BiayaLainnya::all();
+        $alihkapal = AlihKapal::all();
+        $batalmuat = BatalMuat::all();
+        return view('realisasi.load.realisasi', [
             'title' => 'Realisasi (Load)',
             'active' => 'Realisasi',
             'planloads' => $planloads,
@@ -73,15 +73,15 @@ class RealisasiLoadController extends Controller
 
         $planloads = OrderJobPlanload::orderby('created_at', 'desc')->where('status', 'Process-Load')->orWhere('status', 'Realisasi')->orWhere('status', 'Default')->get();
         $containers = ContainerPlanload::all();
-        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer' )->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
+        $containers_group = ContainerPlanload::select('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->groupBy('job_id', 'size', 'type', 'cargo', 'jumlah_kontainer')->get();
         $select_company =  OrderJobPlanload::all()->unique('select_company');
         $vessel =  OrderJobPlanload::all()->unique('vessel');
 
 
-        $biayas= BiayaLainnya::all();
-        $alihkapal= AlihKapal::all();
-        $batalmuat= BatalMuat::all();
-        return view('realisasi.load.realisasi-pod',[
+        $biayas = BiayaLainnya::all();
+        $alihkapal = AlihKapal::all();
+        $batalmuat = BatalMuat::all();
+        return view('realisasi.load.realisasi-pod', [
             'title' => 'LOAD (Realisasi-POD)',
             'active' => 'Realisasi POD',
             'planloads' => $planloads,
@@ -120,10 +120,10 @@ class RealisasiLoadController extends Controller
         $danas = OngkoSupir::all();
 
 
-        $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function($query) {
+        $containers = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
             $query->where('status', '!=', 'Batal-Muat')
-            ->where('status', '!=', 'Alih-Kapal')
-            ->where('status', '!=', 'Realisasi-Alih');
+                ->where('status', '!=', 'Alih-Kapal')
+                ->where('status', '!=', 'Realisasi-Alih');
         })->get();
         $containers_info = ContainerPlanload::where('job_id', $id)->whereNull('slug')->get();
 
@@ -140,13 +140,52 @@ class RealisasiLoadController extends Controller
 
         $container_si = ContainerPlanload::where('job_id', $id)->whereNotNull("slug")->get();
 
+        $container_batal = ContainerPlanload::where('job_id', $id)->where(function ($query) {
+            $query->where('status', 'Batal-Muat');
+                // ->whereNull('slug');
+            ;
+        })->get();
 
+        $id_alih = AlihKapal::where("job_id", $id)->distinct()->get('kontainer_alih');
+        $containers_alih_list = [];
+        $new_container_alih = [];
+        if ($id_alih != null) {
+            for ($i = 0; $i < count($id_alih); $i++) {
+                $containers_alih_list[$i] = ContainerPlanload::where('id', $id_alih[$i]->kontainer_alih)->get();
+            }
+            for ($i = 0; $i < count($containers_alih_list); $i++) {
+                $new_container_alih[$i] = new ContainerPlanload([
+                    'id' => $containers_alih_list[$i][0]->id,
+                    'job_id' => $containers_alih_list[$i][0]->job_id,
+                    'size' => $containers_alih_list[$i][0]->size,
+                    'type' => $containers_alih_list[$i][0]->type,
+                    'harga_alih' => (int)$containers_alih_list[$i][0]->harga_alih,
+                    'nomor_kontainer' => $containers_alih_list[$i][0]->nomor_kontainer,
+                    'pengirim' => $containers_alih_list[$i][0]->pengirim,
+                    'penerima' => $containers_alih_list[$i][0]->penerima,
+                    'slug' => $containers_alih_list[$i][0]->slug
+
+                ]);
+            }
+        }
+        $new_container_alih = collect($new_container_alih)->whereNull('slug')->whereNotNull('harga_alih');
+
+        $select_batal_edit = ContainerPlanload::where('job_id', $id)->whereNotNull('status')->whereNull('slug')->get();
+        // dd($containers);
+    
+        $containers_alih = ContainerPlanload::where('job_id', $id)->whereNull('harga_alih')->where(function ($query) {
+          $query->where('status', '!=', 'Batal-Muat')
+            ->where('status', '!=', 'Alih-Kapal')
+            ->where('status', '!=', 'Realisasi-Alih')
+            ->where('status', '!=', 'Realisasi')
+            ->whereNotNull('status');
+        })->whereNull('slug')->get();
         //
-        return view('realisasi.load.realisasi-create',[
+        return view('realisasi.load.realisasi-create', [
             'title' => 'Realisasi-POL (Load)',
             'active' => 'Realisasi POL',
             'activity' => $activity,
-            'shippingcompany' => $shipping_company,
+            'shipping_company' => $shipping_company,
             'pol' => $pol,
             'pot' => $pot,
             'pelabuhans' => $pelabuhans,
@@ -163,6 +202,11 @@ class RealisasiLoadController extends Controller
             'vendors' => $vendors,
             'spks' => $spks,
             'container_si' => $container_si,
+            'container_batal' => $container_batal,
+            'new_container_alih' => $new_container_alih,
+
+            'containers_alih' => $containers_alih,
+            'select_batal_edit' => $select_batal_edit,
 
 
             'planload' => OrderJobPlanload::find($id),
@@ -195,28 +239,28 @@ class RealisasiLoadController extends Controller
         $danas = OngkoSupir::all();
 
 
-        $containers = ContainerPlanload::where('job_id', $id)->where(function($query) {
+        $containers = ContainerPlanload::where('job_id', $id)->where(function ($query) {
             $query->where('status', '!=', 'Batal-Muat')
-            ->where('status', '!=', 'Alih-Kapal')
-            ->where('status', '!=', 'Realisasi-Alih')
-            ->whereNotNull('slug');
+                ->where('status', '!=', 'Alih-Kapal')
+                ->where('status', '!=', 'Realisasi-Alih')
+                ->whereNotNull('slug');
         })->get();
-        $pdfs = SiPdfContainer::where('job_id', $id)->where(function($query) {
+        $pdfs = SiPdfContainer::where('job_id', $id)->where(function ($query) {
             $query->where('status', 'BL')
-            ->orWhere('status','POD');
+                ->orWhere('status', 'POD');
         })->get();
 
         // dd($pdfs);
         $nomor_container = [];
-        for($i = 0; $i < count($pdfs); $i++) {
+        for ($i = 0; $i < count($pdfs); $i++) {
             $nomor_container[$i] = ContainerPlanload::where('slug', $pdfs[$i]->container_id)->get();
         }
         // dd(null === null);
         $sum = [];
-        for($i = 0; $i < count($nomor_container); $i++) {
+        for ($i = 0; $i < count($nomor_container); $i++) {
             $sum[$i] = 0;
-            for($j = 0; $j < count($nomor_container[$i]); $j++) {
-                if($nomor_container[$i][$j]->demurrage === null) {
+            for ($j = 0; $j < count($nomor_container[$i]); $j++) {
+                if ($nomor_container[$i][$j]->demurrage === null) {
                     $sum[$i] = null;
                     break;
                 } else {
@@ -241,7 +285,7 @@ class RealisasiLoadController extends Controller
 
 
         //
-        return view('realisasi.load.realisasi-pod-create',[
+        return view('realisasi.load.realisasi-pod-create', [
             'title' => 'Realisasi POD (Load)',
             'active' => 'Realisasi POD',
             'activity' => $activity,
@@ -261,14 +305,14 @@ class RealisasiLoadController extends Controller
             'sealsc' => $sealsc,
             'vendors' => $vendors,
             'spks' => $spks,
-            'sums' => $sum, 
+            'sums' => $sum,
 
 
             'planload' => OrderJobPlanload::find($id),
             'containers' => $containers,
             'container_si' => $container_si,
             'biayas' => BiayaLainnya::where('job_id', $id)->get(),
-            'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads',function($q) {
+            'alihs' => AlihKapal::where('job_id', $id)->whereHas('container_planloads', function ($q) {
                 $q->whereNotNull('slug');
             })->get(),
             'pdfs' => $pdfs,
@@ -317,9 +361,6 @@ class RealisasiLoadController extends Controller
 
 
         return response()->json(['success' => true]);
-
-
-
     }
     public function masukkan_biaya_pol(Request $request)
     {
@@ -358,9 +399,16 @@ class RealisasiLoadController extends Controller
 
 
         return response()->json(['success' => true]);
+    }
+    public function masukkan_pot(Request $request)
+    {
+        $Container = ContainerPlanload::findOrFail($request->id);
+        $data = [
+            "pot_container" => $request->pot_container,
+        ];
 
-
-
+        $Container->update($data);
+        return response()->json(['success' => true]);
     }
     public function masukkan_do_fee(Request $request)
     {
@@ -380,21 +428,16 @@ class RealisasiLoadController extends Controller
         $pdf->update($data);
 
         return response()->json(['success' => true]);
-
-
-
     }
     public function detail_pdf($id)
     {
         # code...
 
-        $pdf =SiPdfContainer::find($id);
+        $pdf = SiPdfContainer::find($id);
 
         return response()->json([
             'result' => $pdf
         ]);
-
-
     }
     public function ok_load(Request $request)
     {
@@ -402,10 +445,10 @@ class RealisasiLoadController extends Controller
 
         // dd($request);
 
-        for ($i=0; $i <count($request->check_job) ; $i++) { 
-            
+        for ($i = 0; $i < count($request->check_job); $i++) {
+
             $data = [
-    
+
                 "ok" => 1,
             ];
             ContainerPlanload::where("id", $request->check_job[$i])->update($data);
@@ -414,8 +457,6 @@ class RealisasiLoadController extends Controller
 
 
         return response()->json(['success' => true]);
-
-
     }
     public function remove_ok_load(Request $request, $id)
     {
@@ -423,19 +464,16 @@ class RealisasiLoadController extends Controller
 
         // dd($id);
 
-            
+
         $data = [
 
             "ok" => 0,
         ];
         ContainerPlanload::where("id", $id)->update($data);
-        
+
 
 
 
         return response()->json(['success' => true]);
-
-
     }
-
 }
